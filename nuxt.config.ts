@@ -11,6 +11,9 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@pinia/nuxt',
   ],
+  ui: {
+    colorMode: false
+  },
   css: ['~/assets/css/main.css'],
   vite: {
     plugins: [

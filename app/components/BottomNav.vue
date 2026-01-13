@@ -15,11 +15,11 @@
           <Icon 
             name="mdi:home" 
             class="w-6 h-6 transition-colors"
-            :class="isActive('/') ? 'text-secondary' : 'text-secondary group-hover:text-primary'"
+            :class="isActive('/') ? 'text-[#c09637]' : 'text-secondary group-hover:text-primary'"
           />
           <span 
             class="text-xs mt-1 font-medium transition-colors"
-            :class="isActive('/') ? 'text-secondary' : 'text-secondary group-hover:text-primary'"
+            :class="isActive('/') ? 'text-[#c09637]' : 'text-secondary group-hover:text-primary'"
           >
             Beranda
           </span>
@@ -30,11 +30,11 @@
           <Icon 
             name="mdi:music-note" 
             class="w-6 h-6 transition-colors"
-            :class="isActive('/audio') ? 'text-secondary' : 'text-secondary group-hover:text-primary'"
+            :class="isActive('/audio') ? 'text-[#c09637]' : 'text-secondary group-hover:text-primary'"
           />
           <span 
             class="text-xs mt-1 font-medium transition-colors"
-            :class="isActive('/audio') ? 'text-secondary' : 'text-secondary group-hover:text-primary'"
+            :class="isActive('/audio') ? 'text-[#c09637]' : 'text-secondary group-hover:text-primary'"
           >
             Audio
           </span>
@@ -48,11 +48,11 @@
           <Icon 
             name="mdi:play-box" 
             class="w-6 h-6 transition-colors"
-            :class="isActive('/video') ? 'text-secondary' : 'text-secondary group-hover:text-primary'"
+            :class="isActive('/video') ? 'text-[#c09637]' : 'text-secondary group-hover:text-primary'"
           />
           <span 
             class="text-xs mt-1 font-medium transition-colors"
-            :class="isActive('/video') ? 'text-secondary' : 'text-secondary group-hover:text-primary'"
+            :class="isActive('/video') ? 'text-[#c09637]' : 'text-secondary group-hover:text-primary'"
           >
             Video
           </span>
@@ -63,11 +63,11 @@
           <Icon 
             name="mdi:view-grid" 
             class="w-6 h-6 transition-colors"
-            :class="isActive('/lainnya') ? 'text-secondary' : 'text-secondary group-hover:text-primary'"
+            :class="isActive('/lainnya') ? 'text-[#c09637]' : 'text-secondary group-hover:text-primary'"
           />
           <span 
             class="text-xs mt-1 font-medium transition-colors"
-            :class="isActive('/lainnya') ? 'text-secondary' : 'text-secondary group-hover:text-primary'"
+            :class="isActive('/lainnya') ? 'text-[#c09637]' : 'text-secondary group-hover:text-primary'"
           >
             Lainnya
           </span>
