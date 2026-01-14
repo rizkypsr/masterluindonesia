@@ -2,9 +2,7 @@
     <div class="min-h-screen bg-gray-50 pb-8">
         <!-- Header -->
         <div class="bg-white px-4 py-4 flex items-center gap-3 shadow-sm">
-            <button @click="$router.back()" class="p-1">
-                <Icon name="mdi:arrow-left" class="w-6 h-6 text-black" />
-            </button>
+            <BackButton />
             <h1 class="text-lg font-semibold text-black flex-1 line-clamp-1">{{ pageTitle }}</h1>
         </div>
 
@@ -61,10 +59,10 @@
                             </div>
                             <p class="flex-1 text-sm text-black">{{ sub.description_wa }}</p>
                             <div class="flex items-center gap-2 shrink-0">
-                                <button class="p-1">
+                                <button @click="copyToClipboard(sub.description_wa)" class="p-1">
                                     <Icon name="mdi:content-copy" class="w-5 h-5 text-gray-400" />
                                 </button>
-                                <button class="p-1">
+                                <button @click="speakText(sub.description_wa)" class="p-1">
                                     <Icon name="mdi:account-voice" class="w-5 h-5 text-gray-400" />
                                 </button>
                             </div>
@@ -79,18 +77,11 @@
                     <h3 class="px-4 font-semibold text-black mb-3">{{ group.group_sub_video_name }}</h3>
 
                     <!-- Horizontal Carousel -->
-                    <UCarousel 
-                        v-slot="{ item }"
-                        :items="group.child" 
-                        :ui="{ 
-                            item: 'basis-full',
-                            dot: 'bg-secondary'
-                        }"
-                        dots
-                        class="px-4"
-                    >
-                        <NuxtLink 
-                            :to="{ path: `/video/play/${item.id}`, query: { title: item.title } }"
+                    <UCarousel v-slot="{ item }" :items="group.child" :ui="{
+                        item: 'basis-full',
+                        dot: 'bg-secondary'
+                    }" dots class="px-4">
+                        <NuxtLink :to="{ path: `/video/play/${item.id}`, query: { title: item.title } }"
                             class="flex items-center gap-4 pr-4">
                             <img :src="getYoutubeThumbnail(item.url)" :alt="item.title"
                                 class="w-36 h-24 object-cover rounded-lg bg-gray-200 shrink-0" />
@@ -192,6 +183,32 @@ const formatTimestamp = (seconds: number): string => {
         return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
     }
     return `00:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+}
+
+const toast = useToast()
+
+const copyToClipboard = async (text: string) => {
+    try {
+        await navigator.clipboard.writeText(text)
+        toast.add({
+            title: 'Berhasil disalin',
+            color: 'success'
+        })
+    } catch (err) {
+        toast.add({
+            title: 'Gagal menyalin',
+            color: 'error'
+        })
+    }
+}
+
+const speakText = (text: string) => {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel()
+        const utterance = new SpeechSynthesisUtterance(text)
+        utterance.lang = 'id-ID'
+        window.speechSynthesis.speak(utterance)
+    }
 }
 </script>
 

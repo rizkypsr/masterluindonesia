@@ -11,22 +11,50 @@
       </div>
     </div>
 
-    <!-- TAB BAR -->
-    <div class="bg-white shadow-md">
-      <div class="flex">
-        <button v-for="tab in tabs" :key="tab.id" @click="activeTab = tab.id"
-          class="flex-1 px-4 py-3 text-sm font-medium transition-colors relative"
-          :class="activeTab === tab.id ? 'text-black' : 'text-gray-400'">
-          {{ tab.label }}
-          <span v-if="activeTab === tab.id" class="absolute bottom-0 left-4 right-4 h-0.5 bg-black rounded-full" />
-        </button>
-      </div>
-    </div>
-
     <!-- Content -->
-    <div class="py-4">
-      <VideoTabDaftarIsi v-if="activeTab === 'daftarisi'" :categories="filteredCategories" :loading="pending" />
-      <VideoTabTopik v-else-if="activeTab === 'topik'" :categories="filteredCategories" :loading="pending" />
+    <div class="py-4 px-4">
+      <!-- Banner Images -->
+      <div class="pb-4">
+        <NuxtImg src="https://masterluindonesia.com/assets/assets/images/main_image_audio_screen.jpeg" alt="Gambar" />
+      </div>
+
+      <!-- Description -->
+      <p class="text-sm text-gray-600 mb-6">
+        Mendengarkan acara rekaman Master Jun Honglu setiap hari bisa membuka kebijaksanaan,
+        meningkatkan tingkat kesadaran, memperbaiki segala perilaku dan kebiasaan buruk, mengubah
+        nasib dan mendapatkan banyak manfaat lainnya.
+      </p>
+
+      <!-- Loading State -->
+      <div v-if="pending" class="space-y-4">
+        <div v-for="i in 3" :key="i" class="animate-pulse">
+          <div class="h-6 bg-gray-200 rounded w-1/3 mb-2"></div>
+          <div class="h-4 bg-gray-200 rounded w-1/4"></div>
+        </div>
+      </div>
+
+      <!-- Categories Accordion -->
+      <div v-else class="divide-y divide-gray-200">
+        <div v-for="category in filteredCategories" :key="category.id" class="py-4">
+          <button @click="toggleCategory(category.id)" class="w-full flex items-center justify-between">
+            <div class="text-left">
+              <h3 class="text-base font-semibold text-black">{{ category.title }}</h3>
+              <p class="text-sm text-gray-500">{{ category.sub_category.length }} subkategori</p>
+            </div>
+            <Icon :name="expandedCategories.includes(category.id) ? 'mdi:chevron-up' : 'mdi:chevron-down'"
+              class="w-6 h-6 text-gray-400" />
+          </button>
+
+          <!-- Sub Categories -->
+          <div v-if="expandedCategories.includes(category.id)" class="mt-3 pl-4 divide-y divide-gray-100">
+            <NuxtLink v-for="sub in category.sub_category" :key="sub.id"
+              :to="{ path: `/video/${category.id}/${sub.id}`, query: { title: sub.title } }"
+              class="block py-3 text-sm text-gray-700 hover:text-black">
+              {{ sub.title }}
+            </NuxtLink>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -57,13 +85,8 @@ interface Category {
   sub_category: SubCategory[]
 }
 
-const activeTab = ref("daftarisi")
 const searchQuery = ref("")
-
-const tabs = [
-  { id: "daftarisi", label: "Daftar Isi" },
-  { id: "topik", label: "Topik" },
-]
+const expandedCategories = ref<number[]>([])
 
 const { data: categoriesData, pending } = await useFetch<{ success: boolean; data: Category[] }>(
   'https://api.masterluindonesia.com/api/category?type=video&languange=CH'
@@ -79,4 +102,13 @@ const filteredCategories = computed(() => {
     cat.sub_category.some(sub => sub.title.toLowerCase().includes(query))
   )
 })
+
+const toggleCategory = (id: number) => {
+  const index = expandedCategories.value.indexOf(id)
+  if (index === -1) {
+    expandedCategories.value.push(id)
+  } else {
+    expandedCategories.value.splice(index, 1)
+  }
+}
 </script>
