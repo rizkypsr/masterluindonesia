@@ -11,8 +11,8 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@pinia/nuxt',
   ],
-  ui: {
-    colorMode: false
+  colorMode: {
+    preference: 'light'
   },
   css: ['~/assets/css/main.css'],
   vite: {
@@ -20,5 +20,9 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
-
+  runtimeConfig: {
+    public: {
+      googleClientId: process.env.GOOGLE_CLIENT_ID || '',
+    },
+  },
 })
