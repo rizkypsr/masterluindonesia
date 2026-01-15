@@ -39,8 +39,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick } from "vue"
+import { ref, nextTick, onMounted } from "vue"
 
+const route = useRoute()
 const activeTab = ref("terbaru")
 const tabContainer = ref<HTMLElement | null>(null)
 const tabRefs = ref<HTMLElement[]>([])
@@ -56,6 +57,17 @@ const tabs = [
 
 const TARGET_VISIBLE_INDEX = 1
 const GAP_OFFSET = 8
+
+// Check for tab query parameter on mount
+onMounted(() => {
+  const tabParam = route.query.tab as string
+  if (tabParam) {
+    const tabIndex = tabs.findIndex(t => t.id === tabParam)
+    if (tabIndex !== -1) {
+      selectTab(tabParam, tabIndex)
+    }
+  }
+})
 
 const selectTab = (tabId: string, index: number) => {
   activeTab.value = tabId

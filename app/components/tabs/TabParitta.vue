@@ -1,6 +1,34 @@
+<script setup lang="ts">
+import parittaData from '~/assets/json/paritta.json'
+
+interface Paritta {
+  title: string
+  href: string
+  englishTitle: string
+  chineseTitle: string
+  pinyinTitle: string
+  pinyinTitleAlt: string
+  audioFile: string
+  dharani: {
+    chinese: string
+    pinyin: string
+    pinyinAlt: string
+  }
+}
+
+const parittas = parittaData as Paritta[]
+</script>
+
 <template>
-  <div class="px-4 py-6">
-    <h1 class="text-2xl font-bold text-black mb-4">Paritta</h1>
-    <p class="text-gray-600">Halaman Paritta - Coming Soon</p>
+  <div class="h-[calc(100vh-200px)] overflow-y-auto divide-y divide-gray-200 dark:divide-gray-700">
+    <NuxtLink
+      v-for="paritta in parittas"
+      :key="paritta.href"
+      :to="paritta.href"
+      class="flex items-center justify-between px-4 py-5 hover:bg-gray-50 dark:hover:bg-gray-800"
+    >
+      <span class="font-semibold text-black dark:text-white">{{ paritta.title }}</span>
+      <Icon name="mdi:chevron-right" class="w-6 h-6 text-gray-400" />
+    </NuxtLink>
   </div>
 </template>
