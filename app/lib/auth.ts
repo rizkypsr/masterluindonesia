@@ -40,7 +40,6 @@ export const useAuth = () => {
 
   const logout = () => {
     token.value = null;
-    navigateTo('/login');
   };
 
   const getAuthHeader = () => {
