@@ -23,6 +23,50 @@ const paritta = computed(() => {
     return (parittaData as Paritta[]).find(p => p.href === `/paritta/${slug}`)
 })
 
+// Parse title into aligned characters
+const titleChars = computed(() => {
+    if (!paritta.value) return []
+    const chinese = paritta.value.chineseTitle.split('')
+    const pinyin = paritta.value.pinyinTitle.split(' ')
+    const pinyinAlt = paritta.value.pinyinTitleAlt.split(' ')
+
+    return chinese.map((char, i) => ({
+        chinese: char,
+        pinyin: pinyin[i] || '',
+        pinyinAlt: pinyinAlt[i] || ''
+    }))
+})
+
+// Parse dharani into aligned characters
+const dharaniChars = computed(() => {
+    if (!paritta.value) return []
+    const chinese = paritta.value.dharani.chinese.split('')
+    const pinyin = paritta.value.dharani.pinyin.split(' ')
+    const pinyinAlt = paritta.value.dharani.pinyinAlt.split(' ')
+
+    let pinyinIndex = 0
+    return chinese.map((char) => {
+        // Skip punctuation for pinyin alignment
+        const isPunctuation = /[。，、；：！？「」『』（）\s]/.test(char)
+        if (isPunctuation) {
+            return {
+                chinese: char,
+                pinyin: '',
+                pinyinAlt: '',
+                isPunctuation: true
+            }
+        }
+        const result = {
+            chinese: char,
+            pinyin: pinyin[pinyinIndex] || '',
+            pinyinAlt: pinyinAlt[pinyinIndex] || '',
+            isPunctuation: false
+        }
+        pinyinIndex++
+        return result
+    })
+})
+
 // Audio state
 const audioRef = ref<HTMLAudioElement | null>(null)
 const isPlaying = ref(false)
@@ -41,10 +85,8 @@ const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 2]
 
 const audioUrl = computed(() => {
     if (!paritta.value) return ''
-    // Find the index of this paritta in the array (1-based for audio file naming)
     const index = (parittaData as Paritta[]).findIndex(p => p.href === `/paritta/${slug}`)
     if (index === -1) return ''
-    // Audio files are named audio1.mp3, audio2.mp3, etc.
     return `https://masterluindonesia.com/assets/assets/images/paritta/audio${index + 1}.mp3`
 })
 
@@ -180,11 +222,11 @@ function togglePlayerExpanded() {
                 </h1>
             </div>
             <div class="flex items-center gap-2">
-                <button class="p-2" @click="zoomIn">
-                    <Icon name="mdi:magnify-plus-outline" class="w-6 h-6 text-black dark:text-white" />
-                </button>
                 <button class="p-2" @click="zoomOut">
                     <Icon name="mdi:magnify-minus-outline" class="w-6 h-6 text-black dark:text-white" />
+                </button>
+                <button class="p-2" @click="zoomIn">
+                    <Icon name="mdi:magnify-plus-outline" class="w-6 h-6 text-black dark:text-white" />
                 </button>
                 <button class="p-2" @click="resetZoom">
                     <Icon name="mdi:refresh" class="w-6 h-6 text-black dark:text-white" />
@@ -194,41 +236,30 @@ function togglePlayerExpanded() {
 
         <!-- Content Area -->
         <div v-if="paritta" class="flex-1 overflow-y-auto px-4 py-6" :style="{ fontSize: fontSize + 'px' }">
-            <!-- Chinese Title -->
-            <h2 class="font-bold text-black dark:text-white mb-2 text-center" style="font-size: 1.25em;">
-                {{ paritta.chineseTitle }}
+            <!-- English Title -->
+            <h2 class="font-bold text-black dark:text-white mb-8 text-center" style="font-size: 1.25em;">
+                {{ paritta.englishTitle }}
             </h2>
 
-            <!-- English Title -->
-            <p class="text-gray-600 dark:text-gray-400 text-center mb-6">
-                {{ paritta.englishTitle }}
-            </p>
-
-            <!-- Dharani Content -->
-            <div class="space-y-6">
-                <!-- Chinese -->
-                <div>
-                    <h3 class="font-semibold text-black dark:text-white mb-2">漢字 (Chinese)</h3>
-                    <p class="text-black dark:text-white leading-relaxed text-lg">
-                        {{ paritta.dharani.chinese }}
-                    </p>
+            <!-- Chinese Title with Pinyin -->
+            <div class="flex flex-wrap justify-center gap-x-4 gap-y-2 mb-8">
+                <div v-for="(char, index) in titleChars" :key="'title-' + index" class="flex flex-col items-center">
+                    <span class="text-gray-500 dark:text-gray-400" style="font-size: 0.75em;">{{ char.pinyin }}</span>
+                    <span class="text-black dark:text-white" style="font-size: 1.5em;">{{ char.chinese }}</span>
+                    <span class="text-gray-500 dark:text-gray-400" style="font-size: 0.75em;">{{ char.pinyinAlt }}</span>
                 </div>
+            </div>
 
-                <!-- Pinyin -->
-                <div>
-                    <h3 class="font-semibold text-black dark:text-white mb-2">拼音 (Pinyin)</h3>
-                    <p class="text-black dark:text-white leading-relaxed">
-                        {{ paritta.dharani.pinyin }}
-                    </p>
-                </div>
-
-                <!-- Alternative Pinyin -->
-                <div>
-                    <h3 class="font-semibold text-black dark:text-white mb-2">Alternative Pinyin</h3>
-                    <p class="text-black dark:text-white leading-relaxed">
-                        {{ paritta.dharani.pinyinAlt }}
-                    </p>
-                </div>
+            <!-- Dharani Content with Pinyin -->
+            <div class="flex flex-wrap justify-center gap-x-2 gap-y-4">
+                <template v-for="(char, index) in dharaniChars" :key="'dharani-' + index">
+                    <div v-if="!char.isPunctuation" class="flex flex-col items-center min-w-[1.5em]">
+                        <span class="text-gray-500 dark:text-gray-400 h-4" style="font-size: 0.75em;">{{ char.pinyin }}</span>
+                        <span class="text-black dark:text-white" style="font-size: 1.25em;">{{ char.chinese }}</span>
+                        <span class="text-gray-500 dark:text-gray-400 h-4" style="font-size: 0.75em;">{{ char.pinyinAlt }}</span>
+                    </div>
+                    <span v-else class="text-black dark:text-white self-center" style="font-size: 1.25em;">{{ char.chinese }}</span>
+                </template>
             </div>
         </div>
 

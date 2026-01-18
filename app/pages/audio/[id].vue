@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-50 pb-32">
+  <div class="min-h-screen bg-gray-50 pb-40">
     <!-- Header -->
     <div class="bg-white px-4 py-4 flex items-center gap-3 shadow-sm">
       <button @click="$router.back()" class="p-1 flex justify-center items-center hover:bg-gray-100 cursor-pointer">
@@ -12,7 +12,9 @@
     <div class="p-4">
       <!-- Loading State -->
       <div v-if="pending" class="space-y-4">
-        <div class="w-20 h-8 bg-gray-200 rounded-full animate-pulse"></div>
+        <div class="flex gap-2 overflow-x-auto pb-2">
+          <div v-for="i in 6" :key="i" class="w-20 h-10 bg-gray-200 rounded-full animate-pulse shrink-0"></div>
+        </div>
         <div v-for="i in 3" :key="i" class="flex items-center gap-3 animate-pulse">
           <div class="w-14 h-14 bg-gray-200 rounded-lg"></div>
           <div class="flex-1">
@@ -23,39 +25,117 @@
       </div>
 
       <template v-else>
-        <!-- Audio Groups -->
-        <div v-for="group in audioGroups" :key="group.id" class="mb-6">
-          <!-- Category Badge -->
-          <span class="inline-block bg-primary text-black text-sm font-medium px-4 py-2 rounded-full mb-4">
+        <!-- Category Tabs -->
+        <div class="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
+          <button 
+            v-for="group in audioGroups" 
+            :key="group.id"
+            @click="selectedGroupId = group.id"
+            class="shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors"
+            :class="selectedGroupId === group.id 
+              ? 'bg-primary text-black' 
+              : 'bg-primary/40 text-black'"
+          >
             {{ group.name }}
-          </span>
+          </button>
+        </div>
 
-          <!-- Audio List -->
-          <div class="space-y-2">
-            <button v-for="audio in group.audio" :key="audio.id" @click="playAudio(audio)"
-              class="w-full flex items-center gap-3 p-2 rounded-lg transition-colors"
-              :class="currentAudio?.id === audio.id ? 'bg-primary/20' : 'hover:bg-gray-100'">
-              <div
-                class="w-14 h-14 bg-gradient-to-b from-[#c9a227] to-[#8b7355] rounded-lg flex items-center justify-center shrink-0">
+        <!-- Audio List for Selected Group -->
+        <div class="space-y-2">
+          <div v-for="audio in selectedGroupAudios" :key="audio.id">
+            <!-- Audio Item - Not Selected -->
+            <button 
+              v-if="currentAudio?.id !== audio.id"
+              @click="playAudio(audio)"
+              class="w-full flex items-center gap-3 p-2 rounded-lg transition-colors hover:bg-gray-100"
+              :style="{ fontSize: fontSize + 'px' }"
+            >
+              <div class="w-14 h-14 bg-gradient-to-b from-[#c9a227] to-[#8b7355] rounded-lg flex items-center justify-center shrink-0">
                 <Icon name="mdi:music-note" class="w-8 h-8 text-white" />
               </div>
               <div class="flex-1 text-left">
-                <p class="text-sm font-medium text-black line-clamp-2">{{ audio.title.trim() }}</p>
+                <p class="font-medium text-black line-clamp-2">{{ audio.title.trim() }}</p>
               </div>
-              <span class="text-sm text-gray-500 shrink-0">{{ audio.duration }}</span>
+              <span class="text-gray-500 shrink-0">{{ audio.duration }}</span>
             </button>
+
+            <!-- Audio Item - Selected (with Player & Show Teks) -->
+            <div v-else class="bg-[#c09637] rounded-2xl overflow-hidden" :style="{ fontSize: fontSize + 'px' }">
+              <!-- Player Header -->
+              <div class="px-4 py-3">
+                <div class="flex items-center gap-3">
+                  <button @click="togglePlay" class="shrink-0">
+                    <Icon :name="isPlaying ? 'mdi:pause' : 'mdi:play'" class="w-6 h-6 text-black" />
+                  </button>
+                  <p class="font-medium text-black flex-1 line-clamp-1">{{ audio.title.trim() }}</p>
+                  <span class="text-black shrink-0">{{ audio.duration }}</span>
+                </div>
+              </div>
+
+              <!-- Show Teks Accordion -->
+              <div class="bg-white mx-3 mb-3 rounded-xl overflow-hidden">
+                <button 
+                  @click="showSubtitle = !showSubtitle" 
+                  class="w-full flex items-center justify-between px-4 py-3"
+                >
+                  <span class="text-sm font-medium text-black">Show Teks</span>
+                  <Icon 
+                    :name="showSubtitle ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                    class="w-5 h-5 text-gray-600" 
+                  />
+                </button>
+
+                <!-- Subtitle Content -->
+                <div v-if="showSubtitle" class="px-4 pb-4">
+                  <!-- Search Input -->
+                  <input 
+                    v-model="subtitleSearch"
+                    type="text" 
+                    placeholder="Masukan kata kunci"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm mb-4 focus:outline-none focus:border-primary"
+                  />
+
+                  <!-- Subtitle List -->
+                  <div class="max-h-64 overflow-y-auto space-y-4">
+                    <div 
+                      v-for="sub in filteredSubtitles" 
+                      :key="sub.id"
+                      class="border border-gray-200 rounded-lg p-4"
+                      :style="{ fontSize: fontSize + 'px' }"
+                    >
+                      <p class="font-semibold text-black mb-2">{{ sub.title }}</p>
+                      <p class="text-gray-600 mb-2" v-html="sub.description"></p>
+                      <div class="text-black mb-4" v-html="highlightText(sub.script)"></div>
+                      
+                      <!-- Action Buttons -->
+                      <div class="flex items-center gap-6 pt-3 border-t border-gray-200">
+                        <button @click="copySubtitle(sub)" class="flex items-center gap-1 text-sm text-gray-700">
+                          <Icon name="mdi:content-copy" class="w-4 h-4" />
+                          <span>Salin</span>
+                        </button>
+                        <button @click="viewDetail(sub)" class="flex items-center gap-1 text-sm text-gray-700">
+                          <Icon name="mdi:file-document-outline" class="w-4 h-4" />
+                          <span>Lihat Detail</span>
+                        </button>
+                        <button @click="speakSubtitle(sub)" class="flex items-center gap-1 text-sm" :class="speakingSubtitleId === sub.id ? 'text-primary' : 'text-gray-700'">
+                          <Icon :name="speakingSubtitleId === sub.id ? 'mdi:stop' : 'mdi:account-voice'" class="w-4 h-4" />
+                          <span>{{ speakingSubtitleId === sub.id ? 'Stop' : 'Voice' }}</span>
+                        </button>
+                      </div>
+                    </div>
+                    <p v-if="filteredSubtitles.length === 0" class="text-sm text-gray-500 text-center py-4">
+                      Tidak ada teks ditemukan
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </template>
     </div>
 
-    <!-- Floating Playlist Button -->
-    <button v-if="currentAudio"
-      class="fixed bottom-28 right-4 w-12 h-12 bg-primary rounded-full shadow-lg flex items-center justify-center">
-      <Icon name="mdi:playlist-music" class="w-6 h-6 text-black" />
-    </button>
-
-    <!-- Bottom Audio Player -->
+    <!-- Bottom Audio Player Drawer -->
     <div v-if="currentAudio" class="fixed bottom-0 left-0 right-0 bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.1)] p-4">
       <div class="flex items-center justify-between mb-2">
         <p class="text-sm font-medium text-black flex-1 line-clamp-1">{{ currentAudio.title.trim() }}</p>
@@ -68,8 +148,7 @@
       <div class="flex items-center gap-2 mb-3">
         <input type="range" :value="currentTime" :max="duration" @input="seek"
           class="flex-1 h-1 bg-gray-200 rounded-full appearance-none cursor-pointer accent-primary" />
-        <span class="text-xs text-gray-500 w-20 text-right">{{ formatTime(currentTime) }}/{{ formatTime(duration)
-          }}</span>
+        <span class="text-xs text-gray-500 w-20 text-right">{{ formatTime(currentTime) }}/{{ formatTime(duration) }}</span>
       </div>
 
       <!-- Controls -->
@@ -103,17 +182,28 @@
 
     <!-- Hidden Audio Element -->
     <audio ref="audioElement" @timeupdate="onTimeUpdate" @loadedmetadata="onLoadedMetadata" @ended="onEnded" />
+
+    <!-- Floating Action Button -->
+    <FabZoom 
+      v-model:isOpen="showFabMenu" 
+      :hasDrawer="!!currentAudio"
+      @zoomIn="zoomIn"
+      @zoomOut="zoomOut"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue"
+import { ref, computed, watch } from "vue"
 
 interface Subtitle {
   id: number
-  text: string
-  start: number
-  end: number
+  title: string
+  timestamp: number
+  script: string
+  script_wa: string
+  description: string
+  description_wa: string
 }
 
 interface AudioItem {
@@ -147,6 +237,21 @@ const { data: audioData, pending } = await useFetch<{ success: boolean; data: Au
 
 const audioGroups = computed(() => audioData.value?.data?.sort((a, b) => a.order - b.order) || [])
 
+// Selected Group State
+const selectedGroupId = ref<number | null>(null)
+
+// Set default selected group when data loads
+watch(audioGroups, (groups) => {
+  if (groups.length > 0 && selectedGroupId.value === null) {
+    selectedGroupId.value = groups[0].id
+  }
+}, { immediate: true })
+
+const selectedGroupAudios = computed(() => {
+  const group = audioGroups.value.find(g => g.id === selectedGroupId.value)
+  return group?.audio || []
+})
+
 // Audio Player State
 const audioElement = ref<HTMLAudioElement | null>(null)
 const currentAudio = ref<AudioItem | null>(null)
@@ -154,12 +259,123 @@ const isPlaying = ref(false)
 const currentTime = ref(0)
 const duration = ref(0)
 
+// Subtitle State
+const showSubtitle = ref(false)
+const subtitleSearch = ref('')
+
+// FAB Menu State
+const showFabMenu = ref(false)
+const fontSize = ref(14) // base font size in px
+
+const zoomIn = () => {
+  fontSize.value = Math.min(fontSize.value + 2, 24)
+}
+
+const zoomOut = () => {
+  fontSize.value = Math.max(fontSize.value - 2, 10)
+}
+
+const filteredSubtitles = computed(() => {
+  if (!currentAudio.value?.subtitle) return []
+  const subtitles = currentAudio.value.subtitle
+  if (!subtitleSearch.value.trim()) return subtitles
+  const search = subtitleSearch.value.toLowerCase()
+  return subtitles.filter(sub => sub.script.toLowerCase().includes(search))
+})
+
+const highlightText = (text: string) => {
+  if (!subtitleSearch.value.trim()) return text
+  const search = subtitleSearch.value.trim()
+  const regex = new RegExp(`(${search})`, 'gi')
+  return text.replace(regex, '<mark class="bg-yellow-300">$1</mark>')
+}
+
+// Strip HTML tags for plain text display
+const stripHtml = (html: string) => {
+  const doc = new DOMParser().parseFromString(html, 'text/html')
+  return doc.body.textContent || ''
+}
+
+// Copy subtitle to clipboard
+const copySubtitle = async (sub: Subtitle) => {
+  const text = stripHtml(sub.script)
+  try {
+    await navigator.clipboard.writeText(text)
+    // Could add toast notification here
+  } catch (err) {
+    console.error('Failed to copy:', err)
+  }
+}
+
+// Text-to-Speech State
+const isSpeaking = ref(false)
+const speakingSubtitleId = ref<number | null>(null)
+
+// Speak subtitle using Web Speech API
+const speakSubtitle = (sub: Subtitle) => {
+  if (typeof window === 'undefined' || !window.speechSynthesis) {
+    console.error('Speech synthesis not supported')
+    return
+  }
+
+  // If already speaking this subtitle, stop it
+  if (isSpeaking.value && speakingSubtitleId.value === sub.id) {
+    window.speechSynthesis.cancel()
+    isSpeaking.value = false
+    speakingSubtitleId.value = null
+    return
+  }
+
+  // Cancel any ongoing speech
+  window.speechSynthesis.cancel()
+
+  const text = stripHtml(sub.script)
+  const utterance = new SpeechSynthesisUtterance(text)
+  
+  // Set Indonesian language
+  utterance.lang = 'id-ID'
+  utterance.rate = 1
+  utterance.pitch = 1
+
+  utterance.onstart = () => {
+    isSpeaking.value = true
+    speakingSubtitleId.value = sub.id
+  }
+
+  utterance.onend = () => {
+    isSpeaking.value = false
+    speakingSubtitleId.value = null
+  }
+
+  utterance.onerror = () => {
+    isSpeaking.value = false
+    speakingSubtitleId.value = null
+  }
+
+  window.speechSynthesis.speak(utterance)
+}
+
+// View detail - navigate to detail page
+const viewDetail = (sub: Subtitle) => {
+  if (!currentAudio.value) return
+  navigateTo({
+    path: '/audio/detail',
+    query: {
+      audio_id: currentAudio.value.id,
+      subtitle_id: sub.id,
+      title: pageTitle.value
+    }
+  })
+}
+
 const playAudio = (audio: AudioItem) => {
   if (currentAudio.value?.id === audio.id) {
     togglePlay()
     return
   }
   currentAudio.value = audio
+  showSubtitle.value = false
+  subtitleSearch.value = ''
   if (audioElement.value) {
     audioElement.value.src = audio.url
     audioElement.value.play()
@@ -186,6 +402,8 @@ const closePlayer = () => {
   isPlaying.value = false
   currentTime.value = 0
   duration.value = 0
+  showSubtitle.value = false
+  subtitleSearch.value = ''
 }
 
 const onTimeUpdate = () => {
@@ -238,5 +456,14 @@ input[type="range"]::-webkit-slider-thumb {
   background: #ffca03;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 </style>

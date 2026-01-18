@@ -39,6 +39,7 @@ const isLoadingContents = ref(true)
 const contentRef = ref<HTMLElement | null>(null)
 const isPageModalOpen = ref(false)
 const selectedPage = ref(1)
+const fontSize = ref(16)
 
 // Search state
 const isSearchMode = ref(false)
@@ -143,11 +144,11 @@ function toggleTools() {
 }
 
 function zoomIn() {
-    // TODO: Implement zoom in
+    fontSize.value = Math.min(fontSize.value + 2, 28)
 }
 
 function zoomOut() {
-    // TODO: Implement zoom out
+    fontSize.value = Math.max(fontSize.value - 2, 12)
 }
 
 function scrollToTop() {
@@ -341,13 +342,13 @@ function goToSearchResult(pageIndex: number) {
                 <div v-if="bookDetail?.url" class="flex justify-center mb-6">
                     <img :src="bookDetail.url" :alt="bookDetail.title" class="max-w-full h-auto rounded-lg shadow-md" />
                 </div>
-                <h2 class="text-xl font-bold text-black dark:text-white mb-6" v-html="highlightedTitle"></h2>
+                <h2 class="font-bold text-black dark:text-white mb-6" :style="{ fontSize: (fontSize + 4) + 'px' }" v-html="highlightedTitle"></h2>
             </template>
 
             <!-- Page 2+: Content Pages -->
             <template v-else>
                 <div v-if="currentContent" class="prose prose-sm max-w-none">
-                    <p class="text-black dark:text-white leading-relaxed whitespace-pre-line" v-html="highlightedContent"></p>
+                    <p class="text-black dark:text-white leading-relaxed whitespace-pre-line" :style="{ fontSize: fontSize + 'px' }" v-html="highlightedContent"></p>
                 </div>
                 <div v-else-if="isLoadingContents" class="flex justify-center py-8">
                     <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500" />
@@ -364,27 +365,12 @@ function goToSearchResult(pageIndex: number) {
         </div>
 
         <!-- Floating Tools Button -->
-        <div class="fixed bottom-20 right-4 z-10">
-            <div v-if="isToolsExpanded" class="flex items-center gap-2 mb-2 bg-white rounded-full shadow-lg p-1">
-                <button @click="zoomIn" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
-                    <Icon name="mdi:magnify-plus" class="w-5 h-5 text-gray-700" />
-                </button>
-                <button @click="zoomOut" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
-                    <Icon name="mdi:magnify-minus" class="w-5 h-5 text-gray-700" />
-                </button>
-                <button @click="scrollToTop"
-                    class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
-                    <Icon name="mdi:arrow-up" class="w-5 h-5 text-gray-700" />
-                </button>
-                <button @click="toggleTools" class="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-                    <Icon name="mdi:close" class="w-5 h-5 text-black" />
-                </button>
-            </div>
-            <button v-else @click="toggleTools"
-                class="w-12 h-12 rounded-full bg-primary shadow-lg flex items-center justify-center">
-                <Icon name="mdi:menu" class="w-6 h-6 text-black" />
-            </button>
-        </div>
+        <FabZoom 
+            v-model:isOpen="isToolsExpanded" 
+            :hasDrawer="true"
+            @zoomIn="zoomIn" 
+            @zoomOut="zoomOut" 
+        />
 
         <!-- Bottom Navigation -->
         <div class="border-t border-gray-200 bg-white dark:bg-gray-900 px-4 py-3 shrink-0">

@@ -54,13 +54,14 @@
             
             <!-- Sub Chapters -->
             <div v-if="chapter.sub_chapters && chapter.sub_chapters.length > 0">
-              <div
+              <NuxtLink
                 v-for="sub in chapter.sub_chapters"
                 :key="sub.id"
-                class="py-3 pl-4 cursor-pointer hover:bg-gray-50"
+                :to="`/book/${bookId}/${sub.id}`"
+                class="block py-3 pl-4 cursor-pointer hover:bg-gray-50"
               >
                 <span class="text-sm text-black">{{ sub.title }}</span>
-              </div>
+              </NuxtLink>
             </div>
           </div>
         </div>

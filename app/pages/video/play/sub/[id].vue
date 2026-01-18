@@ -70,26 +70,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Sub Videos by Group -->
-            <div v-if="videoData.sub_video?.length" class="mt-2 space-y-4">
-                <div v-for="group in videoData.sub_video" :key="group.group_sub_video_id" class="bg-white py-4">
-                    <h3 class="px-4 font-semibold text-black mb-3">{{ group.group_sub_video_name }}</h3>
-
-                    <!-- Horizontal Carousel -->
-                    <UCarousel v-slot="{ item }" :items="group.child" :ui="{
-                        item: 'basis-full',
-                        dot: 'bg-secondary'
-                    }" dots class="px-4">
-                        <NuxtLink :to="{ path: `/video/play/sub/${item.id}`, query: { title: item.title } }"
-                            class="flex items-center gap-4 pr-4">
-                            <img :src="getYoutubeThumbnail(item.url)" :alt="item.title"
-                                class="w-36 h-24 object-cover rounded-lg bg-gray-200 shrink-0" />
-                            <p class="text-sm font-semibold text-black line-clamp-3">{{ item.title }}</p>
-                        </NuxtLink>
-                    </UCarousel>
-                </div>
-            </div>
         </template>
 
         <!-- Floating Action Button -->
@@ -110,38 +90,20 @@ interface Subtitle {
     description: string
 }
 
-interface SubVideo {
-    id: number
-    parent_id: number
-    title: string
-    synopsis: string
-    url: string
-    url_audio: string | null
-    order: number
-    city: string | null
-    date: string | null
-}
-
-interface SubVideoGroup {
-    group_sub_video_id: number
-    group_sub_video_name: string
-    child: SubVideo[]
-}
-
-interface VideoDetail {
+interface SubVideoDetail {
     id: number
     parent_id: number | null
-    video_category_id: number
+    video_category_id: number | null
     location_id: number | null
     city: string | null
     title: string
     synopsis: string
     url: string
-    url_audio: string
+    url_audio: string | null
     order: number | null
     date: string | null
     subtitle: Subtitle[]
-    sub_video: SubVideoGroup[]
+    sub_video: []
 }
 
 const route = useRoute()
@@ -153,7 +115,7 @@ const subtitleSearch = ref("")
 
 // FAB Menu State
 const showFabMenu = ref(false)
-const fontSize = ref(16) // base font size in px
+const fontSize = ref(16)
 
 const zoomIn = () => {
     fontSize.value = Math.min(fontSize.value + 2, 28)
@@ -163,16 +125,16 @@ const zoomOut = () => {
     fontSize.value = Math.max(fontSize.value - 2, 12)
 }
 
-const { data: response, pending } = await useFetch<{ success: boolean; data: VideoDetail }>(
-    () => `https://api.masterluindonesia.com/api/video?video_category_id=${videoId.value}`
+const { data: response, pending } = await useFetch<{ success: boolean; data: SubVideoDetail }>(
+    () => `https://api.masterluindonesia.com/api/video?videoId=${videoId.value}`
 )
 
 const videoData = computed(() => response.value?.data)
 
 const youtubeEmbedUrl = computed(() => {
     if (!videoData.value?.url) return ''
-    const videoId = extractYoutubeId(videoData.value.url)
-    return videoId ? `https://www.youtube.com/embed/${videoId}` : ''
+    const id = extractYoutubeId(videoData.value.url)
+    return id ? `https://www.youtube.com/embed/${id}` : ''
 })
 
 const filteredSubtitles = computed(() => {
@@ -187,11 +149,6 @@ const filteredSubtitles = computed(() => {
 const extractYoutubeId = (url: string): string | null => {
     const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&?/]+)/)
     return match?.[1] ?? null
-}
-
-const getYoutubeThumbnail = (url: string): string => {
-    const videoId = extractYoutubeId(url)
-    return videoId ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` : '/fallback.svg'
 }
 
 const formatTimestamp = (seconds: number): string => {

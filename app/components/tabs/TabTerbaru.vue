@@ -2,7 +2,10 @@
   <div class="py-6">
     <!-- Carousel -->
     <ClientOnly>
-      <UCarousel v-if="media.length > 0" :items="media" :ui="{ item: 'basis-[80%]' }" :autoplay="{ delay: 3000 }" loop
+      <template v-if="isLoading">
+        <USkeleton class="w-full h-40 rounded-xl mx-auto" style="width: 80%;" />
+      </template>
+      <UCarousel v-else-if="media.length > 0" :items="media" :ui="{ item: 'basis-[80%]' }" :autoplay="{ delay: 3000 }" loop
         class="overflow-hidden">
         <template #default="slotProps">
           <NuxtImg v-if="slotProps?.item" :src="slotProps.item.url" :alt="slotProps.item.name"
@@ -16,7 +19,12 @@
       <h2 class="text-lg font-semibold text-black mb-4">Agenda Hari Ini</h2>
 
       <!-- Date Selector -->
-      <div ref="dateContainer" class="flex gap-2 overflow-x-scroll scrollbar-hide pb-2 px-[calc(50%-28px)]"
+      <template v-if="isAgendaLoading">
+        <div class="flex gap-2 overflow-hidden pb-2 justify-center">
+          <USkeleton v-for="i in 5" :key="i" class="min-w-14 h-16 rounded-lg shrink-0" />
+        </div>
+      </template>
+      <div v-else ref="dateContainer" class="flex gap-2 overflow-x-scroll scrollbar-hide pb-2 px-[calc(50%-28px)]"
         style="scroll-snap-type: x proximity;" @scroll="onDateScroll">
         <button v-for="(date, index) in dateRange" :key="date.full" :ref="el => (dateRefs[index] = el as HTMLElement)"
           @click="selectDate(date.full, index)"
@@ -30,7 +38,16 @@
 
       <!-- Agenda Card -->
       <div class="mt-3 border-3 border-secondary rounded-xl p-2 shadow-xl">
-        <div class="rounded-xl px-4 py-8 text-center mb-4"
+        <template v-if="isAgendaLoading">
+          <div class="rounded-xl px-4 py-8 text-center"
+            style="background: linear-gradient(to bottom, #fdd746 0%, #d79204 100%);">
+            <USkeleton class="h-7 w-48 mx-auto" />
+            <div class="flex items-center justify-center gap-2 mt-2">
+              <USkeleton class="h-5 w-32" />
+            </div>
+          </div>
+        </template>
+        <div v-else class="rounded-xl px-4 py-8 text-center"
           style="background: linear-gradient(to bottom, #fdd746 0%, #d79204 100%);">
           <h3 class="text-xl font-semibold text-black">{{ formattedSelectedDate }}</h3>
           <div class="flex items-center justify-center gap-2 mt-2 text-black/80">
@@ -38,25 +55,20 @@
             <span>{{ agendaData?.title || '-' }}</span>
           </div>
         </div>
-        <div class="space-y-3 text-sm">
-          <div class="flex justify-between items-center">
-            <span class="text-black font-medium">Li Fo Da Chan Hui Wen</span>
-            <span class="text-black">{{ agendaData?.li_fo_da_chan_hui_wen || 0 }} Kali</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-black font-medium">XFZ</span>
-            <span class="text-black">{{ agendaData?.xfz || 0 }} Lembar</span>
-          </div>
-        </div>
-        <div class="flex justify-end mt-3">
-          <Icon name="mdi:information-outline" class="w-6 h-6 text-black" />
-        </div>
       </div>
     </div>
 
     <!-- Topics Section -->
     <div class="mt-6 px-4">
-      <UAccordion :items="topicsAccordionItems" default-value="Pelajari Topik Tertentu" class="topics-accordion">
+      <template v-if="isLoading">
+        <USkeleton class="h-12 w-full rounded-lg mb-2" />
+        <div class="divide-y divide-gray-200">
+          <div v-for="i in 4" :key="i" class="py-4">
+            <USkeleton class="h-5 w-3/4" />
+          </div>
+        </div>
+      </template>
+      <UAccordion v-else :items="topicsAccordionItems" default-value="Pelajari Topik Tertentu" class="topics-accordion">
         <template #topics>
           <div class="divide-y divide-gray-200">
             <NuxtLink v-for="topic in topics" :key="topic.id"
@@ -76,17 +88,26 @@
         <NuxtLink to="/books" class="text-primary font-medium">Lihat semua</NuxtLink>
       </div>
       <div class="flex gap-3 pb-3 overflow-x-auto custom-scrollbar">
-        <NuxtLink v-for="book in books" :key="book.id"
-          :to="{ path: `/books/${book.id}`, query: { title: book.title, cover: book.url } }" class="shrink-0 w-28">
-          <ClientOnly>
-            <NuxtImg :src="book.url" :alt="book.title" class="w-28 h-40 object-cover rounded-xl" loading="lazy"
-              format="webp" quality="60" />
-            <template #fallback>
-              <div class="w-28 h-40 bg-gray-200 rounded-xl animate-pulse"></div>
-            </template>
-          </ClientOnly>
-          <p class="mt-2 text-sm font-medium text-black line-clamp-2">{{ book.title }}</p>
-        </NuxtLink>
+        <template v-if="isLoading">
+          <div v-for="i in 4" :key="i" class="shrink-0 w-28">
+            <USkeleton class="w-28 h-40 rounded-xl" />
+            <USkeleton class="mt-2 h-4 w-full" />
+            <USkeleton class="mt-1 h-4 w-2/3" />
+          </div>
+        </template>
+        <template v-else>
+          <NuxtLink v-for="book in books" :key="book.id"
+            :to="{ path: `/books/${book.id}`, query: { title: book.title, cover: book.url } }" class="shrink-0 w-28">
+            <ClientOnly>
+              <NuxtImg :src="book.url" :alt="book.title" class="w-28 h-40 object-cover rounded-xl" loading="lazy"
+                format="webp" quality="60" />
+              <template #fallback>
+                <USkeleton class="w-28 h-40 rounded-xl" />
+              </template>
+            </ClientOnly>
+            <p class="mt-2 text-sm font-medium text-black line-clamp-2">{{ book.title }}</p>
+          </NuxtLink>
+        </template>
       </div>
     </div>
   </div>
@@ -150,15 +171,20 @@ interface Recipe {
 const dateContainer = ref<HTMLElement | null>(null)
 const dateRefs = ref<HTMLElement[]>([])
 
-const { data: mediaData } = await useFetch<{ success: boolean; data: MediaItem[] }>(
-  'https://api.masterluindonesia.com/api/app/media'
-)
+const { data: allData, status } = useAsyncData('tabTerbaruData', async () => {
+  const [mediaRes, topicsRes, booksRes, recipesRes] = await Promise.all([
+    $fetch<{ success: boolean; data: MediaItem[] }>('https://api.masterluindonesia.com/api/app/media'),
+    $fetch<{ success: boolean; data: Topic[] }>('https://api.masterluindonesia.com/api/topics'),
+    $fetch<{ success: boolean; data: Book[] }>('https://api.masterluindonesia.com/api/bookspaginate?page=1'),
+    $fetch<{ success: boolean; data: Recipe[] }>('https://api.masterluindonesia.com/api/recipe/popular')
+  ])
+  return { media: mediaRes, topics: topicsRes, books: booksRes, recipes: recipesRes }
+})
 
-const { data: topicsData } = await useFetch<{ success: boolean; data: Topic[] }>(
-  'https://api.masterluindonesia.com/api/topics'
-)
-
-const topics = computed(() => topicsData.value?.data?.sort((a, b) => a.seq - b.seq) || [])
+const topics = computed(() => allData.value?.topics?.data?.sort((a, b) => a.seq - b.seq) || [])
+const books = computed(() => allData.value?.books?.data?.sort((a, b) => a.seq - b.seq) || [])
+const recipes = computed(() => allData.value?.recipes?.data?.sort((a, b) => a.seq - b.seq) || [])
+const media = computed(() => allData.value?.media?.data?.sort((a, b) => a.seq - b.seq) || [])
 
 const topicsAccordionItems = computed(() => [{
   label: 'Pelajari Topik Tertentu',
@@ -166,26 +192,16 @@ const topicsAccordionItems = computed(() => [{
   slot: 'topics'
 }])
 
-const { data: booksData } = await useFetch<{ success: boolean; data: Book[] }>(
-  'https://api.masterluindonesia.com/api/bookspaginate?page=1'
-)
-
-const books = computed(() => booksData.value?.data?.sort((a, b) => a.seq - b.seq) || [])
-
-const { data: recipesData } = await useFetch<{ success: boolean; data: Recipe[] }>(
-  'https://api.masterluindonesia.com/api/recipe/popular'
-)
-
-const recipes = computed(() => recipesData.value?.data?.sort((a, b) => a.seq - b.seq) || [])
-const media = computed(() => mediaData.value?.data?.sort((a, b) => a.seq - b.seq) || [])
-
 const today = new Date()
 const formatDateParam = (date: Date): string => date.toISOString().split('T')[0] ?? ''
 const selectedDate = ref<string>(formatDateParam(today))
 
-const { data: allAgendaData } = await useFetch<{ success: boolean; data: Agenda[] }>(
-  'https://api.masterluindonesia.com/api/app/agenda'
+const { data: allAgendaData, status: agendaStatus } = useAsyncData('agendaData', () =>
+  $fetch<{ success: boolean; data: Agenda[] }>('https://api.masterluindonesia.com/api/app/agenda')
 )
+
+const isLoading = computed(() => status.value === 'pending')
+const isAgendaLoading = computed(() => agendaStatus.value === 'pending')
 
 const dateRange = computed(() => {
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']

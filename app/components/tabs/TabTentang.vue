@@ -29,7 +29,7 @@
           Master Jun Hong Lu (Justice of the Peace) adalah Presiden, Direktur dan Pendiri stasiun TV dan Radio 2OR
           Australia Oriental yang sangat dihormati dan pemimpin terkemuka Komunitas Tionghoa di Australia.
         </p>
-        <NuxtLink to="#"
+        <NuxtLink to="/tentang/master-lu-jun-hong"
           class="inline-flex items-center px-4 py-2 border border-yellow-600 text-gray-800 rounded-md text-sm font-medium hover:bg-yellow-200 transition-colors">
           Selengkapnya
           <Icon name="heroicons:arrow-right" class="ml-2 w-4 h-4" />
@@ -54,7 +54,7 @@
             <p class="text-gray-600 text-sm mb-4">
               {{ item.description }}
             </p>
-            <NuxtLink to="#"
+            <NuxtLink :to="item.href"
               class="inline-flex items-center px-4 py-2 border border-yellow-600 text-gray-800 rounded-md text-sm font-medium hover:bg-yellow-50 transition-colors">
               Selengkapnya
               <Icon name="heroicons:arrow-right" class="ml-2 w-4 h-4" />
@@ -111,31 +111,36 @@ const limaPusakaItems = [
     id: 1,
     title: 'Membaca paritta',
     description: 'Membina diri tanpa membaca paritta, itu sama dengan tidak membina diri. Sembahyang kepada Buddha tanpa membaca paritta, itu sama dengan tidak sembahyang kepada Buddha.',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image3.png'
+    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image3.png',
+    href: '/tentang/lima-pusaka/membaca-paritta'
   },
   {
     id: 2,
     title: 'Berikrar',
     description: 'Berikrar adalah memohon di dalam hati atau dengan pelan di depan Guan Shi Yin Pu Sa berwelas asih memberikati. Anda dari membiarkan Anda menyelesaikan suatu masalah, kebingungan, depresi, menguraikan bencana besar dan kecil.',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image4.png'
+    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image4.png',
+    href: '/tentang/lima-pusaka/berikrar'
   },
   {
     id: 3,
     title: 'Melepaskan makhluk hidup',
     description: 'Melepaskan makhluk hidup berarti membina dengan uang, berdana dengan Dharma, berdana dengan membebaskan makhluk lain dari ketakutan, berdana dalam tiga hal ini, adalah pahala yang tak terhingga.',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image5.png'
+    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image5.png',
+    href: '/tentang/lima-pusaka/melepaskan-makhluk-hidup'
   },
   {
     id: 4,
     title: 'Membaca Bai Hua Fo Fa',
     description: 'BHFF adalah ajaran Buddhis mendalam yang disajikan dari bahasa sehari-hari agar semua makhluk yang berkarma bisa membina diri di zaman akhir Dharma ini untuk memahami kebenaran akan duniawi ini dan terbebas dari alam reinkarnasi.',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image6.png'
+    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image6.png',
+    href: '/tentang/lima-pusaka/membaca-bai-hua-fo-fa'
   },
   {
     id: 5,
     title: 'Pertobatan Agung',
     description: 'Kehidupan manusia tidak bisa terlepas dari Pertobatan. Terlalu banyak kesalahan yang telah kita lakukan, hanya dengan bertobat setulus hati baru bisa mengharapkan karma buruk di dalam hati dan penyesalan.',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image7.png'
+    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image7.png',
+    href: '/tentang/lima-pusaka/pertobatan-agung'
   }
 ]
 </script>

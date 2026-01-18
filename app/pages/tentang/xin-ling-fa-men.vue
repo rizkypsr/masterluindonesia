@@ -2,13 +2,9 @@
   <div class="min-h-screen bg-white">
     <!-- Header -->
     <div class="flex items-center justify-between px-4 py-3 border-b">
-      <NuxtLink to="/?tab=tentang" class="p-1">
-        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-700" />
-      </NuxtLink>
+      <BackButton to="/?tab=tentang" />
       <span class="text-sm text-gray-600">Pengenalan profil XLFM</span>
-      <button class="p-1">
-        <Icon name="heroicons:bars-3" class="w-5 h-5 text-gray-700" />
-      </button>
+      <TentangMenu type="tentang-main" />
     </div>
 
     <!-- Hero Image -->
