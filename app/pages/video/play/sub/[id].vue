@@ -72,12 +72,16 @@
             </div>
         </template>
 
-        <!-- Floating Action Button -->
-        <FabZoom 
-            v-model:isOpen="showFabMenu" 
-            @zoomIn="zoomIn" 
-            @zoomOut="zoomOut" 
-        />
+        <!-- Bottom Section with FAB -->
+        <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto">
+            <FabZoom 
+                v-model:isOpen="showFabMenu"
+                class="absolute right-0 bottom-full z-10"
+                @zoomIn="zoomIn" 
+                @zoomOut="zoomOut"
+                @scrollTop="scrollToTop"
+            />
+        </div>
     </div>
 </template>
 
@@ -123,6 +127,10 @@ const zoomIn = () => {
 
 const zoomOut = () => {
     fontSize.value = Math.max(fontSize.value - 2, 12)
+}
+
+const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 const { data: response, pending } = await useFetch<{ success: boolean; data: SubVideoDetail }>(

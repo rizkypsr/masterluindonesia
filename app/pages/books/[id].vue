@@ -27,7 +27,7 @@
           <div class="w-24 h-32 bg-gray-200 rounded-xl animate-pulse shrink-0"></div>
         </template>
       </ClientOnly>
-      <h2 class="text-xl font-semibold text-black">{{ bookTitle }}</h2>
+      <h2 class="font-semibold text-black" :style="{ fontSize: (fontSize + 4) + 'px' }">{{ bookTitle }}</h2>
     </div>
 
     <!-- Content -->
@@ -45,33 +45,59 @@
 
       <!-- Chapters List -->
       <div v-else class="flex flex-col overflow-hidden flex-1">
-        <h3 class="text-lg font-semibold text-black mb-4 shrink-0">Daftar Isi</h3>
-        
-        <div class="overflow-y-auto flex-1 custom-scrollbar pb-4">
+        <h3 class="font-semibold text-black mb-4 shrink-0" :style="{ fontSize: (fontSize + 2) + 'px' }">Daftar Isi</h3>
+
+        <div ref="scrollContainer" class="overflow-y-auto flex-1 custom-scrollbar pb-4">
           <div v-for="chapter in chapters" :key="chapter.id" class="mb-4">
             <!-- Chapter Title -->
-            <h4 class="text-base font-semibold text-black py-2">{{ chapter.title }}</h4>
-            
+            <h4 class="font-semibold text-black py-2" :style="{ fontSize: fontSize + 'px' }">{{ chapter.title }}</h4>
+
             <!-- Sub Chapters -->
             <div v-if="chapter.sub_chapters && chapter.sub_chapters.length > 0">
-              <NuxtLink
-                v-for="sub in chapter.sub_chapters"
-                :key="sub.id"
-                :to="`/book/${bookId}/${sub.id}`"
-                class="block py-3 pl-4 cursor-pointer hover:bg-gray-50"
-              >
-                <span class="text-sm text-black">{{ sub.title }}</span>
+              <NuxtLink v-for="sub in chapter.sub_chapters" :key="sub.id" :to="`/book/${bookId}/${sub.id}`"
+                class="block cursor-pointer hover:bg-gray-50">
+                <div class="py-3 ml-4 border-b border-gray-400">
+                  <span class="text-black" :style="{ fontSize: fontSize + 'px' }">{{ sub.title }}</span>
+                </div>
               </NuxtLink>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Bottom Section with FAB -->
+    <div class="shrink-0 relative">
+      <FabZoom 
+        v-model:isOpen="showFabMenu"
+        class="absolute right-0 bottom-full z-10"
+        @zoomIn="zoomIn"
+        @zoomOut="zoomOut"
+        @scrollTop="scrollToTop"
+      />
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 const route = useRoute()
+
+// FAB Menu State
+const showFabMenu = ref(false)
+const fontSize = ref(16)
+const scrollContainer = ref<HTMLElement | null>(null)
+
+const zoomIn = () => {
+  fontSize.value = Math.min(fontSize.value + 2, 28)
+}
+
+const zoomOut = () => {
+  fontSize.value = Math.max(fontSize.value - 2, 12)
+}
+
+const scrollToTop = () => {
+  scrollContainer.value?.scrollTo({ top: 0, behavior: 'smooth' })
+}
 
 interface SubChapter {
   id: number
@@ -110,8 +136,8 @@ const chapters = computed(() => {
 
 const shareBook = async () => {
   const shareData = {
-    title: bookTitle.value,
-    text: `Baca buku "${bookTitle.value}" di Master Lu Indonesia`,
+    title: `Baca Buku "${bookTitle.value}"`,
+    text: `Baca Buku "${bookTitle.value}" di`,
     url: window.location.href
   }
 
@@ -123,7 +149,7 @@ const shareBook = async () => {
     }
   } else {
     // Fallback: copy to clipboard
-    await navigator.clipboard.writeText(window.location.href)
+    await navigator.clipboard.writeText(`Baca Buku "${bookTitle.value}" di\n${window.location.href}`)
     alert('Link berhasil disalin!')
   }
 }

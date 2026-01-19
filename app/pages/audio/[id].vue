@@ -135,61 +135,65 @@
       </template>
     </div>
 
-    <!-- Bottom Audio Player Drawer -->
-    <div v-if="currentAudio" class="fixed bottom-0 left-0 right-0 bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.1)] p-4">
-      <div class="flex items-center justify-between mb-2">
-        <p class="text-sm font-medium text-black flex-1 line-clamp-1">{{ currentAudio.title.trim() }}</p>
-        <button @click="closePlayer" class="p-1">
-          <Icon name="mdi:close" class="w-5 h-5 text-gray-500" />
-        </button>
-      </div>
-
-      <!-- Progress Bar -->
-      <div class="flex items-center gap-2 mb-3">
-        <input type="range" :value="currentTime" :max="duration" @input="seek"
-          class="flex-1 h-1 bg-gray-200 rounded-full appearance-none cursor-pointer accent-primary" />
-        <span class="text-xs text-gray-500 w-20 text-right">{{ formatTime(currentTime) }}/{{ formatTime(duration) }}</span>
-      </div>
-
-      <!-- Controls -->
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-4">
-          <button class="p-1">
-            <Icon name="mdi:star-outline" class="w-6 h-6 text-gray-600" />
-          </button>
-          <button class="p-1">
-            <Icon name="mdi:share-variant-outline" class="w-6 h-6 text-gray-600" />
-          </button>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <button @click="skipBackward" class="p-2">
-            <Icon name="mdi:rewind" class="w-6 h-6 text-gray-700" />
-          </button>
-          <button @click="togglePlay" class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
-            <Icon :name="isPlaying ? 'mdi:pause' : 'mdi:play'" class="w-7 h-7 text-black" />
-          </button>
-          <button @click="skipForward" class="p-2">
-            <Icon name="mdi:fast-forward" class="w-6 h-6 text-gray-700" />
-          </button>
-        </div>
-
-        <button class="p-1">
-          <Icon name="mdi:minus" class="w-6 h-6 text-gray-600" />
-        </button>
-      </div>
-    </div>
-
     <!-- Hidden Audio Element -->
     <audio ref="audioElement" @timeupdate="onTimeUpdate" @loadedmetadata="onLoadedMetadata" @ended="onEnded" />
 
-    <!-- Floating Action Button -->
-    <FabZoom 
-      v-model:isOpen="showFabMenu" 
-      :hasDrawer="!!currentAudio"
-      @zoomIn="zoomIn"
-      @zoomOut="zoomOut"
-    />
+    <!-- Bottom Section Container -->
+    <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto">
+      <!-- Floating Action Button (positioned above bottom drawer) -->
+      <FabZoom 
+        v-model:isOpen="showFabMenu"
+        class="absolute right-0 bottom-full z-10"
+        @zoomIn="zoomIn"
+        @zoomOut="zoomOut"
+        @scrollTop="scrollToTop"
+      />
+
+      <!-- Bottom Audio Player Drawer -->
+      <div v-if="currentAudio" class="bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.1)] p-4">
+        <div class="flex items-center justify-between mb-2">
+          <p class="text-sm font-medium text-black flex-1 line-clamp-1">{{ currentAudio.title.trim() }}</p>
+          <button @click="closePlayer" class="p-1">
+            <Icon name="mdi:close" class="w-5 h-5 text-gray-500" />
+          </button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="flex items-center gap-2 mb-3">
+          <input type="range" :value="currentTime" :max="duration" @input="seek"
+            class="flex-1 h-1 bg-gray-200 rounded-full appearance-none cursor-pointer accent-primary" />
+          <span class="text-xs text-gray-500 w-20 text-right">{{ formatTime(currentTime) }}/{{ formatTime(duration) }}</span>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <button class="p-1">
+              <Icon name="mdi:star-outline" class="w-6 h-6 text-gray-600" />
+            </button>
+            <button class="p-1">
+              <Icon name="mdi:share-variant-outline" class="w-6 h-6 text-gray-600" />
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button @click="skipBackward" class="p-2">
+              <Icon name="mdi:rewind" class="w-6 h-6 text-gray-700" />
+            </button>
+            <button @click="togglePlay" class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+              <Icon :name="isPlaying ? 'mdi:pause' : 'mdi:play'" class="w-7 h-7 text-black" />
+            </button>
+            <button @click="skipForward" class="p-2">
+              <Icon name="mdi:fast-forward" class="w-6 h-6 text-gray-700" />
+            </button>
+          </div>
+
+          <button class="p-1">
+            <Icon name="mdi:minus" class="w-6 h-6 text-gray-600" />
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -273,6 +277,10 @@ const zoomIn = () => {
 
 const zoomOut = () => {
   fontSize.value = Math.max(fontSize.value - 2, 10)
+}
+
+const scrollToTop = () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 const filteredSubtitles = computed(() => {
