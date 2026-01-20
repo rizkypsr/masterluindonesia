@@ -42,7 +42,7 @@
             <!-- Hero Image -->
             <div class="mb-6">
                 <img src="https://masterluindonesia.com/assets/assets/images/pr/image_1.png" alt="Baca PR"
-                    class="w-full rounded-lg" />
+                    class="w-full h-96 object-cover rounded-lg" />
             </div>
 
             <!-- Section: Mengapa membaca paritta -->
@@ -90,7 +90,7 @@
 
                 <div class="relative">
                     <img src="https://masterluindonesia.com/assets/assets/images/pr/image_2.png"
-                        alt="Perlengkapan Membaca PR" class="w-full rounded-lg" />
+                        alt="Perlengkapan Membaca PR" class="w-full h-96 object-cover rounded-lg" />
 
                     <!-- Plus button 1: PR Sheet -->
                     <button @click="showTooltip(0)"
@@ -253,7 +253,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterluindonesia.com/assets/assets/images/pr/langkah_pertama_1.png"
-                        alt="Jing Kou Ye Zhen Yan" class="w-full rounded-lg mb-4" />
+                        alt="Jing Kou Ye Zhen Yan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 mb-1">Membaca Jing</h3>
                         <h3 class="text-2xl font-bold text-gray-900 mb-1">Kou Ye Zhen Yan</h3>
@@ -278,7 +278,7 @@
 
                 <UCarousel ref="langkahKeduaRef" v-slot="{ item }" :items="langkahKeduaItems" :ui="{ item: 'basis-full' }" @select="onSelectLangkahKedua">
                     <UCard class="border-2 border-[#eedcb4] shadow-xl">
-                        <img :src="item.image" :alt="item.title" class="w-full rounded-lg mb-4" />
+                        <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
                             <h3 class="text-2xl font-bold text-gray-900">{{ item.title }}</h3>
                         </div>
@@ -292,7 +292,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterluindonesia.com/assets/assets/images/pr/langkah_ketiga_1.png"
-                        alt="Langkah Ketiga" class="w-full rounded-lg mb-4" />
+                        alt="Langkah Ketiga" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 mb-2">Ucapkan</h3>
                         <p class="text-gray-700">"Terima kasih Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa"</p>
@@ -317,7 +317,7 @@
 
                 <UCarousel ref="langkahKeempatRef" v-slot="{ item }" :items="langkahKeempatItems" :ui="{ item: 'basis-full' }" @select="onSelectLangkahKeempat">
                     <UCard class="border-2 border-[#eedcb4] shadow-xl">
-                        <img :src="item.image" :alt="item.title" class="w-full rounded-lg mb-4" />
+                        <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
                             <h3 class="text-lg font-bold text-gray-900 mb-2">{{ item.title }}</h3>
                             <p class="text-gray-700 text-sm mb-2">"{{ item.description }}"</p>
@@ -344,7 +344,7 @@
 
                 <UCarousel ref="langkahKeempat2Ref" v-slot="{ item }" :items="langkahKeempat2Items" :ui="{ item: 'basis-full' }" @select="onSelectLangkahKeempat2">
                     <UCard class="border-2 border-[#eedcb4] shadow-xl">
-                        <img :src="item.image" :alt="item.title" class="w-full rounded-lg mb-4" />
+                        <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
                             <h3 class="text-lg font-bold text-gray-900 mb-2">{{ item.title }}</h3>
                             <p class="text-gray-700 text-sm mb-2">"{{ item.description }}"</p>
@@ -360,7 +360,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterluindonesia.com/assets/assets/images/pr/langkah_kelima_1.png"
-                        alt="Bu Que Zhen Yan" class="w-full rounded-lg mb-4" />
+                        alt="Bu Que Zhen Yan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 mb-2">Bu Que Zhen Yan</h3>
                         <p class="text-gray-700">sebanyak 3x atau 7x setelah selesai membaca PR harian</p>
@@ -374,7 +374,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterluindonesia.com/assets/assets/images/pr/langkah_keenam_1.png"
-                        alt="Qi Fo Mie Zui Zhen Yan" class="w-full rounded-lg mb-4" />
+                        alt="Qi Fo Mie Zui Zhen Yan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 mb-2">Qi Fo Mie Zui Zhen Yan</h3>
                         <p class="text-gray-700">Sebanyak 3x</p>
@@ -388,7 +388,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterluindonesia.com/assets/assets/images/pr/langkah_ketiga_1.png"
-                        alt="Langkah Ketujuh" class="w-full rounded-lg mb-4" />
+                        alt="Langkah Ketujuh" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 mb-1">Setelah selesai</h3>
                         <h3 class="text-2xl font-bold text-gray-900 mb-2">Ucapkan</h3>
@@ -420,7 +420,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterluindonesia.com/assets/assets/images/pr/pedoman_pr.png"
-                        alt="Pedoman PR" class="w-full rounded-lg" />
+                        alt="Pedoman PR" class="w-full h-96 object-cover rounded-lg" />
                 </UCard>
             </div>
         </div>

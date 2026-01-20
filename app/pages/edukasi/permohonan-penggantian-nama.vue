@@ -16,7 +16,7 @@
 
                 <!-- Hero Image -->
                 <img src="https://masterluindonesia.com/assets/assets/images/bimbingan/ganti_nama.png"
-                    alt="Permohonan Penggantian Nama" class="w-full rounded-lg mb-6" />
+                    alt="Permohonan Penggantian Nama" class="w-full h-96 object-cover rounded-lg mb-6" />
 
                 <div class="space-y-4 text-black">
                     <p>Nama mewakili jiwa seseorang, ketika nama seseorang dipanggil, maka jiwanya juga akan terpanggil mengikuti namanya.</p>
@@ -109,7 +109,7 @@
                     <div>
                         <h3 class="text-xl font-bold text-gray-900 mb-4">{{ item.title }}</h3>
                         <UCard class="border-2 border-[#eedcb4] shadow-xl">
-                            <img :src="item.image" :alt="item.title" class="w-full rounded-lg" />
+                            <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg" />
                         </UCard>
                         <p v-if="item.description" class="text-black mt-4">{{ item.description }}</p>
                     </div>

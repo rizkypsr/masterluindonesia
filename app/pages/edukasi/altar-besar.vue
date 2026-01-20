@@ -35,7 +35,7 @@
             <!-- Hero Image -->
             <div class="mb-6">
                 <img src="https://masterluindonesia.com/assets/assets/images/altarbesar/image_1.png" alt="Altar Besar"
-                    class="w-full rounded-lg" />
+                    class="w-full h-96 object-cover rounded-lg" />
             </div>
 
             <!-- Section 1: Makna Altar Buddha -->
@@ -103,7 +103,7 @@
                 <!-- Buddha Sakyamuni -->
                 <UCard class="border-2 border-[#eedcb4] shadow-xl mb-4">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_2.png"
-                        alt="Buddha Sakyamuni" class="w-full rounded-lg mb-4" />
+                        alt="Buddha Sakyamuni" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 mb-2">Buddha Sakyamuni</h3>
                         <p class="text-gray-700 text-sm mb-2">Kita sendiri tinggal di dunia yang sebegitu luasnya,
@@ -120,7 +120,7 @@
                 <!-- Guan Shi Yin Pu Sa -->
                 <UCard class="border-2 border-[#eedcb4] shadow-xl mb-4">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_3.png"
-                        alt="Guan Shi Yin Pu Sa" class="w-full rounded-lg mb-4" />
+                        alt="Guan Shi Yin Pu Sa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 mb-2">Guan Shi Yin Pu Sa</h3>
                         <p class="text-gray-700 text-sm mb-2">Guan Shi Yin Pu Sa Merupakan Maha Mahakarya, Maha-Jubilasi
@@ -133,7 +133,7 @@
                 <!-- Nan Jing Pu Sa -->
                 <UCard class="border-2 border-[#eedcb4] shadow-xl mb-4">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_4.png"
-                        alt="Nan Jing Pu Sa" class="w-full rounded-lg mb-4" />
+                        alt="Nan Jing Pu Sa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 mb-2">Nan Jing Pu Sa</h3>
                         <p class="text-gray-700 text-sm">Nan Jing Pu Sa adalah Merupakan salah satu Dewa budaya Daoisme
@@ -146,7 +146,7 @@
                 <!-- Tai Sui Pu Sa -->
                 <UCard class="border-2 border-[#eedcb4] shadow-xl mb-4">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_5.png"
-                        alt="Tai Sui Pu Sa" class="w-full rounded-lg mb-4" />
+                        alt="Tai Sui Pu Sa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 mb-2">Tai Sui Pu Sa</h3>
                         <p class="text-gray-700 text-sm">Tai Sui Pu Sa adalah Bodhisattva yang Bertugas Untuk Menjaga
@@ -159,7 +159,7 @@
                 <!-- Guan Di Pu Sa, Zhou Cang Pu Sa, Guan Ping Pu Sa -->
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_6.png"
-                        alt="Guan Di Pu Sa" class="w-full rounded-lg mb-4" />
+                        alt="Guan Di Pu Sa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 mb-2">Guan Di Pu Sa, Zhou Cang Pu Sa, Guan Ping Pu Sa
                         </h3>
@@ -178,7 +178,7 @@
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Penempatan Altar</h2>
 
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_7.png"
-                    alt="Penempatan Altar" class="w-full rounded-lg mb-4" />
+                    alt="Penempatan Altar" class="w-full h-96 object-cover rounded-lg mb-4" />
 
                 <div class="space-y-3 text-gray-700 text-sm">
                     <p><span class="font-bold">1.</span> Tidak boleh ditempatkan di dalam kamar tidur suami – istri</p>
@@ -220,26 +220,26 @@
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Penataan Meja Altar</h2>
 
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_8.png"
-                    alt="Penataan Meja Altar" class="w-full rounded-lg mb-6" />
+                    alt="Penataan Meja Altar" class="w-full h-96 object-cover rounded-lg mb-6" />
 
                 <h3 class="text-xl font-bold text-gray-900 mb-2">Gambar Pemandangan Altar</h3>
                 <p class="text-gray-600 mb-4">Pilihan 1</p>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_9.png"
-                    alt="Gambar Pemandangan Altar Pilihan 1" class="w-full rounded-lg mb-6" />
+                    alt="Gambar Pemandangan Altar Pilihan 1" class="w-full h-96 object-cover rounded-lg mb-6" />
 
                 <h3 class="text-xl font-bold text-gray-900 mb-2">Gambar Pemandangan Altar</h3>
                 <p class="text-gray-600 mb-4">Pilihan 2</p>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_10.png"
-                    alt="Gambar Pemandangan Altar Pilihan 2" class="w-full rounded-lg mb-6" />
+                    alt="Gambar Pemandangan Altar Pilihan 2" class="w-full h-96 object-cover rounded-lg mb-6" />
 
                 <h3 class="text-xl font-bold text-gray-900 mb-4">Peralatan Altar</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_11.png"
-                    alt="Peralatan Altar" class="w-full rounded-lg mb-6" />
+                    alt="Peralatan Altar" class="w-full h-96 object-cover rounded-lg mb-6" />
 
                 <!-- Tempat Dupa 1 -->
                 <h3 class="text-xl font-bold text-gray-900 mb-4">Tempat Dupa</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_12.png" alt="Tempat Dupa"
-                    class="w-full rounded-lg mb-4" />
+                    class="w-full h-96 object-cover rounded-lg mb-4" />
                 <div class="space-y-3 text-gray-700 text-sm mb-6">
                     <p>Harus ada tempat dupa di atas Altar. Jika tidak ada tempat dupa, Pu Sa tidak akan datang dan
                         tidak bisa
@@ -260,7 +260,7 @@
                 <!-- Tempat Dupa 2 -->
                 <h3 class="text-xl font-bold text-gray-900 mb-4">Tempat Dupa</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_13.png" alt="Tempat Dupa"
-                    class="w-full rounded-lg mb-4" />
+                    class="w-full h-96 object-cover rounded-lg mb-4" />
                 <div class="space-y-3 text-gray-700 text-sm mb-6">
                     <p>Harus menyembahyangi Altar dengan dupa, jika tidak Pu Sa tidak akan datang.</p>
                     <p>Jika tidak menyembahyangi Altar untuk waktu yang cukup lama, tidak hanya tidak hormat tapi juga
@@ -280,7 +280,7 @@
                 <!-- Gelas Persembahan -->
                 <h3 class="text-xl font-bold text-gray-900 mb-4">Gelas Persembahan</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_14.png"
-                    alt="Gelas Persembahan" class="w-full rounded-lg mb-4" />
+                    alt="Gelas Persembahan" class="w-full h-96 object-cover rounded-lg mb-4" />
                 <div class="space-y-3 text-gray-700 text-sm mb-6">
                     <p><span class="font-bold">Mempersembahkan air kepada Pu Sa, membuat pikiran kita bersih dan
                             tenang</span>
@@ -293,7 +293,7 @@
                 <!-- Lampu Minyak -->
                 <h3 class="text-xl font-bold text-gray-900 mb-4">Lampu Minyak</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_15.png"
-                    alt="Lampu Minyak" class="w-full rounded-lg mb-4" />
+                    alt="Lampu Minyak" class="w-full h-96 object-cover rounded-lg mb-4" />
                 <div class="space-y-3 text-gray-700 text-sm mb-6">
                     <p><span class="font-bold">Mempersembahkan minyak kepada Pu Sa, membuat pendengaran dan penglihatan
                             menjadi
@@ -308,7 +308,7 @@
                 <!-- Buah Persembahan -->
                 <h3 class="text-xl font-bold text-gray-900 mb-4">Buah Persembahan</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_16.png"
-                    alt="Buah Persembahan" class="w-full rounded-lg mb-4" />
+                    alt="Buah Persembahan" class="w-full h-96 object-cover rounded-lg mb-4" />
                 <div class="space-y-3 text-gray-700 text-sm mb-6">
                     <p><span class="font-bold">Sering mempersembahkan buah-buahan pada Bodhisattva (Pu Sa), bisa membuat
                             permohonan yang diinginkan segera terwujud.</span></p>
@@ -323,7 +323,7 @@
                 <!-- Bunga Persembahan -->
                 <h3 class="text-xl font-bold text-gray-900 mb-4">Bunga Persembahan</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_17.png"
-                    alt="Bunga Persembahan" class="w-full rounded-lg mb-4" />
+                    alt="Bunga Persembahan" class="w-full h-96 object-cover rounded-lg mb-4" />
                 <div class="space-y-3 text-gray-700 text-sm">
                     <p><span class="font-bold">Orang yang memiliki wajah yang baik berarti pernah membina dirinya di
                             kehidupan
@@ -354,7 +354,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_19.png"
-                        alt="Tata Cara Mengundang Buddha Bodhisattva" class="w-full rounded-lg" />
+                        alt="Tata Cara Mengundang Buddha Bodhisattva" class="w-full h-96 object-cover rounded-lg" />
                 </UCard>
             </div>
 

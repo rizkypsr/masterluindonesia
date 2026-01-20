@@ -38,7 +38,7 @@
             <!-- Hero Image -->
             <div class="mb-6">
                 <img src="https://masterluindonesia.com/assets/assets/images/sembayang/image_1.png"
-                    alt="Tata Cara Sembahyang" class="w-full rounded-lg" />
+                    alt="Tata Cara Sembahyang" class="w-full h-96 object-cover rounded-lg" />
             </div>
 
             <!-- Section 1: Langkah Pertama -->
@@ -47,7 +47,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_pertama.png"
-                        alt="Cuci Tangan" class="w-full rounded-lg mb-4" />
+                        alt="Cuci Tangan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900">Cuci Tangan</h3>
                     </div>
@@ -60,7 +60,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_kedua.png"
-                        alt="Nyalakan Dupa" class="w-full rounded-lg mb-4" />
+                        alt="Nyalakan Dupa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 mb-2">Nyalakan dupa dengan api lampu minyak</h3>
                     </div>
@@ -73,7 +73,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_ketiga_keempat.png"
-                        alt="Pegang Dupa" class="w-full rounded-lg mb-4" />
+                        alt="Pegang Dupa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 mb-2">Pegang dupa dengan kedua tangan dan angkat
                             dupa
@@ -88,7 +88,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_ketiga_keempat.png"
-                        alt="Ucapkan" class="w-full rounded-lg mb-4" />
+                        alt="Ucapkan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 mb-2">Ucapkan:</h3>
                         <p class="text-gray-700">Saya XXX memberi hormat kepada ... Pu Sa</p>
@@ -102,7 +102,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_kelima.png"
-                        alt="Tancap Dupa" class="w-full rounded-lg mb-4" />
+                        alt="Tancap Dupa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 mb-2">Tancap dupa dengan kedua tangan ke dalam tempat
                             dupa
@@ -136,7 +136,7 @@
                 <UCarousel ref="langkahKeenamRef" v-slot="{ item }" :items="langkahKeenamItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKeenam">
                     <UCard class="border-2 border-[#eedcb4] shadow-xl">
-                        <img :src="item.image" :alt="item.title" class="w-full rounded-lg mb-4" />
+                        <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
                             <h3 class="text-lg font-bold text-gray-900 mb-2">{{ item.title }}</h3>
                             <p class="text-gray-700 text-sm mb-2">{{ item.description }}</p>
@@ -164,7 +164,7 @@
                 <UCarousel ref="langkahKetujuhRef" v-slot="{ item }" :items="langkahKetujuhItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKetujuh">
                     <UCard class="border-2 border-[#eedcb4] shadow-xl">
-                        <img :src="item.image" :alt="item.title" class="w-full rounded-lg mb-4" />
+                        <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
                             <h3 class="text-lg font-bold text-gray-900 mb-2">{{ item.title }}</h3>
                             <p v-if="item.note" class="text-gray-500 text-sm">{{ item.note }}</p>
@@ -179,7 +179,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterluindonesia.com/assets/assets/images/sembayang/image_1.png"
-                        alt="Langkah Kedelapan" class="w-full rounded-lg mb-4" />
+                        alt="Langkah Kedelapan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900">Baca 1x Da Bei Zhou dan 1x Xin Jing</h3>
                     </div>
@@ -204,7 +204,7 @@
                 <UCarousel ref="langkahKesembilanRef" v-slot="{ item }" :items="langkahKesembilanItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKesembilan">
                     <UCard class="border-2 border-[#eedcb4] shadow-xl">
-                        <img :src="item.image" :alt="item.title" class="w-full rounded-lg mb-4" />
+                        <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
                             <h3 class="text-xl font-bold text-gray-900 mb-2">{{ item.title }}</h3>
                             <p class="text-gray-700 text-sm mb-2">{{ item.description }}</p>
@@ -232,7 +232,7 @@
                 <UCarousel ref="langkahKesepuluhRef" v-slot="{ item }" :items="langkahKesepuluhItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKesepuluh">
                     <UCard class="border-2 border-[#eedcb4] shadow-xl">
-                        <img :src="item.image" :alt="item.title" class="w-full rounded-lg mb-4" />
+                        <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
                             <h3 class="text-xl font-bold text-gray-900 mb-2">{{ item.title }}</h3>
                             <p v-if="item.description" class="text-gray-700 text-sm mb-2">{{ item.description }}</p>
@@ -248,7 +248,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/sembayang/image_1.png"
-                        alt="Langkah Kesebelas" class="w-full rounded-lg mb-4" />
+                        alt="Langkah Kesebelas" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900">Baca 7x Qi Fo Mie Zui Zhen Yan</h3>
                     </div>
@@ -261,7 +261,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterluindonesia.com/assets/assets/images/sembayang/langkah_keduabelas.png"
-                        alt="Langkah Kedua Belas" class="w-full rounded-lg mb-4" />
+                        alt="Langkah Kedua Belas" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900">Berdiri</h3>
                     </div>
@@ -274,7 +274,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterluindonesia.com/assets/assets/images/sembayang/langkah_keduabelas.png"
-                        alt="Langkah Ketiga Belas" class="w-full rounded-lg mb-4" />
+                        alt="Langkah Ketiga Belas" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900">Bersikap Anjali</h3>
                     </div>
@@ -287,7 +287,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterluindonesia.com/assets/assets/images/sembayang/langkah_keempatbelas.png"
-                        alt="Langkah Keempat Belas" class="w-full rounded-lg mb-4" />
+                        alt="Langkah Keempat Belas" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900">Memberikan hormat dengan membungkukkan badan sebanyak 1x atau 3x</h3>
                     </div>
@@ -300,7 +300,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterluindonesia.com/assets/assets/images/sembayang/langkah_keduabelas.png"
-                        alt="Langkah Kelima Belas" class="w-full rounded-lg mb-4" />
+                        alt="Langkah Kelima Belas" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900">Mundur selangkah</h3>
                     </div>
@@ -313,7 +313,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_keenambelas.png"
-                        alt="Langkah Enam Belas" class="w-full rounded-lg mb-4" />
+                        alt="Langkah Enam Belas" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900">Boleh pergi atau kembali melanjutkan pembacaan paritta Anda.</h3>
                     </div>

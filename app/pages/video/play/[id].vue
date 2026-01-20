@@ -52,20 +52,25 @@
                     </div>
 
                     <!-- Subtitle List -->
-                    <div class="max-h-80 overflow-y-auto space-y-4">
-                        <div v-for="sub in filteredSubtitles" :key="sub.timestamp" class="flex items-start gap-4" :style="{ fontSize: fontSize + 'px' }">
-                            <div class="text-center shrink-0">
-                                <p class="text-gray-500">{{ formatTimestamp(sub.timestamp) }}</p>
+                    <div class="max-h-80 overflow-y-auto space-y-6">
+                        <div v-for="sub in filteredSubtitles" :key="sub.timestamp" :style="{ fontSize: fontSize + 'px' }">
+                            <!-- Timestamp row with actions -->
+                            <div class="flex items-center mb-2 text-black">
+                                <div class="flex-1"></div>
+                                <p>{{ formatTimestamp(sub.timestamp) }}</p>
+                                <div class="flex-1 flex justify-end">
+                                    <div class="flex items-center gap-2">
+                                        <button @click="copyToClipboard(sub.description_wa)" class="p-1">
+                                            <Icon name="mdi:content-copy" class="w-5 h-5 text-black" />
+                                        </button>
+                                        <button @click="speakText(sub.description_wa)" class="p-1">
+                                            <Icon name="mdi:account-voice" class="w-5 h-5 text-black" />
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            <p class="flex-1 text-black">{{ sub.description_wa }}</p>
-                            <div class="flex items-center gap-2 shrink-0">
-                                <button @click="copyToClipboard(sub.description_wa)" class="p-1">
-                                    <Icon name="mdi:content-copy" class="w-5 h-5 text-gray-400" />
-                                </button>
-                                <button @click="speakText(sub.description_wa)" class="p-1">
-                                    <Icon name="mdi:account-voice" class="w-5 h-5 text-gray-400" />
-                                </button>
-                            </div>
+                            <!-- Description text -->
+                            <p class="text-black text-center" v-html="sub.description"></p>
                         </div>
                     </div>
                 </div>

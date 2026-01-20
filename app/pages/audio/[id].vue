@@ -103,7 +103,7 @@
                       class="border border-gray-200 rounded-lg p-4"
                       :style="{ fontSize: fontSize + 'px' }"
                     >
-                      <p class="font-semibold text-black mb-2">{{ sub.title }}</p>
+                      <p class="font-semibold text-black mb-2 cursor-pointer hover:text-primary" @click="seekToTimestamp(sub.timestamp)">{{ sub.title }}</p>
                       <p class="text-gray-600 mb-2" v-html="sub.description"></p>
                       <div class="text-black mb-4" v-html="highlightText(sub.script)"></div>
                       
@@ -306,7 +306,7 @@ const stripHtml = (html: string) => {
 
 // Copy subtitle to clipboard
 const copySubtitle = async (sub: Subtitle) => {
-  const text = stripHtml(sub.script)
+  const text = `${sub.title}\n${sub.description_wa}\n${sub.script_wa}`.replace(/\\n/g, '\n')
   try {
     await navigator.clipboard.writeText(text)
     // Could add toast notification here
@@ -446,6 +446,16 @@ const skipForward = () => {
 const skipBackward = () => {
   if (audioElement.value) {
     audioElement.value.currentTime = Math.max(audioElement.value.currentTime - 10, 0)
+  }
+}
+
+const seekToTimestamp = (timestamp: number) => {
+  if (audioElement.value) {
+    audioElement.value.currentTime = timestamp
+    if (!isPlaying.value) {
+      audioElement.value.play()
+      isPlaying.value = true
+    }
   }
 }
 

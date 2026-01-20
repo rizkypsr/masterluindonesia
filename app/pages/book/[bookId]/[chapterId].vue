@@ -192,10 +192,11 @@ function shareContent() {
     const pageNum = currentPageIndex.value + 1
     const title = bookDetail.value?.title || ''
     const shareUrl = `${window.location.origin}${window.location.pathname}?page=${pageNum}`
+    const shareText = `${title}: Halaman ${pageNum}\n${shareUrl}`
     
     const shareData = {
-        title: `${title} halaman: ${pageNum}`,
-        text: `${title} halaman: ${pageNum}`,
+        title: `${title}: Halaman ${pageNum}`,
+        text: shareText,
         url: shareUrl
     }
 
@@ -203,7 +204,7 @@ function shareContent() {
         navigator.share(shareData)
     } else {
         // Fallback: copy to clipboard
-        navigator.clipboard.writeText(`${title} halaman: ${pageNum}\n${shareUrl}`)
+        navigator.clipboard.writeText(shareText)
     }
 }
 

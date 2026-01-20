@@ -35,7 +35,7 @@
             <!-- Hero Image -->
             <div class="mb-6">
                 <img src="https://masterluindonesia.com/assets/assets/images/altarkecil/altar_kecil.png"
-                    alt="Altar Kecil" class="w-full rounded-lg" />
+                    alt="Altar Kecil" class="w-full h-96 object-cover rounded-lg" />
             </div>
 
             <!-- Section 1: Altar Kecil Khusus Melafalkan Paritta -->

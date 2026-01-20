@@ -216,7 +216,7 @@ function togglePlayerExpanded() {
         <!-- Header -->
         <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200 shrink-0">
             <div class="flex items-center gap-3">
-                <BackButton />
+                <BackButton to="/?tab=paritta" />
                 <h1 class="text-lg font-semibold text-black dark:text-white truncate max-w-[200px]">
                     {{ paritta?.title }}
                 </h1>
@@ -228,7 +228,7 @@ function togglePlayerExpanded() {
                 <button class="p-2" @click="zoomIn">
                     <Icon name="mdi:magnify-plus-outline" class="w-6 h-6 text-black dark:text-white" />
                 </button>
-                <button class="p-2" @click="resetZoom">
+                <button class="p-2" @click="resetCount">
                     <Icon name="mdi:refresh" class="w-6 h-6 text-black dark:text-white" />
                 </button>
             </div>

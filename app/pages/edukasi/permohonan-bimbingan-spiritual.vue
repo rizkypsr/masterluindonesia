@@ -15,7 +15,7 @@
 
                 <!-- Hero Image -->
                 <img src="https://masterluindonesia.com/assets/assets/images/bimbingan/bimbingan.png"
-                    alt="Permohonan Bimbingan Spiritual" class="w-full rounded-lg mb-6" />
+                    alt="Permohonan Bimbingan Spiritual" class="w-full h-96 object-cover rounded-lg mb-6" />
             </div>
 
             <!-- Section 2: Permohonan Bimbingan Spiritual untuk Keluarga -->
@@ -78,7 +78,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] shadow-xl">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/bimbingan/unduh.png"
-                        alt="Contoh Gambar Permohonan Bimbingan Spiritual" class="w-full rounded-lg" />
+                        alt="Contoh Gambar Permohonan Bimbingan Spiritual" class="w-full h-96 object-cover rounded-lg" />
                 </UCard>
             </div>
 
