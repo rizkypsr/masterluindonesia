@@ -27,7 +27,7 @@ const parittas = parittaData as Paritta[]
       :to="paritta.href"
       class="flex items-center justify-between px-4 py-5 hover:bg-gray-50 dark:hover:bg-gray-800"
     >
-      <span class="font-semibold text-black dark:text-white">{{ paritta.title }}</span>
+      <span class="font-bold text-black dark:text-white text-xl">{{ paritta.title }}</span>
       <Icon name="mdi:chevron-right" class="w-6 h-6 text-gray-400" />
     </NuxtLink>
   </div>

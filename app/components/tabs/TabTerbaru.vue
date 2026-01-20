@@ -114,7 +114,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, computed, onMounted } from "vue"
+import { ref, nextTick, computed, onMounted, watch } from "vue"
 
 interface MediaItem {
   id: number
@@ -213,7 +213,28 @@ const dateRange = computed(() => {
   })
 })
 
-const todayIndex = computed(() => dateRange.value.findIndex(d => d.full === formatDateParam(today)))
+const todayIndex = computed(() => {
+  const todayStr = formatDateParam(today)
+  // First try to find exact match
+  const exactIndex = dateRange.value.findIndex(d => d.full === todayStr)
+  if (exactIndex !== -1) return exactIndex
+  
+  // If today not found, find the closest date
+  const todayTime = today.getTime()
+  let closestIndex = 0
+  let closestDiff = Infinity
+  
+  dateRange.value.forEach((d, index) => {
+    const dateTime = new Date(d.full + 'T00:00:00').getTime()
+    const diff = Math.abs(dateTime - todayTime)
+    if (diff < closestDiff) {
+      closestDiff = diff
+      closestIndex = index
+    }
+  })
+  
+  return dateRange.value.length > 0 ? closestIndex : -1
+})
 
 const formattedSelectedDate = computed(() => {
   const dateStr = selectedDate.value || formatDateParam(today)
@@ -255,9 +276,26 @@ const onDateScroll = () => {
 onMounted(() => {
   setTimeout(() => {
     const index = todayIndex.value
-    if (index !== -1) dateRefs.value[index]?.scrollIntoView({ behavior: 'auto', inline: 'center', block: 'nearest' })
+    if (index !== -1 && dateRange.value[index]) {
+      // Set selected date to the found date (today or closest)
+      selectedDate.value = dateRange.value[index].full
+      dateRefs.value[index]?.scrollIntoView({ behavior: 'auto', inline: 'center', block: 'nearest' })
+    }
   }, 300)
 })
+
+// Watch for agenda data to load and set initial date
+watch(() => allAgendaData.value, (newData) => {
+  if (newData?.data && dateRange.value.length > 0) {
+    const index = todayIndex.value
+    if (index !== -1 && dateRange.value[index]) {
+      selectedDate.value = dateRange.value[index].full
+      nextTick(() => {
+        dateRefs.value[index]?.scrollIntoView({ behavior: 'auto', inline: 'center', block: 'nearest' })
+      })
+    }
+  }
+}, { immediate: true })
 </script>
 
 <style scoped>

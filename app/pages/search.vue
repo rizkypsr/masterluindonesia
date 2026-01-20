@@ -195,7 +195,7 @@ function navigateToDetail(item: SearchItem) {
       <div class="px-4 py-4">
         <!-- Filter Button -->
         <div class="mb-2">
-          <UButton size="sm" class="bg-primary hover:bg-primary/90 text-black rounded-full"
+          <UButton size="lg" class="bg-primary hover:bg-primary/90 text-black rounded-full font-bold"
             @click="isFilterOpen = true">
             Filter
             <Icon name="mdi:tune-variant" class="w-4 h-4 ml-1" />
