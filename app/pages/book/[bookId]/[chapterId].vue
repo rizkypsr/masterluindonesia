@@ -79,12 +79,17 @@ onMounted(async () => {
         )
         contents.value = response.data || []
         
-        // Handle page query parameter
+        // Handle page query parameter - find content by its page property
         const pageParam = route.query.page
         if (pageParam) {
             const pageNum = parseInt(pageParam as string, 10)
-            if (!isNaN(pageNum) && pageNum >= 1 && pageNum <= contents.value.length + 1) {
-                currentPageIndex.value = pageNum - 1
+            if (!isNaN(pageNum)) {
+                // Find the index of content with matching page property
+                const contentIndex = contents.value.findIndex(c => c.page === pageNum)
+                if (contentIndex !== -1) {
+                    // +1 because index 0 is the book cover
+                    currentPageIndex.value = contentIndex + 1
+                }
             }
         }
     } catch (e) {

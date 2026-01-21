@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const router = useRouter()
+const searchCache = useSearchCache()
 
 interface SearchItem {
   id: number
@@ -27,22 +28,23 @@ interface FilterPayload {
   listHideKeyword: string[]
 }
 
-const searchQuery = ref('')
-const currentPage = ref(1)
-const isFilterOpen = ref(false)
-const hasSearched = ref(false)
-const expandedItems = ref<Set<number>>(new Set())
-
-// Filter state
-const filterPayload = ref<FilterPayload>({
+// Persist search state across navigation using useState
+const searchQuery = useState('search-query', () => '')
+const currentPage = useState('search-page', () => 1)
+const hasSearched = useState('search-has-searched', () => false)
+const results = useState<SearchItem[]>('search-results', () => [])
+const filterPayload = useState<FilterPayload>('search-filter', () => ({
   keyword: '',
   year: [],
   selectedCategory: [],
   selectedKeyword: [],
   listShowKeyword: [],
   listHideKeyword: []
-})
+}))
 
+// Local state (no need to persist)
+const isFilterOpen = ref(false)
+const expandedItems = ref<Set<string>>(new Set())
 const hideKeywordInput = ref('')
 const showKeywordInput = ref('')
 
@@ -51,25 +53,55 @@ const radioOptions = ['Wenda', 'Zhishuo', 'Zongshu', 'Shuhua']
 const videoOptions = ['Totem', 'Ceramah', 'Tanya Jawab', 'Kisah Buddhis']
 const yearOptions = [2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008]
 
-const results = ref<SearchItem[]>([])
 const isLoading = ref(false)
 
+// Get current filters for cache key (excluding keyword)
+function getCurrentFilters() {
+  return {
+    year: filterPayload.value.year,
+    selectedCategory: filterPayload.value.selectedCategory,
+    selectedKeyword: filterPayload.value.selectedKeyword,
+    listShowKeyword: filterPayload.value.listShowKeyword,
+    listHideKeyword: filterPayload.value.listHideKeyword
+  }
+}
+
 async function fetchResults() {
+  const keyword = searchQuery.value
+  const filters = getCurrentFilters()
+  
+  // Check cache first
+  const cachedData = searchCache.get(keyword, filters, currentPage.value)
+  if (cachedData) {
+    if (currentPage.value === 1) {
+      results.value = cachedData
+    } else {
+      results.value = [...results.value, ...cachedData]
+    }
+    return
+  }
+
   isLoading.value = true
   try {
     const body: FilterPayload = {
       ...filterPayload.value,
-      keyword: searchQuery.value
+      keyword
     }
 
     const response = await $fetch<ApiResponse>(`https://api.masterluindonesia.com/api/search?page=${currentPage.value}`, {
       method: 'POST',
       body
     })
+    
+    const data = response.data || []
+    
+    // Cache the results
+    searchCache.set(keyword, filters, currentPage.value, data)
+    
     if (currentPage.value === 1) {
-      results.value = response.data || []
+      results.value = data
     } else {
-      results.value = [...results.value, ...(response.data || [])]
+      results.value = [...results.value, ...data]
     }
   } catch (e) {
     console.error('Search failed', e)
@@ -81,17 +113,18 @@ async function fetchResults() {
 function stripHtml(html: string): string {
   return html
     .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/p>/gi, '\n\n')
+    .replace(/<\/p>/gi, '\n')
     .replace(/<[^>]*>/g, '')
     .replace(/&nbsp;/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
     .trim()
 }
 
-function toggleExpand(id: number) {
-  if (expandedItems.value.has(id)) {
-    expandedItems.value.delete(id)
+function toggleExpand(headerId: string) {
+  if (expandedItems.value.has(headerId)) {
+    expandedItems.value.delete(headerId)
   } else {
-    expandedItems.value.add(id)
+    expandedItems.value.add(headerId)
   }
   expandedItems.value = new Set(expandedItems.value)
 }
@@ -155,11 +188,14 @@ function loadMore() {
 }
 
 function navigateToDetail(item: SearchItem) {
-  // header_id format: "bookId#chapterId#contentType"
-  const [bookId, chapterId] = item.header_id.split('#')
+  // header_id format: "bookId#chapterId#page"
+  const [bookId, chapterId, page] = item.header_id.split('#')
   
   if (item.type === 'book') {
-    router.push(`/book/${bookId}/${chapterId}`)
+    router.push({
+      path: `/book/${bookId}/${chapterId}`,
+      query: { page }
+    })
   } else if (item.type === 'audio') {
     router.push(`/audio/${item.id}`)
   } else if (item.type === 'video') {
@@ -214,11 +250,11 @@ function navigateToDetail(item: SearchItem) {
 
         <!-- Results List -->
         <div v-else class="space-y-4">
-          <div v-for="item in results" :key="item.id" class="rounded-xl overflow-hidden"
-            :class="expandedItems.has(item.id) ? 'bg-[#c09637]' : 'bg-white'">
+          <div v-for="item in results" :key="item.header_id" class="rounded-xl overflow-hidden"
+            :class="expandedItems.has(item.header_id) ? 'bg-[#c09637]' : 'bg-white'">
             <!-- Card Header -->
-            <div class="p-4 cursor-pointer" :class="expandedItems.has(item.id) ? 'bg-[#c09637]' : 'bg-white'"
-              @click="toggleExpand(item.id)">
+            <div class="p-4 cursor-pointer" :class="expandedItems.has(item.header_id) ? 'bg-[#c09637]' : 'bg-white'"
+              @click="toggleExpand(item.header_id)">
               <div class="flex items-center justify-between">
                 <div class="flex-1">
                   <h3 class="font-bold text-black dark:text-white">{{ item.title }}</h3>
@@ -231,8 +267,8 @@ function navigateToDetail(item: SearchItem) {
             </div>
 
             <!-- Expandable Content (Kesaksian) -->
-            <div v-if="expandedItems.has(item.id)" class="m-4 p-4 bg-white rounded-lg">
-              <p class="text-black text-sm leading-relaxed whitespace-pre-line">
+            <div v-if="expandedItems.has(item.header_id)" class="m-4 p-4 bg-white rounded-lg">
+              <p class="text-black leading-relaxed whitespace-pre-wrap">
                 {{ stripHtml(item.full_detail) }}
               </p>
             </div>
