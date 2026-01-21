@@ -77,7 +77,7 @@
 
       <UCarousel ref="carouselRef" v-slot="{ item }" :items="penghargaanItems" :ui="{ item: 'basis-full' }"
         @select="onSelect">
-        <div class="pr-4">
+        <div class="pr-4 h-[700px] overflow-y-auto">
           <!-- Title -->
           <h3 class="text-gray-900 font-semibold mb-3">{{ item.title }}</h3>
 
