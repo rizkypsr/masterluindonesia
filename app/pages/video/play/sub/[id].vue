@@ -26,8 +26,10 @@
                 <div class="flex items-start justify-between">
                     <h2 class="font-semibold text-black flex-1" :style="{ fontSize: fontSize + 'px' }">{{ videoData.title }}</h2>
                     <div class="flex items-center gap-3 shrink-0">
-                        <button class="p-2">
-                            <Icon name="mdi:star-outline" class="w-6 h-6 text-gray-600" />
+                        <button class="p-2" @click="addToBookmark">
+                            <Icon :name="isVideoBookmarked ? 'mdi:star' : 'mdi:star-outline'" 
+                                  :class="isVideoBookmarked ? 'text-yellow-500' : 'text-gray-600'"
+                                  class="w-6 h-6" />
                         </button>
                         <button class="p-2">
                             <Icon name="mdi:share-variant-outline" class="w-6 h-6 text-gray-600" />
@@ -82,11 +84,15 @@
                 @scrollTop="scrollToTop"
             />
         </div>
+
+        <!-- Bookmark Modal -->
+        <BookmarkModal />
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue"
+import { useBookmark } from '~/composables/useBookmark'
+import { ref, computed, onMounted } from "vue"
 
 interface Subtitle {
     timestamp: number
@@ -193,6 +199,27 @@ const speakText = (text: string) => {
         utterance.lang = 'id-ID'
         window.speechSynthesis.speak(utterance)
     }
+}
+
+// Bookmark
+const { createVideoBookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
+
+const isVideoBookmarked = computed(() => {
+    if (!videoData.value) return false
+    return isBookmarked(1, videoData.value.title)
+})
+
+onMounted(async () => {
+    await fetchBookmarksByType(1)
+})
+
+const addToBookmark = () => {
+    if (!videoData.value) return
+    createVideoBookmark(
+        videoData.value.title,
+        Number(videoId.value),
+        'ID'
+    )
 }
 </script>
 

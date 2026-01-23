@@ -168,8 +168,10 @@
         <!-- Controls -->
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-4">
-            <button class="p-1">
-              <Icon name="mdi:star-outline" class="w-6 h-6 text-gray-600" />
+            <button class="p-1" @click="addToBookmark">
+              <Icon :name="isAudioBookmarked ? 'mdi:star' : 'mdi:star-outline'" 
+                    :class="isAudioBookmarked ? 'text-yellow-500' : 'text-gray-600'"
+                    class="w-6 h-6" />
             </button>
             <button class="p-1">
               <Icon name="mdi:share-variant-outline" class="w-6 h-6 text-gray-600" />
@@ -194,11 +196,15 @@
         </div>
       </div>
     </div>
+
+    <!-- Bookmark Modal -->
+    <BookmarkModal />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from "vue"
+import { useBookmark } from '~/composables/useBookmark'
+import { ref, computed, watch, onMounted } from "vue"
 
 interface Subtitle {
   id: number
@@ -463,6 +469,27 @@ const formatTime = (seconds: number) => {
   const mins = Math.floor(seconds / 60)
   const secs = Math.floor(seconds % 60)
   return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+}
+
+// Bookmark
+const { createAudioBookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
+
+const isAudioBookmarked = computed(() => {
+  if (!currentAudio.value) return false
+  return isBookmarked(2, currentAudio.value.title)
+})
+
+onMounted(async () => {
+  await fetchBookmarksByType(2)
+})
+
+const addToBookmark = () => {
+  if (!currentAudio.value) return
+  createAudioBookmark(
+    currentAudio.value.title,
+    currentAudio.value.id,
+    Number(categoryId.value)
+  )
 }
 </script>
 

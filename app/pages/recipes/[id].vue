@@ -10,9 +10,6 @@
                 <h1 class="text-lg font-semibold text-black line-clamp-1">{{ recipe?.title || 'Resep' }}</h1>
             </div>
             <div class="flex items-center gap-3">
-                <button class="p-1">
-                    <Icon name="mdi:star-outline" class="w-6 h-6 text-black" />
-                </button>
                 <button class="p-1" @click="shareRecipe">
                     <Icon name="mdi:share-variant" class="w-6 h-6 text-black" />
                 </button>

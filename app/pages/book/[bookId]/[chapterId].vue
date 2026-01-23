@@ -1,9 +1,16 @@
 <script setup lang="ts">
+import { useBookmark } from '~/composables/useBookmark'
+
 const route = useRoute()
 const router = useRouter()
 
 const bookId = route.params.bookId as string
 const chapterId = route.params.chapterId as string
+
+// Bookmark
+const { createBookBookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
+
+const isBookBookmarked = ref(false)
 
 interface BookAudio {
     id: number
@@ -67,12 +74,25 @@ interface SearchResult {
 }
 
 // Fetch book detail
-const { data: bookDetail } = await useFetch<BookDetail>(
+const { data: bookDetail, error: bookError } = await useFetch<{ success: boolean; data: BookDetail }>(
     `https://api.masterluindonesia.com/api/books/detail/${bookId}`
 )
 
+// Handle 404 if book not found
+if (bookError.value || !bookDetail.value?.data) {
+    throw createError({
+        statusCode: 404,
+        statusMessage: 'Buku tidak ditemukan'
+    })
+}
+
+const bookData = computed(() => bookDetail.value?.data)
+
 // Fetch book contents
 onMounted(async () => {
+    // Fetch bookmarks
+    await fetchBookmarksByType(3)
+    
     try {
         const response = await $fetch<ContentResponse>(
             `https://api.masterluindonesia.com/api/books/contents/${chapterId}`
@@ -98,6 +118,13 @@ onMounted(async () => {
         isLoadingContents.value = false
     }
 })
+
+// Watch for bookDetail to update bookmark status
+watch(() => bookData.value?.title, (title) => {
+    if (title) {
+        isBookBookmarked.value = isBookmarked(3, title)
+    }
+}, { immediate: true })
 
 // Total pages = 1 (book detail) + contents length
 const totalPages = computed(() => 1 + contents.value.length)
@@ -134,11 +161,11 @@ const highlightedContent = computed(() => {
 
 // Highlighted title for display
 const highlightedTitle = computed(() => {
-    if (!bookDetail.value?.title) return ''
-    if (!highlightTerm.value) return bookDetail.value.title
+    if (!bookData.value?.title) return ''
+    if (!highlightTerm.value) return bookData.value.title
 
     const regex = new RegExp(`(${escapeRegex(highlightTerm.value)})`, 'gi')
-    return bookDetail.value.title.replace(regex, '<mark class="bg-yellow-300">$1</mark>')
+    return bookData.value.title.replace(regex, '<mark class="bg-yellow-300">$1</mark>')
 })
 
 // Format time for audio player
@@ -195,7 +222,7 @@ function scrollToTop() {
 
 function shareContent() {
     const pageNum = currentPageIndex.value + 1
-    const title = bookDetail.value?.title || ''
+    const title = bookData.value?.title || ''
     const shareUrl = `${window.location.origin}${window.location.pathname}?page=${pageNum}`
     const shareText = `${title}: Halaman ${pageNum}\n${shareUrl}`
     
@@ -214,7 +241,14 @@ function shareContent() {
 }
 
 function addBookmark() {
-    // TODO: Implement bookmark
+    // Get the actual page number from content, not the index
+    const actualPage = currentContent.value?.page || 1
+    createBookBookmark(
+        bookData.value?.title || '',
+        Number(bookId),
+        Number(chapterId),
+        actualPage
+    )
 }
 
 function goToPage() {
@@ -256,8 +290,8 @@ function performSearch() {
     const results: SearchResult[] = []
 
     // Search in book title (page 0)
-    if (bookDetail.value?.title.toLowerCase().includes(query)) {
-        const title = bookDetail.value.title
+    if (bookData.value?.title.toLowerCase().includes(query)) {
+        const title = bookData.value.title
         const idx = title.toLowerCase().indexOf(query)
         const snippet = title
         const highlightedSnippet = title.substring(0, idx) +
@@ -413,7 +447,7 @@ watch(currentPageIndex, () => {
             <div class="flex items-center gap-3">
                 <BackButton />
                 <h1 class="text-lg font-semibold text-black dark:text-white truncate max-w-[200px]">
-                    {{ bookDetail?.title }}
+                    {{ bookData?.title }}
                 </h1>
             </div>
             <div class="relative">
@@ -431,7 +465,9 @@ watch(currentPageIndex, () => {
                     </button>
                     <button class="flex items-center gap-3 w-full px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700"
                         @click="addBookmark(); isMenuOpen = false">
-                        <Icon name="mdi:star-outline" class="w-5 h-5 shrink-0 text-black dark:text-white" />
+                        <Icon :name="isBookBookmarked ? 'mdi:star' : 'mdi:star-outline'" 
+                              :class="isBookBookmarked ? 'text-yellow-500' : 'text-black dark:text-white'"
+                              class="w-5 h-5 shrink-0" />
                         <span class="text-black dark:text-white whitespace-nowrap">Bookmark</span>
                     </button>
                     <button class="flex items-center gap-3 w-full px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -481,8 +517,8 @@ watch(currentPageIndex, () => {
         <div v-else ref="contentRef" class="flex-1 overflow-y-auto px-4 py-6">
             <!-- Page 1: Book Detail (Cover + Title) -->
             <template v-if="currentPageIndex === 0">
-                <div v-if="bookDetail?.url" class="flex justify-center mb-6">
-                    <img :src="bookDetail.url" :alt="bookDetail.title" class="max-w-full h-auto rounded-lg shadow-md" />
+                <div v-if="bookData?.url" class="flex justify-center mb-6">
+                    <img :src="bookData.url" :alt="bookData.title" class="max-w-full h-auto rounded-lg shadow-md" />
                 </div>
                 <h2 class="font-bold text-black dark:text-white mb-6" :style="{ fontSize: (fontSize + 4) + 'px' }"
                     v-html="highlightedTitle"></h2>
@@ -526,7 +562,7 @@ watch(currentPageIndex, () => {
 
             <!-- Bottom Navigation - Page 1 (simple) -->
             <div v-if="currentPageIndex === 0"
-                class="border-t border-gray-200 bg-white dark:bg-gray-900 px-4 py-3">
+                class="border-t border-gray-200 bg-white dark:bg-gray-900 px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
                 <div class="flex items-center justify-between">
                     <button @click="prevPage" :disabled="currentPageIndex === 0" class="p-2 disabled:opacity-30">
                         <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
@@ -544,7 +580,7 @@ watch(currentPageIndex, () => {
             </div>
 
             <!-- Bottom Navigation - Page 2+ (with audio player) -->
-            <div v-else class="border-t border-gray-200 bg-white dark:bg-gray-900">
+            <div v-else class="border-t border-gray-200 bg-white dark:bg-gray-900 pb-[env(safe-area-inset-bottom)]">
                 <!-- Audio Player Section -->
                 <div v-if="currentAudio" class="px-4 pt-4">
                     <!-- Audio Title Badge -->
@@ -579,7 +615,7 @@ watch(currentPageIndex, () => {
                 </div>
 
                 <!-- Navigation Row -->
-                <div class="flex items-center justify-between px-4 py-3">
+                <div class="flex items-center justify-between px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
                     <button @click="prevPage" :disabled="currentPageIndex === 0" class="p-2 disabled:opacity-30">
                         <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
                     </button>
@@ -628,6 +664,9 @@ watch(currentPageIndex, () => {
                 </div>
             </template>
         </UModal>
+
+        <!-- Bookmark Modal -->
+        <BookmarkModal />
     </div>
 </template>
 

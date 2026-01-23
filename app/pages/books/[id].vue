@@ -9,8 +9,10 @@
         <h1 class="text-lg font-semibold text-black">Detail Buku</h1>
       </div>
       <div class="flex items-center gap-3">
-        <button class="p-1">
-          <Icon name="mdi:star-outline" class="w-6 h-6 text-black" />
+        <button class="p-1" @click="addToBookmark">
+          <Icon :name="isBookBookmarked ? 'mdi:star' : 'mdi:star-outline'" 
+                :class="isBookBookmarked ? 'text-yellow-500' : 'text-black'"
+                class="w-6 h-6" />
         </button>
         <button class="p-1" @click="shareBook">
           <Icon name="mdi:share-variant" class="w-6 h-6 text-black" />
@@ -76,16 +78,32 @@
         @scrollTop="scrollToTop"
       />
     </div>
+
+    <!-- Bookmark Modal -->
+    <BookmarkModal />
   </div>
 </template>
 
 <script setup lang="ts">
+import { useBookmark } from '~/composables/useBookmark'
+
 const route = useRoute()
 
 // FAB Menu State
 const showFabMenu = ref(false)
 const fontSize = ref(16)
 const scrollContainer = ref<HTMLElement | null>(null)
+
+// Bookmark
+const { createBookBookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
+
+const isBookBookmarked = computed(() => {
+  return isBookmarked(3, bookTitle.value)
+})
+
+onMounted(async () => {
+  await fetchBookmarksByType(3)
+})
 
 const zoomIn = () => {
   fontSize.value = Math.min(fontSize.value + 2, 28)
@@ -152,6 +170,15 @@ const shareBook = async () => {
     await navigator.clipboard.writeText(`Baca Buku "${bookTitle.value}" di\n${window.location.href}`)
     alert('Link berhasil disalin!')
   }
+}
+
+const addToBookmark = () => {
+  createBookBookmark(
+    bookTitle.value,
+    Number(bookId.value),
+    chapters.value[0]?.sub_chapters?.[0]?.id || 0,
+    1
+  )
 }
 </script>
 

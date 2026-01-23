@@ -3,12 +3,15 @@ import { useAuth } from '~/lib/auth'
 
 interface BookmarkLink {
   book_id?: number
+  bookId?: number
   contentId?: number | null
+  chapterId?: number | null
   page?: number | null
   videoId?: number
   video_category_id?: number | null
   lang?: string
   audioId?: number
+  audio_category_id?: number | null
   subtitleId?: number | null
 }
 
@@ -84,46 +87,49 @@ function getIcon(type: number): string {
 
 function navigateToItem(item: BookmarkItem) {
   if (item.type === 0 || !item.link) return
-  
+
   try {
     const linkData: BookmarkLink = JSON.parse(item.link)
-    
+
     switch (item.type) {
       case 1: // Video
-        if (linkData.videoId) {
-          // video with lang CN uses sub route (subtitle version)
-          if (linkData.lang === 'CN') {
-            navigateTo({ path: `/video/play/sub/${linkData.videoId}`, query: { title: item.title } })
-          } else if (linkData.video_category_id) {
-            navigateTo({ path: `/video/play/${linkData.video_category_id}`, query: { title: item.title } })
-          } else {
-            navigateTo({ path: `/video/play/sub/${linkData.videoId}`, query: { title: item.title } })
-          }
+        const videoId = linkData.videoId
+        const videoCategoryId = linkData.video_category_id
+        if (videoCategoryId) {
+          // Use video_category_id for navigation
+          navigateTo({ path: `/video/play/${videoCategoryId}`, query: { title: item.title } })
+        } else if (videoId) {
+          // Fallback to videoId (sub video)
+          navigateTo({ path: `/video/play/sub/${videoId}`, query: { title: item.title } })
         }
         break
       case 2: // Audio
-        if (linkData.audioId) {
-          navigateTo({ 
-            path: '/audio/detail', 
-            query: { 
-              audio_id: linkData.audioId, 
+        const audioId = linkData.audioId
+        const audioCategoryId = linkData.audio_category_id
+        if (audioId) {
+          navigateTo({
+            path: '/audio/detail',
+            query: {
+              audio_id: audioId,
               subtitle_id: linkData.subtitleId || undefined,
-              title: item.title 
-            } 
+              title: item.title
+            }
           })
         }
         break
       case 3: // Book
-        if (linkData.book_id) {
-          if (linkData.contentId) {
+        const bookId = linkData.book_id || linkData.bookId
+        const chapterId = linkData.contentId || linkData.chapterId
+        if (bookId) {
+          if (chapterId) {
             // Go to specific chapter with page
-            navigateTo({ 
-              path: `/book/${linkData.book_id}/${linkData.contentId}`,
+            navigateTo({
+              path: `/book/${bookId}/${chapterId}`,
               query: linkData.page ? { page: linkData.page } : undefined
             })
           } else {
             // Go to book overview
-            navigateTo({ path: `/books/${linkData.book_id}`, query: { title: item.title } })
+            navigateTo({ path: `/books/${bookId}`, query: { title: item.title } })
           }
         }
         break
@@ -137,11 +143,10 @@ function navigateToItem(item: BookmarkItem) {
 <template>
   <div>
     <!-- Header -->
-    <div class="px-4 py-5 shadow-md" style="background: linear-gradient(to right, #ffca03 0%, #fde249 50%, #d8ae0c 100%);">
+    <div class="px-4 py-5 shadow-md"
+      style="background: linear-gradient(to right, #ffca03 0%, #fde249 50%, #d8ae0c 100%);">
       <div class="flex items-center gap-3">
-        <NuxtLink to="/lainnya">
-          <Icon name="mdi:arrow-left" class="w-6 h-6 text-black" />
-        </NuxtLink>
+        <BackButton />
         <h1 class="text-black">Bookmark</h1>
       </div>
     </div>
@@ -164,40 +169,32 @@ function navigateToItem(item: BookmarkItem) {
         <template v-for="item in bookmarks" :key="item.id">
           <!-- Folder -->
           <div v-if="item.type === 0">
-            <div 
+            <div
               class="flex items-center justify-between p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
-              @click="toggleFolder(item.id)"
-            >
+              @click="toggleFolder(item.id)">
               <div class="flex items-center gap-3">
-                <Icon :name="getIcon(item.type)" class="w-6 h-6 text-amber-500" />
+                <Icon :name="getIcon(item.type)" class="w-6 h-6 shrink-0 text-amber-500" />
                 <span class="font-medium">{{ item.title }}</span>
               </div>
-              <Icon 
-                :name="expandedFolders.has(item.id) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
-                class="w-5 h-5 text-gray-400"
-              />
+              <Icon :name="expandedFolders.has(item.id) ? 'mdi:chevron-up' : 'mdi:chevron-down'"
+                class="w-5 h-5 text-gray-400" />
             </div>
             <!-- Folder Children -->
             <div v-if="expandedFolders.has(item.id) && item.child?.length" class="ml-6 space-y-1">
-              <div 
-                v-for="child in item.child" 
-                :key="child.id"
+              <div v-for="child in item.child" :key="child.id"
                 class="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
-                @click="navigateToItem(child)"
-              >
-                <Icon :name="getIcon(child.type)" class="w-6 h-6 text-amber-500" />
+                @click="navigateToItem(child)">
+                <Icon :name="getIcon(child.type)" class="w-6 h-6 shrink-0 text-amber-500" />
                 <span>{{ child.title }}</span>
               </div>
             </div>
           </div>
 
           <!-- Regular Item -->
-          <div 
-            v-else
+          <div v-else
             class="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 border-b border-gray-100 dark:border-gray-800"
-            @click="navigateToItem(item)"
-          >
-            <Icon :name="getIcon(item.type)" class="w-6 h-6 text-amber-500" />
+            @click="navigateToItem(item)">
+            <Icon :name="getIcon(item.type)" class="w-6 h-6 shrink-0 text-amber-500" />
             <span>{{ item.title }}</span>
           </div>
         </template>
