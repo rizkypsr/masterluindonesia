@@ -21,12 +21,27 @@ export const useAuth = () => {
 
   const isAuthenticated = computed(() => !!token.value);
 
-  // Call your backend with Google ID token or access token
-  const loginWithGoogle = async (googleToken: string) => {
+  // Call your backend with Google user info
+  const loginWithGoogle = async (accessToken: string) => {
+    // First, get user info from Google using the access token
+    const userInfo = await $fetch<{
+      sub: string;
+      email: string;
+      name: string;
+      picture?: string;
+    }>('https://www.googleapis.com/oauth2/v3/userinfo', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    // Then send user info to your backend
     const response = await $fetch<LoginResponse>(`${API_BASE}/logingoogle`, {
       method: 'POST',
       body: {
-        token: googleToken, // Adjust field name based on your API
+        id: userInfo.sub,
+        email: userInfo.email,
+        displayName: userInfo.name,
       },
     });
 

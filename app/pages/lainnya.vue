@@ -22,15 +22,18 @@ function toggleTheme() {
   isDark.value = !isDark.value
 }
 
+let tokenClient: any = null
+
 // Initialize Google Sign-In on mount
 onMounted(async () => {
   try {
     await $googleSignIn.load()
     
     if (window.google) {
-      window.google.accounts.id.initialize({
+      tokenClient = window.google.accounts.oauth2.initTokenClient({
         client_id: config.public.googleClientId,
-        callback: handleCredentialResponse,
+        scope: 'email profile openid',
+        callback: handleTokenResponse,
       })
     }
   } catch (e) {
@@ -38,23 +41,30 @@ onMounted(async () => {
   }
 })
 
-async function handleCredentialResponse(response: { credential: string }) {
-  isLoading.value = true
-  error.value = null
+async function handleTokenResponse(response: { access_token?: string; error?: string }) {
+  if (response.error) {
+    error.value = response.error
+    return
+  }
   
-  try {
-    await loginWithGoogle(response.credential)
-    // Success - user is now logged in
-  } catch (e: any) {
-    error.value = e.message || 'Login failed'
-  } finally {
-    isLoading.value = false
+  if (response.access_token) {
+    isLoading.value = true
+    error.value = null
+    try {
+      await loginWithGoogle(response.access_token)
+      // Success - user is now logged in
+    } catch (e: any) {
+      error.value = e.message || 'Login failed'
+    } finally {
+      isLoading.value = false
+    }
   }
 }
 
 function openGoogleLogin() {
-  if (window.google) {
-    window.google.accounts.id.prompt()
+  if (tokenClient) {
+    error.value = null
+    tokenClient.requestAccessToken()
   }
 }
 
@@ -124,7 +134,7 @@ function handleLogout() {
           class="flex items-center justify-between py-1 w-full"
           :disabled="isLoading"
         >
-          <span class="font-medium text-black dark:text-white">
+          <span class="font-medium text-black dark:text-white cursor-pointer hover:underline">
             {{ isLoading ? 'Memproses...' : 'Masuk / Daftar Aplikasi' }}
           </span>
           <Icon name="mdi:login" class="w-6 h-6 text-black dark:text-white" />

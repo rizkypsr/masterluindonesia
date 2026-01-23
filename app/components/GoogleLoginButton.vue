@@ -7,23 +7,18 @@ const config = useRuntimeConfig();
 
 const isLoading = ref(false);
 const error = ref<string | null>(null);
-const buttonRef = ref<HTMLElement | null>(null);
+
+let tokenClient: any = null;
 
 onMounted(async () => {
   try {
     await $googleSignIn.load();
     
-    if (window.google && buttonRef.value) {
-      window.google.accounts.id.initialize({
+    if (window.google) {
+      tokenClient = window.google.accounts.oauth2.initTokenClient({
         client_id: config.public.googleClientId,
-        callback: handleCredentialResponse,
-      });
-      
-      window.google.accounts.id.renderButton(buttonRef.value, {
-        theme: 'outline',
-        size: 'large',
-        width: 300,
-        text: 'signin_with',
+        scope: 'email profile openid',
+        callback: handleTokenResponse,
       });
     }
   } catch (e) {
@@ -31,25 +26,44 @@ onMounted(async () => {
   }
 });
 
-async function handleCredentialResponse(response: { credential: string }) {
-  isLoading.value = true;
-  error.value = null;
+function handleLogin() {
+  if (tokenClient) {
+    error.value = null;
+    tokenClient.requestAccessToken();
+  }
+}
+
+async function handleTokenResponse(response: { access_token?: string; error?: string }) {
+  if (response.error) {
+    error.value = response.error;
+    return;
+  }
   
-  try {
-    await loginWithGoogle(response.credential);
-    navigateTo('/'); // Redirect after successful login
-  } catch (e: any) {
-    error.value = e.message || 'Login failed';
-  } finally {
-    isLoading.value = false;
+  if (response.access_token) {
+    isLoading.value = true;
+    try {
+      await loginWithGoogle(response.access_token);
+      navigateTo('/');
+    } catch (e: any) {
+      error.value = e.message || 'Login failed';
+    } finally {
+      isLoading.value = false;
+    }
   }
 }
 </script>
 
 <template>
   <div class="flex flex-col items-center gap-4">
-    <div ref="buttonRef" />
-    <p v-if="isLoading" class="text-sm text-gray-500">Logging in...</p>
+    <UButton 
+      @click="handleLogin" 
+      size="lg" 
+      variant="outline"
+      :loading="isLoading"
+      icon="i-simple-icons-google"
+    >
+      Sign in with Google
+    </UButton>
     <p v-if="error" class="text-sm text-red-500">{{ error }}</p>
   </div>
 </template>
