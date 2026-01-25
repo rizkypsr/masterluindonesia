@@ -36,6 +36,11 @@ const bookmarks = ref<BookmarkItem[]>([])
 const loading = ref(true)
 const expandedFolders = ref<Set<number>>(new Set())
 
+// Search state
+const isSearchMode = ref(false)
+const searchQuery = ref('')
+const isSearching = ref(false)
+
 onMounted(async () => {
   if (!isAuthenticated.value) {
     toast.add({
@@ -48,10 +53,14 @@ onMounted(async () => {
   await fetchBookmarks()
 })
 
-async function fetchBookmarks() {
+async function fetchBookmarks(search?: string) {
   loading.value = true
   try {
-    const response = await $fetch<BookmarkResponse>('https://api.masterluindonesia.com/api/bookmark', {
+    let url = 'https://api.masterluindonesia.com/api/bookmark'
+    if (search) {
+      url += `?search=${encodeURIComponent(search)}`
+    }
+    const response = await $fetch<BookmarkResponse>(url, {
       headers: getAuthHeader() as Record<string, string>
     })
     if (response.success) {
@@ -65,6 +74,27 @@ async function fetchBookmarks() {
   } finally {
     loading.value = false
   }
+}
+
+function openSearch() {
+  isSearchMode.value = true
+  searchQuery.value = ''
+}
+
+function closeSearch() {
+  isSearchMode.value = false
+  searchQuery.value = ''
+  fetchBookmarks()
+}
+
+async function performSearch() {
+  if (!searchQuery.value.trim()) {
+    await fetchBookmarks()
+    return
+  }
+  isSearching.value = true
+  await fetchBookmarks(searchQuery.value.trim())
+  isSearching.value = false
 }
 
 function toggleFolder(id: number) {
@@ -141,13 +171,37 @@ function navigateToItem(item: BookmarkItem) {
 </script>
 
 <template>
-  <div>
-    <!-- Header -->
-    <div class="px-4 py-5 shadow-md"
-      style="background: linear-gradient(to right, #ffca03 0%, #fde249 50%, #d8ae0c 100%);">
+  <div class="min-h-screen bg-white dark:bg-gray-900">
+    <!-- Header - Normal Mode -->
+    <div v-if="!isSearchMode" class="px-4 py-4 shadow-sm bg-white dark:bg-gray-800">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <BackButton />
+          <h1 class="text-lg font-semibold text-black dark:text-white">Bookmark</h1>
+        </div>
+        <div class="flex gap-2">
+          <button @click="openSearch" class="p-1 flex justify-center items-center cursor-pointer">
+            <Icon name="mdi:magnify" class="w-6 h-6 text-black dark:text-white" />
+          </button>
+          <button @click="navigateTo('/bookmark-manager')" class="p-1 flex justify-center items-center cursor-pointer">
+            <Icon name="mdi:square-edit-outline" class="w-6 h-6 text-black dark:text-white" />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header - Search Mode -->
+    <div v-else class="px-4 py-4 shadow-md bg-white dark:bg-gray-800">
       <div class="flex items-center gap-3">
-        <BackButton />
-        <h1 class="text-black">Bookmark</h1>
+        <button @click="closeSearch" class="p-1">
+          <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
+        </button>
+        <input v-model="searchQuery" type="text" placeholder="Cari bookmark..."
+          class="flex-1 bg-transparent text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none" @keyup.enter="performSearch"
+          autofocus />
+        <button v-if="searchQuery" @click="searchQuery = ''; performSearch()" class="p-1">
+          <Icon name="mdi:close" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
+        </button>
       </div>
     </div>
 
@@ -155,7 +209,7 @@ function navigateToItem(item: BookmarkItem) {
     <div class="px-4 py-4">
       <!-- Loading -->
       <div v-if="loading" class="flex justify-center py-12">
-        <Icon name="mdi:loading" class="w-8 h-8 animate-spin text-amber-500" />
+        <Icon name="mdi:loading" class="w-8 h-8 animate-spin text-[#bf9638] dark:text-yellow-400" />
       </div>
 
       <!-- Empty State -->
@@ -173,29 +227,29 @@ function navigateToItem(item: BookmarkItem) {
               class="flex items-center justify-between p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
               @click="toggleFolder(item.id)">
               <div class="flex items-center gap-3">
-                <Icon :name="getIcon(item.type)" class="w-6 h-6 shrink-0 text-amber-500" />
-                <span class="font-medium">{{ item.title }}</span>
+                <Icon :name="getIcon(item.type)" class="w-6 h-6 shrink-0 text-[#bf9638] dark:text-yellow-400" />
+                <span class="font-medium text-lg text-black dark:text-white">{{ item.title }}</span>
               </div>
               <Icon :name="expandedFolders.has(item.id) ? 'mdi:chevron-up' : 'mdi:chevron-down'"
-                class="w-5 h-5 text-gray-400" />
+                class="w-5 h-5 text-gray-400 dark:text-gray-500" />
             </div>
             <!-- Folder Children -->
             <div v-if="expandedFolders.has(item.id) && item.child?.length" class="ml-6 space-y-1">
               <div v-for="child in item.child" :key="child.id"
                 class="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
                 @click="navigateToItem(child)">
-                <Icon :name="getIcon(child.type)" class="w-6 h-6 shrink-0 text-amber-500" />
-                <span>{{ child.title }}</span>
+                <Icon :name="getIcon(child.type)" class="w-6 h-6 shrink-0 text-[#bf9638] dark:text-yellow-400" />
+                <span class="text-lg text-black dark:text-white">{{ child.title }}</span>
               </div>
             </div>
           </div>
 
           <!-- Regular Item -->
           <div v-else
-            class="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 border-b border-gray-100 dark:border-gray-800"
+            class="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 border-b border-gray-100 dark:border-gray-700"
             @click="navigateToItem(item)">
-            <Icon :name="getIcon(item.type)" class="w-6 h-6 shrink-0 text-amber-500" />
-            <span>{{ item.title }}</span>
+            <Icon :name="getIcon(item.type)" class="w-6 h-6 shrink-0 text-[#bf9638] dark:text-yellow-400" />
+            <span class="text-lg text-black dark:text-white">{{ item.title }}</span>
           </div>
         </template>
       </div>

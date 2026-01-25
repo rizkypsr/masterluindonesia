@@ -13,25 +13,25 @@
           v-if="isOpen"
           key="zoom-out"
           @click="$emit('zoomOut')" 
-          class="w-12 h-12 bg-[#fff3be] rounded-full flex items-center justify-center shadow-lg"
+          class="w-12 h-12 bg-[#fff3be] dark:bg-gray-700 rounded-full flex items-center justify-center shadow-lg"
         >
-          <Icon name="mdi:magnify-minus" class="w-6 h-6 text-black" />
+          <Icon name="mdi:magnify-minus" class="w-6 h-6 text-black dark:text-white" />
         </button>
         <button 
           v-if="isOpen"
           key="zoom-in"
           @click="$emit('zoomIn')" 
-          class="w-12 h-12 bg-[#fff3be] rounded-full flex items-center justify-center shadow-lg"
+          class="w-12 h-12 bg-[#fff3be] dark:bg-gray-700 rounded-full flex items-center justify-center shadow-lg"
         >
-          <Icon name="mdi:magnify-plus" class="w-6 h-6 text-black" />
+          <Icon name="mdi:magnify-plus" class="w-6 h-6 text-black dark:text-white" />
         </button>
         <button 
           v-if="isOpen"
           key="scroll-top"
           @click="scrollToTop" 
-          class="w-12 h-12 bg-[#fff3be] rounded-full flex items-center justify-center shadow-lg"
+          class="w-12 h-12 bg-[#fff3be] dark:bg-gray-700 rounded-full flex items-center justify-center shadow-lg"
         >
-          <Icon name="mdi:arrow-up" class="w-6 h-6 text-black" />
+          <Icon name="mdi:arrow-up" class="w-6 h-6 text-black dark:text-white" />
         </button>
       </transition-group>
       

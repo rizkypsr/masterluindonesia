@@ -16,7 +16,7 @@
 
     <!-- Agenda Section -->
     <div class="mt-4 px-4">
-      <h2 class="text-lg font-semibold text-black mb-4">Agenda Hari Ini</h2>
+      <h2 class="text-lg font-semibold text-black dark:text-white mb-4">Agenda Hari Ini</h2>
 
       <!-- Date Selector -->
       <template v-if="isAgendaLoading">
@@ -30,7 +30,7 @@
           @click="selectDate(date.full, index)"
           class="flex flex-col items-center justify-center min-w-14 py-2 px-3 rounded-lg transition-colors shrink-0"
           style="scroll-snap-align: center;"
-          :class="selectedDate === date.full ? 'bg-primary text-black font-bold' : 'bg-secondary/50 text-gray-700'">
+          :class="selectedDate === date.full ? 'bg-primary dark:bg-yellow-500 text-black font-bold' : 'bg-secondary/50 dark:bg-gray-700 text-gray-700 dark:text-gray-300'">
           <span class="text-lg font-semibold">{{ date.day }}</span>
           <span class="text-xs">{{ date.month }}</span>
         </button>
@@ -62,19 +62,20 @@
     <div class="mt-6 px-4">
       <template v-if="isLoading">
         <USkeleton class="h-12 w-full rounded-lg mb-2" />
-        <div class="divide-y divide-gray-200">
+        <div class="divide-y divide-gray-200 dark:divide-gray-700">
           <div v-for="i in 4" :key="i" class="py-4">
             <USkeleton class="h-5 w-3/4" />
           </div>
         </div>
       </template>
-      <UAccordion v-else :items="topicsAccordionItems" default-value="Pelajari Topik Tertentu" class="topics-accordion">
+      <UAccordion v-else :items="topicsAccordionItems" default-value="Pelajari Topik Tertentu" class="topics-accordion"
+        :ui="{ trigger: 'text-black dark:text-white text-xl font-semibold' }">
         <template #topics>
-          <div class="divide-y divide-gray-200">
+          <div class="divide-y divide-gray-200 dark:divide-gray-700">
             <NuxtLink v-for="topic in topics" :key="topic.id"
               :to="{ path: `/topics/${topic.id}`, query: { title: topic.title } }"
-              class="block py-4 cursor-pointer hover:bg-gray-50">
-              <span class="text-base font-medium text-black">{{ topic.title }}</span>
+              class="block py-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800">
+              <span class="text-base font-medium text-black dark:text-white">{{ topic.title }}</span>
             </NuxtLink>
           </div>
         </template>
@@ -84,8 +85,8 @@
     <!-- Books Section -->
     <div class="mt-6 px-4">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-semibold text-black">Koleksi Buku</h2>
-        <NuxtLink to="/books" class="text-primary font-medium">Lihat semua</NuxtLink>
+        <h2 class="text-xl font-semibold text-black dark:text-white">Koleksi Buku</h2>
+        <NuxtLink to="/books" class="text-primary dark:text-yellow-400 font-medium">Lihat semua</NuxtLink>
       </div>
       <div class="flex gap-3 pb-3 overflow-x-auto custom-scrollbar">
         <template v-if="isLoading">
@@ -105,7 +106,7 @@
                 <USkeleton class="w-28 h-40 rounded-xl" />
               </template>
             </ClientOnly>
-            <p class="mt-2 text-sm font-medium text-black line-clamp-2">{{ book.title }}</p>
+            <p class="mt-2 text-sm font-medium text-black dark:text-white line-clamp-2">{{ book.title }}</p>
           </NuxtLink>
         </template>
       </div>
@@ -301,7 +302,6 @@ watch(() => allAgendaData.value, (newData) => {
 <style scoped>
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
-.topics-accordion :deep(button span) { font-size: 1.25rem; font-weight: 600; color: black; }
 .custom-scrollbar { scrollbar-width: thin; scrollbar-color: rgba(0, 0, 0, 0.2) transparent; }
 .custom-scrollbar::-webkit-scrollbar { height: 6px; }
 .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }

@@ -1,28 +1,28 @@
 <template>
-    <div class="h-screen bg-white flex flex-col">
+    <div class="h-screen bg-white dark:bg-gray-900 flex flex-col">
         <!-- Header (Fixed) -->
-        <div class="flex items-center justify-between px-4 py-3 border-b shrink-0">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <BackButton to="/?tab=edukasi" />
-            <span class="text-sm text-gray-600">Tata Cara Sembahyang Setiap Hari</span>
+            <span class="text-sm text-gray-600 dark:text-gray-400">Tata Cara Sembahyang Setiap Hari</span>
             <button @click="isMenuOpen = true" class="p-1">
-                <Icon name="heroicons:bars-3" class="w-5 h-5 text-gray-700" />
+                <Icon name="heroicons:bars-3" class="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </button>
         </div>
 
         <!-- Slideover Menu -->
         <USlideover v-model:open="isMenuOpen" side="bottom">
             <template #content>
-                <div class="p-4">
+                <div class="p-4 bg-white dark:bg-gray-800">
                     <!-- Handle bar -->
                     <div class="flex justify-center mb-4">
-                        <div class="w-12 h-1 bg-gray-300 rounded-full"></div>
+                        <div class="w-12 h-1 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
                     </div>
 
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">DAFTAR MENU</h3>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">DAFTAR MENU</h3>
 
                     <div class="space-y-4">
                         <button v-for="item in menuItems" :key="item.id" @click="scrollToSection(item.id)"
-                            class="block text-gray-900 text-base py-2 hover:text-yellow-600 text-left w-full">
+                            class="block text-gray-900 dark:text-white text-base py-2 hover:text-yellow-600 dark:hover:text-yellow-400 text-left w-full">
                             {{ item.title }}
                         </button>
                     </div>
@@ -32,8 +32,8 @@
 
         <!-- Content (Scrollable) -->
         <div ref="contentRef" class="flex-1 overflow-y-auto px-4 py-6">
-            <h1 class="text-2xl font-bold text-gray-900 mb-1">Tata Cara Sembahyang</h1>
-            <p class="text-gray-600 mb-6">Bagi Yang Memiliki Altar</p>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Tata Cara Sembahyang</h1>
+            <p class="text-gray-600 dark:text-gray-400 mb-6">Bagi Yang Memiliki Altar</p>
 
             <!-- Hero Image -->
             <div class="mb-6">
@@ -43,39 +43,43 @@
 
             <!-- Section 1: Langkah Pertama -->
             <div id="langkah-langkah" class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Pertama</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Pertama</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_pertama.png"
                         alt="Cuci Tangan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-2xl font-bold text-gray-900">Cuci Tangan</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Cuci Tangan</h3>
                     </div>
                 </UCard>
             </div>
 
             <!-- Section 2: Langkah Kedua -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Kedua</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kedua</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_kedua.png"
                         alt="Nyalakan Dupa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Nyalakan dupa dengan api lampu minyak</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Nyalakan dupa dengan api lampu
+                            minyak
+                        </h3>
                     </div>
                 </UCard>
             </div>
 
             <!-- Section 3: Langkah Ketiga -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Ketiga</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Ketiga</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_ketiga_keempat.png"
                         alt="Pegang Dupa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Pegang dupa dengan kedua tangan dan angkat
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Pegang dupa dengan kedua
+                            tangan dan
+                            angkat
                             dupa
                             setinggi dahi</h3>
                     </div>
@@ -84,34 +88,39 @@
 
             <!-- Section 4: Langkah Keempat -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Keempat</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Keempat</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_ketiga_keempat.png"
                         alt="Ucapkan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Ucapkan:</h3>
-                        <p class="text-gray-700">Saya XXX memberi hormat kepada ... Pu Sa</p>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Ucapkan:</h3>
+                        <p class="text-gray-700 dark:text-gray-300">Saya XXX memberi hormat kepada ... Pu Sa</p>
                     </div>
                 </UCard>
             </div>
 
             <!-- Section 5: Langkah Kelima -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Kelima</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kelima</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_kelima.png"
                         alt="Tancap Dupa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Tancap dupa dengan kedua tangan ke dalam tempat
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Tancap dupa dengan kedua tangan
+                            ke
+                            dalam tempat
                             dupa
                         </h3>
-                        <p class="font-bold text-gray-900 mb-1">Catatan:</p>
-                        <p class="text-gray-700 text-sm mb-3">Jika Anda memegang beberapa batang dupa sekaligus, maka
+                        <p class="font-bold text-gray-900 dark:text-white mb-1">Catatan:</p>
+                        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">Jika Anda memegang beberapa batang dupa
+                            sekaligus, maka
                             Anda bisa
                             menancapkan dupa ke dalam tempat dupa dengan 1 tangan</p>
-                        <p class="text-gray-700 text-sm">Jika menancapkan 3 batang dupa sekaligus, tidak perlu
+                        <p class="text-gray-700 dark:text-gray-300 text-sm">Jika menancapkan 3 batang dupa sekaligus,
+                            tidak
+                            perlu
                             menancapkan
                             secara terpisah</p>
                     </div>
@@ -120,27 +129,27 @@
 
             <!-- Section 6: Langkah Keenam (Carousel) -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Langkah Keenam</h2>
-                <p class="text-gray-600 mb-4">Ucapkan</p>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Langkah Keenam</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">Ucapkan</p>
 
                 <!-- Navigation arrows -->
                 <div class="flex justify-end gap-2 mb-4">
                     <button @click="scrollPrevLangkahKeenam()" class="p-1" aria-label="Previous slide">
-                        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-600" />
+                        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                     <button @click="scrollNextLangkahKeenam()" class="p-1" aria-label="Next slide">
-                        <Icon name="heroicons:arrow-right" class="w-5 h-5 text-gray-600" />
+                        <Icon name="heroicons:arrow-right" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                 </div>
 
                 <UCarousel ref="langkahKeenamRef" v-slot="{ item }" :items="langkahKeenamItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKeenam">
-                    <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                    <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                         <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
-                            <h3 class="text-lg font-bold text-gray-900 mb-2">{{ item.title }}</h3>
-                            <p class="text-gray-700 text-sm mb-2">{{ item.description }}</p>
-                            <p class="text-gray-500 text-sm">{{ item.note }}</p>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
+                            <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{ item.description }}</p>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">{{ item.note }}</p>
                         </div>
                     </UCard>
                 </UCarousel>
@@ -148,26 +157,26 @@
 
             <!-- Section 7: Langkah Ketujuh (Carousel) -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Langkah Ketujuh</h2>
-                <p class="text-gray-600 mb-4">Cara Bersembah sujud</p>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Langkah Ketujuh</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">Cara Bersembah sujud</p>
 
                 <!-- Navigation arrows -->
                 <div class="flex justify-end gap-2 mb-4">
                     <button @click="scrollPrevLangkahKetujuh()" class="p-1" aria-label="Previous slide">
-                        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-600" />
+                        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                     <button @click="scrollNextLangkahKetujuh()" class="p-1" aria-label="Next slide">
-                        <Icon name="heroicons:arrow-right" class="w-5 h-5 text-gray-600" />
+                        <Icon name="heroicons:arrow-right" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                 </div>
 
                 <UCarousel ref="langkahKetujuhRef" v-slot="{ item }" :items="langkahKetujuhItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKetujuh">
-                    <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                    <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                         <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
-                            <h3 class="text-lg font-bold text-gray-900 mb-2">{{ item.title }}</h3>
-                            <p v-if="item.note" class="text-gray-500 text-sm">{{ item.note }}</p>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
+                            <p v-if="item.note" class="text-gray-500 dark:text-gray-400 text-sm">{{ item.note }}</p>
                         </div>
                     </UCard>
                 </UCarousel>
@@ -175,40 +184,41 @@
 
             <!-- Section 8: Langkah Kedelapan -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Kedelapan</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kedelapan</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterluindonesia.com/assets/assets/images/sembayang/image_1.png"
                         alt="Langkah Kedelapan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-2xl font-bold text-gray-900">Baca 1x Da Bei Zhou dan 1x Xin Jing</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Baca 1x Da Bei Zhou dan 1x Xin Jing
+                        </h3>
                     </div>
                 </UCard>
             </div>
 
             <!-- Section 9: Langkah Kesembilan (Carousel) -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Langkah Kesembilan</h2>
-                <p class="text-gray-600 mb-4">Berdoa atau berikrar</p>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Langkah Kesembilan</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">Berdoa atau berikrar</p>
 
                 <!-- Navigation arrows -->
                 <div class="flex justify-end gap-2 mb-4">
                     <button @click="scrollPrevLangkahKesembilan()" class="p-1" aria-label="Previous slide">
-                        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-600" />
+                        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                     <button @click="scrollNextLangkahKesembilan()" class="p-1" aria-label="Next slide">
-                        <Icon name="heroicons:arrow-right" class="w-5 h-5 text-gray-600" />
+                        <Icon name="heroicons:arrow-right" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                 </div>
 
                 <UCarousel ref="langkahKesembilanRef" v-slot="{ item }" :items="langkahKesembilanItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKesembilan">
-                    <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                    <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                         <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">{{ item.title }}</h3>
-                            <p class="text-gray-700 text-sm mb-2">{{ item.description }}</p>
-                            <p v-if="item.note" class="text-gray-500 text-sm">{{ item.note }}</p>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
+                            <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{ item.description }}</p>
+                            <p v-if="item.note" class="text-gray-500 dark:text-gray-400 text-sm">{{ item.note }}</p>
                         </div>
                     </UCard>
                 </UCarousel>
@@ -216,27 +226,29 @@
 
             <!-- Section 10: Langkah Kesepuluh (Carousel) -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Langkah Kesepuluh</h2>
-                <p class="text-gray-600 mb-4">Membaca Paritta</p>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Langkah Kesepuluh</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">Membaca Paritta</p>
 
                 <!-- Navigation arrows -->
                 <div class="flex justify-end gap-2 mb-4">
                     <button @click="scrollPrevLangkahKesepuluh()" class="p-1" aria-label="Previous slide">
-                        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-600" />
+                        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                     <button @click="scrollNextLangkahKesepuluh()" class="p-1" aria-label="Next slide">
-                        <Icon name="heroicons:arrow-right" class="w-5 h-5 text-gray-600" />
+                        <Icon name="heroicons:arrow-right" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                 </div>
 
                 <UCarousel ref="langkahKesepuluhRef" v-slot="{ item }" :items="langkahKesepuluhItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKesepuluh">
-                    <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                    <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                         <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">{{ item.title }}</h3>
-                            <p v-if="item.description" class="text-gray-700 text-sm mb-2">{{ item.description }}</p>
-                            <p v-if="item.note" class="text-gray-500 text-sm">{{ item.note }}</p>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
+                            <p v-if="item.description" class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{
+                                item.description
+                                }}</p>
+                            <p v-if="item.note" class="text-gray-500 dark:text-gray-400 text-sm">{{ item.note }}</p>
                         </div>
                     </UCard>
                 </UCarousel>
@@ -244,78 +256,81 @@
 
             <!-- Section 11: Langkah Kesebelas -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Kesebelas</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kesebelas</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/sembayang/image_1.png"
                         alt="Langkah Kesebelas" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-xl font-bold text-gray-900">Baca 7x Qi Fo Mie Zui Zhen Yan</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Baca 7x Qi Fo Mie Zui Zhen Yan</h3>
                     </div>
                 </UCard>
             </div>
 
             <!-- Section 12: Langkah Kedua Belas -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Kedua Belas</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kedua Belas</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterluindonesia.com/assets/assets/images/sembayang/langkah_keduabelas.png"
                         alt="Langkah Kedua Belas" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-xl font-bold text-gray-900">Berdiri</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Berdiri</h3>
                     </div>
                 </UCard>
             </div>
 
             <!-- Section 13: Langkah Ketiga Belas -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Ketiga Belas</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Ketiga Belas</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterluindonesia.com/assets/assets/images/sembayang/langkah_keduabelas.png"
                         alt="Langkah Ketiga Belas" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-xl font-bold text-gray-900">Bersikap Anjali</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Bersikap Anjali</h3>
                     </div>
                 </UCard>
             </div>
 
             <!-- Section 14: Langkah Keempat Belas -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Keempat Belas</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Keempat Belas</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterluindonesia.com/assets/assets/images/sembayang/langkah_keempatbelas.png"
                         alt="Langkah Keempat Belas" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-xl font-bold text-gray-900">Memberikan hormat dengan membungkukkan badan sebanyak 1x atau 3x</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Memberikan hormat dengan
+                            membungkukkan badan
+                            sebanyak 1x atau 3x</h3>
                     </div>
                 </UCard>
             </div>
 
             <!-- Section 15: Langkah Kelima Belas -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Kelima Belas</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kelima Belas</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterluindonesia.com/assets/assets/images/sembayang/langkah_keduabelas.png"
                         alt="Langkah Kelima Belas" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-xl font-bold text-gray-900">Mundur selangkah</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Mundur selangkah</h3>
                     </div>
                 </UCard>
             </div>
 
             <!-- Section 16: Langkah Enam Belas -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Enam Belas</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Enam Belas</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_keenambelas.png"
                         alt="Langkah Enam Belas" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-xl font-bold text-gray-900">Boleh pergi atau kembali melanjutkan pembacaan paritta Anda.</h3>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">Boleh pergi atau kembali melanjutkan
+                            pembacaan paritta Anda.</h3>
                     </div>
                 </UCard>
             </div>
@@ -517,57 +532,57 @@ const langkahKesepuluhItems = [
     {
         id: 1,
         image: 'https://masterluindonesia.com/assets/assets/images/sembayang/image_1.png',
-        title: 'Membaca Paritta',
+        title: 'Mengucapkan Nama Buddha Bodhisattva',
         description: '',
         note: ''
     },
     {
         id: 2,
-        image: 'https://masterluindonesia.com/assets/assets/images/sembayang/langkah_kesepuluh_2.png',
-        title: 'Da Bei Zhou',
-        description: 'Baca minimal 3x',
+        image: 'https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_keenam_2.png',
+        title: 'Gan En Na Mo Shi Jia Mou Ni Fo',
+        description: 'Ucapkan 3x diikuti dengan bersembah sujud',
         note: ''
     },
     {
         id: 3,
-        image: 'https://masterluindonesia.com/assets/assets/images/sembayang/langkah_kesepuluh_3.png',
-        title: 'Xin Jing',
-        description: 'Baca minimal 3x',
+        image: 'https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_keenam_3.png',
+        title: 'Gan En Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa',
+        description: 'Ucapkan 3x diikuti dengan bersembah sujud',
         note: ''
     },
     {
         id: 4,
-        image: 'https://masterluindonesia.com/assets/assets/images/sembayang/langkah_kesepuluh_4.png',
-        title: 'Wang Sheng Jing Tu Shen Zhou',
-        description: 'Baca minimal 21x',
+        image: 'https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_keenam_4.png',
+        title: 'Gan En Na Mo Nan Jing Pu. Sa',
+        description: 'Ucapkan 1x diikuti dengan bersembah sujud',
         note: ''
     },
     {
         id: 5,
-        image: 'https://masterluindonesia.com/assets/assets/images/sembayang/langkah_kesepuluh_5.png',
-        title: 'Qi Fo Mie Zui Zhen Yan',
-        description: 'Baca minimal 21x',
+        image: 'https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_keenam_5.png',
+        title: 'Gan En Na Mo Tai Sui Pu Sa',
+        description: 'Ucapkan 1x diikuti dengan bersembah sujud 3x',
         note: ''
     },
     {
         id: 6,
-        image: 'https://masterluindonesia.com/assets/assets/images/sembayang/langkah_kesepuluh_6.png',
-        title: 'Zhun Ti Shen Zhou',
-        description: 'Baca minimal 21x',
+        image: 'https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_keenam_6.png',
+        title: 'Gan En Na Mo Guan Di Pu Sa',
+        description: 'Ucapkan 1x diikuti dengan bersembah sujud',
         note: ''
     },
     {
         id: 7,
-        image: 'https://masterluindonesia.com/assets/assets/images/sembayang/langkah_kesepuluh_7.png',
-        title: 'Xiao Zai Ji Xiang Shen Zhou',
-        description: 'Baca minimal 21x',
+        image: 'https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_keenam_7.png',
+        title: 'Gan En Na Mo Zhou Cang Pu Sa',
+        description: 'Ucapkan 1x diikuti dengan bersembah sujud 3x',
         note: ''
     },
     {
         id: 8,
-        image: 'https://masterluindonesia.com/assets/assets/images/sembayang/langkah_kesepuluh_8.png',
-        title: 'Li Fo Da Chan Hui Wen',
-        description: 'Baca minimal 1x',
+        image: 'https://masterlu.buildbyriz.io/assets/assets/images/sembayang/langkah_keenam_8.png',
+        title: 'Gan En Na Mo Guan Ping Pu Sa',
+        description: 'Ucapkan 1x diikuti dengan bersembah sujud',
         note: ''
     }
 ]

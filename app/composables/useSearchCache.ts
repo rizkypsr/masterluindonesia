@@ -1,6 +1,6 @@
 interface SearchItem {
   id: number
-  header_id: string
+  header_id: string | number
   title: string
   detail: string
   full_detail: string

@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@elevenlabs/elevenlabs-js": "^2.32.0",
     "@nuxt/icon": "2.2.0",
     "@nuxt/image": "2.0.0",
     "@nuxt/ui": "^4.3.0",

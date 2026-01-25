@@ -1,31 +1,31 @@
 <template>
-    <div class="h-screen bg-white flex flex-col">
+    <div class="h-screen bg-white dark:bg-gray-900 flex flex-col">
         <!-- Header (Fixed) -->
-        <div class="flex items-center justify-between px-4 py-3 border-b shrink-0">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <BackButton to="/?tab=edukasi" />
-            <span class="text-sm text-gray-600">Pekerjaan Rumah Setiap Hari</span>
+            <span class="text-sm text-gray-600 dark:text-gray-400">Pekerjaan Rumah Setiap Hari</span>
             <button @click="isMenuOpen = true" class="p-1">
-                <Icon name="heroicons:bars-3" class="w-5 h-5 text-gray-700" />
+                <Icon name="heroicons:bars-3" class="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </button>
         </div>
 
         <!-- Slideover Menu -->
         <USlideover v-model:open="isMenuOpen" side="bottom">
             <template #content>
-                <div class="p-4">
+                <div class="p-4 bg-white dark:bg-gray-800">
                     <!-- Handle bar -->
                     <div class="flex justify-center mb-4">
-                        <div class="w-12 h-1 bg-gray-300 rounded-full"></div>
+                        <div class="w-12 h-1 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
                     </div>
 
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">DAFTAR MENU</h3>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">DAFTAR MENU</h3>
 
                     <div class="space-y-4">
                         <button 
                             v-for="item in menuItems" 
                             :key="item.id" 
                             @click="scrollToSection(item.id)"
-                            class="block text-gray-900 text-base py-2 hover:text-yellow-600 text-left w-full"
+                            class="block text-gray-900 dark:text-white text-base py-2 hover:text-yellow-600 dark:hover:text-yellow-400 text-left w-full"
                         >
                             {{ item.title }}
                         </button>
@@ -36,8 +36,8 @@
 
         <!-- Content (Scrollable) -->
         <div ref="contentRef" class="flex-1 overflow-y-auto px-4 py-6">
-            <h1 class="text-2xl font-bold text-gray-900 mb-1">Pembacaan PR Setiap</h1>
-            <h1 class="text-2xl font-bold text-gray-900 mb-6">Hari Untuk Pemula</h1>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Pembacaan PR Setiap</h1>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Hari Untuk Pemula</h1>
 
             <!-- Hero Image -->
             <div class="mb-6">
@@ -47,46 +47,46 @@
 
             <!-- Section: Mengapa membaca paritta -->
             <div id="mengapa-membaca-paritta" class="mb-6">
-                <h2 class="text-4xl font-bold mb-1">Mengapa</h2>
-                <h2 class="text-4xl font-bold mb-4">membaca paritta?</h2>
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-1">Mengapa</h2>
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">membaca paritta?</h2>
 
-                <p class="text-gray-700 text-sm mb-4">
+                <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
                     Membaca paritta sangatlah penting bagi kita, karena dengan membaca paritta setiap hari bisa
                     menghubungkan aura kita dengan aura Bodhisattva,
                 </p>
-                <hr class="border-black mb-4" />
+                <hr class="border-black dark:border-gray-600 mb-4" />
 
-                <p class="text-gray-700 text-sm mb-4">
+                <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
                     menerima berkat dari Bodhisattva dan dengan kekuatan yang diterima,
                 </p>
-                <hr class="border-black mb-4" />
+                <hr class="border-black dark:border-gray-600 mb-4" />
 
-                <p class="text-gray-700 text-sm mb-4">
+                <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
                     kita pun mampu bersikap lebih bijaksana dalam menyelesaikan permasalahan yang dihadapi,
                 </p>
-                <hr class="border-black mb-4" />
+                <hr class="border-black dark:border-gray-600 mb-4" />
 
-                <p class="text-gray-700 text-sm mb-4">
+                <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
                     serta membawa kedamaian dan ketenangan dalam hati kita.
                 </p>
-                <hr class="border-black mb-4" />
+                <hr class="border-black dark:border-gray-600 mb-4" />
 
-                <p class="text-gray-700 text-sm mb-4">
+                <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
                     Di dalam Kitab Suci Buddhis tertulis : "Pahala dan kebajikan yang diperoleh dari membaca paritta
                     luar biasa besarnya",
                 </p>
-                <hr class="border-blue-400 mb-4" />
+                <hr class="border-blue-400 dark:border-blue-600 mb-4" />
 
-                <p class="text-gray-700 text-sm">
+                <p class="text-gray-700 dark:text-gray-300 text-sm">
                     Membaca paritta juga merupakan salah satu bentuk kebajikan, yang dapat digunakan untuk menghapus
                     karma buruk dari kehidupan sebelumnya dan sekarang.
                 </p>
             </div>
 
             <!-- Section 2: Perlengkapan Untuk Membaca PR -->
-            <div id="perlengkapan" class="bg-gray-100 -mx-4 px-4 py-6 mb-6">
-                <h2 class="text-xl font-bold text-gray-900 mb-1">Perlengkapan Untuk</h2>
-                <h2 class="text-xl font-bold text-gray-900 mb-6">Membaca PR</h2>
+            <div id="perlengkapan" class="bg-gray-100 dark:bg-gray-800 -mx-4 px-4 py-6 mb-6">
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Perlengkapan Untuk</h2>
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Membaca PR</h2>
 
                 <div class="relative">
                     <img src="https://masterluindonesia.com/assets/assets/images/pr/image_2.png"
@@ -125,14 +125,14 @@
             </div>
 
             <!-- Section 3: Manfaat Membaca Paritta -->
-            <div id="manfaat" class="bg-linear-60 from-[#f5eada] to-[#f6f2ef] -mx-4 px-4 py-6 mb-6">
-                <h2 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Manfaat Membaca Paritta</h2>
+            <div id="manfaat" class="bg-gradient-to-br from-[#f5eada] to-[#f6f2ef] dark:from-gray-800 dark:to-gray-900 -mx-4 px-4 py-6 mb-6">
+                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6 text-center">Manfaat Membaca Paritta</h2>
 
                 <!-- Da Bei Zhou -->
                 <div class="mb-4">
-                    <h3 class="font-bold text-gray-900 mb-2">Da Bei Zhou</h3>
-                    <div class="bg-linear-to-r from-[#e6d0a9] to-[#efdfc2] rounded-lg p-4">
-                        <p class="font-semibold text-[#353026]">
+                    <h3 class="font-bold text-gray-900 dark:text-white mb-2">Da Bei Zhou</h3>
+                    <div class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
+                        <p class="font-semibold text-[#353026] dark:text-gray-200">
                             Mewujudkan segala permohonan, dan juga mengobati segala macam penyakit, dilindungi oleh para
                             Naga Langit dan Dewa Pelindung Dharma.
                         </p>
@@ -141,9 +141,9 @@
 
                 <!-- Xin Jing -->
                 <div class="mb-4">
-                    <h3 class="font-bold text-gray-900 mb-2">Xin Jing</h3>
-                    <div class="bg-linear-to-r from-[#e6d0a9] to-[#efdfc2] rounded-lg p-4">
-                        <p class="font-semibold text-[#353026]">
+                    <h3 class="font-bold text-gray-900 dark:text-white mb-2">Xin Jing</h3>
+                    <div class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
+                        <p class="font-semibold text-[#353026] dark:text-gray-200">
                             Anak kecil yang tidak menurut, orang dewasa yang tidak percaya Ajaran Buddha Dharma, orang
                             tua terlalu keras kepala, perasaan tidak stabil, kurang pintar atau tidak terbuka
                             pikirannya, Depresi.
@@ -153,22 +153,22 @@
 
                 <!-- Li Fo Da Chan Hui Wen -->
                 <div class="mb-4">
-                    <h3 class="font-bold text-gray-900 mb-2">Li Fo Da Chan Hui Wen</h3>
-                    <div class="bg-linear-to-r from-[#e6d0a9] to-[#efdfc2] rounded-lg p-4">
-                        <p class="font-semibold text-[#353026] mb-1">
+                    <h3 class="font-bold text-gray-900 dark:text-white mb-2">Li Fo Da Chan Hui Wen</h3>
+                    <div class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
+                        <p class="font-semibold text-[#353026] dark:text-gray-200 mb-1">
                             Untuk bertobat atau menyesali semua karma buruk yang pernah dilakukan
                         </p>
-                        <p class="font-bold text-gray-900 mb-1">Contohnya:</p>
-                        <p class="text-[#353026] mb-3">
+                        <p class="font-bold text-gray-900 dark:text-white mb-1">Contohnya:</p>
+                        <p class="text-[#353026] dark:text-gray-300 mb-3">
                             pernah menyakiti perasaan orang lain
                         </p>
-                        <p class="text-[#353026] mb-3">
+                        <p class="text-[#353026] dark:text-gray-300 mb-3">
                             Dendam permusuhan yang sudah berlangsung selama puluhan tahun
                         </p>
-                        <p class="text-[#353026] mb-3">
+                        <p class="text-[#353026] dark:text-gray-300 mb-3">
                             Karma buruk masa lalu
                         </p>
-                        <p class="text-[#353026]">
+                        <p class="text-[#353026] dark:text-gray-300">
                             Pernah bersikap tidak hormat pada Bodhisattva, merusak gambar atau rupang Bodhisattva dan
                             lain-lain.
                         </p>
@@ -177,9 +177,9 @@
 
                 <!-- Wang Sheng Zhou -->
                 <div class="mb-4">
-                    <h3 class="font-bold text-gray-900 mb-2">Wang Sheng Zhou</h3>
-                    <div class="bg-linear-to-r from-[#e6d0a9] to-[#efdfc2] rounded-lg p-4">
-                        <p class="font-semibold text-[#353026] mb-1">
+                    <h3 class="font-bold text-gray-900 dark:text-white mb-2">Wang Sheng Zhou</h3>
+                    <div class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
+                        <p class="font-semibold text-[#353026] dark:text-gray-200 mb-1">
                             Wang Sheng Zhou Memohon berkat dari Guan Shi Yin Pu Sa, agar bisa mendapatkan kebahagiaan
                             dan kedamaian duniawi Bisa mendapatkan kebahagiaan dan kedamaian di surga, Mendoakan arwah
                             binatang kecil, unggas, hewan laut, serangga, dan lain-lain yang pernah dibunuh agar bisa
@@ -190,9 +190,9 @@
 
                 <!-- Jie Jie Zhou -->
                 <div class="mb-4">
-                    <h3 class="font-bold text-gray-900 mb-2">Jie Jie Zhou</h3>
-                    <div class="bg-linear-to-r from-[#e6d0a9] to-[#efdfc2] rounded-lg p-4">
-                        <p class="font-semibold text-[#353026] mb-1">
+                    <h3 class="font-bold text-gray-900 dark:text-white mb-2">Jie Jie Zhou</h3>
+                    <div class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
+                        <p class="font-semibold text-[#353026] dark:text-gray-200 mb-1">
                             Jie Jie Zhou Kesalahpahaman antara pasangan Ketidakharmonisan suami istri Ketidakakuran
                             orang tua dan anak Pertikaian dengan rekan kerja Hubungan buruk bos dengan karyawan Utang
                             karma di kehidupan lalu. </p>
@@ -201,12 +201,12 @@
 
                 <!-- Zhan Ti Shen Zhou -->
                 <div class="mb-4">
-                    <h3 class="font-bold text-gray-900 mb-2">Zhan Ti Shen Zhou</h3>
-                    <div class="bg-linear-to-r from-[#e6d0a9] to-[#efdfc2] rounded-lg p-4">
-                        <p class="font-semibold text-[#353026] mb-2">
+                    <h3 class="font-bold text-gray-900 dark:text-white mb-2">Zhan Ti Shen Zhou</h3>
+                    <div class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
+                        <p class="font-semibold text-[#353026] dark:text-gray-200 mb-2">
                             Keberhasilan dalam pekerjaan, Pernikahan yang harmonis, Hasil akademis yang bagus.
                         </p>
-                        <p class="font-semibold text-[#353026]">
+                        <p class="font-semibold text-[#353026] dark:text-gray-200">
                             angat membantu bagi anak muda yang sedang mencari pekerjaan, mencari jodoh, sekolah dan
                             karir, namun harus dilakukan untuk memohon sesuatu hal yang sesuai dengan aturan dan hukum
                             serta masih dalam batas kewajaran.
@@ -216,9 +216,9 @@
 
                 <!-- Xiao Zai Ji Xiang Shen Zhou -->
                 <div class="mb-4">
-                    <h3 class="font-bold text-gray-900 mb-2">Xiao Zai Ji Xiang Shen Zhou</h3>
-                    <div class="bg-linear-to-r from-[#e6d0a9] to-[#efdfc2] rounded-lg p-4">
-                        <p class="font-semibold text-[#353026] mb-2">
+                    <h3 class="font-bold text-gray-900 dark:text-white mb-2">Xiao Zai Ji Xiang Shen Zhou</h3>
+                    <div class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
+                        <p class="font-semibold text-[#353026] dark:text-gray-200 mb-2">
                             Xiao Zai Ji Xiang Shen Zhou Terbebas dari sengketa hukum Kerugian harta benda Perkelahian,
                             denda, sakit mendadak Terhindar dari bencana yang akan datang Bermimpi buruk, dan lain-lain.
                         </p>
@@ -228,8 +228,8 @@
 
                 <!-- Hal Yang Perlu Diperhatikan -->
                 <div class="mb-4">
-                    <h3 class="font-bold text-gray-900 mb-6">Hal Yang Perlu Diperhatikan</h3>
-                    <ol class="text-[#353026] font-semibold list-decimal list-outside space-y-2 px-4">
+                    <h3 class="font-bold text-gray-900 dark:text-white mb-6">Hal Yang Perlu Diperhatikan</h3>
+                    <ol class="text-[#353026] dark:text-gray-300 font-semibold list-decimal list-outside space-y-2 px-4">
                         <li>Boleh kali membaca paritta bila kamu membaca judul paritanya</li>
                         <li>Tidak membaca paritta dari jam 5 pagi sampai jam 5 sore</li>
                         <li>Saat membaca paritta lalu terhenti karena ada gangguan, sebelumnya ulang paritta dari
@@ -249,38 +249,38 @@
 
             <!-- Section 4: Langkah Pertama -->
             <div id="langkah-langkah" class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Pertama</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Pertama</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterluindonesia.com/assets/assets/images/pr/langkah_pertama_1.png"
                         alt="Jing Kou Ye Zhen Yan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-1">Membaca Jing</h3>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-1">Kou Ye Zhen Yan</h3>
-                        <h3 class="text-2xl font-bold text-gray-900">sebanyak 7x</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Membaca Jing</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Kou Ye Zhen Yan</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">sebanyak 7x</h3>
                     </div>
                 </UCard>
             </div>
 
             <!-- Section 5: Langkah Kedua (Carousel) -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Kedua</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kedua</h2>
 
                 <!-- Navigation arrows -->
                 <div class="flex justify-end gap-2 mb-4">
                     <button @click="scrollPrevLangkahKedua()" class="p-1" aria-label="Previous slide">
-                        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-600" />
+                        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                     <button @click="scrollNextLangkahKedua()" class="p-1" aria-label="Next slide">
-                        <Icon name="heroicons:arrow-right" class="w-5 h-5 text-gray-600" />
+                        <Icon name="heroicons:arrow-right" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                 </div>
 
                 <UCarousel ref="langkahKeduaRef" v-slot="{ item }" :items="langkahKeduaItems" :ui="{ item: 'basis-full' }" @select="onSelectLangkahKedua">
-                    <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                    <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                         <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
-                            <h3 class="text-2xl font-bold text-gray-900">{{ item.title }}</h3>
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white">{{ item.title }}</h3>
                         </div>
                     </UCard>
                 </UCarousel>
@@ -288,40 +288,40 @@
 
             <!-- Section 6: Langkah Ketiga -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Ketiga</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Ketiga</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterluindonesia.com/assets/assets/images/pr/langkah_ketiga_1.png"
                         alt="Langkah Ketiga" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Ucapkan</h3>
-                        <p class="text-gray-700">"Terima kasih Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa"</p>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Ucapkan</h3>
+                        <p class="text-gray-700 dark:text-gray-300">"Terima kasih Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa"</p>
                     </div>
                 </UCard>
             </div>
 
             <!-- Section 7: Langkah Keempat (Carousel) -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Langkah Keempat</h2>
-                <p class="text-gray-600 mb-4">Membaca 3 Paritta Utama</p>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Langkah Keempat</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">Membaca 3 Paritta Utama</p>
 
                 <!-- Navigation arrows -->
                 <div class="flex justify-end gap-2 mb-4">
                     <button @click="scrollPrevLangkahKeempat()" class="p-1" aria-label="Previous slide">
-                        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-600" />
+                        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                     <button @click="scrollNextLangkahKeempat()" class="p-1" aria-label="Next slide">
-                        <Icon name="heroicons:arrow-right" class="w-5 h-5 text-gray-600" />
+                        <Icon name="heroicons:arrow-right" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                 </div>
 
                 <UCarousel ref="langkahKeempatRef" v-slot="{ item }" :items="langkahKeempatItems" :ui="{ item: 'basis-full' }" @select="onSelectLangkahKeempat">
-                    <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                    <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                         <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
-                            <h3 class="text-lg font-bold text-gray-900 mb-2">{{ item.title }}</h3>
-                            <p class="text-gray-700 text-sm mb-2">"{{ item.description }}"</p>
-                            <p class="text-gray-500 text-sm">{{ item.count }}</p>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
+                            <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">"{{ item.description }}"</p>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">{{ item.count }}</p>
                         </div>
                     </UCard>
                 </UCarousel>
@@ -329,26 +329,26 @@
 
             <!-- Section 8: Langkah Keempat - Membaca Paritta Pendek (Carousel) -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Langkah Keempat</h2>
-                <p class="text-gray-600 mb-4">Membaca Paritta Pendek</p>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Langkah Keempat</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">Membaca Paritta Pendek</p>
 
                 <!-- Navigation arrows -->
                 <div class="flex justify-end gap-2 mb-4">
                     <button @click="scrollPrevLangkahKeempat2()" class="p-1" aria-label="Previous slide">
-                        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-600" />
+                        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                     <button @click="scrollNextLangkahKeempat2()" class="p-1" aria-label="Next slide">
-                        <Icon name="heroicons:arrow-right" class="w-5 h-5 text-gray-600" />
+                        <Icon name="heroicons:arrow-right" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                 </div>
 
                 <UCarousel ref="langkahKeempat2Ref" v-slot="{ item }" :items="langkahKeempat2Items" :ui="{ item: 'basis-full' }" @select="onSelectLangkahKeempat2">
-                    <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                    <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                         <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
-                            <h3 class="text-lg font-bold text-gray-900 mb-2">{{ item.title }}</h3>
-                            <p class="text-gray-700 text-sm mb-2">"{{ item.description }}"</p>
-                            <p class="text-gray-500 text-sm">{{ item.count }}</p>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
+                            <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">"{{ item.description }}"</p>
+                            <p class="text-gray-500 dark:text-gray-400 text-sm">{{ item.count }}</p>
                         </div>
                     </UCard>
                 </UCarousel>
@@ -356,50 +356,50 @@
 
             <!-- Section 9: Langkah Kelima -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Kelima</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kelima</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterluindonesia.com/assets/assets/images/pr/langkah_kelima_1.png"
                         alt="Bu Que Zhen Yan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Bu Que Zhen Yan</h3>
-                        <p class="text-gray-700">sebanyak 3x atau 7x setelah selesai membaca PR harian</p>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Bu Que Zhen Yan</h3>
+                        <p class="text-gray-700 dark:text-gray-300">sebanyak 3x atau 7x setelah selesai membaca PR harian</p>
                     </div>
                 </UCard>
             </div>
 
             <!-- Section 10: Langkah Keenam -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Keenam</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Keenam</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterluindonesia.com/assets/assets/images/pr/langkah_keenam_1.png"
                         alt="Qi Fo Mie Zui Zhen Yan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Qi Fo Mie Zui Zhen Yan</h3>
-                        <p class="text-gray-700">Sebanyak 3x</p>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Qi Fo Mie Zui Zhen Yan</h3>
+                        <p class="text-gray-700 dark:text-gray-300">Sebanyak 3x</p>
                     </div>
                 </UCard>
             </div>
 
             <!-- Section 11: Langkah Ketujuh -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Langkah Ketujuh</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Ketujuh</h2>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterluindonesia.com/assets/assets/images/pr/langkah_ketiga_1.png"
                         alt="Langkah Ketujuh" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-1">Setelah selesai</h3>
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2">Ucapkan</h3>
-                        <p class="text-gray-700">"Terima kasih Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa telah memberkati dan melindungi saya XXX (nama sendiri)."</p>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Setelah selesai</h3>
+                        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Ucapkan</h3>
+                        <p class="text-gray-700 dark:text-gray-300">"Terima kasih Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa telah memberkati dan melindungi saya XXX (nama sendiri)."</p>
                     </div>
                 </UCard>
             </div>
 
             <!-- Section 12: Video Tutorial -->
             <div id="video-tutorial" class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Video Tutorial</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Video Tutorial</h2>
 
                 <div class="aspect-video rounded-lg overflow-hidden">
                     <iframe 
@@ -415,10 +415,10 @@
 
             <!-- Section 13: Contoh Gambar -->
             <div id="unduh" class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Contoh Gambar</h2>
-                <p class="text-gray-600 mb-4">*Download gambar di tab Beranda Unduh</p>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Contoh Gambar</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">*Download gambar di tab Beranda Unduh</p>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://masterluindonesia.com/assets/assets/images/pr/pedoman_pr.png"
                         alt="Pedoman PR" class="w-full h-96 object-cover rounded-lg" />
                 </UCard>

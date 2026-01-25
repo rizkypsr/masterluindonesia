@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { useBookmark } from '~/composables/useBookmark'
+import { useHistory } from '~/composables/useHistory'
 
 const route = useRoute()
-const router = useRouter()
 
 const bookId = route.params.bookId as string
 const chapterId = route.params.chapterId as string
 
 // Bookmark
 const { createBookBookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
+
+// History
+const { saveBookChapterHistory } = useHistory()
 
 const isBookBookmarked = ref(false)
 
@@ -47,6 +50,7 @@ interface ContentResponse {
 const isMenuOpen = ref(false)
 const currentPageIndex = ref(0)
 const isToolsExpanded = ref(false)
+const isBottomNavHidden = ref(false)
 const contents = ref<BookContent[]>([])
 const isLoadingContents = ref(true)
 const contentRef = ref<HTMLElement | null>(null)
@@ -67,6 +71,13 @@ const currentTime = ref(0)
 const duration = ref(0)
 const isSpeaking = ref(false)
 
+// Swipe gesture state
+const touchStartX = ref(0)
+const touchStartY = ref(0)
+const isSwiping = ref(false)
+const SWIPE_THRESHOLD = 50
+const SWIPE_VERTICAL_LIMIT = 100
+
 interface SearchResult {
     pageIndex: number
     snippet: string
@@ -74,19 +85,14 @@ interface SearchResult {
 }
 
 // Fetch book detail
-const { data: bookDetail, error: bookError } = await useFetch<{ success: boolean; data: BookDetail }>(
+const { data: bookDetail } = await useFetch<BookDetail>(
     `https://api.masterluindonesia.com/api/books/detail/${bookId}`
 )
 
-// Handle 404 if book not found
-if (bookError.value || !bookDetail.value?.data) {
-    throw createError({
-        statusCode: 404,
-        statusMessage: 'Buku tidak ditemukan'
-    })
-}
+const bookData = computed(() => bookDetail.value)
 
-const bookData = computed(() => bookDetail.value?.data)
+// Chapter title from query or will be fetched
+const chapterTitle = ref(route.query.chapter as string || '')
 
 // Fetch book contents
 onMounted(async () => {
@@ -111,6 +117,17 @@ onMounted(async () => {
                     currentPageIndex.value = contentIndex + 1
                 }
             }
+        }
+        
+        // Save to history
+        if (bookData.value?.title) {
+            const chapTitle = chapterTitle.value || `${currentPageIndex.value + 1}`
+            saveBookChapterHistory(
+                bookData.value.title,
+                chapTitle,
+                Number(bookId),
+                Number(chapterId)
+            )
         }
     } catch (e) {
         console.error('Failed to load contents', e)
@@ -188,10 +205,6 @@ function stripHtml(html: string): string {
         .trim()
 }
 
-function goBack() {
-    router.back()
-}
-
 function nextPage() {
     if (currentPageIndex.value < totalPages.value - 1) {
         stopAudio()
@@ -223,19 +236,23 @@ function scrollToTop() {
 function shareContent() {
     const pageNum = currentPageIndex.value + 1
     const title = bookData.value?.title || ''
-    const shareUrl = `${window.location.origin}${window.location.pathname}?page=${pageNum}`
-    const shareText = `${title}: Halaman ${pageNum}\n${shareUrl}`
     
-    const shareData = {
-        title: `${title}: Halaman ${pageNum}`,
-        text: shareText,
-        url: shareUrl
-    }
+    // Build clean URL with page parameter
+    const baseUrl = `${window.location.origin}${window.location.pathname}`
+    const params = new URLSearchParams(window.location.search)
+    params.set('page', currentPageIndex.value.toString())
+    const shareUrl = `${baseUrl}?${params.toString()}`
+    const shareTitle = `${title} halaman: ${pageNum}`
 
     if (navigator.share) {
-        navigator.share(shareData)
+        navigator.share({
+            title: shareTitle,
+            text: shareTitle,
+            url: shareUrl
+        })
     } else {
         // Fallback: copy to clipboard
+        const shareText = `${shareTitle}\n${shareUrl}`
         navigator.clipboard.writeText(shareText)
     }
 }
@@ -406,10 +423,26 @@ function toggleSpeech() {
 function startSpeech() {
     if (!currentContent.value?.content_wa) return
 
-    const utterance = new SpeechSynthesisUtterance(currentContent.value.content_wa)
+    // Replace literal \n with actual newlines, then clean up for speech
+    const text = currentContent.value.content_wa
+        .replace(/\\n/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+    
+    const utterance = new SpeechSynthesisUtterance(text)
     utterance.lang = 'id-ID'
     utterance.onend = () => {
         isSpeaking.value = false
+        // Go to next page if exists
+        if (currentPageIndex.value < totalPages.value - 1) {
+            nextPage()
+            // Auto-start speech on next page
+            setTimeout(() => {
+                if (currentContent.value?.content_wa) {
+                    startSpeech()
+                }
+            }, 500)
+        }
     }
     speechSynthesis.speak(utterance)
     isSpeaking.value = true
@@ -438,12 +471,53 @@ async function copyText() {
 watch(currentPageIndex, () => {
     stopAudio()
 })
+
+// Swipe gesture handlers
+function onTouchStart(e: TouchEvent) {
+    if (isSearchMode.value) return
+    const touch = e.touches[0]
+    if (!touch) return
+    touchStartX.value = touch.clientX
+    touchStartY.value = touch.clientY
+    isSwiping.value = true
+}
+
+function onTouchEnd(e: TouchEvent) {
+    if (!isSwiping.value || isSearchMode.value) return
+    
+    const touch = e.changedTouches[0]
+    if (!touch) return
+    
+    const touchEndX = touch.clientX
+    const touchEndY = touch.clientY
+    const diffX = touchEndX - touchStartX.value
+    const diffY = Math.abs(touchEndY - touchStartY.value)
+    
+    // Only trigger swipe if horizontal movement is significant and vertical is limited
+    if (Math.abs(diffX) > SWIPE_THRESHOLD && diffY < SWIPE_VERTICAL_LIMIT) {
+        if (diffX > 0) {
+            // Swipe right -> previous page
+            prevPage()
+        } else {
+            // Swipe left -> next page
+            nextPage()
+        }
+    }
+    
+    isSwiping.value = false
+}
+
+// Stop speech when leaving the page
+onBeforeUnmount(() => {
+    stopSpeech()
+    stopAudio()
+})
 </script>
 
 <template>
     <div class="h-screen bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
         <!-- Header - Normal Mode -->
-        <div v-if="!isSearchMode" class="flex items-center justify-between px-4 py-4 border-b border-gray-200 shrink-0">
+        <div v-if="!isSearchMode" class="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <div class="flex items-center gap-3">
                 <BackButton />
                 <h1 class="text-lg font-semibold text-black dark:text-white truncate max-w-[200px]">
@@ -485,7 +559,7 @@ watch(currentPageIndex, () => {
         </div>
 
         <!-- Header - Search Mode -->
-        <div v-else class="flex items-center gap-3 px-4 py-3 border-b border-gray-200 shrink-0">
+        <div v-else class="flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <button @click="closeSearch" class="p-1">
                 <Icon name="mdi:close" class="w-6 h-6 text-black dark:text-white" />
             </button>
@@ -514,7 +588,9 @@ watch(currentPageIndex, () => {
         </div>
 
         <!-- Content Area (scrollable) - Normal Mode -->
-        <div v-else ref="contentRef" class="flex-1 overflow-y-auto px-4 py-6">
+        <div v-else ref="contentRef" class="flex-1 overflow-y-auto px-4 py-6"
+            @touchstart="onTouchStart"
+            @touchend="onTouchEnd">
             <!-- Page 1: Book Detail (Cover + Title) -->
             <template v-if="currentPageIndex === 0">
                 <div v-if="bookData?.url" class="flex justify-center mb-6">
@@ -560,9 +636,21 @@ watch(currentPageIndex, () => {
                 @scrollTop="scrollToTop"
             />
 
+            <!-- Toggle Arrow Button -->
+            <button 
+                @click="isBottomNavHidden = !isBottomNavHidden"
+                class="absolute left-1/2 -translate-x-1/2 -top-6 z-10 w-10 h-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-t-lg flex items-center justify-center shadow-sm"
+            >
+                <Icon 
+                    :name="isBottomNavHidden ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                    class="w-5 h-5 text-gray-600 dark:text-gray-400" 
+                />
+            </button>
+
             <!-- Bottom Navigation - Page 1 (simple) -->
             <div v-if="currentPageIndex === 0"
-                class="border-t border-gray-200 bg-white dark:bg-gray-900 px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+                class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 transition-all duration-300 overflow-hidden"
+                :class="isBottomNavHidden ? 'max-h-0 py-0' : 'max-h-40 px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]'">
                 <div class="flex items-center justify-between">
                     <button @click="prevPage" :disabled="currentPageIndex === 0" class="p-2 disabled:opacity-30">
                         <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
@@ -580,7 +668,10 @@ watch(currentPageIndex, () => {
             </div>
 
             <!-- Bottom Navigation - Page 2+ (with audio player) -->
-            <div v-else class="border-t border-gray-200 bg-white dark:bg-gray-900 pb-[env(safe-area-inset-bottom)]">
+            <div v-else 
+                class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 transition-all duration-300 overflow-hidden"
+                :class="isBottomNavHidden ? 'max-h-0' : 'max-h-96 pb-[env(safe-area-inset-bottom)]'"
+            >
                 <!-- Audio Player Section -->
                 <div v-if="currentAudio" class="px-4 pt-4">
                     <!-- Audio Title Badge -->

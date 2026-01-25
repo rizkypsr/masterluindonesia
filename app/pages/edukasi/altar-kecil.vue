@@ -1,28 +1,28 @@
 <template>
-    <div class="h-screen bg-white flex flex-col">
+    <div class="h-screen bg-white dark:bg-gray-900 flex flex-col">
         <!-- Header (Fixed) -->
-        <div class="flex items-center justify-between px-4 py-3 border-b shrink-0">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <BackButton to="/?tab=edukasi" />
-            <span class="text-sm text-gray-600">Altar Kecil</span>
+            <span class="text-sm text-gray-600 dark:text-gray-400">Altar Kecil</span>
             <button @click="isMenuOpen = true" class="p-1">
-                <Icon name="heroicons:bars-3" class="w-5 h-5 text-gray-700" />
+                <Icon name="heroicons:bars-3" class="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </button>
         </div>
 
         <!-- Slideover Menu -->
         <USlideover v-model:open="isMenuOpen" side="bottom">
             <template #content>
-                <div class="p-4">
+                <div class="p-4 bg-white dark:bg-gray-800">
                     <!-- Handle bar -->
                     <div class="flex justify-center mb-4">
-                        <div class="w-12 h-1 bg-gray-300 rounded-full"></div>
+                        <div class="w-12 h-1 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
                     </div>
 
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">DAFTAR MENU</h3>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">DAFTAR MENU</h3>
 
                     <div class="space-y-4">
                         <button v-for="item in menuItems" :key="item.id" @click="scrollToSection(item.id)"
-                            class="block text-gray-900 text-base py-2 hover:text-yellow-600 text-left w-full">
+                            class="block text-gray-900 dark:text-white text-base py-2 hover:text-yellow-600 dark:hover:text-yellow-400 text-left w-full">
                             {{ item.title }}
                         </button>
                     </div>
@@ -40,10 +40,10 @@
 
             <!-- Section 1: Altar Kecil Khusus Melafalkan Paritta -->
             <div id="altar-kecil" class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">171. Altar Kecil Khusus</h2>
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Melafalkan Paritta</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">171. Altar Kecil Khusus</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Melafalkan Paritta</h2>
 
-                <div class="space-y-4 text-black">
+                <div class="space-y-4 text-black dark:text-gray-300">
                     <p><span class="font-bold">Tanya [171]:</span> Ada seorang saudara se-Dharma yang menggunakan satu meja kecil khusus untuk melafalkan paritta, Master pernah mengatakan bahwa dia boleh meletakkan satu lembar foto Bodhisattva, lalu menyalakan satu batang dupa ketika melafalkan paritta, begitu lebih bagus. Mohon tanya, bagaimana detail pelaksanaannya?</p>
                     
                     <p class="font-bold">Jawab [171] :</p>

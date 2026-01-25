@@ -1,9 +1,9 @@
 <template>
-    <div class="h-screen bg-white flex flex-col">
+    <div class="h-screen bg-white dark:bg-gray-900 flex flex-col">
         <!-- Header (Fixed) -->
-        <div class="flex items-center justify-between px-4 py-3 border-b shrink-0">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <BackButton to="/?tab=edukasi" />
-            <span class="text-sm text-gray-600">Permohonan Penggantian Nama</span>
+            <span class="text-sm text-gray-600 dark:text-gray-400">Permohonan Penggantian Nama</span>
             <div class="w-6"></div>
         </div>
 
@@ -11,14 +11,14 @@
         <div ref="contentRef" class="flex-1 overflow-y-auto px-4 py-6">
             <!-- Section 1: Permohonan Penggantian Nama -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Permohonan Penggantian Nama</h2>
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">(Gai Ming Sheng Wen)</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Permohonan Penggantian Nama</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">(Gai Ming Sheng Wen)</h2>
 
                 <!-- Hero Image -->
                 <img src="https://masterluindonesia.com/assets/assets/images/bimbingan/ganti_nama.png"
                     alt="Permohonan Penggantian Nama" class="w-full h-96 object-cover rounded-lg mb-6" />
 
-                <div class="space-y-4 text-black">
+                <div class="space-y-4 text-black dark:text-gray-300">
                     <p>Nama mewakili jiwa seseorang, ketika nama seseorang dipanggil, maka jiwanya juga akan terpanggil mengikuti namanya.</p>
                     
                     <p>Ketika seseorang dilahirkan, maka nama yang tertulis di akta kelahiran, akan dicatat juga di Langit dan Alam Akhirat.</p>
@@ -91,27 +91,27 @@
 
             <!-- Section 2: Contoh Gambar (Carousel) -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Contoh Gambar</h2>
-                <p class="text-gray-600 mb-4">*Download gambar di tab Beranda Unduh</p>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Contoh Gambar</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">*Download gambar di tab Beranda Unduh</p>
 
                 <!-- Navigation arrows -->
                 <div class="flex justify-end gap-2 mb-4">
                     <button @click="scrollPrevUnduh()" class="p-1" aria-label="Previous slide">
-                        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-600" />
+                        <Icon name="heroicons:arrow-left" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                     <button @click="scrollNextUnduh()" class="p-1" aria-label="Next slide">
-                        <Icon name="heroicons:arrow-right" class="w-5 h-5 text-gray-600" />
+                        <Icon name="heroicons:arrow-right" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                     </button>
                 </div>
 
                 <UCarousel ref="unduhRef" v-slot="{ item }" :items="unduhItems" :ui="{ item: 'basis-full' }"
                     @select="onSelectUnduh">
                     <div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-4">{{ item.title }}</h3>
-                        <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">{{ item.title }}</h3>
+                        <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl">
                             <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg" />
                         </UCard>
-                        <p v-if="item.description" class="text-black mt-4">{{ item.description }}</p>
+                        <p v-if="item.description" class="text-black dark:text-gray-300 mt-4">{{ item.description }}</p>
                     </div>
                 </UCarousel>
             </div>

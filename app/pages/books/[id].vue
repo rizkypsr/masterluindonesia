@@ -1,21 +1,21 @@
 <template>
-  <div class="h-screen bg-white flex flex-col overflow-hidden">
+  <div class="h-screen bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
     <!-- Header -->
-    <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200 shrink-0">
+    <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
       <div class="flex items-center gap-4">
-        <button @click="$router.back()" class="p-1 flex justify-center items-center hover:bg-gray-100 cursor-pointer">
-          <Icon name="mdi:arrow-left" class="w-6 h-6 text-black" />
+        <button @click="$router.back()" class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
+          <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
         </button>
-        <h1 class="text-lg font-semibold text-black">Detail Buku</h1>
+        <h1 class="text-lg font-semibold text-black dark:text-white">Detail Buku</h1>
       </div>
       <div class="flex items-center gap-3">
         <button class="p-1" @click="addToBookmark">
           <Icon :name="isBookBookmarked ? 'mdi:star' : 'mdi:star-outline'" 
-                :class="isBookBookmarked ? 'text-yellow-500' : 'text-black'"
+                :class="isBookBookmarked ? 'text-yellow-500' : 'text-black dark:text-white'"
                 class="w-6 h-6" />
         </button>
         <button class="p-1" @click="shareBook">
-          <Icon name="mdi:share-variant" class="w-6 h-6 text-black" />
+          <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
         </button>
       </div>
     </div>
@@ -26,40 +26,41 @@
         <NuxtImg :src="bookCover" :alt="bookTitle" class="w-24 h-32 object-cover rounded-xl shrink-0" loading="lazy"
           placeholder="/fallback.svg" fallback="/fallback.svg" />
         <template #fallback>
-          <div class="w-24 h-32 bg-gray-200 rounded-xl animate-pulse shrink-0"></div>
+          <div class="w-24 h-32 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse shrink-0"></div>
         </template>
       </ClientOnly>
-      <h2 class="font-semibold text-black" :style="{ fontSize: (fontSize + 4) + 'px' }">{{ bookTitle }}</h2>
+      <h2 class="font-semibold text-black dark:text-white" :style="{ fontSize: (fontSize + 4) + 'px' }">{{ bookTitle }}</h2>
     </div>
 
     <!-- Content -->
     <div class="px-4 flex-1 flex flex-col overflow-hidden">
       <!-- Empty State -->
       <div v-if="chapters.length === 0" class="flex flex-col items-center justify-center flex-1">
-        <div class="w-32 h-32 rounded-full border-2 border-gray-200 flex items-center justify-center mb-4 relative">
-          <Icon name="mdi:package-variant" class="w-16 h-16 text-gray-300" />
-          <div class="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-white flex items-center justify-center">
-            <Icon name="mdi:cancel" class="w-6 h-6 text-gray-300" />
+        <div class="w-32 h-32 rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center mb-4 relative">
+          <Icon name="mdi:package-variant" class="w-16 h-16 text-gray-300 dark:text-gray-600" />
+          <div class="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center">
+            <Icon name="mdi:cancel" class="w-6 h-6 text-gray-300 dark:text-gray-600" />
           </div>
         </div>
-        <p class="text-gray-500 font-medium">Data tidak tersedia</p>
+        <p class="text-gray-500 dark:text-gray-400 font-medium">Data tidak tersedia</p>
       </div>
 
       <!-- Chapters List -->
       <div v-else class="flex flex-col overflow-hidden flex-1">
-        <h3 class="font-semibold text-black mb-4 shrink-0" :style="{ fontSize: (fontSize + 2) + 'px' }">Daftar Isi</h3>
+        <h3 class="font-semibold text-black dark:text-white mb-4 shrink-0" :style="{ fontSize: (fontSize + 2) + 'px' }">Daftar Isi</h3>
 
         <div ref="scrollContainer" class="overflow-y-auto flex-1 custom-scrollbar pb-4">
           <div v-for="chapter in chapters" :key="chapter.id" class="mb-4">
             <!-- Chapter Title -->
-            <h4 class="font-semibold text-black py-2" :style="{ fontSize: fontSize + 'px' }">{{ chapter.title }}</h4>
+            <h4 class="font-semibold text-black dark:text-white py-2" :style="{ fontSize: fontSize + 'px' }">{{ chapter.title }}</h4>
 
             <!-- Sub Chapters -->
             <div v-if="chapter.sub_chapters && chapter.sub_chapters.length > 0">
-              <NuxtLink v-for="sub in chapter.sub_chapters" :key="sub.id" :to="`/book/${bookId}/${sub.id}`"
-                class="block cursor-pointer hover:bg-gray-50">
-                <div class="py-3 ml-4 border-b border-gray-400">
-                  <span class="text-black" :style="{ fontSize: fontSize + 'px' }">{{ sub.title }}</span>
+              <NuxtLink v-for="sub in chapter.sub_chapters" :key="sub.id" 
+                :to="{ path: `/book/${bookId}/${sub.id}`, query: { chapter: sub.title } }"
+                class="block cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800">
+                <div class="py-3 ml-4 border-b border-gray-400 dark:border-gray-600">
+                  <span class="text-black dark:text-white" :style="{ fontSize: fontSize + 'px' }">{{ sub.title }}</span>
                 </div>
               </NuxtLink>
             </div>
@@ -86,6 +87,7 @@
 
 <script setup lang="ts">
 import { useBookmark } from '~/composables/useBookmark'
+import { useHistory } from '~/composables/useHistory'
 
 const route = useRoute()
 
@@ -97,12 +99,18 @@ const scrollContainer = ref<HTMLElement | null>(null)
 // Bookmark
 const { createBookBookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
 
+// History
+const { saveBookHistory } = useHistory()
+
 const isBookBookmarked = computed(() => {
   return isBookmarked(3, bookTitle.value)
 })
 
 onMounted(async () => {
   await fetchBookmarksByType(3)
+  
+  // Save to history
+  saveBookHistory(bookTitle.value, Number(bookId.value))
 })
 
 const zoomIn = () => {

@@ -7,7 +7,7 @@
 
     <!-- Error State -->
     <div v-else-if="error" class="text-center py-12">
-      <p class="text-red-500">Gagal memuat data</p>
+      <p class="text-red-500 dark:text-red-400">Gagal memuat data</p>
       <UButton @click="() => refresh()" class="mt-4" variant="outline">Coba Lagi</UButton>
     </div>
 
@@ -15,7 +15,7 @@
     <div v-else class="space-y-6">
       <div v-for="category in categories" :key="category.id">
         <!-- Main Category Title -->
-        <h2 class="text-xl font-bold text-black mb-4 border-b border-gray-300 pb-2">
+        <h2 class="text-xl font-bold text-black dark:text-white mb-4 border-b border-gray-300 dark:border-gray-600 pb-2">
           {{ category.title }}
         </h2>
 
@@ -23,7 +23,7 @@
         <div class="space-y-6">
           <div v-for="sub in category.sub" :key="sub.id">
             <!-- Subcategory Title -->
-            <h3 class="text-lg font-semibold text-black italic mb-3">
+            <h3 class="text-lg font-semibold text-black dark:text-white italic mb-3">
               {{ sub.title }}
             </h3>
 
@@ -48,7 +48,7 @@
                       placeholder="/fallback.svg"
                     />
                     <template #fallback>
-                      <div class="w-full aspect-3/4 bg-gray-200 rounded-lg animate-pulse"></div>
+                      <div class="w-full aspect-3/4 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
                     </template>
                   </ClientOnly>
                   <!-- PDF Badge -->
@@ -67,7 +67,7 @@
                   </div>
                 </div>
                 <!-- Item Title -->
-                <p class="mt-2 text-sm text-center text-black line-clamp-2">
+                <p class="mt-2 text-sm text-center text-black dark:text-white line-clamp-2">
                   {{ item.title }}
                 </p>
               </div>

@@ -1,8 +1,8 @@
 <template>
   <div class="pb-2 px-4">
     <!-- Header -->
-    <h1 class="text-2xl font-bold text-black">Hubungi Xin Ling Fa Men</h1>
-    <p class="text-2xl font-bold text-black mb-4">心灵法门</p>
+    <h1 class="text-2xl font-bold text-black dark:text-white">Hubungi Xin Ling Fa Men</h1>
+    <p class="text-2xl font-bold text-black dark:text-white mb-4">心灵法门</p>
 
     <!-- Search Input -->
     <UInput
@@ -20,7 +20,7 @@
 
     <!-- Error State -->
     <div v-else-if="error" class="text-center py-12">
-      <p class="text-red-500">Gagal memuat data</p>
+      <p class="text-red-500 dark:text-red-400">Gagal memuat data</p>
       <UButton @click="() => refresh()" class="mt-4" variant="outline">Coba Lagi</UButton>
     </div>
 
@@ -28,7 +28,7 @@
     <div v-else class="space-y-3">
       <div v-for="country in filteredCountries" :key="country.flag">
         <!-- Country Collapsible -->
-        <UCollapsible class="bg-white rounded-xl shadow-sm">
+        <UCollapsible class="bg-white dark:bg-gray-800 rounded-xl shadow-sm">
           <template #default="{ open }">
             <UButton
               variant="ghost"
@@ -41,11 +41,11 @@
                   :alt="country.country"
                   class="w-8 h-6 object-cover"
                 />
-                <span class="font-medium text-black text-left">{{ country.country }}</span>
+                <span class="font-medium text-black dark:text-white text-left">{{ country.country }}</span>
               </div>
               <UIcon
                 name="i-heroicons-chevron-down"
-                class="w-5 h-5 text-gray-500 transition-transform"
+                class="w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform"
                 :class="{ 'rotate-180': open }"
               />
             </UButton>
@@ -56,21 +56,21 @@
             <div class="space-y-2 px-4 pb-4">
               <div v-for="city in country.contact" :key="city.city">
                 <!-- City Collapsible -->
-                <UCollapsible class="bg-[#fffbeb] rounded-xl shadow-sm border border-gray-100">
+                <UCollapsible class="bg-[#fffbeb] dark:bg-gray-700 rounded-xl shadow-sm border border-gray-100 dark:border-gray-600">
                   <template #default="{ open: cityOpen }">
                     <UButton
                       variant="ghost"
                       class="w-full justify-between px-4 py-3"
                       :ui="{ base: 'hover:bg-transparent' }"
                     >
-                      <span class="font-medium text-black">{{ city.city }}</span>
+                      <span class="font-medium text-black dark:text-white">{{ city.city }}</span>
                       <div class="flex items-center gap-2">
-                        <span class="bg-[#f8cb45] text-black text-sm font-semibold px-2.5 py-0.5 rounded-full">
+                        <span class="bg-[#f8cb45] dark:bg-yellow-500 text-black text-sm font-semibold px-2.5 py-0.5 rounded-full">
                           {{ city.detail.length }}
                         </span>
                         <UIcon
                           name="i-heroicons-chevron-down"
-                          class="w-5 h-5 text-gray-500 transition-transform"
+                          class="w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform"
                           :class="{ 'rotate-180': cityOpen }"
                         />
                       </div>
@@ -83,33 +83,33 @@
                       <div
                         v-for="detail in city.detail"
                         :key="detail.id"
-                        class="bg-amber-50 rounded-xl p-4"
+                        class="bg-amber-50 dark:bg-gray-600 rounded-xl p-4"
                       >
                         <!-- Name -->
-                        <h3 class="font-bold text-black whitespace-pre-line mb-3">{{ detail.name }}</h3>
+                        <h3 class="font-bold text-black dark:text-white whitespace-pre-line mb-3">{{ detail.name }}</h3>
 
                         <!-- Address -->
                         <div v-if="detail.address" class="flex gap-2 mb-2">
-                          <UIcon name="i-heroicons-map-pin" class="w-5 h-5 text-black shrink-0 mt-0.5" />
-                          <p class="text-gray-700 text-sm whitespace-pre-line">{{ detail.address }}</p>
+                          <UIcon name="i-heroicons-map-pin" class="w-5 h-5 text-black dark:text-white shrink-0 mt-0.5" />
+                          <p class="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-line">{{ detail.address }}</p>
                         </div>
 
                         <!-- Phone -->
                         <div v-if="detail.telp" class="flex gap-2 mb-2">
-                          <UIcon name="i-heroicons-phone" class="w-5 h-5 text-black shrink-0" />
-                          <p class="text-gray-700 text-sm">{{ detail.telp }}</p>
+                          <UIcon name="i-heroicons-phone" class="w-5 h-5 text-black dark:text-white shrink-0" />
+                          <p class="text-gray-700 dark:text-gray-300 text-sm">{{ detail.telp }}</p>
                         </div>
 
                         <!-- Email -->
                         <div v-if="detail.email" class="flex gap-2 mb-2">
-                          <UIcon name="i-heroicons-envelope" class="w-5 h-5 text-black shrink-0" />
-                          <p class="text-gray-700 text-sm">{{ detail.email }}</p>
+                          <UIcon name="i-heroicons-envelope" class="w-5 h-5 text-black dark:text-white shrink-0" />
+                          <p class="text-gray-700 dark:text-gray-300 text-sm">{{ detail.email }}</p>
                         </div>
 
                         <!-- Website -->
                         <div v-if="detail.website" class="flex gap-2 mb-4">
-                          <UIcon name="i-heroicons-globe-alt" class="w-5 h-5 text-black shrink-0" />
-                          <p class="text-gray-700 text-sm break-all">{{ detail.website }}</p>
+                          <UIcon name="i-heroicons-globe-alt" class="w-5 h-5 text-black dark:text-white shrink-0" />
+                          <p class="text-gray-700 dark:text-gray-300 text-sm break-all">{{ detail.website }}</p>
                         </div>
 
                         <!-- Action Buttons -->
@@ -117,34 +117,34 @@
                           <button
                             v-if="detail.telp"
                             @click="handleCall(detail.telp)"
-                            class="w-10 h-10 rounded-full bg-[#f8d177] flex items-center justify-center"
+                            class="w-10 h-10 rounded-full bg-[#f8d177] dark:bg-yellow-500 flex items-center justify-center"
                           >
                             <UIcon name="i-heroicons-phone" class="w-5 h-5 text-white" />
                           </button>
                           <button
                             v-if="detail.email"
                             @click="handleEmail(detail.email)"
-                            class="w-10 h-10 rounded-full bg-[#f8d177] flex items-center justify-center"
+                            class="w-10 h-10 rounded-full bg-[#f8d177] dark:bg-yellow-500 flex items-center justify-center"
                           >
                             <UIcon name="i-heroicons-envelope" class="w-5 h-5 text-white" />
                           </button>
                           <button
                             v-if="detail.website"
                             @click="handleWebsite(detail.website)"
-                            class="w-10 h-10 rounded-full bg-[#f8d177] flex items-center justify-center"
+                            class="w-10 h-10 rounded-full bg-[#f8d177] dark:bg-yellow-500 flex items-center justify-center"
                           >
                             <UIcon name="i-heroicons-globe-alt" class="w-5 h-5 text-white" />
                           </button>
                           <button
                             v-if="detail.maps"
                             @click="handleMaps(detail.maps)"
-                            class="w-10 h-10 rounded-full bg-[#f8d177] flex items-center justify-center"
+                            class="w-10 h-10 rounded-full bg-[#f8d177] dark:bg-yellow-500 flex items-center justify-center"
                           >
                             <UIcon name="i-heroicons-map-pin" class="w-5 h-5 text-white" />
                           </button>
                           <button
                             @click="handleShare(detail)"
-                            class="w-10 h-10 rounded-full bg-[#f8d177] flex items-center justify-center"
+                            class="w-10 h-10 rounded-full bg-[#f8d177] dark:bg-yellow-500 flex items-center justify-center"
                           >
                             <UIcon name="i-heroicons-share" class="w-5 h-5 text-white" />
                           </button>
@@ -161,7 +161,7 @@
 
       <!-- No Results -->
       <div v-if="filteredCountries.length === 0 && searchQuery" class="text-center py-8">
-        <p class="text-gray-500">Tidak ada hasil untuk "{{ searchQuery }}"</p>
+        <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil untuk "{{ searchQuery }}"</p>
       </div>
     </div>
   </div>

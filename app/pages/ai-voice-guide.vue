@@ -46,9 +46,9 @@ function nextXiaomi() {
 </script>
 
 <template>
-  <div>
+  <div class="min-h-screen bg-white dark:bg-gray-900">
     <!-- Header -->
-    <div class="px-4 py-4 bg-white dark:bg-gray-900 shadow-md flex items-center gap-3">
+    <div class="px-4 py-4 bg-white dark:bg-gray-800 shadow-md flex items-center gap-3">
       <BackButton />
       <h1 class="text-black dark:text-white">Panduan Text To Speech</h1>
     </div>
@@ -62,7 +62,7 @@ function nextXiaomi() {
         </h2>
         <div class="flex justify-end gap-2 mb-2">
           <button @click="prevSamsung" :disabled="samsungIndex === 0" class="p-1 disabled:opacity-30">
-            <Icon name="mdi:arrow-left" class="w-6 h-6 text-gray-400" />
+            <Icon name="mdi:arrow-left" class="w-6 h-6 text-gray-400 dark:text-gray-500" />
           </button>
           <button @click="nextSamsung" :disabled="samsungIndex === samsungImages.length - 1" class="p-1 disabled:opacity-30">
             <Icon name="mdi:arrow-right" class="w-6 h-6 text-black dark:text-white" />
@@ -84,7 +84,7 @@ function nextXiaomi() {
         </h2>
         <div class="flex justify-end gap-2 mb-2">
           <button @click="prevXiaomi" :disabled="xiaomiIndex === 0" class="p-1 disabled:opacity-30">
-            <Icon name="mdi:arrow-left" class="w-6 h-6 text-gray-400" />
+            <Icon name="mdi:arrow-left" class="w-6 h-6 text-gray-400 dark:text-gray-500" />
           </button>
           <button @click="nextXiaomi" :disabled="xiaomiIndex === xiaomiImages.length - 1" class="p-1 disabled:opacity-30">
             <Icon name="mdi:arrow-right" class="w-6 h-6 text-black dark:text-white" />

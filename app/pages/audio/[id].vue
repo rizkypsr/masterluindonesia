@@ -1,11 +1,11 @@
 <template>
-  <div class="min-h-screen bg-gray-50 pb-40">
+  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 pb-40">
     <!-- Header -->
-    <div class="bg-white px-4 py-4 flex items-center gap-3 shadow-sm">
-      <button @click="$router.back()" class="p-1 flex justify-center items-center hover:bg-gray-100 cursor-pointer">
-        <Icon name="mdi:arrow-left" class="w-6 h-6 text-black" />
+    <div class="bg-white dark:bg-gray-800 px-4 py-4 flex items-center gap-3 shadow-sm">
+      <button @click="$router.back()" class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
+        <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
       </button>
-      <h1 class="text-lg font-semibold text-black">{{ pageTitle }}</h1>
+      <h1 class="text-lg font-semibold text-black dark:text-white">{{ pageTitle }}</h1>
     </div>
 
     <!-- Content -->
@@ -13,14 +13,14 @@
       <!-- Loading State -->
       <div v-if="pending" class="space-y-4">
         <div class="flex gap-2 overflow-x-auto pb-2">
-          <div v-for="i in 6" :key="i" class="w-20 h-10 bg-gray-200 rounded-full animate-pulse shrink-0"></div>
+          <div v-for="i in 6" :key="i" class="w-20 h-10 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse shrink-0"></div>
         </div>
         <div v-for="i in 3" :key="i" class="flex items-center gap-3 animate-pulse">
-          <div class="w-14 h-14 bg-gray-200 rounded-lg"></div>
+          <div class="w-14 h-14 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
           <div class="flex-1">
-            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
           </div>
-          <div class="h-4 bg-gray-200 rounded w-16"></div>
+          <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-16"></div>
         </div>
       </div>
 
@@ -33,8 +33,8 @@
             @click="selectedGroupId = group.id"
             class="shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-colors"
             :class="selectedGroupId === group.id 
-              ? 'bg-primary text-black' 
-              : 'bg-primary/40 text-black'"
+              ? 'bg-primary text-black dark:bg-yellow-500' 
+              : 'bg-primary/40 text-black dark:bg-gray-700 dark:text-gray-300'"
           >
             {{ group.name }}
           </button>
@@ -47,20 +47,20 @@
             <button 
               v-if="currentAudio?.id !== audio.id"
               @click="playAudio(audio)"
-              class="w-full flex items-center gap-3 p-2 rounded-lg transition-colors hover:bg-gray-100"
+              class="w-full flex items-center gap-3 p-2 rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
               :style="{ fontSize: fontSize + 'px' }"
             >
               <div class="w-14 h-14 bg-gradient-to-b from-[#c9a227] to-[#8b7355] rounded-lg flex items-center justify-center shrink-0">
                 <Icon name="mdi:music-note" class="w-8 h-8 text-white" />
               </div>
               <div class="flex-1 text-left">
-                <p class="font-medium text-black line-clamp-2">{{ audio.title.trim() }}</p>
+                <p class="font-medium text-black dark:text-white line-clamp-2">{{ audio.title.trim() }}</p>
               </div>
-              <span class="text-gray-500 shrink-0">{{ audio.duration }}</span>
+              <span class="text-gray-500 dark:text-gray-400 shrink-0">{{ audio.duration }}</span>
             </button>
 
             <!-- Audio Item - Selected (with Player & Show Teks) -->
-            <div v-else class="bg-[#c09637] rounded-2xl overflow-hidden" :style="{ fontSize: fontSize + 'px' }">
+            <div v-else class="bg-[#c09637] dark:bg-yellow-600 rounded-2xl overflow-hidden" :style="{ fontSize: fontSize + 'px' }">
               <!-- Player Header -->
               <div class="px-4 py-3">
                 <div class="flex items-center gap-3">
@@ -73,15 +73,15 @@
               </div>
 
               <!-- Show Teks Accordion -->
-              <div class="bg-white mx-3 mb-3 rounded-xl overflow-hidden">
+              <div class="bg-white dark:bg-gray-800 mx-3 mb-3 rounded-xl overflow-hidden">
                 <button 
                   @click="showSubtitle = !showSubtitle" 
                   class="w-full flex items-center justify-between px-4 py-3"
                 >
-                  <span class="text-sm font-medium text-black">Show Teks</span>
+                  <span class="text-sm font-medium text-black dark:text-white">Show Teks</span>
                   <Icon 
                     :name="showSubtitle ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
-                    class="w-5 h-5 text-gray-600" 
+                    class="w-5 h-5 text-gray-600 dark:text-gray-400" 
                   />
                 </button>
 
@@ -92,7 +92,7 @@
                     v-model="subtitleSearch"
                     type="text" 
                     placeholder="Masukan kata kunci"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm mb-4 focus:outline-none focus:border-primary"
+                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm mb-4 focus:outline-none focus:border-primary bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                   />
 
                   <!-- Subtitle List -->
@@ -100,30 +100,30 @@
                     <div 
                       v-for="sub in filteredSubtitles" 
                       :key="sub.id"
-                      class="border border-gray-200 rounded-lg p-4"
+                      class="border border-gray-200 dark:border-gray-600 rounded-lg p-4"
                       :style="{ fontSize: fontSize + 'px' }"
                     >
-                      <p class="font-semibold text-black mb-2 cursor-pointer hover:text-primary" @click="seekToTimestamp(sub.timestamp)">{{ sub.title }}</p>
-                      <p class="text-gray-600 mb-2" v-html="sub.description"></p>
-                      <div class="text-black mb-4" v-html="highlightText(sub.script)"></div>
+                      <p class="font-semibold text-black dark:text-white mb-2 cursor-pointer hover:text-primary dark:hover:text-yellow-400" @click="seekToTimestamp(sub.timestamp)">{{ sub.title }}</p>
+                      <p class="text-gray-600 dark:text-gray-400 mb-2" v-html="sub.description"></p>
+                      <div class="text-black dark:text-white mb-4" v-html="highlightText(sub.script)"></div>
                       
                       <!-- Action Buttons -->
-                      <div class="flex items-center gap-6 pt-3 border-t border-gray-200">
-                        <button @click="copySubtitle(sub)" class="flex items-center gap-1 text-sm text-gray-700">
+                      <div class="flex items-center gap-6 pt-3 border-t border-gray-200 dark:border-gray-600">
+                        <button @click="copySubtitle(sub)" class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
                           <Icon name="mdi:content-copy" class="w-4 h-4" />
                           <span>Salin</span>
                         </button>
-                        <button @click="viewDetail(sub)" class="flex items-center gap-1 text-sm text-gray-700">
+                        <button @click="viewDetail(sub)" class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
                           <Icon name="mdi:file-document-outline" class="w-4 h-4" />
                           <span>Lihat Detail</span>
                         </button>
-                        <button @click="speakSubtitle(sub)" class="flex items-center gap-1 text-sm" :class="speakingSubtitleId === sub.id ? 'text-primary' : 'text-gray-700'">
+                        <button @click="speakSubtitle(sub)" class="flex items-center gap-1 text-sm" :class="speakingSubtitleId === sub.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
                           <Icon :name="speakingSubtitleId === sub.id ? 'mdi:stop' : 'mdi:account-voice'" class="w-4 h-4" />
                           <span>{{ speakingSubtitleId === sub.id ? 'Stop' : 'Voice' }}</span>
                         </button>
                       </div>
                     </div>
-                    <p v-if="filteredSubtitles.length === 0" class="text-sm text-gray-500 text-center py-4">
+                    <p v-if="filteredSubtitles.length === 0" class="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
                       Tidak ada teks ditemukan
                     </p>
                   </div>
@@ -150,19 +150,19 @@
       />
 
       <!-- Bottom Audio Player Drawer -->
-      <div v-if="currentAudio" class="bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.1)] p-4">
+      <div v-if="currentAudio" class="bg-white dark:bg-gray-800 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.3)] p-4">
         <div class="flex items-center justify-between mb-2">
-          <p class="text-sm font-medium text-black flex-1 line-clamp-1">{{ currentAudio.title.trim() }}</p>
+          <p class="text-sm font-medium text-black dark:text-white flex-1 line-clamp-1">{{ currentAudio.title.trim() }}</p>
           <button @click="closePlayer" class="p-1">
-            <Icon name="mdi:close" class="w-5 h-5 text-gray-500" />
+            <Icon name="mdi:close" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
           </button>
         </div>
 
         <!-- Progress Bar -->
         <div class="flex items-center gap-2 mb-3">
           <input type="range" :value="currentTime" :max="duration" @input="seek"
-            class="flex-1 h-1 bg-gray-200 rounded-full appearance-none cursor-pointer accent-primary" />
-          <span class="text-xs text-gray-500 w-20 text-right">{{ formatTime(currentTime) }}/{{ formatTime(duration) }}</span>
+            class="flex-1 h-1 bg-gray-200 dark:bg-gray-600 rounded-full appearance-none cursor-pointer accent-primary" />
+          <span class="text-xs text-gray-500 dark:text-gray-400 w-20 text-right">{{ formatTime(currentTime) }}/{{ formatTime(duration) }}</span>
         </div>
 
         <!-- Controls -->
@@ -170,28 +170,28 @@
           <div class="flex items-center gap-4">
             <button class="p-1" @click="addToBookmark">
               <Icon :name="isAudioBookmarked ? 'mdi:star' : 'mdi:star-outline'" 
-                    :class="isAudioBookmarked ? 'text-yellow-500' : 'text-gray-600'"
+                    :class="isAudioBookmarked ? 'text-yellow-500' : 'text-gray-600 dark:text-gray-400'"
                     class="w-6 h-6" />
             </button>
             <button class="p-1">
-              <Icon name="mdi:share-variant-outline" class="w-6 h-6 text-gray-600" />
+              <Icon name="mdi:share-variant-outline" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
             </button>
           </div>
 
           <div class="flex items-center gap-2">
             <button @click="skipBackward" class="p-2">
-              <Icon name="mdi:rewind" class="w-6 h-6 text-gray-700" />
+              <Icon name="mdi:rewind" class="w-6 h-6 text-gray-700 dark:text-gray-300" />
             </button>
-            <button @click="togglePlay" class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+            <button @click="togglePlay" class="w-12 h-12 bg-primary dark:bg-yellow-500 rounded-full flex items-center justify-center">
               <Icon :name="isPlaying ? 'mdi:pause' : 'mdi:play'" class="w-7 h-7 text-black" />
             </button>
             <button @click="skipForward" class="p-2">
-              <Icon name="mdi:fast-forward" class="w-6 h-6 text-gray-700" />
+              <Icon name="mdi:fast-forward" class="w-6 h-6 text-gray-700 dark:text-gray-300" />
             </button>
           </div>
 
           <button class="p-1">
-            <Icon name="mdi:minus" class="w-6 h-6 text-gray-600" />
+            <Icon name="mdi:minus" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
           </button>
         </div>
       </div>
@@ -204,6 +204,7 @@
 
 <script setup lang="ts">
 import { useBookmark } from '~/composables/useBookmark'
+import { useHistory } from '~/composables/useHistory'
 import { ref, computed, watch, onMounted } from "vue"
 
 interface Subtitle {
@@ -240,6 +241,9 @@ interface AudioGroup {
 const route = useRoute()
 const categoryId = computed(() => route.params.id)
 const pageTitle = computed(() => (route.query.title as string) || 'Audio')
+
+// History
+const { saveAudioHistory } = useHistory()
 
 const { data: audioData, pending } = await useFetch<{ success: boolean; data: AudioGroup[] }>(
   () => `https://api.masterluindonesia.com/api/audio?audio_category_id=${categoryId.value}`
@@ -395,6 +399,9 @@ const playAudio = (audio: AudioItem) => {
     audioElement.value.play()
     isPlaying.value = true
   }
+  
+  // Save to history (fire and forget)
+  saveAudioHistory(audio.title, audio.id, null, 'CN')
 }
 
 const togglePlay = () => {

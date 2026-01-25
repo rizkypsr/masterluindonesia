@@ -1,9 +1,9 @@
 <template>
-    <div class="h-screen bg-white flex flex-col">
+    <div class="h-screen bg-white dark:bg-gray-900 flex flex-col">
         <!-- Header (Fixed) -->
-        <div class="flex items-center justify-between px-4 py-3 border-b shrink-0">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <BackButton to="/?tab=edukasi" />
-            <span class="text-sm text-gray-600">Permohonan Bimbingan Spiritual</span>
+            <span class="text-sm text-gray-600 dark:text-gray-400">Permohonan Bimbingan Spiritual</span>
             <div class="w-6"></div>
         </div>
 
@@ -11,7 +11,7 @@
         <div ref="contentRef" class="flex-1 overflow-y-auto px-4 py-6">
             <!-- Section 1: Permohonan Bimbingan Spiritual -->
             <div id="bimbingan-spiritual" class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Permohonan Bimbingan Spiritual</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Permohonan Bimbingan Spiritual</h2>
 
                 <!-- Hero Image -->
                 <img src="https://masterluindonesia.com/assets/assets/images/bimbingan/bimbingan.png"
@@ -20,11 +20,11 @@
 
             <!-- Section 2: Permohonan Bimbingan Spiritual untuk Keluarga -->
             <div id="bimbingan-keluarga" class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Permohonan Bimbingan</h2>
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Spiritual untuk Keluarga</h2>
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">(Quan Dao Sheng Wen)</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Permohonan Bimbingan</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Spiritual untuk Keluarga</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">(Quan Dao Sheng Wen)</h2>
 
-                <div class="space-y-4 text-black">
+                <div class="space-y-4 text-black dark:text-gray-300">
                     <p>Untuk membuat pasangan suami-istri membina diri dalam Dharma sampai seluruh anggota keluarga menekuni Ajaran Buddha Dharma bersama membutuhkan pahala yang sangat besar.</p>
                     
                     <p>Jika kita sendiri sudah mulai berlatih, bisa mengarahkan anggota keluarga secara perlahan-lahan, memberikan buku-buku dari Master Jun Hong Lu, mendengarkan siaran radio dan rekaman, bisa mengatakan:</p>
@@ -73,10 +73,10 @@
 
             <!-- Section 3: Unduh -->
             <div id="unduh" class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Contoh Gambar</h2>
-                <p class="text-gray-600 mb-4">*Download gambar di tab Beranda Unduh</p>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Contoh Gambar</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">*Download gambar di tab Beranda Unduh</p>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/bimbingan/unduh.png"
                         alt="Contoh Gambar Permohonan Bimbingan Spiritual" class="w-full h-96 object-cover rounded-lg" />
                 </UCard>

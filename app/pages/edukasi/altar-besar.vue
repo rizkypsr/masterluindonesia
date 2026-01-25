@@ -1,28 +1,28 @@
 <template>
-    <div class="h-screen bg-white flex flex-col">
+    <div class="h-screen bg-white dark:bg-gray-900 flex flex-col">
         <!-- Header (Fixed) -->
-        <div class="flex items-center justify-between px-4 py-3 border-b shrink-0">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <BackButton to="/?tab=edukasi" />
-            <span class="text-sm text-gray-600">Altar Besar</span>
+            <span class="text-sm text-gray-600 dark:text-gray-400">Altar Besar</span>
             <button @click="isMenuOpen = true" class="p-1">
-                <Icon name="heroicons:bars-3" class="w-5 h-5 text-gray-700" />
+                <Icon name="heroicons:bars-3" class="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </button>
         </div>
 
         <!-- Slideover Menu -->
         <USlideover v-model:open="isMenuOpen" side="bottom">
             <template #content>
-                <div class="p-4">
+                <div class="p-4 bg-white dark:bg-gray-800">
                     <!-- Handle bar -->
                     <div class="flex justify-center mb-4">
-                        <div class="w-12 h-1 bg-gray-300 rounded-full"></div>
+                        <div class="w-12 h-1 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
                     </div>
 
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">DAFTAR MENU</h3>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">DAFTAR MENU</h3>
 
                     <div class="space-y-4">
                         <button v-for="item in menuItems" :key="item.id" @click="scrollToSection(item.id)"
-                            class="block text-gray-900 text-base py-2 hover:text-yellow-600 text-left w-full">
+                            class="block text-gray-900 dark:text-white text-base py-2 hover:text-yellow-600 dark:hover:text-yellow-400 text-left w-full">
                             {{ item.title }}
                         </button>
                     </div>
@@ -40,9 +40,9 @@
 
             <!-- Section 1: Makna Altar Buddha -->
             <div id="makna-altar" class="mb-14">
-                <h2 class="text-2xl font-semibold text-black mb-4">Makna Altar Buddha</h2>
+                <h2 class="text-2xl font-semibold text-black dark:text-white mb-4">Makna Altar Buddha</h2>
 
-                <div class="space-y-4 text-black">
+                <div class="space-y-4 text-black dark:text-gray-300">
                     <p>Kita sendiri tinggal di rumah yang sebegitu luasnya, apakah kita tidak bisa menyediakan sedikit
                         ruang
                         untuk memasang altar bagi para Buddha dan Bodhisattva (Pu Sa)?</p>
@@ -66,30 +66,30 @@
             </div>
 
             <!-- Section 2: Apa Keuntungan Memiliki Altar? -->
-            <div id="keuntungan-altar" class="mb-12 text-black">
-                <h2 class="text-4xl font-semibold mb-4">Apa Keuntungan Memiliki Altar?</h2>
+            <div id="keuntungan-altar" class="mb-12 text-black dark:text-gray-300">
+                <h2 class="text-4xl font-semibold mb-4 dark:text-white">Apa Keuntungan Memiliki Altar?</h2>
 
                 <div class="space-y-3">
-                    <p class="font-semibold text-xl border-b pb-8 text-gray-800">Hasil Pembacaan Paritta dan Berikrar
+                    <p class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">Hasil Pembacaan Paritta dan Berikrar
                         Menjadi
                         Jauh Lebih Baik</p>
 
-                    <p class="font-semibold text-xl border-b pb-8 text-gray-800">Terasa Berbeda Juga Sewaktu Bersembah
+                    <p class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">Terasa Berbeda Juga Sewaktu Bersembah
                         Sujud</p>
 
-                    <p class="font-semibold text-xl border-b pb-8 text-gray-800">Daripada Memasang Dupa Hati
+                    <p class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">Daripada Memasang Dupa Hati
                         (Bervisualisasi),
                         Lebih Baik Memasang Dupa Asli.</p>
 
-                    <p class="font-semibold text-xl border-b pb-8 text-gray-800">Boleh Memasang Dupa Pertama Serta
+                    <p class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">Boleh Memasang Dupa Pertama Serta
                         Melafalkan
                         Paritta Semalaman pada Hari Raya Besar Tertentu</p>
 
-                    <p class="font-semibold text-xl border-b pb-8 text-gray-800">Hasil Dari Membakar Paritta Cadangan
+                    <p class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">Hasil Dari Membakar Paritta Cadangan
                         dan Xiao
                         Fang Zi Akan Jauh Berkurang.</p>
 
-                    <p class="font-semibold text-xl border-b pb-8 text-gray-800">Memasang Altar di Rumah dan Membantu
+                    <p class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">Memasang Altar di Rumah dan Membantu
                         Orang Lain
                         Memasang Altar, Merupakan Pahala yang Sangat Besar</p>
                 </div>
@@ -97,46 +97,46 @@
 
             <!-- Section 3: Pengenalan Para Bodhisattva -->
             <div id="pengenalan-bodhisattva" class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Pengenalan Para Bodhisattva</h2>
-                <p class="text-gray-600 mb-4">di dalam Xin Ling Fa Men</p>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Pengenalan Para Bodhisattva</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">di dalam Xin Ling Fa Men</p>
 
                 <!-- Buddha Sakyamuni -->
-                <UCard class="border-2 border-[#eedcb4] shadow-xl mb-4">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl mb-4">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_2.png"
                         alt="Buddha Sakyamuni" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Buddha Sakyamuni</h3>
-                        <p class="text-gray-700 text-sm mb-2">Kita sendiri tinggal di dunia yang sebegitu luasnya,
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Buddha Sakyamuni</h3>
+                        <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">Kita sendiri tinggal di dunia yang sebegitu luasnya,
                             apakah kita
                             tidak bisa menyediakan sedikit ruang untuk memasang altar bagi para Buddha dan Bodhisattva
                             (Pu Sa)?
                         </p>
-                        <p class="text-gray-700 text-sm">Beliau bersaksi atas semua kita yang bersedia, dengan tekad
+                        <p class="text-gray-700 dark:text-gray-300 text-sm">Beliau bersaksi atas semua kita yang bersedia, dengan tekad
                             yang luhur
                             untuk mau dan siap untuk menyebarluaskan Buddha Sakyamuni.</p>
                     </div>
                 </UCard>
 
                 <!-- Guan Shi Yin Pu Sa -->
-                <UCard class="border-2 border-[#eedcb4] shadow-xl mb-4">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl mb-4">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_3.png"
                         alt="Guan Shi Yin Pu Sa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Guan Shi Yin Pu Sa</h3>
-                        <p class="text-gray-700 text-sm mb-2">Guan Shi Yin Pu Sa Merupakan Maha Mahakarya, Maha-Jubilasi
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Guan Shi Yin Pu Sa</h3>
+                        <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">Guan Shi Yin Pu Sa Merupakan Maha Mahakarya, Maha-Jubilasi
                             Segala
                             Kemulyaan Esa Aneka Nusena di Dalam Nusantara.</p>
-                        <p class="text-gray-700 text-sm">Dikenal dengan Nama Guan Shi Yin Pu Sa.</p>
+                        <p class="text-gray-700 dark:text-gray-300 text-sm">Dikenal dengan Nama Guan Shi Yin Pu Sa.</p>
                     </div>
                 </UCard>
 
                 <!-- Nan Jing Pu Sa -->
-                <UCard class="border-2 border-[#eedcb4] shadow-xl mb-4">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl mb-4">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_4.png"
                         alt="Nan Jing Pu Sa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Nan Jing Pu Sa</h3>
-                        <p class="text-gray-700 text-sm">Nan Jing Pu Sa adalah Merupakan salah satu Dewa budaya Daoisme
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Nan Jing Pu Sa</h3>
+                        <p class="text-gray-700 dark:text-gray-300 text-sm">Nan Jing Pu Sa adalah Merupakan salah satu Dewa budaya Daoisme
                             Tiongkok
                             Buddhisme yang Keberadaannya Tinggi di Alam Langit, yang Bisa Memberikan Ketenangan Bersama
                             Keselamatan Hidup.</p>
@@ -144,12 +144,12 @@
                 </UCard>
 
                 <!-- Tai Sui Pu Sa -->
-                <UCard class="border-2 border-[#eedcb4] shadow-xl mb-4">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl mb-4">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_5.png"
                         alt="Tai Sui Pu Sa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Tai Sui Pu Sa</h3>
-                        <p class="text-gray-700 text-sm">Tai Sui Pu Sa adalah Bodhisattva yang Bertugas Untuk Menjaga
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Tai Sui Pu Sa</h3>
+                        <p class="text-gray-700 dark:text-gray-300 text-sm">Tai Sui Pu Sa adalah Bodhisattva yang Bertugas Untuk Menjaga
                             Umur
                             Manusia. Bagi Mereka yang Sedang Dalam Tahun Tai Sui-nya, Bisa Memohon Doa Kepada Beliau.
                         </p>
@@ -157,13 +157,13 @@
                 </UCard>
 
                 <!-- Guan Di Pu Sa, Zhou Cang Pu Sa, Guan Ping Pu Sa -->
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_6.png"
                         alt="Guan Di Pu Sa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">Guan Di Pu Sa, Zhou Cang Pu Sa, Guan Ping Pu Sa
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Guan Di Pu Sa, Zhou Cang Pu Sa, Guan Ping Pu Sa
                         </h3>
-                        <p class="text-gray-700 text-sm">Guan Di Pu Sa Adalah Pelindung Dharma Bodhisattva. Tiap Hari
+                        <p class="text-gray-700 dark:text-gray-300 text-sm">Guan Di Pu Sa Adalah Pelindung Dharma Bodhisattva. Tiap Hari
                             Dharma
                             Pelindung Mengawasi Kita Apakah Kita Melakukan Hal yang Baik atau Buruk, Semua Dicatat oleh
                             Beliau.
@@ -174,13 +174,13 @@
 
             <!-- Section 4: Hal-hal Penting dalam Penempatan Altar -->
             <div id="penempatan-altar" class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Hal-hal Penting dalam</h2>
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Penempatan Altar</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Hal-hal Penting dalam</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Penempatan Altar</h2>
 
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_7.png"
                     alt="Penempatan Altar" class="w-full h-96 object-cover rounded-lg mb-4" />
 
-                <div class="space-y-3 text-gray-700 text-sm">
+                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm">
                     <p><span class="font-bold">1.</span> Tidak boleh ditempatkan di dalam kamar tidur suami – istri</p>
                     <p><span class="font-bold">2.</span> Tidak boleh ditempatkan tepat di atas TV, kulkas dan lainnya,
                         atau
@@ -217,30 +217,30 @@
 
             <!-- Section 5: Penataan Meja Altar -->
             <div id="penataan-altar" class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Penataan Meja Altar</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Penataan Meja Altar</h2>
 
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_8.png"
                     alt="Penataan Meja Altar" class="w-full h-96 object-cover rounded-lg mb-6" />
 
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Gambar Pemandangan Altar</h3>
-                <p class="text-gray-600 mb-4">Pilihan 1</p>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Gambar Pemandangan Altar</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">Pilihan 1</p>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_9.png"
                     alt="Gambar Pemandangan Altar Pilihan 1" class="w-full h-96 object-cover rounded-lg mb-6" />
 
-                <h3 class="text-xl font-bold text-gray-900 mb-2">Gambar Pemandangan Altar</h3>
-                <p class="text-gray-600 mb-4">Pilihan 2</p>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Gambar Pemandangan Altar</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">Pilihan 2</p>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_10.png"
                     alt="Gambar Pemandangan Altar Pilihan 2" class="w-full h-96 object-cover rounded-lg mb-6" />
 
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Peralatan Altar</h3>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Peralatan Altar</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_11.png"
                     alt="Peralatan Altar" class="w-full h-96 object-cover rounded-lg mb-6" />
 
                 <!-- Tempat Dupa 1 -->
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Tempat Dupa</h3>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tempat Dupa</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_12.png" alt="Tempat Dupa"
-                    class="w-full h-96 object-cover rounded-lg mb-4" />
-                <div class="space-y-3 text-gray-700 text-sm mb-6">
+                    class="w-full rounded-lg mb-4" />
+                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm mb-6">
                     <p>Harus ada tempat dupa di atas Altar. Jika tidak ada tempat dupa, Pu Sa tidak akan datang dan
                         tidak bisa
                         disebut sebagai Altar.</p>
@@ -258,10 +258,10 @@
                 </div>
 
                 <!-- Tempat Dupa 2 -->
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Tempat Dupa</h3>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tempat Dupa</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_13.png" alt="Tempat Dupa"
                     class="w-full h-96 object-cover rounded-lg mb-4" />
-                <div class="space-y-3 text-gray-700 text-sm mb-6">
+                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm mb-6">
                     <p>Harus menyembahyangi Altar dengan dupa, jika tidak Pu Sa tidak akan datang.</p>
                     <p>Jika tidak menyembahyangi Altar untuk waktu yang cukup lama, tidak hanya tidak hormat tapi juga
                         bisa
@@ -278,10 +278,10 @@
                 </div>
 
                 <!-- Gelas Persembahan -->
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Gelas Persembahan</h3>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Gelas Persembahan</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_14.png"
                     alt="Gelas Persembahan" class="w-full h-96 object-cover rounded-lg mb-4" />
-                <div class="space-y-3 text-gray-700 text-sm mb-6">
+                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm mb-6">
                     <p><span class="font-bold">Mempersembahkan air kepada Pu Sa, membuat pikiran kita bersih dan
                             tenang</span>
                     </p>
@@ -291,10 +291,10 @@
                 </div>
 
                 <!-- Lampu Minyak -->
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Lampu Minyak</h3>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Lampu Minyak</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_15.png"
                     alt="Lampu Minyak" class="w-full h-96 object-cover rounded-lg mb-4" />
-                <div class="space-y-3 text-gray-700 text-sm mb-6">
+                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm mb-6">
                     <p><span class="font-bold">Mempersembahkan minyak kepada Pu Sa, membuat pendengaran dan penglihatan
                             menjadi
                             tajam, menumbuhkan kebijaksanaan</span></p>
@@ -306,10 +306,10 @@
                 </div>
 
                 <!-- Buah Persembahan -->
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Buah Persembahan</h3>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Buah Persembahan</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_16.png"
                     alt="Buah Persembahan" class="w-full h-96 object-cover rounded-lg mb-4" />
-                <div class="space-y-3 text-gray-700 text-sm mb-6">
+                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm mb-6">
                     <p><span class="font-bold">Sering mempersembahkan buah-buahan pada Bodhisattva (Pu Sa), bisa membuat
                             permohonan yang diinginkan segera terwujud.</span></p>
                     <p>Hindari mempersembahkan buah pir</p>
@@ -321,10 +321,10 @@
                 </div>
 
                 <!-- Bunga Persembahan -->
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Bunga Persembahan</h3>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Bunga Persembahan</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_17.png"
                     alt="Bunga Persembahan" class="w-full h-96 object-cover rounded-lg mb-4" />
-                <div class="space-y-3 text-gray-700 text-sm">
+                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm">
                     <p><span class="font-bold">Orang yang memiliki wajah yang baik berarti pernah membina dirinya di
                             kehidupan
                             sebelumnya, mempersembahkan bunga kepada Buddha, akan memiliki rupa yang baik.</span></p>
@@ -347,12 +347,12 @@
 
             <!-- Section 6: Unduh -->
             <div id="unduh" class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-1">Contoh Gambar</h2>
-                <p class="text-gray-600 mb-4">*Download gambar di tab Beranda Unduh</p>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Contoh Gambar</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">*Download gambar di tab Beranda Unduh</p>
 
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Tata Cara Mengundang Buddha Bodhisattva</h3>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tata Cara Mengundang Buddha Bodhisattva</h3>
 
-                <UCard class="border-2 border-[#eedcb4] shadow-xl">
+                <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_19.png"
                         alt="Tata Cara Mengundang Buddha Bodhisattva" class="w-full h-96 object-cover rounded-lg" />
                 </UCard>
@@ -360,11 +360,11 @@
 
             <!-- Section 7: FAQ -->
             <div id="faq" class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 mb-4">Frequently Asked Question</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Frequently Asked Question</h2>
 
-                <UAccordion :items="faqItems">
+                <UAccordion :items="faqItems" :ui="{ trigger: 'text-black dark:text-white' }">
                     <template #content="{ item }">
-                        <p class="text-black bg-[#edd9af] px-4 py-3 rounded-2xl shadow-md">
+                        <p class="text-black dark:text-gray-200 bg-[#edd9af] dark:bg-gray-700 px-4 py-3 rounded-2xl shadow-md">
                            {{ item.label }}
                         </p>
                     </template>

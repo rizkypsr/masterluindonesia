@@ -1,16 +1,16 @@
 <template>
   <div class="pb-6">
     <!-- Section 1: Xin Ling Fa Men -->
-    <div class="relative bg-gradient-to-b from-white via-yellow-50 to-yellow-100">
+    <div class="relative bg-gradient-to-b from-white via-yellow-50 to-yellow-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-800">
       <div class="px-4 pt-6 pb-4">
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">Xin Ling Fa Men</h2>
-        <p class="text-gray-700 text-base mb-1">Xin Ling adalah Gembok</p>
-        <p class="text-gray-700 text-base mb-1">Fa Men adalah kuncinya</p>
-        <p class="text-gray-700 text-base mb-4">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Xin Ling Fa Men</h2>
+        <p class="text-gray-700 dark:text-gray-300 text-base mb-1">Xin Ling adalah Gembok</p>
+        <p class="text-gray-700 dark:text-gray-300 text-base mb-1">Fa Men adalah kuncinya</p>
+        <p class="text-gray-700 dark:text-gray-300 text-base mb-4">
           Menggunakan Pintu Dharma untuk membuka jiwamu, maka itu adalah "Xin Ling Fa Men"
         </p>
         <NuxtLink to="/tentang/xin-ling-fa-men?from=tentang"
-          class="inline-flex items-center px-4 py-2 border border-yellow-600 text-gray-800 rounded-md text-sm font-medium hover:bg-yellow-50 transition-colors">
+          class="inline-flex items-center px-4 py-2 border border-yellow-600 dark:border-yellow-500 text-gray-800 dark:text-yellow-400 rounded-md text-sm font-medium hover:bg-yellow-50 dark:hover:bg-gray-700 transition-colors">
           Selengkapnya
           <Icon name="heroicons:arrow-right" class="ml-2 w-4 h-4" />
         </NuxtLink>
@@ -22,15 +22,15 @@
     </div>
 
     <!-- Section 2: Master Lu Jun Hong -->
-    <div class="relative mb-6 bg-[#ffefce]">
+    <div class="relative mb-6 bg-[#ffefce] dark:bg-gray-800">
       <div class="px-4 pt-6 pb-4">
-        <h2 class="text-2xl font-bold text-gray-900 mb-4">Master Lu Jun Hong</h2>
-        <p class="text-gray-800 text-sm mb-4">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Master Lu Jun Hong</h2>
+        <p class="text-gray-800 dark:text-gray-300 text-sm mb-4">
           Master Jun Hong Lu (Justice of the Peace) adalah Presiden, Direktur dan Pendiri stasiun TV dan Radio 2OR
           Australia Oriental yang sangat dihormati dan pemimpin terkemuka Komunitas Tionghoa di Australia.
         </p>
         <NuxtLink to="/tentang/master-lu-jun-hong"
-          class="inline-flex items-center px-4 py-2 border border-yellow-600 text-gray-800 rounded-md text-sm font-medium hover:bg-yellow-200 transition-colors">
+          class="inline-flex items-center px-4 py-2 border border-yellow-600 dark:border-yellow-500 text-gray-800 dark:text-yellow-400 rounded-md text-sm font-medium hover:bg-yellow-200 dark:hover:bg-gray-700 transition-colors">
           Selengkapnya
           <Icon name="heroicons:arrow-right" class="ml-2 w-4 h-4" />
         </NuxtLink>
@@ -49,13 +49,13 @@
         <div>
           <!-- Content Section -->
           <div class="px-4 pt-6 pb-4">
-            <h2 class="text-2xl font-bold text-gray-900 mb-2">Lima Pusaka XLFM</h2>
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">{{ item.title }}</h3>
-            <p class="text-gray-600 text-sm mb-4">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Lima Pusaka XLFM</h2>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">{{ item.title }}</h3>
+            <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">
               {{ item.description }}
             </p>
             <NuxtLink :to="item.href"
-              class="inline-flex items-center px-4 py-2 border border-yellow-600 text-gray-800 rounded-md text-sm font-medium hover:bg-yellow-50 transition-colors">
+              class="inline-flex items-center px-4 py-2 border border-yellow-600 dark:border-yellow-500 text-gray-800 dark:text-yellow-400 rounded-md text-sm font-medium hover:bg-yellow-50 dark:hover:bg-gray-800 transition-colors">
               Selengkapnya
               <Icon name="heroicons:arrow-right" class="ml-2 w-4 h-4" />
             </NuxtLink>
@@ -75,14 +75,14 @@
           <button v-for="(item, index) in limaPusakaItems" :key="item.id" @click="scrollTo(index)" :class="[
             'transition-all duration-300',
             activeIndex === index
-              ? 'w-8 h-2 bg-yellow-600 rounded-full'
-              : 'w-2 h-2 bg-yellow-200 rounded-full'
+              ? 'w-8 h-2 bg-yellow-600 dark:bg-yellow-500 rounded-full'
+              : 'w-2 h-2 bg-yellow-200 dark:bg-gray-600 rounded-full'
           ]" :aria-label="`Go to slide ${index + 1}`" />
         </div>
 
         <!-- Arrow Right -->
         <button @click="scrollNext()" class="p-2" aria-label="Next slide">
-          <Icon name="heroicons:arrow-right" class="w-6 h-6 text-gray-800" />
+          <Icon name="heroicons:arrow-right" class="w-6 h-6 text-gray-800 dark:text-white" />
         </button>
       </div>
     </div>

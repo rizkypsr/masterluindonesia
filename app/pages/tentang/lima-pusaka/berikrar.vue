@@ -1,45 +1,45 @@
 <template>
-  <div class="min-h-screen bg-white">
+  <div class="min-h-screen bg-white dark:bg-gray-900">
     <!-- Header -->
-    <div class="flex items-center justify-between px-4 py-3 border-b">
+    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
       <BackButton to="/?tab=tentang" />
-      <span class="text-sm text-gray-600">2. Berikrar</span>
+      <span class="text-sm text-gray-600 dark:text-gray-400">2. Berikrar</span>
       <TentangMenu type="lima-pusaka" />
     </div>
 
     <!-- Hero Image -->
-    <div class="relative bg-gradient-to-b from-yellow-100 to-yellow-50">
+    <div class="relative bg-gradient-to-b from-yellow-100 to-yellow-50 dark:from-gray-800 dark:to-gray-900">
       <img src="https://masterluindonesia.com/assets/assets/images/tentang/image4.png" alt="Berikrar" class="w-full" />
     </div>
 
     <!-- Content -->
     <div class="px-4 py-6">
-      <h1 class="text-2xl font-bold text-gray-900 mb-4">Berikrar</h1>
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Berikrar</h1>
 
-      <p class="text-gray-700 text-sm mb-4">
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
         Berikrar adalah memohon di dalam hati atau dengan pelan di depan Guan Shi Yin Pu Sa berwelas asih memberikati
         Anda dan menolong Anda menyelesaikan suatu masalah, kebingungan, depresi, menguraikan bencana besar dan kecil.
       </p>
 
       <!-- Section 1 -->
       <div class="mb-6">
-        <h2 class="text-lg font-bold text-gray-900 mb-3">Anda bisa berjanji akan:</h2>
-        <p class="text-gray-700 text-sm mb-2">
+        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Anda bisa berjanji akan:</h2>
+        <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">
           Dimulai dari hari ini akan bervegetarian setiap tanggal 1 dan 15 kalender lunar.
         </p>
-        <p class="text-gray-700 text-sm mb-2">
+        <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">
           Dari detik ini tidak akan makan dewan laut lagi.
         </p>
-        <p class="text-gray-700 text-sm mb-2">
+        <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">
           Dari detik ini tidak akan membunuh makhluk hidup.
         </p>
-        <p class="text-gray-700 text-sm mb-2">
+        <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">
           Berjanji akan melakukan beberapa kebaikan setiap hari.
         </p>
-        <p class="text-gray-700 text-sm mb-2">
+        <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">
           Menjadi patung Buddha dengan emas.
         </p>
-        <p class="text-gray-700 text-sm mb-4">
+        <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
           Dalam jangka waktu tertentu menyebarkan Ajaran Buddha Dharma pada berapa orang, membantu mereka terbebas dari
           penderitaan.
         </p>
@@ -47,11 +47,11 @@
 
       <!-- Section 2 -->
       <div class="mb-6">
-        <p class="text-gray-700 text-sm mb-4">
+        <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
           Melakukan jasa kebaikan, berdana untuk mencetak buku-buku Buddhis dan lain-lain. Memberikan atau membagikan
           buku-buku atau CD Dharma.
         </p>
-        <p class="text-gray-700 text-sm mb-4">
+        <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
           Ada orang yang berikrar untuk bervegetarian setiap tanggal 1 dan 15 kalender lunar, lalu lupa, atau ada
           halangan tertentu tidak bisa menjalankannya, boleh menggantinya sebelumnya pada Guan Shi Yin Pu Sa, bisa
           bervegetarian lebih awal atau lebih telat, boleh juga saat berikrar tidak mengatakan bervegetarian setiap
@@ -62,11 +62,11 @@
 
       <!-- Section 3 -->
       <div class="mb-6">
-        <p class="text-gray-700 text-sm mb-4">
+        <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
           Jika sudah berikrar harus dijalankan, jika karena alasan pribadi tidak bisa menjalankan ikrar pasti akan
           mendapatkan hukuman.
         </p>
-        <p class="text-gray-700 text-sm mb-4">
+        <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
           Wewujudkan janji adalah hal yang dilakukan setelah Bodhisattva atau Pu Sa mengabulkan permohonan Anda. Anda
           harus kembali ke kuil atau tempat di mana Anda memohon, lalu mewujudkan dupa, bersembahyang sujud, berdana,
           dan melakukan kebaikan.
@@ -75,11 +75,11 @@
 
       <!-- Section 4 -->
       <div class="mb-6">
-        <p class="text-gray-700 text-sm mb-4">
+        <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
           Besar dan banyaknya Anda berdana dan melakukan kebaikan tergantung dari kemampuan masing-masing, yang
           terpenting Anda sudah berikrar dan dilakukan.
         </p>
-        <p class="text-gray-700 text-sm mb-4">
+        <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
           Jika sebelumnya Anda berikrar untuk bervegetarian atau menyebarkan Dharma kepada orang lain dan lain-lainnya,
           harus terus dijalankan, ini berarti Anda sudah mewujudkan janji Anda.
         </p>
@@ -87,22 +87,22 @@
     </div>
 
     <!-- Tata Cara Berikrar - Tanpa Altar -->
-    <div class="bg-white px-4 py-6">
-      <h2 class="text-xl font-bold text-gray-900 mb-1">Tata Cara Berikrar</h2>
-      <p class="text-gray-500 text-sm mb-4">Tanpa Altar</p>
+    <div class="bg-white dark:bg-gray-900 px-4 py-6">
+      <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Tata Cara Berikrar</h2>
+      <p class="text-gray-500 dark:text-gray-400 text-sm mb-4">Tanpa Altar</p>
 
       <UCarousel ref="tanpaAltarRef" v-slot="{ item }" :items="tanpaAltarItems" :ui="{ item: 'basis-full' }"
         @select="onSelectTanpaAltar">
         <div class="pr-4">
           <!-- Step indicator -->
           <div class="flex items-center justify-between mb-3">
-            <p class="text-gray-900 text-sm">Langkah {{ item.step }} <span class="text-gray-400">dari 7</span></p>
+            <p class="text-gray-900 dark:text-white text-sm">Langkah {{ item.step }} <span class="text-gray-400 dark:text-gray-500">dari 7</span></p>
             <div class="flex gap-2">
               <button @click="scrollPrevTanpaAltar" class="p-1">
-                <Icon name="mdi:arrow-left" class="w-5 h-5 text-gray-400" />
+                <Icon name="mdi:arrow-left" class="w-5 h-5 text-gray-400 dark:text-gray-500" />
               </button>
               <button @click="scrollNextTanpaAltar" class="p-1">
-                <Icon name="mdi:arrow-right" class="w-5 h-5 text-gray-900" />
+                <Icon name="mdi:arrow-right" class="w-5 h-5 text-gray-900 dark:text-white" />
               </button>
             </div>
           </div>
@@ -110,14 +110,14 @@
           <!-- Card -->
           <UCard class="overflow-hidden">
             <!-- Image -->
-            <div class="bg-linear-to-b from-yellow-100 to-yellow-50 mb-2">
+            <div class="bg-linear-to-b from-yellow-100 to-yellow-50 dark:from-gray-700 dark:to-gray-800 mb-2">
               <img :src="item.image" :alt="item.title" class="w-full" />
             </div>
 
             <!-- Content -->
             <div>
-              <h3 class="font-bold text-gray-900 mb-2 text-xl">{{ item.title }}</h3>
-              <p v-for="(text, idx) in item.content" :key="idx" class="text-gray-700 text-sm mb-2">{{ text }}</p>
+              <h3 class="font-bold text-gray-900 dark:text-white mb-2 text-xl">{{ item.title }}</h3>
+              <p v-for="(text, idx) in item.content" :key="idx" class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{ text }}</p>
             </div>
           </UCard>
         </div>
@@ -125,32 +125,32 @@
     </div>
 
     <!-- Tata Cara Berikrar - Dengan Altar -->
-    <div class="bg-white px-4 py-6">
-      <h2 class="text-xl font-bold text-gray-900 mb-1">Tata Cara Berikrar</h2>
+    <div class="bg-white dark:bg-gray-900 px-4 py-6">
+      <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Tata Cara Berikrar</h2>
 
       <UCarousel ref="denganAltarRef" v-slot="{ item }" :items="denganAltarItems" :ui="{ item: 'basis-full' }"
         @select="onSelectDenganAltar">
         <div class="pr-4">
           <!-- Type label -->
-          <p class="text-gray-500 text-sm mb-2">{{ item.type }}</p>
+          <p class="text-gray-500 dark:text-gray-400 text-sm mb-2">{{ item.type }}</p>
 
           <!-- Step indicator -->
           <div class="flex items-center justify-between mb-3">
-            <p class="text-gray-900 text-sm">Langkah {{ denganAltarIndex + 1 }} <span class="text-gray-400">dari
+            <p class="text-gray-900 dark:text-white text-sm">Langkah {{ denganAltarIndex + 1 }} <span class="text-gray-400 dark:text-gray-500">dari
                 3</span></p>
             <div class="flex gap-2">
               <button @click="scrollPrevDenganAltar" class="p-1">
-                <Icon name="mdi:arrow-left" class="w-5 h-5 text-gray-400" />
+                <Icon name="mdi:arrow-left" class="w-5 h-5 text-gray-400 dark:text-gray-500" />
               </button>
               <button @click="scrollNextDenganAltar" class="p-1">
-                <Icon name="mdi:arrow-right" class="w-5 h-5 text-gray-900" />
+                <Icon name="mdi:arrow-right" class="w-5 h-5 text-gray-900 dark:text-white" />
               </button>
             </div>
           </div>
 
           <!-- Card -->
           <UCard class="overflow-hidden">
-            <div class="bg-linear-to-b from-yellow-100 to-yellow-50 -m-4 mb-0">
+            <div class="bg-linear-to-b from-yellow-100 to-yellow-50 dark:from-gray-700 dark:to-gray-800 -m-4 mb-0">
               <img :src="item.image" :alt="item.type" class="w-full" />
             </div>
           </UCard>

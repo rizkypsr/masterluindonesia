@@ -1,10 +1,10 @@
 <template>
   <USlideover v-model:open="isModalOpen" side="bottom">
     <template #content>
-      <div class="p-6">
+      <div class="p-6 bg-white dark:bg-gray-800">
         <!-- Header -->
-        <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-4">
-          <h3 class="text-xl font-semibold text-black">Tambah Bookmark</h3>
+        <div class="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
+          <h3 class="text-xl font-semibold text-black dark:text-white">Tambah Bookmark</h3>
           <button @click="openCreateFolder">
             <Icon name="mdi:folder-plus-outline" class="w-7 h-7 text-primary" />
           </button>
@@ -12,11 +12,11 @@
 
         <!-- Title Input -->
         <div class="mb-6">
-          <label class="block text-black font-medium mb-2">Title</label>
+          <label class="block text-black dark:text-white font-medium mb-2">Title</label>
           <input
             v-model="bookmarkTitle"
             type="text"
-            class="w-full px-4 py-3 border-b border-gray-300 focus:border-primary focus:outline-none text-black"
+            class="w-full px-4 py-3 border-b border-gray-300 dark:border-gray-600 focus:border-primary focus:outline-none text-black dark:text-white bg-transparent"
             placeholder="Masukkan judul bookmark"
           />
         </div>
@@ -48,20 +48,20 @@
   <!-- Create Folder Slideover -->
   <USlideover v-model:open="isFolderModalOpen" side="bottom">
     <template #content>
-      <div class="p-6">
+      <div class="p-6 bg-white dark:bg-gray-800">
         <!-- Header -->
-        <div class="flex items-center justify-between mb-6 border-b border-gray-200 pb-4">
-          <h3 class="text-xl font-semibold text-black">Buat Folder Baru</h3>
+        <div class="flex items-center justify-between mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
+          <h3 class="text-xl font-semibold text-black dark:text-white">Buat Folder Baru</h3>
           <Icon name="mdi:folder-plus-outline" class="w-7 h-7 text-primary" />
         </div>
 
         <!-- Folder Name Input -->
         <div class="mb-8">
-          <label class="block text-black font-medium mb-2">Nama Folder</label>
+          <label class="block text-black dark:text-white font-medium mb-2">Nama Folder</label>
           <input
             v-model="newFolderName"
             type="text"
-            class="w-full px-4 py-3 border-b border-gray-300 focus:border-primary focus:outline-none text-black"
+            class="w-full px-4 py-3 border-b border-gray-300 dark:border-gray-600 focus:border-primary focus:outline-none text-black dark:text-white bg-transparent"
             placeholder="Masukkan nama folder"
           />
         </div>

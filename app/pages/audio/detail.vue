@@ -1,23 +1,23 @@
 <template>
-  <div class="min-h-screen bg-gray-50 pb-40">
+  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 pb-40">
     <!-- Header -->
-    <div class="bg-white px-4 py-4 flex items-center gap-3 shadow-sm">
-      <button @click="$router.back()" class="p-1 flex justify-center items-center hover:bg-gray-100 cursor-pointer">
-        <Icon name="mdi:arrow-left" class="w-6 h-6 text-black" />
+    <div class="bg-white dark:bg-gray-800 px-4 py-4 flex items-center gap-3 shadow-sm">
+      <button @click="$router.back()" class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
+        <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
       </button>
-      <h1 class="text-lg font-semibold text-black">{{ pageTitle }}</h1>
+      <h1 class="text-lg font-semibold text-black dark:text-white">{{ pageTitle }}</h1>
     </div>
 
     <!-- Content -->
     <div class="p-4">
       <!-- Loading State -->
       <div v-if="pending" class="space-y-4">
-        <div class="bg-gray-200 rounded-2xl h-32 animate-pulse"></div>
+        <div class="bg-gray-200 dark:bg-gray-700 rounded-2xl h-32 animate-pulse"></div>
       </div>
 
       <template v-else-if="audioData?.data">
         <!-- Audio Item - Selected (with Player & Show Teks) -->
-        <div class="bg-[#c09637] rounded-2xl overflow-hidden" :style="{ fontSize: fontSize + 'px' }">
+        <div class="bg-[#c09637] dark:bg-yellow-600 rounded-2xl overflow-hidden" :style="{ fontSize: fontSize + 'px' }">
           <!-- Player Header -->
           <div class="px-4 py-3">
             <div class="flex items-center gap-3">
@@ -30,15 +30,15 @@
           </div>
 
           <!-- Show Teks Accordion -->
-          <div class="bg-white mx-3 mb-3 rounded-xl overflow-hidden">
+          <div class="bg-white dark:bg-gray-800 mx-3 mb-3 rounded-xl overflow-hidden">
             <button 
               @click="showSubtitle = !showSubtitle" 
               class="w-full flex items-center justify-between px-4 py-3"
             >
-              <span class="text-sm font-medium text-black">Show Teks</span>
+              <span class="text-sm font-medium text-black dark:text-white">Show Teks</span>
               <Icon 
                 :name="showSubtitle ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
-                class="w-5 h-5 text-gray-600" 
+                class="w-5 h-5 text-gray-600 dark:text-gray-400" 
               />
             </button>
 
@@ -49,7 +49,7 @@
                 v-model="subtitleSearch"
                 type="text" 
                 placeholder="Masukan kata kunci"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm mb-4 focus:outline-none focus:border-primary"
+                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm mb-4 focus:outline-none focus:border-primary bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
 
               <!-- Subtitle List -->
@@ -57,26 +57,26 @@
                 <div 
                   v-for="sub in filteredSubtitles" 
                   :key="sub.id"
-                  class="border border-gray-200 rounded-lg p-4"
+                  class="border border-gray-200 dark:border-gray-600 rounded-lg p-4"
                   :style="{ fontSize: fontSize + 'px' }"
                 >
-                  <p class="font-semibold text-black mb-2">{{ sub.title }}</p>
-                  <p class="text-gray-600 mb-2" v-html="sub.description"></p>
-                  <div class="text-black mb-4" v-html="highlightText(sub.script)"></div>
+                  <p class="font-semibold text-black dark:text-white mb-2">{{ sub.title }}</p>
+                  <p class="text-gray-600 dark:text-gray-400 mb-2" v-html="sub.description"></p>
+                  <div class="text-black dark:text-white mb-4" v-html="highlightText(sub.script)"></div>
                   
                   <!-- Action Buttons -->
-                  <div class="flex items-center gap-6 pt-3 border-t border-gray-200">
-                    <button @click="copySubtitle(sub)" class="flex items-center gap-1 text-sm text-gray-700">
+                  <div class="flex items-center gap-6 pt-3 border-t border-gray-200 dark:border-gray-600">
+                    <button @click="copySubtitle(sub)" class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
                       <Icon name="mdi:content-copy" class="w-4 h-4" />
                       <span>Salin</span>
                     </button>
-                    <button @click="speakSubtitle(sub)" class="flex items-center gap-1 text-sm" :class="speakingSubtitleId === sub.id ? 'text-primary' : 'text-gray-700'">
+                    <button @click="speakSubtitle(sub)" class="flex items-center gap-1 text-sm" :class="speakingSubtitleId === sub.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
                       <Icon :name="speakingSubtitleId === sub.id ? 'mdi:stop' : 'mdi:account-voice'" class="w-4 h-4" />
                       <span>{{ speakingSubtitleId === sub.id ? 'Stop' : 'Voice' }}</span>
                     </button>
                   </div>
                 </div>
-                <p v-if="filteredSubtitles.length === 0" class="text-sm text-gray-500 text-center py-4">
+                <p v-if="filteredSubtitles.length === 0" class="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
                   Tidak ada teks ditemukan
                 </p>
               </div>
@@ -101,16 +101,16 @@
       />
 
       <!-- Bottom Audio Player Drawer -->
-      <div v-if="audioData?.data" class="bg-white shadow-[0_-4px_20px_rgba(0,0,0,0.1)] p-4">
+      <div v-if="audioData?.data" class="bg-white dark:bg-gray-800 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.3)] p-4">
         <div class="flex items-center justify-between mb-2">
-          <p class="text-sm font-medium text-black flex-1 line-clamp-1">{{ audioData.data.title?.trim() }}</p>
+          <p class="text-sm font-medium text-black dark:text-white flex-1 line-clamp-1">{{ audioData.data.title?.trim() }}</p>
         </div>
 
         <!-- Progress Bar -->
         <div class="flex items-center gap-2 mb-3">
           <input type="range" :value="currentTime" :max="duration" @input="seek"
-            class="flex-1 h-1 bg-gray-200 rounded-full appearance-none cursor-pointer accent-primary" />
-          <span class="text-xs text-gray-500 w-20 text-right">{{ formatTime(currentTime) }}/{{ formatTime(duration) }}</span>
+            class="flex-1 h-1 bg-gray-200 dark:bg-gray-600 rounded-full appearance-none cursor-pointer accent-primary" />
+          <span class="text-xs text-gray-500 dark:text-gray-400 w-20 text-right">{{ formatTime(currentTime) }}/{{ formatTime(duration) }}</span>
         </div>
 
         <!-- Controls -->
@@ -118,28 +118,28 @@
           <div class="flex items-center gap-4">
             <button class="p-1" @click="addToBookmark">
               <Icon :name="isAudioBookmarked ? 'mdi:star' : 'mdi:star-outline'" 
-                    :class="isAudioBookmarked ? 'text-yellow-500' : 'text-gray-600'"
+                    :class="isAudioBookmarked ? 'text-yellow-500' : 'text-gray-600 dark:text-gray-400'"
                     class="w-6 h-6" />
             </button>
             <button class="p-1">
-              <Icon name="mdi:share-variant-outline" class="w-6 h-6 text-gray-600" />
+              <Icon name="mdi:share-variant-outline" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
             </button>
           </div>
 
           <div class="flex items-center gap-2">
             <button @click="skipBackward" class="p-2">
-              <Icon name="mdi:rewind" class="w-6 h-6 text-gray-700" />
+              <Icon name="mdi:rewind" class="w-6 h-6 text-gray-700 dark:text-gray-300" />
             </button>
-            <button @click="togglePlay" class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+            <button @click="togglePlay" class="w-12 h-12 bg-primary dark:bg-yellow-500 rounded-full flex items-center justify-center">
               <Icon :name="isPlaying ? 'mdi:pause' : 'mdi:play'" class="w-7 h-7 text-black" />
             </button>
             <button @click="skipForward" class="p-2">
-              <Icon name="mdi:fast-forward" class="w-6 h-6 text-gray-700" />
+              <Icon name="mdi:fast-forward" class="w-6 h-6 text-gray-700 dark:text-gray-300" />
             </button>
           </div>
 
           <button class="p-1">
-            <Icon name="mdi:minus" class="w-6 h-6 text-gray-600" />
+            <Icon name="mdi:minus" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
           </button>
         </div>
       </div>
@@ -152,6 +152,7 @@
 
 <script setup lang="ts">
 import { useBookmark } from '~/composables/useBookmark'
+import { useHistory } from '~/composables/useHistory'
 import { ref, computed, onMounted } from "vue"
 
 interface Subtitle {
@@ -180,6 +181,9 @@ const route = useRoute()
 const audioId = computed(() => route.query.audio_id)
 const subtitleId = computed(() => route.query.subtitle_id)
 const pageTitle = computed(() => (route.query.title as string) || 'Audio Detail')
+
+// History
+const { saveAudioDetailHistory } = useHistory()
 
 const { data: audioData, pending } = await useFetch<{ success: boolean; data: AudioDetail }>(
   () => `https://api.masterluindonesia.com/api/audio/detail?audio_id=${audioId.value}&audio_subtitle_id=${subtitleId.value}`
@@ -294,6 +298,18 @@ const speakSubtitle = (sub: Subtitle) => {
 onMounted(() => {
   if (audioData.value?.data?.url && audioElement.value) {
     audioElement.value.src = audioData.value.data.url
+  }
+  
+  // Save to history (fire and forget)
+  if (audioData.value?.data) {
+    const subtitle = audioData.value.data.subtitle?.[0]
+    const title = subtitle?.title || audioData.value.data.title
+    saveAudioDetailHistory(
+      title,
+      Number(audioId.value),
+      subtitleId.value ? Number(subtitleId.value) : null,
+      'CN'
+    )
   }
 })
 

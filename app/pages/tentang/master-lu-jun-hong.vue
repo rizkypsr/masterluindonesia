@@ -1,9 +1,9 @@
 <template>
-  <div class="min-h-screen bg-white">
+  <div class="min-h-screen bg-white dark:bg-gray-900">
     <!-- Header -->
-    <div class="flex items-center justify-between px-4 py-3 border-b">
+    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
       <BackButton to="/?tab=tentang" />
-      <span class="text-sm text-gray-600">Pengenalan profil XLFM</span>
+      <span class="text-sm text-gray-600 dark:text-gray-400">Pengenalan profil XLFM</span>
       <TentangMenu type="tentang-main" />
     </div>
 
@@ -15,7 +15,7 @@
 
     <!-- Content -->
     <div class="px-4 py-6">
-      <h1 class="text-2xl font-bold text-gray-900 mb-4">Master Jun Hong Lu</h1>
+      <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Master Jun Hong Lu</h1>
 
       <!-- Decorative element -->
       <div class="flex justify-center mb-4">
@@ -23,71 +23,71 @@
           class="w-12 h-auto opacity-50" onerror="this.style.display='none'" />
       </div>
 
-      <p class="text-gray-700 text-sm mb-4">
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
         Master Lu terkenal secara internasional atas upayanya dalam mempromosikan Budaya tradisional Tiongkok,
         Perdamaian Dunia, dan membantu orang melalui Ajaran Buddha.
       </p>
 
-      <p class="text-gray-700 text-sm mb-4">
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
         Hanya dalam beberapa tahun, ada lebih dari 10 juta orang yang mengikuti ajaran Master Lu dengan semangat dan
         welas asih aliran Buddha Mahayana.
       </p>
 
-      <p class="text-gray-700 text-sm mb-4">
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
         Dengan misi untuk mempromosikan budaya tradisional Tiongkok, Master Jun Hong Lu memberikan ajaran "Cinta kasih
         dan welas asih", serta inti dari filosofi Buddhis.
       </p>
 
-      <p class="text-gray-700 text-sm mb-4">
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
         Master Jun Hong Lu mendorong orang untuk menahan diri dari perbuatan salah dan melakukan perbuatan baik.
       </p>
 
-      <p class="text-gray-700 text-sm mb-4">
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
         Selain itu, Master Lu adalah ketua dan direktur Asosiasi Amal Buddha Media Oriental Australia (AOMB).
       </p>
 
-      <p class="text-gray-700 text-sm mb-4">
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
         AOMB terdaftar di Australian Charities and Non profit Commission-ACNC.Charity ABN: 96169422664.
       </p>
 
-      <p class="text-gray-700 text-sm mb-4">
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
         Setahun kemudian, terdaftar di United Nations Global Compact sebagai NGO-Non Government Organization sejak Juli
         2015.
       </p>
 
-      <p class="text-gray-700 text-sm mb-4">
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
         Master Jun Hong Lu juga menjabat sebagai Anggota Kehormatan Dewan Penasihat Federasi Dunia untuk Perdamaian dan
         Cinta (WFPL).
       </p>
 
-      <p class="text-gray-700 text-sm mb-4">
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
         Beliau telah menerima berbagai penghargaan internasional atas kontribusinya dalam mempromosikan perdamaian dunia
         dan harmoni antar agama.
       </p>
 
-      <p class="text-gray-700 text-sm mb-4">
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
         Melalui ceramah Dharma dan acara amal di seluruh dunia, Master Lu telah menginspirasi jutaan orang untuk
         menjalani kehidupan yang lebih bermakna dan penuh welas asih.
       </p>
     </div>
 
     <!-- Penghargaan Dunia Section -->
-    <div class="bg-white px-4 py-6">
-      <h2 class="text-2xl font-bold text-gray-900 mb-4">Penghargaan Dunia</h2>
+    <div class="bg-white dark:bg-gray-900 px-4 py-6">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Penghargaan Dunia</h2>
 
       <UCarousel ref="carouselRef" v-slot="{ item }" :items="penghargaanItems" :ui="{ item: 'basis-full' }"
         @select="onSelect">
         <div class="pr-4 h-[700px] overflow-y-auto">
           <!-- Title -->
-          <h3 class="text-gray-900 font-semibold mb-3">{{ item.title }}</h3>
+          <h3 class="text-gray-900 dark:text-white font-semibold mb-3">{{ item.title }}</h3>
 
           <!-- Navigation Arrows -->
           <div class="flex justify-end gap-2 mb-3">
             <button @click="scrollPrev" class="p-1">
-              <Icon name="mdi:arrow-left" class="w-5 h-5 text-gray-900" />
+              <Icon name="mdi:arrow-left" class="w-5 h-5 text-gray-900 dark:text-white" />
             </button>
             <button @click="scrollNext" class="p-1">
-              <Icon name="mdi:arrow-right" class="w-5 h-5 text-gray-900" />
+              <Icon name="mdi:arrow-right" class="w-5 h-5 text-gray-900 dark:text-white" />
             </button>
           </div>
 
@@ -97,7 +97,7 @@
           </div>
 
           <!-- Content -->
-          <div class="text-gray-700 text-sm space-y-3">
+          <div class="text-gray-700 dark:text-gray-300 text-sm space-y-3">
             <p v-for="(paragraph, idx) in item.content" :key="idx">{{ paragraph }}</p>
           </div>
         </div>
@@ -107,7 +107,7 @@
       <div class="flex justify-center gap-2 mt-4">
         <button v-for="(item, index) in penghargaanItems" :key="item.id" @click="scrollTo(index)" :class="[
           'w-2 h-2 rounded-full transition-all',
-          activeIndex === index ? 'bg-gray-900' : 'bg-gray-300'
+          activeIndex === index ? 'bg-gray-900 dark:bg-white' : 'bg-gray-300 dark:bg-gray-600'
         ]" />
       </div>
     </div>
