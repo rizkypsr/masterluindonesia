@@ -16,22 +16,21 @@
         <template v-else-if="videoData">
             <!-- YouTube Player -->
             <div class="aspect-video bg-black">
-                <iframe :src="youtubeEmbedUrl" class="w-full h-full" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen />
+                <div id="youtube-player"></div>
             </div>
 
             <!-- Video Info -->
             <div class="px-4 py-4 bg-white dark:bg-gray-800">
                 <div class="flex items-start justify-between">
-                    <h2 class="font-semibold text-black dark:text-white flex-1" :style="{ fontSize: fontSize + 'px' }">{{ videoData.title }}</h2>
+                    <h2 class="font-semibold text-black dark:text-white flex-1" :style="{ fontSize: fontSize + 'px' }">
+                        {{ videoData.title }}</h2>
                     <div class="flex items-center gap-3 shrink-0">
                         <button class="p-2" @click="addToBookmark">
-                            <Icon :name="isVideoBookmarked ? 'mdi:star' : 'mdi:star-outline'" 
-                                  :class="isVideoBookmarked ? 'text-yellow-500' : 'text-gray-600 dark:text-gray-400'"
-                                  class="w-6 h-6" />
+                            <Icon :name="isVideoBookmarked ? 'mdi:star' : 'mdi:star-outline'"
+                                :class="isVideoBookmarked ? 'text-yellow-500' : 'text-gray-600 dark:text-gray-400'"
+                                class="w-6 h-6" />
                         </button>
-                        <button class="p-2">
+                        <button class="p-2" @click="shareContent">
                             <Icon name="mdi:share-variant-outline" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
                         </button>
                     </div>
@@ -43,7 +42,8 @@
                 <button @click="showSubtitle = !showSubtitle"
                     class="w-full px-4 py-3 flex items-center justify-between">
                     <span class="font-semibold text-black dark:text-white">SUBTITLE</span>
-                    <Icon :name="showSubtitle ? 'mdi:chevron-up' : 'mdi:chevron-down'" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                    <Icon :name="showSubtitle ? 'mdi:chevron-up' : 'mdi:chevron-down'"
+                        class="w-6 h-6 text-gray-600 dark:text-gray-400" />
                 </button>
 
                 <div v-if="showSubtitle" class="px-4 pb-4">
@@ -55,11 +55,12 @@
 
                     <!-- Subtitle List -->
                     <div class="max-h-80 overflow-y-auto space-y-6">
-                        <div v-for="sub in filteredSubtitles" :key="sub.timestamp" :style="{ fontSize: fontSize + 'px' }">
+                        <div v-for="sub in filteredSubtitles" :key="sub.timestamp"
+                            :style="{ fontSize: fontSize + 'px' }">
                             <!-- Timestamp row with actions -->
                             <div class="flex items-center mb-2 text-black dark:text-white">
                                 <div class="flex-1"></div>
-                                <p>{{ formatTimestamp(sub.timestamp) }}</p>
+                                <p class="cursor-pointer hover:text-primary dark:hover:text-yellow-400" @click="seekToTimestamp(sub.timestamp)">{{ formatTimestamp(sub.timestamp) }}</p>
                                 <div class="flex-1 flex justify-end">
                                     <div class="flex items-center gap-2">
                                         <button @click="copyToClipboard(sub.description_wa)" class="p-1">
@@ -80,7 +81,8 @@
 
             <!-- Sub Videos by Group -->
             <div v-if="videoData.sub_video?.length" class="mt-2 space-y-4">
-                <div v-for="group in videoData.sub_video" :key="group.group_sub_video_id" class="bg-white dark:bg-gray-800 py-4">
+                <div v-for="group in videoData.sub_video" :key="group.group_sub_video_id"
+                    class="bg-white dark:bg-gray-800 py-4">
                     <h3 class="px-4 font-semibold text-black dark:text-white mb-3">{{ group.group_sub_video_name }}</h3>
 
                     <!-- Horizontal Carousel -->
@@ -92,7 +94,8 @@
                             class="flex items-center gap-4 pr-4">
                             <img :src="getYoutubeThumbnail(item.url)" :alt="item.title"
                                 class="w-36 h-24 object-cover rounded-lg bg-gray-200 dark:bg-gray-700 shrink-0" />
-                            <p class="text-sm font-semibold text-black dark:text-white line-clamp-3">{{ item.title }}</p>
+                            <p class="text-sm font-semibold text-black dark:text-white line-clamp-3">{{ item.title }}
+                            </p>
                         </NuxtLink>
                     </UCarousel>
                 </div>
@@ -101,13 +104,8 @@
 
         <!-- Bottom Section with FAB -->
         <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto">
-            <FabZoom 
-                v-model:isOpen="showFabMenu"
-                class="absolute right-0 bottom-full z-10"
-                @zoomIn="zoomIn" 
-                @zoomOut="zoomOut"
-                @scrollTop="scrollToTop"
-            />
+            <FabZoom v-model:isOpen="showFabMenu" class="absolute right-0 bottom-full z-10" @zoomIn="zoomIn"
+                @zoomOut="zoomOut" @scrollTop="scrollToTop" />
         </div>
 
         <!-- Bookmark Modal -->
@@ -118,7 +116,7 @@
 <script setup lang="ts">
 import { useBookmark } from '~/composables/useBookmark'
 import { useHistory } from '~/composables/useHistory'
-import { ref, computed, onMounted } from "vue"
+import { ref, computed, onMounted, watch } from "vue"
 
 interface Subtitle {
     timestamp: number
@@ -189,10 +187,55 @@ const { data: response, pending } = await useFetch<{ success: boolean; data: Vid
 
 const videoData = computed(() => response.value?.data)
 
-const youtubeEmbedUrl = computed(() => {
-    if (!videoData.value?.url) return ''
-    const videoId = extractYoutubeId(videoData.value.url)
-    return videoId ? `https://www.youtube.com/embed/${videoId}` : ''
+// YouTube Player
+const player = ref<any>(null)
+
+const initYouTubePlayer = () => {
+    if (!videoData.value?.url) return
+    const videoIdYT = extractYoutubeId(videoData.value.url)
+    if (!videoIdYT) return
+
+    // Load YouTube IFrame API
+    if (!(window as any).YT) {
+        const tag = document.createElement('script')
+        tag.src = 'https://www.youtube.com/iframe_api'
+        const firstScriptTag = document.getElementsByTagName('script')[0]
+        firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
+        
+        ;(window as any).onYouTubeIframeAPIReady = () => {
+            createPlayer(videoIdYT)
+        }
+    } else {
+        createPlayer(videoIdYT)
+    }
+}
+
+const createPlayer = (videoIdYT: string) => {
+    player.value = new (window as any).YT.Player('youtube-player', {
+        height: '100%',
+        width: '100%',
+        videoId: videoIdYT,
+        playerVars: {
+            playsinline: 1
+        }
+    })
+}
+
+const seekToTimestamp = (seconds: number) => {
+    if (player.value?.seekTo) {
+        player.value.seekTo(seconds, true)
+        player.value.playVideo()
+    }
+}
+
+onMounted(() => {
+    initYouTubePlayer()
+})
+
+watch(videoData, () => {
+    if (videoData.value?.url && !player.value) {
+        initYouTubePlayer()
+    }
 })
 
 const filteredSubtitles = computed(() => {
@@ -264,7 +307,7 @@ const { saveVideoHistory } = useHistory()
 // Fetch bookmarks on mount
 onMounted(async () => {
     await fetchBookmarksByType(1)
-    
+
     // Save to history (fire and forget)
     if (videoData.value) {
         saveVideoHistory(
@@ -283,6 +326,24 @@ const addToBookmark = () => {
         videoData.value.video_category_id,
         'ID'
     )
+}
+
+const shareContent = () => {
+    if (!videoData.value) return
+    
+    const title = videoData.value.title
+    const shareUrl = `${window.location.origin}${window.location.pathname}?title=${encodeURIComponent(title)}`
+
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: title,
+            url: shareUrl
+        })
+    } else {
+        const shareText = `${title}\n${shareUrl}`
+        navigator.clipboard.writeText(shareText)
+    }
 }
 </script>
 

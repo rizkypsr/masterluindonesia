@@ -245,27 +245,21 @@
                         <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
                     </button>
 
-                    <!-- Button: Zeng (贈) - Left bottom -->
-                    <button @click="showKomponenDetail('zeng')"
-                        class="absolute top-[66%] left-3 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
-                        <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
-                    </button>
-
                     <!-- Button: Nian (年) - Left bottom -->
                     <button @click="showKomponenDetail('nian')"
-                        class="absolute top-[76%] left-3 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
+                        class="absolute top-[66%] left-3 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                         <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
                     </button>
 
                     <!-- Button: Yue (月) - Left bottom -->
                     <button @click="showKomponenDetail('yue')"
-                        class="absolute top-[87%] left-3 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
+                        class="absolute top-[76%] left-3 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                         <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
                     </button>
 
                     <!-- Button: Ri (日) - Left bottom -->
                     <button @click="showKomponenDetail('ri')"
-                        class="absolute top-[93%] left-[12%] w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
+                        class="absolute top-[87%] left-3 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                         <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
                     </button>
                 </div>
@@ -1064,28 +1058,28 @@ const selectedKomponen = ref<{ title: string; description: string } | null>(null
 
 const komponenDetails: Record<string, { title: string; description: string }> = {
     'jing-zeng': {
-        title: '敬贈 (Jing Zeng)',
-        description: 'Bagian untuk menulis nama pemberi/pengirim Xiao Fang Zi. Tulis nama lengkap Anda di sini.'
+        title: 'Nama Penerima',
+        description: ''
     },
     'nama-penerima': {
-        title: 'Nama Penerima',
-        description: 'Bagian untuk menulis nama penerima Xiao Fang Zi. Bisa untuk diri sendiri, almarhum, arwah anak keguguran, atau arwah penunggu rumah.'
+        title: 'Nama Pembaca',
+        description: ''
     },
-    'zeng': {
-        title: '贈 (Zeng)',
-        description: 'Menandakan bahwa Xiao Fang Zi ini adalah pemberian/hadiah spiritual.'
-    },
+    // 'zeng': {
+    //     title: '贈 (Zeng)',
+    //     description: 'Menandakan bahwa Xiao Fang Zi ini adalah pemberian/hadiah spiritual.'
+    // },
     'nian': {
-        title: '年 (Nian) - Tahun',
-        description: 'Tulis tahun pembakaran Xiao Fang Zi dalam format angka Mandarin atau angka biasa.'
+        title: 'Tahun',
+        description: ''
     },
     'yue': {
-        title: '月 (Yue) - Bulan',
-        description: 'Tulis bulan pembakaran Xiao Fang Zi dalam format angka Mandarin atau angka biasa.'
+        title: 'Bulan',
+        description: ''
     },
     'ri': {
-        title: '日 (Ri) - Tanggal',
-        description: 'Tulis tanggal pembakaran Xiao Fang Zi dalam format angka Mandarin atau angka biasa.'
+        title: 'Tanggal',
+        description: ''
     }
 }
 
@@ -1135,7 +1129,7 @@ const penulisanNamaItems = [
     'Untuk Arwah Anak Keguguran',
     'Untuk Arwah Penunggu Rumah',
     'Untuk Menguraikan Ikatan Karma Buruk',
-    'Untuk Orang Lain'
+    'Untuk Cadangan'
 ]
 
 // Langkah-Langkah Mengisi XFZ

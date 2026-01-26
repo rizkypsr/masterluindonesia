@@ -2,7 +2,7 @@
   <div class="min-h-screen bg-gray-50 dark:bg-gray-900 pb-40">
     <!-- Header -->
     <div class="bg-white dark:bg-gray-800 px-4 py-4 flex items-center gap-3 shadow-sm">
-      <button @click="$router.back()" class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
+      <button @click="goBack()" class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
         <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
       </button>
       <h1 class="text-lg font-semibold text-black dark:text-white">{{ pageTitle }}</h1>
@@ -96,7 +96,7 @@
                   />
 
                   <!-- Subtitle List -->
-                  <div class="max-h-64 overflow-y-auto space-y-4">
+                  <div class="space-y-4">
                     <div 
                       v-for="sub in filteredSubtitles" 
                       :key="sub.id"
@@ -109,15 +109,15 @@
                       
                       <!-- Action Buttons -->
                       <div class="flex items-center gap-6 pt-3 border-t border-gray-200 dark:border-gray-600">
-                        <button @click="copySubtitle(sub)" class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
+                        <button @click="copySubtitle(sub)" class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
                           <Icon name="mdi:content-copy" class="w-4 h-4" />
                           <span>Salin</span>
                         </button>
-                        <button @click="viewDetail(sub)" class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
+                        <button @click="viewDetail(sub)" class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
                           <Icon name="mdi:file-document-outline" class="w-4 h-4" />
                           <span>Lihat Detail</span>
                         </button>
-                        <button @click="speakSubtitle(sub)" class="flex items-center gap-1 text-sm" :class="speakingSubtitleId === sub.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
+                        <button @click="speakSubtitle(sub)" class="flex items-center gap-1 text-sm hover:text-primary dark:hover:text-yellow-400" :class="speakingSubtitleId === sub.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
                           <Icon :name="speakingSubtitleId === sub.id ? 'mdi:stop' : 'mdi:account-voice'" class="w-4 h-4" />
                           <span>{{ speakingSubtitleId === sub.id ? 'Stop' : 'Voice' }}</span>
                         </button>
@@ -151,49 +151,65 @@
 
       <!-- Bottom Audio Player Drawer -->
       <div v-if="currentAudio" class="bg-white dark:bg-gray-800 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.3)] p-4">
-        <div class="flex items-center justify-between mb-2">
-          <p class="text-sm font-medium text-black dark:text-white flex-1 line-clamp-1">{{ currentAudio.title.trim() }}</p>
-          <button @click="closePlayer" class="p-1">
-            <Icon name="mdi:close" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
-          </button>
-        </div>
-
-        <!-- Progress Bar -->
-        <div class="flex items-center gap-2 mb-3">
-          <input type="range" :value="currentTime" :max="duration" @input="seek"
-            class="flex-1 h-1 bg-gray-200 dark:bg-gray-600 rounded-full appearance-none cursor-pointer accent-primary" />
-          <span class="text-xs text-gray-500 dark:text-gray-400 w-20 text-right">{{ formatTime(currentTime) }}/{{ formatTime(duration) }}</span>
-        </div>
-
-        <!-- Controls -->
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-4">
-            <button class="p-1" @click="addToBookmark">
-              <Icon :name="isAudioBookmarked ? 'mdi:star' : 'mdi:star-outline'" 
-                    :class="isAudioBookmarked ? 'text-yellow-500' : 'text-gray-600 dark:text-gray-400'"
-                    class="w-6 h-6" />
+        <!-- Minimized View -->
+        <template v-if="isPlayerMinimized">
+          <div class="flex items-center justify-between">
+            <div class="flex-1">
+              <p class="text-sm text-gray-500 dark:text-gray-400">Sedang diputar</p>
+              <p class="font-semibold text-black dark:text-white line-clamp-1">{{ currentAudio.title.trim() }}</p>
+            </div>
+            <button @click="isPlayerMinimized = false" class="p-2">
+              <Icon name="mdi:menu" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
             </button>
-            <button class="p-1">
-              <Icon name="mdi:share-variant-outline" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
+          </div>
+        </template>
+
+        <!-- Expanded View -->
+        <template v-else>
+          <div class="flex items-center justify-between mb-2">
+            <p class="text-sm font-medium text-black dark:text-white flex-1 line-clamp-1">{{ currentAudio.title.trim() }}</p>
+            <button @click="closePlayer" class="p-1">
+              <Icon name="mdi:close" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
             </button>
           </div>
 
-          <div class="flex items-center gap-2">
-            <button @click="skipBackward" class="p-2">
-              <Icon name="mdi:rewind" class="w-6 h-6 text-gray-700 dark:text-gray-300" />
-            </button>
-            <button @click="togglePlay" class="w-12 h-12 bg-primary dark:bg-yellow-500 rounded-full flex items-center justify-center">
-              <Icon :name="isPlaying ? 'mdi:pause' : 'mdi:play'" class="w-7 h-7 text-black" />
-            </button>
-            <button @click="skipForward" class="p-2">
-              <Icon name="mdi:fast-forward" class="w-6 h-6 text-gray-700 dark:text-gray-300" />
-            </button>
+          <!-- Progress Bar -->
+          <div class="flex items-center gap-2 mb-3">
+            <input type="range" :value="currentTime" :max="duration" @input="seek"
+              class="flex-1 h-1 bg-gray-200 dark:bg-gray-600 rounded-full appearance-none cursor-pointer accent-primary" />
+            <span class="text-xs text-gray-500 dark:text-gray-400 w-20 text-right">{{ formatTime(currentTime) }}/{{ formatTime(duration) }}</span>
           </div>
 
-          <button class="p-1">
-            <Icon name="mdi:minus" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
-          </button>
-        </div>
+          <!-- Controls -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+              <button class="p-1" @click="addToBookmark">
+                <Icon :name="isAudioBookmarked ? 'mdi:star' : 'mdi:star-outline'" 
+                      :class="isAudioBookmarked ? 'text-yellow-500' : 'text-gray-600 dark:text-gray-400'"
+                      class="w-6 h-6" />
+              </button>
+              <button class="p-1" @click="shareContent">
+                <Icon name="mdi:share-variant-outline" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
+              </button>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <button @click="skipBackward" class="p-2">
+                <Icon name="mdi:rewind" class="w-6 h-6 text-gray-700 dark:text-gray-300" />
+              </button>
+              <button @click="togglePlay" class="w-12 h-12 bg-primary dark:bg-yellow-500 rounded-full flex items-center justify-center">
+                <Icon :name="isPlaying ? 'mdi:pause' : 'mdi:play'" class="w-7 h-7 text-black" />
+              </button>
+              <button @click="skipForward" class="p-2">
+                <Icon name="mdi:fast-forward" class="w-6 h-6 text-gray-700 dark:text-gray-300" />
+              </button>
+            </div>
+
+            <button class="p-1" @click="isPlayerMinimized = true">
+              <Icon name="mdi:minus" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
+            </button>
+          </div>
+        </template>
       </div>
     </div>
 
@@ -205,7 +221,10 @@
 <script setup lang="ts">
 import { useBookmark } from '~/composables/useBookmark'
 import { useHistory } from '~/composables/useHistory'
+import { useSmartBack } from '~/composables/useSmartBack'
 import { ref, computed, watch, onMounted } from "vue"
+
+const { goBack } = useSmartBack()
 
 interface Subtitle {
   id: number
@@ -251,8 +270,8 @@ const { data: audioData, pending } = await useFetch<{ success: boolean; data: Au
 
 const audioGroups = computed(() => audioData.value?.data?.sort((a, b) => a.order - b.order) || [])
 
-// Selected Group State
-const selectedGroupId = ref<number | null>(null)
+// Selected Group State - persisted across navigation
+const selectedGroupId = useState<number | null>(`audio-selected-group-${categoryId.value}`, () => null)
 
 // Set default selected group when data loads
 watch(audioGroups, (groups) => {
@@ -266,9 +285,17 @@ const selectedGroupAudios = computed(() => {
   return group?.audio || []
 })
 
-// Audio Player State
+// Audio Player State - persisted across navigation
 const audioElement = ref<HTMLAudioElement | null>(null)
-const currentAudio = ref<AudioItem | null>(null)
+const currentAudioId = useState<number | null>(`audio-current-id-${categoryId.value}`, () => null)
+const currentAudio = computed(() => {
+  if (!currentAudioId.value) return null
+  for (const group of audioGroups.value) {
+    const audio = group.audio.find(a => a.id === currentAudioId.value)
+    if (audio) return audio
+  }
+  return null
+})
 const isPlaying = ref(false)
 const currentTime = ref(0)
 const duration = ref(0)
@@ -280,6 +307,7 @@ const subtitleSearch = ref('')
 // FAB Menu State
 const showFabMenu = ref(false)
 const fontSize = ref(14) // base font size in px
+const isPlayerMinimized = ref(false)
 
 const zoomIn = () => {
   fontSize.value = Math.min(fontSize.value + 2, 24)
@@ -315,13 +343,22 @@ const stripHtml = (html: string) => {
 }
 
 // Copy subtitle to clipboard
+const toast = useToast()
+
 const copySubtitle = async (sub: Subtitle) => {
   const text = `${sub.title}\n${sub.description_wa}\n${sub.script_wa}`.replace(/\\n/g, '\n')
   try {
     await navigator.clipboard.writeText(text)
-    // Could add toast notification here
+    toast.add({
+      title: 'Berhasil disalin',
+      color: 'success'
+    })
   } catch (err) {
     console.error('Failed to copy:', err)
+    toast.add({
+      title: 'Gagal menyalin',
+      color: 'error'
+    })
   }
 }
 
@@ -380,8 +417,7 @@ const viewDetail = (sub: Subtitle) => {
     path: '/audio/detail',
     query: {
       audio_id: currentAudio.value.id,
-      subtitle_id: sub.id,
-      title: pageTitle.value
+      subtitle_id: sub.id
     }
   })
 }
@@ -391,7 +427,7 @@ const playAudio = (audio: AudioItem) => {
     togglePlay()
     return
   }
-  currentAudio.value = audio
+  currentAudioId.value = audio.id
   showSubtitle.value = false
   subtitleSearch.value = ''
   if (audioElement.value) {
@@ -419,7 +455,7 @@ const closePlayer = () => {
     audioElement.value.pause()
     audioElement.value.src = ''
   }
-  currentAudio.value = null
+  currentAudioId.value = null
   isPlaying.value = false
   currentTime.value = 0
   duration.value = 0
@@ -488,6 +524,11 @@ const isAudioBookmarked = computed(() => {
 
 onMounted(async () => {
   await fetchBookmarksByType(2)
+  
+  // Restore audio source if there was a selected audio
+  if (currentAudio.value && audioElement.value) {
+    audioElement.value.src = currentAudio.value.url
+  }
 })
 
 const addToBookmark = () => {
@@ -497,6 +538,26 @@ const addToBookmark = () => {
     currentAudio.value.id,
     Number(categoryId.value)
   )
+}
+
+const shareContent = () => {
+  if (!currentAudio.value) return
+  
+  const title = currentAudio.value.title.trim()
+  const shareUrl = `${window.location.origin}${window.location.pathname}?title=${encodeURIComponent(pageTitle.value)}`
+  const shareTitle = `${pageTitle.value} - ${title}`
+
+  if (navigator.share) {
+    navigator.share({
+      title: shareTitle,
+      text: shareTitle,
+      url: shareUrl
+    })
+  } else {
+    // Fallback: copy to clipboard
+    const shareText = `${shareTitle}\n${shareUrl}`
+    navigator.clipboard.writeText(shareText)
+  }
 }
 </script>
 

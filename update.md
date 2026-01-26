@@ -13,3 +13,9 @@
 ### 25 Jan 2025 
 - update audio detail di search 
 - update ukuran tempat dupa di halaman (/edukasi/altar-besar) 
+
+### 26 Jan 2025
+- update tombol share dan minimalis di halaman audio
+- update subtitle dan share pada halaman video
+- update timestamp subtitle di halaman video
+- update topik detail

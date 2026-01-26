@@ -29,13 +29,14 @@
           
           <!-- Sub Categories -->
           <div v-if="category.sub_category && category.sub_category.length > 0" class="divide-y divide-gray-200 dark:divide-gray-700">
-            <div
+            <NuxtLink
               v-for="sub in category.sub_category"
               :key="sub.id"
-              class="py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
+              :to="{ path: '/topics/detail', query: { subId: sub.id, title: sub.title } }"
+              class="py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 block"
             >
               <span class="text-sm text-black dark:text-white">{{ sub.title }}</span>
-            </div>
+            </NuxtLink>
           </div>
         </div>
       </div>

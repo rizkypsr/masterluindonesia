@@ -16,9 +16,7 @@
         <template v-else-if="videoData">
             <!-- YouTube Player -->
             <div class="aspect-video bg-black">
-                <iframe :src="youtubeEmbedUrl" class="w-full h-full" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen />
+                <div id="youtube-player"></div>
             </div>
 
             <!-- Video Info -->
@@ -31,7 +29,7 @@
                                   :class="isVideoBookmarked ? 'text-yellow-500' : 'text-gray-600 dark:text-gray-400'"
                                   class="w-6 h-6" />
                         </button>
-                        <button class="p-2">
+                        <button class="p-2" @click="shareContent">
                             <Icon name="mdi:share-variant-outline" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
                         </button>
                     </div>
@@ -55,19 +53,20 @@
 
                     <!-- Subtitle List -->
                     <div class="max-h-80 overflow-y-auto space-y-4">
-                        <div v-for="sub in filteredSubtitles" :key="sub.timestamp" class="flex items-start gap-4" :style="{ fontSize: fontSize + 'px' }">
-                            <div class="text-center shrink-0">
-                                <p class="text-gray-500 dark:text-gray-400">{{ formatTimestamp(sub.timestamp) }}</p>
+                        <div v-for="sub in filteredSubtitles" :key="sub.timestamp" :style="{ fontSize: fontSize + 'px' }">
+                            <div class="flex items-center mb-2">
+                                <div class="flex-1"></div>
+                                <p class="text-black dark:text-gray-400 cursor-pointer hover:text-primary dark:hover:text-yellow-400" @click="seekToTimestamp(sub.timestamp)">{{ formatTimestamp(sub.timestamp) }}</p>
+                                <div class="flex-1 flex justify-end gap-2">
+                                    <button @click="copyToClipboard(sub.description_wa)" class="p-1">
+                                        <Icon name="mdi:content-copy" class="w-5 h-5 text-black dark:text-gray-500" />
+                                    </button>
+                                    <button @click="speakText(sub.description_wa)" class="p-1">
+                                        <Icon name="mdi:account-voice" class="w-5 h-5 text-black dark:text-gray-500" />
+                                    </button>
+                                </div>
                             </div>
-                            <p class="flex-1 text-black dark:text-white">{{ sub.description_wa }}</p>
-                            <div class="flex items-center gap-2 shrink-0">
-                                <button @click="copyToClipboard(sub.description_wa)" class="p-1">
-                                    <Icon name="mdi:content-copy" class="w-5 h-5 text-gray-400 dark:text-gray-500" />
-                                </button>
-                                <button @click="speakText(sub.description_wa)" class="p-1">
-                                    <Icon name="mdi:account-voice" class="w-5 h-5 text-gray-400 dark:text-gray-500" />
-                                </button>
-                            </div>
+                            <p class="text-black dark:text-white" v-html="sub.description"></p>
                         </div>
                     </div>
                 </div>
@@ -93,7 +92,7 @@
 <script setup lang="ts">
 import { useBookmark } from '~/composables/useBookmark'
 import { useHistory } from '~/composables/useHistory'
-import { ref, computed, onMounted } from "vue"
+import { ref, computed, onMounted, watch } from "vue"
 
 interface Subtitle {
     timestamp: number
@@ -146,10 +145,55 @@ const { data: response, pending } = await useFetch<{ success: boolean; data: Sub
 
 const videoData = computed(() => response.value?.data)
 
-const youtubeEmbedUrl = computed(() => {
-    if (!videoData.value?.url) return ''
-    const id = extractYoutubeId(videoData.value.url)
-    return id ? `https://www.youtube.com/embed/${id}` : ''
+// YouTube Player
+const player = ref<any>(null)
+
+const initYouTubePlayer = () => {
+    if (!videoData.value?.url) return
+    const videoIdYT = extractYoutubeId(videoData.value.url)
+    if (!videoIdYT) return
+
+    // Load YouTube IFrame API
+    if (!(window as any).YT) {
+        const tag = document.createElement('script')
+        tag.src = 'https://www.youtube.com/iframe_api'
+        const firstScriptTag = document.getElementsByTagName('script')[0]
+        firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
+        
+        ;(window as any).onYouTubeIframeAPIReady = () => {
+            createPlayer(videoIdYT)
+        }
+    } else {
+        createPlayer(videoIdYT)
+    }
+}
+
+const createPlayer = (videoIdYT: string) => {
+    player.value = new (window as any).YT.Player('youtube-player', {
+        height: '100%',
+        width: '100%',
+        videoId: videoIdYT,
+        playerVars: {
+            playsinline: 1
+        }
+    })
+}
+
+const seekToTimestamp = (seconds: number) => {
+    if (player.value?.seekTo) {
+        player.value.seekTo(seconds, true)
+        player.value.playVideo()
+    }
+}
+
+onMounted(() => {
+    initYouTubePlayer()
+})
+
+watch(videoData, () => {
+    if (videoData.value?.url && !player.value) {
+        initYouTubePlayer()
+    }
 })
 
 const filteredSubtitles = computed(() => {
@@ -180,7 +224,8 @@ const toast = useToast()
 
 const copyToClipboard = async (text: string) => {
     try {
-        await navigator.clipboard.writeText(text)
+        const formattedText = text.replace(/\\n/g, '\n')
+        await navigator.clipboard.writeText(formattedText)
         toast.add({
             title: 'Berhasil disalin',
             color: 'success'
@@ -234,6 +279,24 @@ const addToBookmark = () => {
         Number(videoId.value),
         'ID'
     )
+}
+
+const shareContent = () => {
+    if (!videoData.value) return
+    
+    const title = videoData.value.title
+    const shareUrl = `${window.location.origin}${window.location.pathname}?title=${encodeURIComponent(title)}`
+
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: title,
+            url: shareUrl
+        })
+    } else {
+        const shareText = `${title}\n${shareUrl}`
+        navigator.clipboard.writeText(shareText)
+    }
 }
 </script>
 
