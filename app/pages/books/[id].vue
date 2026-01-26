@@ -70,10 +70,10 @@
     </div>
 
     <!-- Bottom Section with FAB -->
-    <div class="shrink-0 relative">
+    <div class="shrink-0 relative pb-[env(safe-area-inset-bottom)]">
       <FabZoom 
         v-model:isOpen="showFabMenu"
-        class="absolute right-0 bottom-full z-10"
+        class="absolute right-4 bottom-4 z-10 mb-[env(safe-area-inset-bottom)]"
         @zoomIn="zoomIn"
         @zoomOut="zoomOut"
         @scrollTop="scrollToTop"

@@ -3,7 +3,7 @@
         <!-- Header (Fixed) -->
         <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <BackButton to="/?tab=edukasi" />
-            <span class="text-sm text-gray-600 dark:text-gray-400">Tata Cara Sembahyang Setiap Hari</span>
+            <span class="text-lg text-gray-600 dark:text-gray-400">Tata Cara Sembahyang Setiap Hari</span>
             <button @click="isMenuOpen = true" class="p-1">
                 <Icon name="heroicons:bars-3" class="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </button>
@@ -114,11 +114,11 @@
                             dupa
                         </h3>
                         <p class="font-bold text-gray-900 dark:text-white mb-1">Catatan:</p>
-                        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">Jika Anda memegang beberapa batang dupa
+                        <p class="text-gray-700 dark:text-gray-300 text-lg mb-3">Jika Anda memegang beberapa batang dupa
                             sekaligus, maka
                             Anda bisa
                             menancapkan dupa ke dalam tempat dupa dengan 1 tangan</p>
-                        <p class="text-gray-700 dark:text-gray-300 text-sm">Jika menancapkan 3 batang dupa sekaligus,
+                        <p class="text-gray-700 dark:text-gray-300 text-lg">Jika menancapkan 3 batang dupa sekaligus,
                             tidak
                             perlu
                             menancapkan
@@ -148,8 +148,8 @@
                         <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
-                            <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{ item.description }}</p>
-                            <p class="text-gray-500 dark:text-gray-400 text-sm">{{ item.note }}</p>
+                            <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">{{ item.description }}</p>
+                            <p class="text-gray-500 dark:text-gray-400 text-lg">{{ item.note }}</p>
                         </div>
                     </UCard>
                 </UCarousel>
@@ -176,7 +176,7 @@
                         <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
-                            <p v-if="item.note" class="text-gray-500 dark:text-gray-400 text-sm">{{ item.note }}</p>
+                            <p v-if="item.note" class="text-gray-500 dark:text-gray-400 text-lg">{{ item.note }}</p>
                         </div>
                     </UCard>
                 </UCarousel>
@@ -217,8 +217,8 @@
                         <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
                             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
-                            <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{ item.description }}</p>
-                            <p v-if="item.note" class="text-gray-500 dark:text-gray-400 text-sm">{{ item.note }}</p>
+                            <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">{{ item.description }}</p>
+                            <p v-if="item.note" class="text-gray-500 dark:text-gray-400 text-lg">{{ item.note }}</p>
                         </div>
                     </UCard>
                 </UCarousel>
@@ -245,10 +245,10 @@
                         <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
                             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
-                            <p v-if="item.description" class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{
+                            <p v-if="item.description" class="text-gray-700 dark:text-gray-300 text-lg mb-2">{{
                                 item.description
                                 }}</p>
-                            <p v-if="item.note" class="text-gray-500 dark:text-gray-400 text-sm">{{ item.note }}</p>
+                            <p v-if="item.note" class="text-gray-500 dark:text-gray-400 text-lg">{{ item.note }}</p>
                         </div>
                     </UCard>
                 </UCarousel>

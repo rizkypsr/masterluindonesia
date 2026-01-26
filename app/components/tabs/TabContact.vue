@@ -41,7 +41,7 @@
                   :alt="country.country"
                   class="w-8 h-6 object-cover"
                 />
-                <span class="font-medium text-black dark:text-white text-left">{{ country.country }}</span>
+                <span class="font-medium text-black dark:text-white text-left text-lg">{{ country.country }}</span>
               </div>
               <UIcon
                 name="i-heroicons-chevron-down"
@@ -63,9 +63,9 @@
                       class="w-full justify-between px-4 py-3"
                       :ui="{ base: 'hover:bg-transparent' }"
                     >
-                      <span class="font-medium text-black dark:text-white">{{ city.city }}</span>
+                      <span class="font-medium text-black dark:text-white text-lg">{{ city.city }}</span>
                       <div class="flex items-center gap-2">
-                        <span class="bg-[#f8cb45] dark:bg-yellow-500 text-black text-sm font-semibold px-2.5 py-0.5 rounded-full">
+                        <span class="bg-[#f8cb45] dark:bg-yellow-500 text-black text-lg font-semibold px-2.5 py-0.5 rounded-full">
                           {{ city.detail.length }}
                         </span>
                         <UIcon
@@ -91,25 +91,25 @@
                         <!-- Address -->
                         <div v-if="detail.address" class="flex gap-2 mb-2">
                           <UIcon name="i-heroicons-map-pin" class="w-5 h-5 text-black dark:text-white shrink-0 mt-0.5" />
-                          <p class="text-gray-700 dark:text-gray-300 text-sm whitespace-pre-line">{{ detail.address }}</p>
+                          <p class="text-gray-700 dark:text-gray-300 text-lg whitespace-pre-line">{{ detail.address }}</p>
                         </div>
 
                         <!-- Phone -->
                         <div v-if="detail.telp" class="flex gap-2 mb-2">
                           <UIcon name="i-heroicons-phone" class="w-5 h-5 text-black dark:text-white shrink-0" />
-                          <p class="text-gray-700 dark:text-gray-300 text-sm">{{ detail.telp }}</p>
+                          <p class="text-gray-700 dark:text-gray-300 text-lg">{{ detail.telp }}</p>
                         </div>
 
                         <!-- Email -->
                         <div v-if="detail.email" class="flex gap-2 mb-2">
                           <UIcon name="i-heroicons-envelope" class="w-5 h-5 text-black dark:text-white shrink-0" />
-                          <p class="text-gray-700 dark:text-gray-300 text-sm">{{ detail.email }}</p>
+                          <p class="text-gray-700 dark:text-gray-300 text-lg">{{ detail.email }}</p>
                         </div>
 
                         <!-- Website -->
                         <div v-if="detail.website" class="flex gap-2 mb-4">
                           <UIcon name="i-heroicons-globe-alt" class="w-5 h-5 text-black dark:text-white shrink-0" />
-                          <p class="text-gray-700 dark:text-gray-300 text-sm break-all">{{ detail.website }}</p>
+                          <p class="text-gray-700 dark:text-gray-300 text-lg break-all">{{ detail.website }}</p>
                         </div>
 
                         <!-- Action Buttons -->

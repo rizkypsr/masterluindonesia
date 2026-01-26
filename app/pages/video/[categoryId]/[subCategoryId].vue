@@ -42,7 +42,7 @@
               <div v-else class="w-8 shrink-0"></div>
 
               <!-- Video Title -->
-              <span class="text-sm text-gray-700 dark:text-gray-300 flex-1">{{ video.title }}</span>
+              <span class="text-lg text-gray-700 dark:text-gray-300 flex-1">{{ video.title }}</span>
             </NuxtLink>
           </div>
         </div>

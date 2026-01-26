@@ -3,7 +3,7 @@
         <!-- Header (Fixed) -->
         <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <BackButton to="/?tab=edukasi" />
-            <span class="text-sm text-gray-600 dark:text-gray-400">Altar Besar</span>
+            <span class="text-lg text-gray-600 dark:text-gray-400">Altar Besar</span>
             <button @click="isMenuOpen = true" class="p-1">
                 <Icon name="heroicons:bars-3" class="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </button>
@@ -70,26 +70,42 @@
                 <h2 class="text-4xl font-semibold mb-4 dark:text-white">Apa Keuntungan Memiliki Altar?</h2>
 
                 <div class="space-y-3">
-                    <p class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">Hasil Pembacaan Paritta dan Berikrar
+                    <p
+                        class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">
+                        Hasil
+                        Pembacaan Paritta dan Berikrar
                         Menjadi
                         Jauh Lebih Baik</p>
 
-                    <p class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">Terasa Berbeda Juga Sewaktu Bersembah
+                    <p
+                        class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">
+                        Terasa
+                        Berbeda Juga Sewaktu Bersembah
                         Sujud</p>
 
-                    <p class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">Daripada Memasang Dupa Hati
+                    <p
+                        class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">
+                        Daripada Memasang Dupa Hati
                         (Bervisualisasi),
                         Lebih Baik Memasang Dupa Asli.</p>
 
-                    <p class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">Boleh Memasang Dupa Pertama Serta
+                    <p
+                        class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">
+                        Boleh
+                        Memasang Dupa Pertama Serta
                         Melafalkan
                         Paritta Semalaman pada Hari Raya Besar Tertentu</p>
 
-                    <p class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">Hasil Dari Membakar Paritta Cadangan
+                    <p
+                        class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">
+                        Hasil
+                        Dari Membakar Paritta Cadangan
                         dan Xiao
                         Fang Zi Akan Jauh Berkurang.</p>
 
-                    <p class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">Memasang Altar di Rumah dan Membantu
+                    <p
+                        class="font-semibold text-xl border-b pb-8 text-gray-800 dark:text-gray-300 dark:border-gray-700">
+                        Memasang Altar di Rumah dan Membantu
                         Orang Lain
                         Memasang Altar, Merupakan Pahala yang Sangat Besar</p>
                 </div>
@@ -106,12 +122,16 @@
                         alt="Buddha Sakyamuni" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Buddha Sakyamuni</h3>
-                        <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">Kita sendiri tinggal di dunia yang sebegitu luasnya,
+                        <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">Kita sendiri tinggal di dunia yang
+                            sebegitu
+                            luasnya,
                             apakah kita
                             tidak bisa menyediakan sedikit ruang untuk memasang altar bagi para Buddha dan Bodhisattva
                             (Pu Sa)?
                         </p>
-                        <p class="text-gray-700 dark:text-gray-300 text-sm">Beliau bersaksi atas semua kita yang bersedia, dengan tekad
+                        <p class="text-gray-700 dark:text-gray-300 text-lg">Beliau bersaksi atas semua kita yang
+                            bersedia,
+                            dengan tekad
                             yang luhur
                             untuk mau dan siap untuk menyebarluaskan Buddha Sakyamuni.</p>
                     </div>
@@ -123,10 +143,12 @@
                         alt="Guan Shi Yin Pu Sa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Guan Shi Yin Pu Sa</h3>
-                        <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">Guan Shi Yin Pu Sa Merupakan Maha Mahakarya, Maha-Jubilasi
+                        <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">Guan Shi Yin Pu Sa Merupakan Maha
+                            Mahakarya,
+                            Maha-Jubilasi
                             Segala
                             Kemulyaan Esa Aneka Nusena di Dalam Nusantara.</p>
-                        <p class="text-gray-700 dark:text-gray-300 text-sm">Dikenal dengan Nama Guan Shi Yin Pu Sa.</p>
+                        <p class="text-gray-700 dark:text-gray-300 text-lg">Dikenal dengan Nama Guan Shi Yin Pu Sa.</p>
                     </div>
                 </UCard>
 
@@ -136,7 +158,9 @@
                         alt="Nan Jing Pu Sa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Nan Jing Pu Sa</h3>
-                        <p class="text-gray-700 dark:text-gray-300 text-sm">Nan Jing Pu Sa adalah Merupakan salah satu Dewa budaya Daoisme
+                        <p class="text-gray-700 dark:text-gray-300 text-lg">Nan Jing Pu Sa adalah Merupakan salah satu
+                            Dewa
+                            budaya Daoisme
                             Tiongkok
                             Buddhisme yang Keberadaannya Tinggi di Alam Langit, yang Bisa Memberikan Ketenangan Bersama
                             Keselamatan Hidup.</p>
@@ -149,7 +173,9 @@
                         alt="Tai Sui Pu Sa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Tai Sui Pu Sa</h3>
-                        <p class="text-gray-700 dark:text-gray-300 text-sm">Tai Sui Pu Sa adalah Bodhisattva yang Bertugas Untuk Menjaga
+                        <p class="text-gray-700 dark:text-gray-300 text-lg">Tai Sui Pu Sa adalah Bodhisattva yang
+                            Bertugas Untuk
+                            Menjaga
                             Umur
                             Manusia. Bagi Mereka yang Sedang Dalam Tahun Tai Sui-nya, Bisa Memohon Doa Kepada Beliau.
                         </p>
@@ -161,9 +187,13 @@
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_6.png"
                         alt="Guan Di Pu Sa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
-                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Guan Di Pu Sa, Zhou Cang Pu Sa, Guan Ping Pu Sa
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Guan Di Pu Sa, Zhou Cang Pu Sa,
+                            Guan
+                            Ping Pu Sa
                         </h3>
-                        <p class="text-gray-700 dark:text-gray-300 text-sm">Guan Di Pu Sa Adalah Pelindung Dharma Bodhisattva. Tiap Hari
+                        <p class="text-gray-700 dark:text-gray-300 text-lg">Guan Di Pu Sa Adalah Pelindung Dharma
+                            Bodhisattva.
+                            Tiap Hari
                             Dharma
                             Pelindung Mengawasi Kita Apakah Kita Melakukan Hal yang Baik atau Buruk, Semua Dicatat oleh
                             Beliau.
@@ -180,7 +210,7 @@
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_7.png"
                     alt="Penempatan Altar" class="w-full h-96 object-cover rounded-lg mb-4" />
 
-                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm">
+                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-lg">
                     <p><span class="font-bold">1.</span> Tidak boleh ditempatkan di dalam kamar tidur suami – istri</p>
                     <p><span class="font-bold">2.</span> Tidak boleh ditempatkan tepat di atas TV, kulkas dan lainnya,
                         atau
@@ -240,7 +270,7 @@
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tempat Dupa</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_12.png" alt="Tempat Dupa"
                     class="w-full rounded-lg mb-4" />
-                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm mb-6">
+                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-lg mb-6">
                     <p>Harus ada tempat dupa di atas Altar. Jika tidak ada tempat dupa, Pu Sa tidak akan datang dan
                         tidak bisa
                         disebut sebagai Altar.</p>
@@ -261,7 +291,7 @@
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tempat Dupa</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_13.png" alt="Tempat Dupa"
                     class="w-full rounded-lg mb-4" />
-                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm mb-6">
+                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-lg mb-6">
                     <p>Harus menyembahyangi Altar dengan dupa, jika tidak Pu Sa tidak akan datang.</p>
                     <p>Jika tidak menyembahyangi Altar untuk waktu yang cukup lama, tidak hanya tidak hormat tapi juga
                         bisa
@@ -281,7 +311,7 @@
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Gelas Persembahan</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_14.png"
                     alt="Gelas Persembahan" class="w-fullrounded-lg mb-4" />
-                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm mb-6">
+                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-lg mb-6">
                     <p><span class="font-bold">Mempersembahkan air kepada Pu Sa, membuat pikiran kita bersih dan
                             tenang</span>
                     </p>
@@ -294,7 +324,7 @@
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Lampu Minyak</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_15.png"
                     alt="Lampu Minyak" class="w-full rounded-lg mb-4" />
-                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm mb-6">
+                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-lg mb-6">
                     <p><span class="font-bold">Mempersembahkan minyak kepada Pu Sa, membuat pendengaran dan penglihatan
                             menjadi
                             tajam, menumbuhkan kebijaksanaan</span></p>
@@ -309,7 +339,7 @@
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Buah Persembahan</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_16.png"
                     alt="Buah Persembahan" class="w-full rounded-lg mb-4" />
-                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm mb-6">
+                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-lg mb-6">
                     <p><span class="font-bold">Sering mempersembahkan buah-buahan pada Bodhisattva (Pu Sa), bisa membuat
                             permohonan yang diinginkan segera terwujud.</span></p>
                     <p>Hindari mempersembahkan buah pir</p>
@@ -324,7 +354,7 @@
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Bunga Persembahan</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_17.png"
                     alt="Bunga Persembahan" class="w-full rounded-lg mb-4" />
-                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm">
+                <div class="space-y-3 text-gray-700 dark:text-gray-300 text-lg">
                     <p><span class="font-bold">Orang yang memiliki wajah yang baik berarti pernah membina dirinya di
                             kehidupan
                             sebelumnya, mempersembahkan bunga kepada Buddha, akan memiliki rupa yang baik.</span></p>
@@ -350,7 +380,8 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Contoh Gambar</h2>
                 <p class="text-gray-600 dark:text-gray-400 mb-4">*Download gambar di tab Beranda Unduh</p>
 
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tata Cara Mengundang Buddha Bodhisattva</h3>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tata Cara Mengundang Buddha Bodhisattva
+                </h3>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl">
                     <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_19.png"
@@ -362,10 +393,11 @@
             <div id="faq" class="mb-6">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Frequently Asked Question</h2>
 
-                <UAccordion :items="faqItems" :ui="{ trigger: 'text-black dark:text-white' }">
+                <UAccordion :items="faqItems" :ui="{ trigger: 'text-black dark:text-white text-lg' }">
                     <template #content="{ item }">
-                        <p class="text-black dark:text-gray-200 bg-[#edd9af] dark:bg-gray-700 px-4 py-3 rounded-2xl shadow-md">
-                           {{ item.label }}
+                        <p
+                            class="text-black dark:text-gray-200 bg-[#edd9af] dark:bg-gray-700 px-4 py-3 rounded-2xl shadow-md text-lg">
+                            {{ item.label }}
                         </p>
                     </template>
                 </UAccordion>
@@ -410,64 +442,48 @@ function scrollToSection(id: string) {
 // FAQ Items
 const faqItems = [
     {
-        label: 'Permohonan saat membakar Xiao Fang Zi dan pembacaan paritta, apakah boleh tetap memohon kepada Guan Shi Yin Pu Sa?',
-        content: 'Tetap boleh berlaku.'
+        label: 'Permohonan saat membakar Xiao Fang Zi dan pembacaan paritta, apakah masih tetap memohon kepada Guan Shi Yin Pu Sa?',
+        content: 'Tetap tidak berubah.'
     },
     {
-        label: 'Permohonan pagi saat meletakkan mahkota hidap (samsai) saat di tempat pekerjaan makin laris, apakah kita tetap mengucapkan sunggi dan menyebut "Gan En Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa" kemudian melafatkan paritta dan mengucapkan permohonan yang sama setiap hari?',
-        content: 'Tidak perlu, juga XXX berikrar...", semuanya memohon kepada Guan Shi Yin Pu Sa, seperti tidak perlu setiap hari berikrar.'
+        label: 'Permohonan pada saat melepaskan makhluk hidup (setelah sampai di tempat pelepasan makhluk hidup, pertama-tama menghadap langit dan menyebut “Gan en Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa”, kemudian melafalkan paritta dan mengucapkan permohonan pelepasan makhluk hidup), dan juga berikrar (“Mohon Guan Shi Yin Pu Sa yang Maha Welas Asih berwelas asih memberkati, saya XXX berikrar ...”), semuanya memohon kepada Guan Shi Yin Pu Sa, apakah tetap sama tidak berubah?',
+        content: 'Tidak berubah'
     },
     {
-        label: 'Setelah melafalkan paritta dan para saat akhir berikrar kita buat, apakah masih mengucapkan "Gan En Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa" – Hormat kasih kepada Buddha Sakyamuni, hormat kasih kepada Guan Shi Yin Pu Sa?',
+        label: 'Setelah melafalkan paritta dan pada saat akhir berterima kasih, apakah boleh mengatakan “Gan en Na Mo Shi Jia Mou Ni Fo, Gan en Guan Shi Yin Pu Sa” – (terima kasih kepada Buddha Sakyamuni, terima kasih kepada Guan Shi Yin Pu Sa)?',
         content: 'Boleh.'
     },
     {
         label: 'Setelah melafalkan paritta dan para saat akhir berikrar kita buat, apakah boleh mengucapkan "Gan En Na Mo Shi Jia Mo Ni Fo, Gan En Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa" – Hormat kasih kepada Buddha Sakyamuni, hormat kasih kepada Guan Shi Yin Pu Sa?',
-        content: 'Boleh.'
+        content: 'Menurut tata urutan penempatan rupang (atau foto) Bodhisattva dalam altar Xin Ling Fa Men, sekarang seharusnya diletakkan di sebelah tangan kiri Guan Shi Yin Pu Sa (ketika kita menghadap altar, kedua rupang atau foto Bodhisattva berada di tengah, Guan Shi Yin Pu Sa di sebelah kiri, Sang Buddha di sebelah kanan). Jika memang keadaan tidak memungkinkan, boleh menempatkan rupang (atau foto) Sang Buddha di depan foto Guan Shi Yin Pu Sa, namun ukuran tidak boleh terlalu besar (tidak boleh menutupi rupang atau foto Guan Shi Yin Pu Sa terlalu banyak), juga tidak boleh terlalu kecil (tidak boleh terlalu kecil jika dibandingkan dengan rupang atau foto Bodhisattva lainnya).'
     },
     {
-        label: 'Menurut tata urutan bodhisattva dalam altar Xin Ling Fa Men, sebelumnya saya bertanya apakah boleh memasang dupa di tempat dupa Guan Shi Yin Pu Sa terlebih dahulu, kemudian baru memasang dupa di tempat dupa Buddha di sebelah kanannya. Jika memang memasang dupa di tempat dupa Guan Yin Pu Sa terlebih dahulu, apakah boleh mengucapkan nama Guan Shi Yin Pu Sa terlebih dahulu, baru kemudian mengucapkan nama Buddha Sakyamuni?',
-        content: 'Jika Anda memasang dupa di tempat dupa Guan Shi Yin Pu Sa terlebih dahulu, maka ucapkan nama Guan Shi Yin Pu Sa terlebih dahulu, tidak ada masalah.'
+        label: 'Pada saat hari besar, apakah kita memasang 3 batang dupa pada tempat dupa Buddha Sakyamuni dan Guan Shi Yin Pu Sa, kemudian 1 batang dupa di tempat dupa lainnya, atau seluruh tempat dupa dipasang 3 batang dupa?',
+        content: 'Ya.'
     },
     {
-        label: 'Pada saat hari biasa, apakah bisa memasang 3 batang dupa pada tiap tempat dupa Buddha Sakyamuni dan Guan Shi Yin Pu Sa, sementara 1 batang dupa di tempat dupa Bodhisattva lainnya, sesuai tempat dupa disamping 3 batang dupa?',
-        content: 'Boleh.'
+        label: 'Jika untuk sementara ini tidak bisa melebarkan altar, apakah boleh tetap mempertahankan altar yang sekarang?',
+        content: 'Sebaiknya menambah satu rupang atau foto Buddha Sakyamuni, foto yang dipasang boleh berukuran kecil, akan tetapi tidak boleh lebih kecil dari rupang atau foto Nan Jing Pu Sa dan Bodhisattva lainnya.'
     },
     {
-        label: 'Jika suatu saat sementara ini tidak bisa melaksanakan altar, apakah boleh tetap mempersembahkan air?',
-        content: 'Sebaiknya mempersembahkan satu rupang atau foto Bodhisattva terlebih dahulu, baru dipersembahkan air. Jika tidak ada rupang atau foto, maka tidak perlu mempersembahkan air. Jig Da Bei Shui boleh tetap diminum tanpa perlu dipersembahkan terlebih dahulu.'
+        label: 'Apakah abu dupa Bodhisattva Xin Ling Fa Men lainnya boleh dimasukkan (digunakan) ke dalam tempat dupa Sang Buddha?',
+        content: 'Boleh'
     },
     {
-        label: 'Apakah oleh doa Bodhisattva Xin Ling Fa Men hanya boleh mempersembahkan air kepada Guan Shi Yin Pu Sa dan tidak mempersembahkan air kepada Bodhisattva lainnya?',
-        content: 'Boleh mempersembahkan air kepada semua Bodhisattva, tidak hanya kepada Guan Shi Yin Pu Sa.'
+        label: 'Jika altar di rumah sudah menyembahyangi Buddha Sakyamuni, apakah boleh tidak menyembahyangi Guan Shi Yin Pu Sa?',
+        content: 'Tidak boleh, ini sudah bukan altar Xin Ling Fa Men.'
     },
     {
-        label: 'Jika altar di rumah sudah menyembahyangi Buddha Sakyamuni, apakah tetap tidak mempersembahkan air kepada Guan Shi Yin Pu Sa saja?',
-        content: 'Tidak.'
+        label: 'Ada sebagian teman se-Dharma yang karena tempat di altarnya terbatas, foto Guan Shi Yin Pu Sa yang disembahyangi sekarang sangat besar, ditempatkan di paling belakang, foto Bodhisattva lainnya lebih kecil, semuanya ditempatkan di depan foto Guan Shi Yin Pu Sa, dalam keadaan seperti ini, apakah boleh meletakkan foto Buddha Sakyamuni persis di depan foto Guan Shi Yin Pu Sa?',
+        content: 'Boleh. Foto Buddha Sakyamuni tidak boleh lebih kecil daripada foto Nan Jing Pu Sa dan Bodhisattva lainnya.'
     },
     {
-        label: 'Ada seorang teman yg Dharma-nya keras mengatakan, di altarnya terdapat, foto Guan Shi Yin Pu Sa yang di dharma-kannya dengan sangat besar, diletakkan di paling belakang, foto Bodhisattva lainnya lebih kecil, semuanya diletakkan di depan foto Guan Shi Yin Pu Sa, dosen katakan apakah ini boleh?',
-        content: 'Seharusnya foto Buddha Sakyamuni perlu di depan Bodhisattva lainnya.'
+        label: 'Apakah ada ketentuan tentang ukuran besar kecilnya foto Buddha Sakyamuni?',
+        content: 'Jika memang tulus, sebaiknya foto Buddha Sakyamuni sama besarnya dengan foto Guan Shi Yin Pu Sa; jika memang keadaan yang tidak memungkinkan, foto Buddha Sakyamuni tetap tidak boleh lebih kecil daripada foto Nan Jing Pu Sa dan Bodhisattva lainnya.'
     },
     {
-        label: 'Bosan Foto Buddha Sakyamuni harus diletakkan di tengah, Foto Guan Shi Yin Pu Sa dan Bodhisattva lainnya diletakkan di samping?',
-        content: 'Jika memang sudah diletakkan dengan benar dengan foto Guan Shi Yin Pu Sa di tengah, tidak perlu diubah lagi.'
+        label: 'Ketika menyambung dupa di altar, sebelumnya boleh hanya memasang dupa pada tempat dupa Guan Shi Yin Pu Sa, sekarang bagaimana seharusnya kita menyambung dupa?',
+        content: 'Sekarang harus menyambung dupa pada kedua tempat dupa, yakni tempat dupa Buddha Sakyamuni dan tempat dupa Guan Shi Yin Pu Sa. Jika menyambung dupa di altar Guan Yin Tang, temanteman se-Dharma bisa menyambung dupa pada salah satu tempat dupa dari kedua tempat dupa ini, namun harus tetap dijaga ada dupa yang menyala di dalam kedua tempat dupa; bila menyambung dupa di altar rumah, maka perlu menyambung dupa di kedua tempat dupa pada saat yang sama.'
     },
-    {
-        label: 'Apakah ada ketentuan tentang ukuran atau besar kecilnya foto Buddha Sakyamuni?',
-        content: 'Tidak ada ketentuan khusus.'
-    },
-    {
-        label: 'Jika memang sudah diletakkan dengan benar dengan foto Guan Shi Yin Pu Sa di tengah, apakah perlu menambahkan foto Buddha Sakyamuni yang lebih menonjolkan, foto Buddha Sakyamuni perlu lebih besar dari Guan Shi Yin Pu Sa, bisa diletakkan di belakang foto Guan Shi Yin Pu Sa?',
-        content: 'Boleh.'
-    },
-    {
-        label: 'Ketika mempersembahkan dupa di altar, sebenarnya boleh menyembahyangi dupa pada tempat dupa Guan Shi Yin Pu Sa, tetapi bagaimana dengan tempat dupa lainnya?',
-        content: 'Menyembahyangi dupa pada tiap tempat dupa satu per satu.'
-    },
-    {
-        label: 'Biasanya hanya Memasang dupa pada tempat dupa Buddha Sakyamuni, apakah perlu juga memasang dupa pada tempat dupa Guan Shi Yin Pu Sa dan Bodhisattva lainnya?',
-        content: 'Sebaiknya memasang dupa pada tiap tempat dupa.'
-    }
 ]
 </script>

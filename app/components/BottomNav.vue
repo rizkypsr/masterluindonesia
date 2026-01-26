@@ -18,7 +18,7 @@
             :class="isActive('/') ? 'text-[#c09637] dark:text-yellow-400' : 'text-secondary dark:text-gray-400 group-hover:text-primary dark:group-hover:text-yellow-400'"
           />
           <span 
-            class="text-xs mt-1 font-medium transition-colors"
+            class="text-md mt-1 font-medium transition-colors"
             :class="isActive('/') ? 'text-[#c09637] dark:text-yellow-400' : 'text-secondary dark:text-gray-400 group-hover:text-primary dark:group-hover:text-yellow-400'"
           >
             Beranda
@@ -33,7 +33,7 @@
             :class="isActive('/audio') ? 'text-[#c09637] dark:text-yellow-400' : 'text-secondary dark:text-gray-400 group-hover:text-primary dark:group-hover:text-yellow-400'"
           />
           <span 
-            class="text-xs mt-1 font-medium transition-colors"
+            class="text-md mt-1 font-medium transition-colors"
             :class="isActive('/audio') ? 'text-[#c09637] dark:text-yellow-400' : 'text-secondary dark:text-gray-400 group-hover:text-primary dark:group-hover:text-yellow-400'"
           >
             Audio
@@ -51,7 +51,7 @@
             :class="isActive('/video') ? 'text-[#c09637] dark:text-yellow-400' : 'text-secondary dark:text-gray-400 group-hover:text-primary dark:group-hover:text-yellow-400'"
           />
           <span 
-            class="text-xs mt-1 font-medium transition-colors"
+            class="text-md mt-1 font-medium transition-colors"
             :class="isActive('/video') ? 'text-[#c09637] dark:text-yellow-400' : 'text-secondary dark:text-gray-400 group-hover:text-primary dark:group-hover:text-yellow-400'"
           >
             Video
@@ -66,7 +66,7 @@
             :class="isActive('/lainnya') ? 'text-[#c09637] dark:text-yellow-400' : 'text-secondary dark:text-gray-400 group-hover:text-primary dark:group-hover:text-yellow-400'"
           />
           <span 
-            class="text-xs mt-1 font-medium transition-colors"
+            class="text-md mt-1 font-medium transition-colors"
             :class="isActive('/lainnya') ? 'text-[#c09637] dark:text-yellow-400' : 'text-secondary dark:text-gray-400 group-hover:text-primary dark:group-hover:text-yellow-400'"
           >
             Lainnya

@@ -22,7 +22,7 @@
       <div ref="tabContainer" class="flex overflow-x-auto scrollbar-hide relative">
         <button v-for="(tab, index) in tabs" :key="tab.id" :ref="el => (tabRefs[index] = el as HTMLElement)"
           @click="selectTab(tab.id, index)"
-          class="px-4 py-3 whitespace-nowrap text-sm font-medium transition-colors relative shrink-0"
+          class="px-4 py-3 whitespace-nowrap text-lg font-medium transition-colors relative shrink-0"
           :class="activeTab === tab.id ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-500'">
           {{ tab.label }}
           <span v-if="activeTab === tab.id" class="absolute bottom-0 left-4 right-4 h-0.5 bg-black dark:bg-white rounded-full" />

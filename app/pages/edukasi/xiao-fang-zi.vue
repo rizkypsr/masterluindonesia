@@ -4,7 +4,7 @@
         <div
             class="flex items-center justify-between px-4 py-3 border-b border-[#e8d5b0] dark:border-gray-700 shrink-0 bg-transparent">
             <BackButton to="/?tab=edukasi" />
-            <span class="text-sm text-gray-600 dark:text-gray-400">Xiao Fang Zi</span>
+            <span class="text-lg text-gray-600 dark:text-gray-400">Xiao Fang Zi</span>
             <button @click="isMenuOpen = true" class="p-1">
                 <Icon name="heroicons:bars-3" class="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </button>
@@ -376,7 +376,7 @@
                         class="py-3 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
                         <p class="text-black text-lg dark:text-white">
                             <span
-                                class="inline-flex items-center justify-center w-6 h-6 bg-red-600 text-white text-sm font-bold rounded mr-2">{{
+                                class="inline-flex items-center justify-center w-6 h-6 bg-red-600 text-white text-lg font-bold rounded mr-2">{{
                                     index + 1 }}</span>
                             {{ item }}
                         </p>
@@ -506,7 +506,7 @@
                             {{ langkahTitikItems[currentTitikIndex]!.description }}
                         </p>
                         <p v-if="langkahTitikItems[currentTitikIndex]!.note"
-                            class="text-gray-500 dark:text-gray-500 mt-2 text-sm">
+                            class="text-gray-500 dark:text-gray-500 mt-2 text-lg">
                             {{ langkahTitikItems[currentTitikIndex]!.note }}
                         </p>
                     </div>
@@ -943,7 +943,7 @@
                         <div class="py-4 px-4 bg-[#e8d5b0] dark:bg-yellow-900/30 rounded-lg">
                             <div class="text-gray-800 dark:text-gray-200 faq- text-lg" v-html="item.content"></div>
                             <img v-if="item.image" :src="item.image" :alt="item.label" class="w-full object-contain rounded-lg mt-4" />
-                            <p v-if="item.imageCaption" class="text-center text-sm text-black dark:text-gray-400 mt-2">{{ item.imageCaption }}</p>
+                            <p v-if="item.imageCaption" class="text-center text-lg text-black dark:text-gray-400 mt-2">{{ item.imageCaption }}</p>
                             <div v-if="item.contentAfterImage" class="text-gray-800 text-lg dark:text-gray-200 faq-content mt-4" v-html="item.contentAfterImage"></div>
                         </div>
                     </template>

@@ -515,7 +515,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div class="h-screen bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
+    <div class="h-dvh bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
         <!-- Header - Normal Mode -->
         <div v-if="!isSearchMode" class="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <div class="flex items-center gap-3">

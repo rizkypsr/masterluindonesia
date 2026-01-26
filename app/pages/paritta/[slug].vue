@@ -77,8 +77,8 @@ const reciteCount = ref(0)
 const isPlayerExpanded = ref(true)
 
 // Font size state
-const fontSize = ref(16)
-const minFontSize = 12
+const fontSize = ref(20)
+const minFontSize = 20
 const maxFontSize = 32
 
 const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 2]
@@ -273,26 +273,26 @@ function togglePlayerExpanded() {
 
             <div v-if="isPlayerExpanded" class="px-4 pb-4">
                 <!-- Title -->
-                <p class="font-semibold text-black dark:text-white mb-2">{{ paritta?.title }}</p>
+                <p class="font-semibold text-black dark:text-white mb-2 text-lg">{{ paritta?.title }}</p>
 
                 <!-- Progress Bar -->
-                <div class="flex items-center gap-2 mb-3">
-                    <span class="text-sm text-black dark:text-white w-12">{{ formatTime(currentTime) }}</span>
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-lg text-black dark:text-white w-12">{{ formatTime(currentTime) }}</span>
                     <input type="range" :value="currentTime" :max="duration || 100"
                         class="flex-1 h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-primary"
                         @input="seekTo" />
-                    <span class="text-sm text-black dark:text-white w-12 text-right">{{ formatTime(duration) }}</span>
+                    <span class="text-lg text-black dark:text-white w-12 text-right">{{ formatTime(duration) }}</span>
                 </div>
 
                 <!-- Playback Rate -->
-                <div class="flex justify-center mb-3">
-                    <button class="px-3 py-1 text-sm text-black dark:text-white" @click="cyclePlaybackRate">
+                <div class="flex justify-center mb-1">
+                    <button class="px-3 py-1 text-lg text-black dark:text-white" @click="cyclePlaybackRate">
                         {{ playbackRate }}x
                     </button>
                 </div>
 
                 <!-- Controls -->
-                <div class="flex items-center justify-center gap-4 mb-4">
+                <div class="flex items-center justify-center gap-4 mb-1">
                     <button class="p-2" @click="decreasePlaybackRate">
                         <Icon name="mdi:minus-circle-outline" class="w-8 h-8 text-black dark:text-white" />
                     </button>

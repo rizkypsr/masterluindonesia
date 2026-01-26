@@ -28,8 +28,10 @@ function openWhatsApp(phoneNumber: string) {
 <template>
   <div class="min-h-screen bg-white dark:bg-gray-900">
     <!-- Header -->
-    <div class="flex items-center gap-4 px-4 py-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-      <button @click="$router.back()" class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
+    <div
+      class="flex items-center gap-4 px-4 py-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+      <button @click="$router.back()"
+        class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
         <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
       </button>
       <h1 class="text-lg font-semibold text-black dark:text-white">Hubungi Kami</h1>

@@ -38,7 +38,7 @@
           <button @click="toggleCategory(category.id)" class="w-full flex items-center justify-between">
             <div class="text-left">
               <h3 class="text-base font-semibold text-black dark:text-white">{{ category.title }}</h3>
-              <p class="text-sm text-gray-500 dark:text-gray-400">{{ category.sub_category.length }} subkategori</p>
+              <p class="text-lg text-gray-500 dark:text-gray-400">{{ category.sub_category.length }} subkategori</p>
             </div>
             <Icon :name="expandedCategories.includes(category.id) ? 'mdi:chevron-up' : 'mdi:chevron-down'"
               class="w-6 h-6 text-gray-400 dark:text-gray-500" />
@@ -48,7 +48,7 @@
           <div v-if="expandedCategories.includes(category.id)" class="mt-3 pl-4 divide-y divide-gray-100 dark:divide-gray-800">
             <NuxtLink v-for="sub in category.sub_category" :key="sub.id"
               :to="{ path: `/audio/${sub.id}`, query: { title: sub.title } }"
-              class="block py-3 text-sm text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white">
+              class="block py-3 text-lg text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white">
               {{ sub.title }}
             </NuxtLink>
           </div>

@@ -3,7 +3,7 @@
         <!-- Header (Fixed) -->
         <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <BackButton to="/?tab=edukasi" />
-            <span class="text-sm text-gray-600 dark:text-gray-400">Altar Kecil</span>
+            <span class="text-lg text-gray-600 dark:text-gray-400">Altar Kecil</span>
             <button @click="isMenuOpen = true" class="p-1">
                 <Icon name="heroicons:bars-3" class="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </button>

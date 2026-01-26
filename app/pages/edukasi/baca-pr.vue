@@ -3,7 +3,7 @@
         <!-- Header (Fixed) -->
         <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <BackButton to="/?tab=edukasi" />
-            <span class="text-sm text-gray-600 dark:text-gray-400">Pekerjaan Rumah Setiap Hari</span>
+            <span class="text-lg text-gray-600 dark:text-gray-400">Pekerjaan Rumah Setiap Hari</span>
             <button @click="isMenuOpen = true" class="p-1">
                 <Icon name="heroicons:bars-3" class="w-5 h-5 text-gray-700 dark:text-gray-300" />
             </button>
@@ -50,34 +50,34 @@
                 <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-1">Mengapa</h2>
                 <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">membaca paritta?</h2>
 
-                <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
+                <p class="text-gray-700 dark:text-gray-300 text-lg mb-4">
                     Membaca paritta sangatlah penting bagi kita, karena dengan membaca paritta setiap hari bisa
                     menghubungkan aura kita dengan aura Bodhisattva,
                 </p>
                 <hr class="border-black dark:border-gray-600 mb-4" />
 
-                <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
+                <p class="text-gray-700 dark:text-gray-300 text-lg mb-4">
                     menerima berkat dari Bodhisattva dan dengan kekuatan yang diterima,
                 </p>
                 <hr class="border-black dark:border-gray-600 mb-4" />
 
-                <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
+                <p class="text-gray-700 dark:text-gray-300 text-lg mb-4">
                     kita pun mampu bersikap lebih bijaksana dalam menyelesaikan permasalahan yang dihadapi,
                 </p>
                 <hr class="border-black dark:border-gray-600 mb-4" />
 
-                <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
+                <p class="text-gray-700 dark:text-gray-300 text-lg mb-4">
                     serta membawa kedamaian dan ketenangan dalam hati kita.
                 </p>
                 <hr class="border-black dark:border-gray-600 mb-4" />
 
-                <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
+                <p class="text-gray-700 dark:text-gray-300 text-lg mb-4">
                     Di dalam Kitab Suci Buddhis tertulis : "Pahala dan kebajikan yang diperoleh dari membaca paritta
                     luar biasa besarnya",
                 </p>
                 <hr class="border-blue-400 dark:border-blue-600 mb-4" />
 
-                <p class="text-gray-700 dark:text-gray-300 text-sm">
+                <p class="text-gray-700 dark:text-gray-300 text-lg">
                     Membaca paritta juga merupakan salah satu bentuk kebajikan, yang dapat digunakan untuk menghapus
                     karma buruk dari kehidupan sebelumnya dan sekarang.
                 </p>
@@ -85,8 +85,8 @@
 
             <!-- Section 2: Perlengkapan Untuk Membaca PR -->
             <div id="perlengkapan" class="bg-gray-100 dark:bg-gray-800 -mx-4 px-4 py-6 mb-6">
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Perlengkapan Untuk</h2>
-                <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-6">Membaca PR</h2>
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-1">Perlengkapan Untuk</h2>
+                <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Membaca PR</h2>
 
                 <div class="relative">
                     <img src="https://masterluindonesia.com/assets/assets/images/pr/image_2.png"
@@ -320,8 +320,8 @@
                         <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
-                            <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">"{{ item.description }}"</p>
-                            <p class="text-gray-500 dark:text-gray-400 text-sm">{{ item.count }}</p>
+                            <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">"{{ item.description }}"</p>
+                            <p class="text-gray-500 dark:text-gray-400 text-lg">{{ item.count }}</p>
                         </div>
                     </UCard>
                 </UCarousel>
@@ -347,8 +347,8 @@
                         <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
-                            <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">"{{ item.description }}"</p>
-                            <p class="text-gray-500 dark:text-gray-400 text-sm">{{ item.count }}</p>
+                            <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">"{{ item.description }}"</p>
+                            <p class="text-gray-500 dark:text-gray-400 text-lg">{{ item.count }}</p>
                         </div>
                     </UCard>
                 </UCarousel>
