@@ -9,3 +9,7 @@
 - hide topik (belum ada di backend)
 - update share di books
 - bottom nav bisa di hide di halaman detail chapter book
+
+### 25 Jan 2025 
+- update audio detail di search 
+- update ukuran tempat dupa di halaman (/edukasi/altar-besar) 

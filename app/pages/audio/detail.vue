@@ -70,6 +70,10 @@
                       <Icon name="mdi:content-copy" class="w-4 h-4" />
                       <span>Salin</span>
                     </button>
+                    <button v-if="!subtitleId" @click="viewDetail(sub)" class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300">
+                      <Icon name="mdi:file-document-outline" class="w-4 h-4" />
+                      <span>Lihat Detail</span>
+                    </button>
                     <button @click="speakSubtitle(sub)" class="flex items-center gap-1 text-sm" :class="speakingSubtitleId === sub.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
                       <Icon :name="speakingSubtitleId === sub.id ? 'mdi:stop' : 'mdi:account-voice'" class="w-4 h-4" />
                       <span>{{ speakingSubtitleId === sub.id ? 'Stop' : 'Voice' }}</span>
@@ -186,7 +190,13 @@ const pageTitle = computed(() => (route.query.title as string) || 'Audio Detail'
 const { saveAudioDetailHistory } = useHistory()
 
 const { data: audioData, pending } = await useFetch<{ success: boolean; data: AudioDetail }>(
-  () => `https://api.masterluindonesia.com/api/audio/detail?audio_id=${audioId.value}&audio_subtitle_id=${subtitleId.value}`
+  () => {
+    let url = `https://api.masterluindonesia.com/api/audio/detail?audio_id=${audioId.value}`
+    if (subtitleId.value) {
+      url += `&audio_subtitle_id=${subtitleId.value}`
+    }
+    return url
+  }
 )
 
 // Audio Player State
@@ -292,6 +302,18 @@ const speakSubtitle = (sub: Subtitle) => {
   }
 
   window.speechSynthesis.speak(utterance)
+}
+
+// View detail - navigate to detail page with subtitle
+const viewDetail = (sub: Subtitle) => {
+  navigateTo({
+    path: '/audio/detail',
+    query: {
+      audio_id: audioId.value,
+      subtitle_id: sub.id,
+      title: pageTitle.value
+    }
+  })
 }
 
 // Auto play when data loads

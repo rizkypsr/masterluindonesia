@@ -260,7 +260,7 @@
                 <!-- Tempat Dupa 2 -->
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tempat Dupa</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_13.png" alt="Tempat Dupa"
-                    class="w-full h-96 object-cover rounded-lg mb-4" />
+                    class="w-full rounded-lg mb-4" />
                 <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm mb-6">
                     <p>Harus menyembahyangi Altar dengan dupa, jika tidak Pu Sa tidak akan datang.</p>
                     <p>Jika tidak menyembahyangi Altar untuk waktu yang cukup lama, tidak hanya tidak hormat tapi juga
@@ -280,7 +280,7 @@
                 <!-- Gelas Persembahan -->
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Gelas Persembahan</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_14.png"
-                    alt="Gelas Persembahan" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    alt="Gelas Persembahan" class="w-fullrounded-lg mb-4" />
                 <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm mb-6">
                     <p><span class="font-bold">Mempersembahkan air kepada Pu Sa, membuat pikiran kita bersih dan
                             tenang</span>
@@ -293,7 +293,7 @@
                 <!-- Lampu Minyak -->
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Lampu Minyak</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_15.png"
-                    alt="Lampu Minyak" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    alt="Lampu Minyak" class="w-full rounded-lg mb-4" />
                 <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm mb-6">
                     <p><span class="font-bold">Mempersembahkan minyak kepada Pu Sa, membuat pendengaran dan penglihatan
                             menjadi
@@ -308,7 +308,7 @@
                 <!-- Buah Persembahan -->
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Buah Persembahan</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_16.png"
-                    alt="Buah Persembahan" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    alt="Buah Persembahan" class="w-full rounded-lg mb-4" />
                 <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm mb-6">
                     <p><span class="font-bold">Sering mempersembahkan buah-buahan pada Bodhisattva (Pu Sa), bisa membuat
                             permohonan yang diinginkan segera terwujud.</span></p>
@@ -323,7 +323,7 @@
                 <!-- Bunga Persembahan -->
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Bunga Persembahan</h3>
                 <img src="https://masterlu.buildbyriz.io/assets/assets/images/altarbesar/image_17.png"
-                    alt="Bunga Persembahan" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    alt="Bunga Persembahan" class="w-full rounded-lg mb-4" />
                 <div class="space-y-3 text-gray-700 dark:text-gray-300 text-sm">
                     <p><span class="font-bold">Orang yang memiliki wajah yang baik berarti pernah membina dirinya di
                             kehidupan
