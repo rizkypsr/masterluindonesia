@@ -48,7 +48,7 @@ const expandedItems = ref<Set<string>>(new Set())
 const hideKeywordInput = ref('')
 const showKeywordInput = ref('')
 
-const categoryOptions = ['Buku', 'Audio', 'Video', 'Resep']
+const categoryOptions = ['Buku', 'Audio', 'Video']
 const radioOptions = ['Wenda', 'Zhishuo', 'Zongshu', 'Shuhua']
 const videoOptions = ['Totem', 'Ceramah', 'Tanya Jawab', 'Kisah Buddhis']
 const yearOptions = [2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008]
@@ -241,20 +241,18 @@ function navigateToDetail(item: SearchItem) {
       path: `/video/play/sub/${item.id}`,
       query: { title: item.title }
     })
-  } else if (itemType === 'resep' || itemType === 'recipe') {
-    router.push(`/recipes/${item.id}`)
   }
 }
 </script>
 
 <template>
-  <div class="min-h-screen bg-white dark:bg-gray-900">
-    <div class="flex items-center gap-4 px-4 py-4 border-b border-gray-200 dark:border-gray-700">
+  <div class="h-full bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
+    <div class="flex items-center gap-4 px-4 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
       <h1 class="text-lg font-semibold text-black dark:text-white">Pencarian</h1>
     </div>
 
     <!-- Initial Search View (when no search performed) -->
-    <div v-if="!hasSearched" class="flex flex-col h-[calc(100vh-80px)] overflow-hidden">
+    <div v-if="!hasSearched" class="flex flex-col flex-1 overflow-hidden">
       <div class="flex-1 px-6 pt-4">
         <UInput v-model="searchQuery" placeholder="Masukan kata kunci" size="xl" class="w-full"
           @keyup.enter="handleSearch" />
@@ -270,7 +268,7 @@ function navigateToDetail(item: SearchItem) {
     </div>
 
     <!-- Search Results View -->
-    <div v-else>
+    <div v-else class="flex-1 overflow-y-auto">
       <div class="px-4 py-4">
         <!-- Filter Button -->
         <div class="mb-2">
@@ -314,8 +312,7 @@ function navigateToDetail(item: SearchItem) {
             </div>
 
             <!-- Expandable Content (Kesaksian) -->
-            <div v-if="expandedItems.has(getItemKey(item))"
-              class="m-4 p-4 bg-white dark:bg-gray-800 rounded-lg">
+            <div v-if="expandedItems.has(getItemKey(item))" class="m-4 p-4 bg-white dark:bg-gray-800 rounded-lg">
               <p class="text-black dark:text-white leading-relaxed whitespace-pre-wrap">
                 {{ stripHtml(item.full_detail) }}
               </p>

@@ -8,7 +8,7 @@ interface Paritta {
     chineseTitle: string
     pinyinTitle: string
     pinyinTitleAlt: string
-    audioFile: string
+    audioFile: string | null
     dharani: {
         chinese: string
         pinyin: string
@@ -212,7 +212,7 @@ function togglePlayerExpanded() {
 </script>
 
 <template>
-    <div class="h-screen bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
+    <div class="h-full bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
         <!-- Header -->
         <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200 shrink-0">
             <div class="flex items-center gap-3">
@@ -246,7 +246,8 @@ function togglePlayerExpanded() {
                 <div v-for="(char, index) in titleChars" :key="'title-' + index" class="flex flex-col items-center">
                     <span class="text-gray-500 dark:text-gray-400" style="font-size: 0.75em;">{{ char.pinyin }}</span>
                     <span class="text-black dark:text-white" style="font-size: 1.5em;">{{ char.chinese }}</span>
-                    <span class="text-gray-500 dark:text-gray-400" style="font-size: 0.75em;">{{ char.pinyinAlt }}</span>
+                    <span class="text-gray-500 dark:text-gray-400" style="font-size: 0.75em;">{{ char.pinyinAlt
+                        }}</span>
                 </div>
             </div>
 
@@ -254,17 +255,20 @@ function togglePlayerExpanded() {
             <div class="flex flex-wrap justify-center gap-x-2 gap-y-4">
                 <template v-for="(char, index) in dharaniChars" :key="'dharani-' + index">
                     <div v-if="!char.isPunctuation" class="flex flex-col items-center min-w-[1.5em]">
-                        <span class="text-gray-500 dark:text-gray-400 h-4" style="font-size: 0.75em;">{{ char.pinyin }}</span>
+                        <span class="text-gray-500 dark:text-gray-400 h-4" style="font-size: 0.75em;">{{ char.pinyin
+                            }}</span>
                         <span class="text-black dark:text-white" style="font-size: 1.25em;">{{ char.chinese }}</span>
-                        <span class="text-gray-500 dark:text-gray-400 h-4" style="font-size: 0.75em;">{{ char.pinyinAlt }}</span>
+                        <span class="text-gray-500 dark:text-gray-400 h-4" style="font-size: 0.75em;">{{ char.pinyinAlt
+                            }}</span>
                     </div>
-                    <span v-else class="text-black dark:text-white self-center" style="font-size: 1.25em;">{{ char.chinese }}</span>
+                    <span v-else class="text-black dark:text-white self-center" style="font-size: 1.25em;">{{
+                        char.chinese }}</span>
                 </template>
             </div>
         </div>
 
         <!-- Audio Player -->
-        <div class="bg-amber-100 dark:bg-amber-900 shrink-0">
+        <div v-if="paritta?.audioFile" class="bg-amber-100 dark:bg-amber-900 shrink-0">
             <!-- Collapse/Expand Button -->
             <button class="w-full flex justify-center py-1" @click="togglePlayerExpanded">
                 <Icon :name="isPlayerExpanded ? 'mdi:minus' : 'mdi:chevron-up'"
@@ -328,8 +332,25 @@ function togglePlayerExpanded() {
             </div>
         </div>
 
+        <!-- Counter Only (when no audio) -->
+        <div v-else class="bg-amber-100 dark:bg-amber-900 shrink-0 px-4 py-4">
+            <div class="flex items-center justify-center gap-4">
+                <button class="w-12 h-12 rounded-lg bg-gray-300 dark:bg-gray-700 flex items-center justify-center"
+                    @click="decrementCount">
+                    <Icon name="mdi:minus" class="w-6 h-6 text-black dark:text-white" />
+                </button>
+                <span class="text-2xl font-bold text-black dark:text-white w-16 text-center">
+                    {{ reciteCount }}
+                </span>
+                <button class="w-12 h-12 rounded-lg bg-primary flex items-center justify-center"
+                    @click="incrementCount">
+                    <Icon name="mdi:plus" class="w-6 h-6 text-black" />
+                </button>
+            </div>
+        </div>
+
         <!-- Hidden Audio Element -->
-        <audio ref="audioRef" :src="audioUrl" preload="metadata" @timeupdate="onTimeUpdate"
+        <audio v-if="paritta?.audioFile" ref="audioRef" :src="audioUrl" preload="metadata" @timeupdate="onTimeUpdate"
             @loadedmetadata="onLoadedMetadata" @play="onPlay" @pause="onPause" @ended="onEnded" />
     </div>
 </template>

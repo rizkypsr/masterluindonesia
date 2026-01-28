@@ -1,6 +1,6 @@
 <template>
-  <div class="min-h-screen bg-gray-100 font-inter">
-    <div class="mx-auto max-w-md min-h-screen bg-white">
+  <div class="h-dvh bg-gray-100 font-inter overflow-hidden">
+    <div class="mx-auto max-w-md h-full bg-white overflow-hidden">
       <slot />
     </div>
   </div>

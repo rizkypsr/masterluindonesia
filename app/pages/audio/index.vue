@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen bg-white dark:bg-gray-900">
+  <div class="h-full bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
     <!-- Header -->
-    <div class="px-4 pt-6 pb-4 shadow-md bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800">
+    <div class="px-4 pt-6 pb-4 shadow-md bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 shrink-0">
       <h1 class="text-black dark:text-white mb-2 font-semibold">Audio Dokumentasi</h1>
       <div class="flex items-center bg-white dark:bg-gray-700 rounded-lg px-4 py-3">
         <Icon name="mdi:magnify" class="w-5 h-5 text-black dark:text-gray-300 mr-2" />
@@ -11,7 +11,7 @@
     </div>
 
     <!-- Content -->
-    <div class="py-4 px-4">
+    <div class="flex-1 overflow-y-auto py-4 px-4">
       <!-- Banner Images -->
       <div class="pb-4">
         <NuxtImg src="https://masterluindonesia.com/assets/assets/images/main_image_audio_screen.jpeg" alt="Gambar" class="rounded-lg" />

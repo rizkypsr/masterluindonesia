@@ -1,9 +1,11 @@
 <template>
-  <div class="min-h-screen bg-gray-100 font-inter">
-    <div class="mx-auto max-w-md min-h-screen bg-white" :class="{ 'pb-20': showBottomNav }">
-      <slot />
+  <div class="h-dvh bg-gray-100 font-inter overflow-hidden">
+    <div class="mx-auto max-w-md h-full bg-white flex flex-col overflow-hidden">
+      <div class="flex-1 overflow-hidden" :class="{ 'pb-20': showBottomNav }">
+        <slot />
+      </div>
+      <BottomNav v-if="showBottomNav" class="shrink-0" />
     </div>
-    <BottomNav v-if="showBottomNav" />
   </div>
 </template>
 

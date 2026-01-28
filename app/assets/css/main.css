@@ -13,3 +13,12 @@
 body {
     font-family: var(--font-family-inter);
 }
+
+/* Safe area utilities for iOS Safari */
+.pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.mb-safe {
+    margin-bottom: env(safe-area-inset-bottom, 0px);
+}

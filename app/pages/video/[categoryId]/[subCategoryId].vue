@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900">
+  <div class="h-full bg-gray-50 dark:bg-gray-900 flex flex-col overflow-hidden">
     <!-- Header -->
-    <div class="bg-white dark:bg-gray-800 px-4 py-4 flex items-center gap-3 shadow-sm">
+    <div class="bg-white dark:bg-gray-800 px-4 py-4 flex items-center gap-3 shadow-sm shrink-0">
       <button @click="$router.back()" class="p-1">
         <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
       </button>
@@ -9,7 +9,7 @@
     </div>
 
     <!-- Content -->
-    <div class="p-4">
+    <div class="flex-1 overflow-y-auto p-4">
       <!-- Loading State -->
       <div v-if="pending" class="space-y-6">
         <div v-for="i in 3" :key="i" class="animate-pulse">

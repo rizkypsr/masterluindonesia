@@ -46,15 +46,15 @@ function nextXiaomi() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-white dark:bg-gray-900">
+  <div class="h-full bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
     <!-- Header -->
-    <div class="px-4 py-4 bg-white dark:bg-gray-800 shadow-md flex items-center gap-3">
+    <div class="px-4 py-4 bg-white dark:bg-gray-800 shadow-md flex items-center gap-3 shrink-0">
       <BackButton />
       <h1 class="text-black dark:text-white">Panduan Text To Speech</h1>
     </div>
 
     <!-- Content -->
-    <div v-if="isAuthenticated" class="px-6 py-6 space-y-8">
+    <div v-if="isAuthenticated" class="flex-1 overflow-y-auto px-6 py-6 space-y-8">
       <!-- Samsung Section -->
       <div>
         <h2 class="text-lg font-semibold text-black dark:text-white text-center mb-2">

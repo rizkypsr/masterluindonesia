@@ -1,37 +1,35 @@
 <template>
-  <div class="min-h-screen bg-white dark:bg-gray-900">
+  <div class="h-full bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
     <!-- Header -->
-    <div class="px-4 pt-6 pb-4 shadow-md bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800">
+    <div
+      class="px-4 pt-6 pb-4 shadow-md bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 shrink-0">
       <h1 class="text-black dark:text-white mb-2 font-semibold">
         Apa yang ingin kamu pelajari?
       </h1>
       <div class="flex items-center bg-white dark:bg-gray-700 rounded-lg px-4 py-3">
         <Icon name="mdi:magnify" class="w-5 h-5 text-black dark:text-gray-300 mr-2" />
-        <input 
-          v-model="searchKeyword"
-          type="text" 
-          placeholder="Keyword"
+        <input v-model="searchKeyword" type="text" placeholder="Keyword"
           class="flex-1 bg-transparent outline-none text-gray-600 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
-          @keyup.enter="handleSearch"
-        />
+          @keyup.enter="handleSearch" />
       </div>
     </div>
 
     <!-- TAB BAR -->
-    <div class="bg-white dark:bg-gray-800 shadow-md">
+    <div class="bg-white dark:bg-gray-800 shadow-md shrink-0">
       <div ref="tabContainer" class="flex overflow-x-auto scrollbar-hide relative">
         <button v-for="(tab, index) in tabs" :key="tab.id" :ref="el => (tabRefs[index] = el as HTMLElement)"
           @click="selectTab(tab.id, index)"
           class="px-4 py-3 whitespace-nowrap text-lg font-medium transition-colors relative shrink-0"
           :class="activeTab === tab.id ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-500'">
           {{ tab.label }}
-          <span v-if="activeTab === tab.id" class="absolute bottom-0 left-4 right-4 h-0.5 bg-black dark:bg-white rounded-full" />
+          <span v-if="activeTab === tab.id"
+            class="absolute bottom-0 left-4 right-4 h-0.5 bg-black dark:bg-white rounded-full" />
         </button>
       </div>
     </div>
 
     <!-- Content -->
-    <div class="py-6">
+    <div class="flex-1 overflow-y-auto">
       <TabsTabTerbaru v-if="activeTab === 'terbaru'" />
       <TabsTabParitta v-else-if="activeTab === 'paritta'" />
       <TabsTabUnduh v-else-if="activeTab === 'unduh'" />
@@ -93,13 +91,13 @@ onMounted(async () => {
       selectTab(tabParam, tabIndex)
     }
   }
-  
+
   // Handle history retention - delete old history based on setting
   if (isAuthenticated.value) {
     const retention = localStorage.getItem(HISTORY_RETENTION_KEY)
     // Default to 1 month if no setting saved
     const retentionValue = retention ? parseInt(retention, 10) : 1
-    
+
     // 0 = forever (don't delete), other values = delete based on range
     if (retentionValue > 0) {
       // Fire and forget - don't block app loading
@@ -138,17 +136,17 @@ const scrollTabToPreferredPosition = (index: number) => {
 
 function handleSearch() {
   if (!searchKeyword.value.trim()) return
-  
+
   // Set the search state for the search page
   searchQuery.value = searchKeyword.value.trim()
   hasSearched.value = true
-  
+
   // Reset results and page for fresh search
   const searchResults = useState<SearchItem[]>('search-results', () => [])
   const searchPage = useState('search-page', () => 1)
   searchResults.value = []
   searchPage.value = 1
-  
+
   // Navigate to search page
   router.push('/search')
 }

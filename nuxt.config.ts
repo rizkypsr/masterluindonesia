@@ -9,6 +9,9 @@ export default defineNuxtConfig({
   app: {
     head: {
       viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
+      meta: [
+        { name: 'apple-mobile-web-app-title', content: 'Master Lu' },
+      ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon-96x96.png', sizes: '96x96' },
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },

@@ -1,10 +1,13 @@
 <template>
-    <div class="min-h-screen bg-gray-50 dark:bg-gray-900 pb-8">
+    <div class="h-full bg-gray-50 dark:bg-gray-900 flex flex-col overflow-hidden">
         <!-- Header -->
-        <div class="bg-white dark:bg-gray-800 px-4 py-4 flex items-center gap-3 shadow-sm">
+        <div class="bg-white dark:bg-gray-800 px-4 py-4 flex items-center gap-3 shadow-sm shrink-0">
             <BackButton />
             <h1 class="text-lg font-semibold text-black dark:text-white flex-1 line-clamp-1">{{ pageTitle }}</h1>
         </div>
+
+        <!-- Content -->
+        <div class="flex-1 overflow-y-auto pb-8">
 
         <!-- Loading State -->
         <div v-if="pending" class="p-4 space-y-4">
@@ -72,6 +75,7 @@
                 </div>
             </div>
         </template>
+        </div>
 
         <!-- Bottom Section with FAB -->
         <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto">

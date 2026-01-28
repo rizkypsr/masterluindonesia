@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gray-50 dark:bg-gray-900 pb-40">
+  <div class="h-full bg-gray-50 dark:bg-gray-900 flex flex-col overflow-hidden">
     <!-- Header -->
-    <div class="bg-white dark:bg-gray-800 px-4 py-4 flex items-center gap-3 shadow-sm">
+    <div class="bg-white dark:bg-gray-800 px-4 py-4 flex items-center gap-3 shadow-sm shrink-0">
       <button @click="goBack()"
         class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
         <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
@@ -10,7 +10,7 @@
     </div>
 
     <!-- Content -->
-    <div class="p-4">
+    <div class="flex-1 overflow-y-auto p-4 pb-40">
       <!-- Loading State -->
       <div v-if="pending" class="space-y-4">
         <div class="flex gap-2 overflow-x-auto pb-2">
@@ -103,7 +103,7 @@
                         <button @click="viewDetail(sub)"
                           class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
                           <Icon name="mdi:file-document-outline" class="w-4 h-4" />
-                          <span>Lihat Detail</span>
+                          <span>Detail</span>
                         </button>
                         <button @click="speakSubtitle(sub)"
                           class="flex items-center gap-1 text-lg hover:text-primary dark:hover:text-yellow-400"

@@ -171,9 +171,9 @@ function navigateToItem(item: BookmarkItem) {
 </script>
 
 <template>
-  <div class="min-h-screen bg-white dark:bg-gray-900">
+  <div class="h-full bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
     <!-- Header - Normal Mode -->
-    <div v-if="!isSearchMode" class="px-4 py-4 shadow-sm bg-white dark:bg-gray-800">
+    <div v-if="!isSearchMode" class="px-4 py-4 shadow-sm bg-white dark:bg-gray-800 shrink-0">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
           <BackButton />
@@ -191,7 +191,7 @@ function navigateToItem(item: BookmarkItem) {
     </div>
 
     <!-- Header - Search Mode -->
-    <div v-else class="px-4 py-4 shadow-md bg-white dark:bg-gray-800">
+    <div v-else class="px-4 py-4 shadow-md bg-white dark:bg-gray-800 shrink-0">
       <div class="flex items-center gap-3">
         <button @click="closeSearch" class="p-1">
           <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
@@ -206,7 +206,7 @@ function navigateToItem(item: BookmarkItem) {
     </div>
 
     <!-- Content -->
-    <div class="px-4 py-4">
+    <div class="flex-1 overflow-y-auto px-4 py-4">
       <!-- Loading -->
       <div v-if="loading" class="flex justify-center py-12">
         <Icon name="mdi:loading" class="w-8 h-8 animate-spin text-[#bf9638] dark:text-yellow-400" />
