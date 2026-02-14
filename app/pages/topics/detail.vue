@@ -89,6 +89,7 @@ interface TopicContent {
 
 const route = useRoute()
 const router = useRouter()
+const config = useRuntimeConfig()
 
 const subId = computed(() => route.query.subId as string)
 const pageTitle = computed(() => (route.query.title as string) || 'Detail')
@@ -113,7 +114,7 @@ const scrollToTop = () => {
 }
 
 const { data: response, pending } = await useFetch<{ success: boolean; data: TopicContent[] }>(
-    () => `https://api.masterluindonesia.com/api/topics/content/${subId.value}`
+    () => `${config.public.apiBaseUrl}/topics/content/${subId.value}`
 )
 
 const contents = computed(() => response.value?.data || [])

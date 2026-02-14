@@ -1,8 +1,6 @@
 // Custom auth integration with masterluindonesia API
 // Your backend handles Google OAuth and returns JWT tokens
 
-const API_BASE = 'https://api.masterluindonesia.com/api';
-
 interface LoginResponse {
   success: boolean;
   message: string;
@@ -12,13 +10,21 @@ interface LoginResponse {
   };
 }
 
+interface User {
+  id: number;
+  email: string;
+  name: string;
+}
+
 export const useAuth = () => {
+  const config = useRuntimeConfig()
   const token = useCookie('auth_token', {
     maxAge: 60 * 60 * 24 * 365, // 1 year
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
   });
 
+  const user = ref<User | null>(null);
   const isAuthenticated = computed(() => !!token.value);
 
   // Call your backend with Google user info
@@ -36,7 +42,7 @@ export const useAuth = () => {
     });
 
     // Then send user info to your backend
-    const response = await $fetch<LoginResponse>(`${API_BASE}/logingoogle`, {
+    const response = await $fetch<LoginResponse>(`${config.public.apiBaseUrl}/logingoogle`, {
       method: 'POST',
       body: {
         id: userInfo.sub,
@@ -47,6 +53,11 @@ export const useAuth = () => {
 
     if (response.success && response.data?.token) {
       token.value = response.data.token;
+      user.value = {
+        id: parseInt(userInfo.sub),
+        email: userInfo.email,
+        name: userInfo.name
+      };
       return response;
     }
 
@@ -55,6 +66,7 @@ export const useAuth = () => {
 
   const logout = () => {
     token.value = null;
+    user.value = null;
   };
 
   const getAuthHeader = () => {
@@ -63,6 +75,7 @@ export const useAuth = () => {
 
   return {
     token: readonly(token),
+    user: readonly(user),
     isAuthenticated,
     loginWithGoogle,
     logout,

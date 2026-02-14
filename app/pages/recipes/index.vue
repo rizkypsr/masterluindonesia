@@ -146,6 +146,8 @@
 </template>
 
 <script setup lang="ts">
+const config = useRuntimeConfig()
+
 interface Recipe {
   id: number
   parent_id: number | null
@@ -183,20 +185,20 @@ const selectedIngredientId = ref<number | null>(null)
 const isLoadingRecipes = ref(false)
 
 const { data: popularData } = await useFetch<{ success: boolean; data: Recipe[] }>(
-  'https://api.masterluindonesia.com/api/recipe/popular'
+  `${config.public.apiBaseUrl}/recipe/popular`
 )
 
 const { data: categoriesData } = await useFetch<{ success: boolean; data: Category[] }>(
-  'https://api.masterluindonesia.com/api/category?type=recipe'
+  `${config.public.apiBaseUrl}/category?type=recipe`
 )
 
 const { data: ingredientsData } = await useFetch<{ success: boolean; data: Ingredient[] }>(
-  'https://api.masterluindonesia.com/api/ingredient'
+  `${config.public.apiBaseUrl}/ingredient`
 )
 
 const { data: recipesByIngredientData, refresh: refreshRecipesByIngredient } = await useFetch<{ success: boolean; data: Recipe[] }>(
   () => selectedIngredientId.value 
-    ? `https://api.masterluindonesia.com/api/recipe?ingredientId=${selectedIngredientId.value}`
+    ? `${config.public.apiBaseUrl}/recipe?ingredientId=${selectedIngredientId.value}`
     : '',
   { immediate: false }
 )

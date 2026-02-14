@@ -53,6 +53,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       googleClientId: process.env.GOOGLE_CLIENT_ID || '',
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || 'https://api.masterluindonesia.com/api',
     },
   },
 })

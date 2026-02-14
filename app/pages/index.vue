@@ -58,6 +58,7 @@ interface SearchItem {
 const route = useRoute()
 const router = useRouter()
 const { isAuthenticated, getAuthHeader } = useAuth()
+const config = useRuntimeConfig()
 
 const activeTab = ref("terbaru")
 const tabContainer = ref<HTMLElement | null>(null)
@@ -101,7 +102,7 @@ onMounted(async () => {
     // 0 = forever (don't delete), other values = delete based on range
     if (retentionValue > 0) {
       // Fire and forget - don't block app loading
-      $fetch(`https://api.masterluindonesia.com/api/history/${retentionValue}`, {
+      $fetch(`${config.public.apiBaseUrl}/history/${retentionValue}`, {
         method: 'DELETE',
         headers: getAuthHeader() as Record<string, string>
       }).catch(err => console.error('Failed to delete history:', err))

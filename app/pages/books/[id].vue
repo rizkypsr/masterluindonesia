@@ -14,6 +14,9 @@
                 :class="isBookBookmarked ? 'text-yellow-500' : 'text-black dark:text-white'"
                 class="w-6 h-6" />
         </button>
+        <button class="p-1" @click="addToPlaylist">
+          <Icon name="mdi:playlist-plus" class="w-6 h-6 text-black dark:text-white" />
+        </button>
         <button class="p-1" @click="shareBook">
           <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
         </button>
@@ -54,16 +57,16 @@
             <!-- Chapter Title -->
             <h4 class="font-semibold text-black dark:text-white py-2" :style="{ fontSize: fontSize + 'px' }">{{ chapter.title }}</h4>
 
-            <!-- Sub Chapters -->
-            <div v-if="chapter.sub_chapters && chapter.sub_chapters.length > 0">
-              <NuxtLink v-for="sub in chapter.sub_chapters" :key="sub.id" 
-                :to="{ path: `/book/${bookId}/${sub.id}`, query: { chapter: sub.title } }"
-                class="block cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800">
-                <div class="py-3 ml-4 border-b border-gray-400 dark:border-gray-600">
-                  <span class="text-black dark:text-white" :style="{ fontSize: fontSize + 'px' }">{{ sub.title }}</span>
-                </div>
-              </NuxtLink>
-            </div>
+            <!-- Sub Chapters (Recursive) -->
+            <ChapterItem 
+              v-if="chapter.sub_chapters && chapter.sub_chapters.length > 0"
+              v-for="sub in chapter.sub_chapters" 
+              :key="sub.id"
+              :chapter="sub"
+              :book-id="bookId"
+              :font-size="fontSize"
+              :level="1"
+            />
           </div>
         </div>
       </div>
@@ -82,6 +85,9 @@
 
     <!-- Bookmark Modal -->
     <BookmarkModal />
+    
+    <!-- Playlist Modal -->
+    <PlaylistModal />
   </div>
 </template>
 
@@ -90,6 +96,7 @@ import { useBookmark } from '~/composables/useBookmark'
 import { useHistory } from '~/composables/useHistory'
 
 const route = useRoute()
+const config = useRuntimeConfig()
 
 // FAB Menu State
 const showFabMenu = ref(false)
@@ -98,6 +105,9 @@ const scrollContainer = ref<HTMLElement | null>(null)
 
 // Bookmark
 const { createBookBookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
+
+// Playlist
+const { openPlaylistModal } = usePlaylist()
 
 // History
 const { saveBookHistory } = useHistory()
@@ -132,7 +142,7 @@ interface SubChapter {
   description: string | null
   seq: number
   have_child: number
-  sub: any[]
+  sub?: SubChapter[]
 }
 
 interface Chapter {
@@ -150,7 +160,7 @@ const bookTitle = computed(() => (route.query.title as string) || 'Buku')
 const bookCover = computed(() => (route.query.cover as string) || '/fallback.svg')
 
 const { data: chaptersData } = await useFetch<{ success: boolean; data: Chapter[] }>(
-  () => `https://api.masterluindonesia.com/api/books/${bookId.value}`
+  () => `${config.public.apiBaseUrl}/books/${bookId.value}`
 )
 
 const chapters = computed(() => {
@@ -187,6 +197,13 @@ const addToBookmark = () => {
     chapters.value[0]?.sub_chapters?.[0]?.id || 0,
     1
   )
+}
+
+const addToPlaylist = () => {
+  openPlaylistModal(3, {
+    bookId: Number(bookId.value),
+    chapterId: chapters.value[0]?.sub_chapters?.[0]?.id || 0
+  })
 }
 </script>
 

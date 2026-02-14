@@ -3,12 +3,16 @@ import { useBookmark } from '~/composables/useBookmark'
 import { useHistory } from '~/composables/useHistory'
 
 const route = useRoute()
+const config = useRuntimeConfig()
 
 const bookId = route.params.bookId as string
 const chapterId = route.params.chapterId as string
 
 // Bookmark
 const { createBookBookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
+
+// Playlist
+const { openPlaylistModal } = usePlaylist()
 
 // History
 const { saveBookChapterHistory } = useHistory()
@@ -86,7 +90,7 @@ interface SearchResult {
 
 // Fetch book detail
 const { data: bookDetail } = await useFetch<BookDetail>(
-    `https://api.masterluindonesia.com/api/books/detail/${bookId}`
+    `${config.public.apiBaseUrl}/books/detail/${bookId}`
 )
 
 const bookData = computed(() => bookDetail.value)
@@ -101,9 +105,12 @@ onMounted(async () => {
     
     try {
         const response = await $fetch<ContentResponse>(
-            `https://api.masterluindonesia.com/api/books/contents/${chapterId}`
+            `${config.public.apiBaseUrl}/books/contents/${chapterId}`
         )
         contents.value = response.data || []
+        
+        // Start at first content page (skip cover)
+        currentPageIndex.value = 0
         
         // Handle page query parameter - find content by its page property
         const pageParam = route.query.page
@@ -113,15 +120,14 @@ onMounted(async () => {
                 // Find the index of content with matching page property
                 const contentIndex = contents.value.findIndex(c => c.page === pageNum)
                 if (contentIndex !== -1) {
-                    // +1 because index 0 is the book cover
-                    currentPageIndex.value = contentIndex + 1
+                    currentPageIndex.value = contentIndex
                 }
             }
         }
         
         // Save to history
-        if (bookData.value?.title) {
-            const chapTitle = chapterTitle.value || `${currentPageIndex.value + 1}`
+        if (bookData.value?.title && currentContent.value) {
+            const chapTitle = chapterTitle.value || `Page ${currentContent.value.page}`
             saveBookChapterHistory(
                 bookData.value.title,
                 chapTitle,
@@ -143,13 +149,12 @@ watch(() => bookData.value?.title, (title) => {
     }
 }, { immediate: true })
 
-// Total pages = 1 (book detail) + contents length
-const totalPages = computed(() => 1 + contents.value.length)
+// Total pages = contents length (no cover page)
+const totalPages = computed(() => contents.value.length)
 
-// Current content (only for page > 0, since page 0 is book detail)
+// Current content
 const currentContent = computed(() => {
-    if (currentPageIndex.value === 0) return null
-    return contents.value[currentPageIndex.value - 1]
+    return contents.value[currentPageIndex.value]
 })
 
 // Current audio
@@ -234,15 +239,15 @@ function scrollToTop() {
 }
 
 function shareContent() {
-    const pageNum = currentPageIndex.value + 1
+    if (!currentContent.value) return
+    
+    const actualPage = currentContent.value.page
     const title = bookData.value?.title || ''
     
-    // Build clean URL with page parameter
+    // Build clean URL with page parameter (actual page number from content)
     const baseUrl = `${window.location.origin}${window.location.pathname}`
-    const params = new URLSearchParams(window.location.search)
-    params.set('page', currentPageIndex.value.toString())
-    const shareUrl = `${baseUrl}?${params.toString()}`
-    const shareTitle = `${title} halaman: ${pageNum}`
+    const shareUrl = `${baseUrl}?page=${actualPage}`
+    const shareTitle = `${title} - Halaman ${actualPage}`
 
     if (navigator.share) {
         navigator.share({
@@ -306,18 +311,7 @@ function performSearch() {
     const query = searchQuery.value.toLowerCase()
     const results: SearchResult[] = []
 
-    // Search in book title (page 0)
-    if (bookData.value?.title.toLowerCase().includes(query)) {
-        const title = bookData.value.title
-        const idx = title.toLowerCase().indexOf(query)
-        const snippet = title
-        const highlightedSnippet = title.substring(0, idx) +
-            '<mark class="bg-yellow-300">' + title.substring(idx, idx + query.length) + '</mark>' +
-            title.substring(idx + query.length)
-        results.push({ pageIndex: 0, snippet, highlightedSnippet })
-    }
-
-    // Search in contents (page 1+)
+    // Search in contents
     contents.value.forEach((content, index) => {
         const text = stripHtml(content.content).toLowerCase()
         if (text.includes(query)) {
@@ -338,7 +332,7 @@ function performSearch() {
                 '<mark class="bg-yellow-300">' + snippet.substring(matchIdx, matchIdx + query.length) + '</mark>' +
                 snippet.substring(matchIdx + query.length)
 
-            results.push({ pageIndex: index + 1, snippet, highlightedSnippet })
+            results.push({ pageIndex: index, snippet, highlightedSnippet })
         }
     })
 
@@ -579,7 +573,7 @@ onBeforeUnmount(() => {
                     @click="goToSearchResult(result.pageIndex)">
                     <p class="text-black dark:text-white text-sm leading-relaxed" v-html="result.highlightedSnippet">
                     </p>
-                    <p class="text-gray-500 text-xs mt-2 text-right">Halaman {{ result.pageIndex + 1 }}</p>
+                    <p class="text-gray-500 text-xs mt-2 text-right">Halaman {{ contents[result.pageIndex]?.page || result.pageIndex + 1 }}</p>
                 </button>
             </div>
             <div v-else-if="searchQuery && searchResults.length === 0" class="flex justify-center py-8">
@@ -591,22 +585,15 @@ onBeforeUnmount(() => {
         <div v-else ref="contentRef" class="flex-1 overflow-y-auto px-4 py-6"
             @touchstart="onTouchStart"
             @touchend="onTouchEnd">
-            <!-- Page 1: Book Detail (Cover + Title) -->
-            <template v-if="currentPageIndex === 0">
-                <div v-if="bookData?.url" class="flex justify-center mb-6">
-                    <img :src="bookData.url" :alt="bookData.title" class="max-w-full h-auto rounded-lg shadow-md" />
-                </div>
-                <h2 class="font-bold text-black dark:text-white mb-6" :style="{ fontSize: (fontSize + 4) + 'px' }"
-                    v-html="highlightedTitle"></h2>
-            </template>
-
-            <!-- Page 2+: Content Pages -->
-            <template v-else>
-                <div v-if="currentContent" class="prose prose-sm max-w-none">
+            <!-- Content Pages -->
+            <template v-if="currentContent">
+                <div class="prose prose-sm max-w-none">
                     <p class="text-black dark:text-white leading-relaxed whitespace-pre-line"
                         :style="{ fontSize: fontSize + 'px' }" v-html="highlightedContent"></p>
                 </div>
-                <div v-else-if="isLoadingContents" class="flex justify-center py-8">
+            </template>
+            <template v-else-if="isLoadingContents">
+                <div class="flex justify-center py-8">
                     <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500" />
                 </div>
             </template>
@@ -647,28 +634,8 @@ onBeforeUnmount(() => {
                 />
             </button>
 
-            <!-- Bottom Navigation - Page 1 (simple) -->
-            <div v-if="currentPageIndex === 0"
-                class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 transition-all duration-300 overflow-hidden"
-                :class="isBottomNavHidden ? 'max-h-0 py-0' : 'max-h-40 px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]'">
-                <div class="flex items-center justify-between">
-                    <button @click="prevPage" :disabled="currentPageIndex === 0" class="p-2 disabled:opacity-30">
-                        <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
-                    </button>
-
-                    <span class="text-black dark:text-white">
-                        {{ currentPageIndex + 1 }}/{{ totalPages }}
-                    </span>
-
-                    <button @click="nextPage" :disabled="currentPageIndex >= totalPages - 1"
-                        class="p-2 disabled:opacity-30">
-                        <Icon name="mdi:arrow-right" class="w-6 h-6 text-black dark:text-white" />
-                    </button>
-                </div>
-            </div>
-
-            <!-- Bottom Navigation - Page 2+ (with audio player) -->
-            <div v-else 
+            <!-- Bottom Navigation -->
+            <div 
                 class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 transition-all duration-300 overflow-hidden"
                 :class="isBottomNavHidden ? 'max-h-0' : 'max-h-96 pb-[env(safe-area-inset-bottom)]'"
             >
@@ -719,7 +686,7 @@ onBeforeUnmount(() => {
                     </button>
 
                     <span class="text-black dark:text-white">
-                        {{ currentPageIndex + 1 }}/{{ totalPages }}
+                        {{ currentContent?.page || currentPageIndex + 1 }}/{{ contents[contents.length - 1]?.page || totalPages }}
                     </span>
 
                     <!-- Copy Text Button -->
@@ -758,6 +725,9 @@ onBeforeUnmount(() => {
 
         <!-- Bookmark Modal -->
         <BookmarkModal />
+        
+        <!-- Playlist Modal -->
+        <PlaylistModal />
     </div>
 </template>
 

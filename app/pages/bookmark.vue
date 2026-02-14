@@ -30,6 +30,7 @@ interface BookmarkResponse {
 }
 
 const { isAuthenticated, getAuthHeader } = useAuth()
+const config = useRuntimeConfig()
 const toast = useToast()
 
 const bookmarks = ref<BookmarkItem[]>([])
@@ -56,7 +57,7 @@ onMounted(async () => {
 async function fetchBookmarks(search?: string) {
   loading.value = true
   try {
-    let url = 'https://api.masterluindonesia.com/api/bookmark'
+    let url = `${config.public.apiBaseUrl}/bookmark`
     if (search) {
       url += `?search=${encodeURIComponent(search)}`
     }

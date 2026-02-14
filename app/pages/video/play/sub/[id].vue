@@ -32,6 +32,9 @@
                                   :class="isVideoBookmarked ? 'text-yellow-500' : 'text-gray-600 dark:text-gray-400'"
                                   class="w-6 h-6" />
                         </button>
+                        <button class="p-2" @click="addToPlaylist">
+                            <Icon name="mdi:playlist-plus" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                        </button>
                         <button class="p-2" @click="shareContent">
                             <Icon name="mdi:share-variant-outline" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
                         </button>
@@ -90,6 +93,9 @@
 
         <!-- Bookmark Modal -->
         <BookmarkModal />
+        
+        <!-- Playlist Modal -->
+        <PlaylistModal />
     </div>
 </template>
 
@@ -121,6 +127,7 @@ interface SubVideoDetail {
 }
 
 const route = useRoute()
+const config = useRuntimeConfig()
 const videoId = computed(() => route.params.id)
 const pageTitle = computed(() => (route.query.title as string) || 'Video')
 
@@ -144,7 +151,7 @@ const scrollToTop = () => {
 }
 
 const { data: response, pending } = await useFetch<{ success: boolean; data: SubVideoDetail }>(
-    () => `https://api.masterluindonesia.com/api/video?videoId=${videoId.value}`
+    () => `${config.public.apiBaseUrl}/video?videoId=${videoId.value}`
 )
 
 const videoData = computed(() => response.value?.data)
@@ -254,6 +261,9 @@ const speakText = (text: string) => {
 // Bookmark
 const { createVideoBookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
 
+// Playlist
+const { openPlaylistModal } = usePlaylist()
+
 // History
 const { saveVideoHistory } = useHistory()
 
@@ -283,6 +293,15 @@ const addToBookmark = () => {
         Number(videoId.value),
         'ID'
     )
+}
+
+const addToPlaylist = () => {
+    if (!videoData.value) return
+    openPlaylistModal(1, {
+        lang: 'CN',
+        videoId: videoData.value.id,
+        video_category_id: null
+    })
 }
 
 const shareContent = () => {

@@ -44,6 +44,7 @@ const filterPayload = useState<FilterPayload>('search-filter', () => ({
 
 // Local state (no need to persist)
 const isFilterOpen = ref(false)
+const config = useRuntimeConfig()
 const expandedItems = ref<Set<string>>(new Set())
 const hideKeywordInput = ref('')
 const showKeywordInput = ref('')
@@ -95,7 +96,7 @@ async function fetchResults() {
       keyword
     }
 
-    const response = await $fetch<ApiResponse>(`https://api.masterluindonesia.com/api/search?page=${currentPage.value}`, {
+    const response = await $fetch<ApiResponse>(`${config.public.apiBaseUrl}/search?page=${currentPage.value}`, {
       method: 'POST',
       body
     })

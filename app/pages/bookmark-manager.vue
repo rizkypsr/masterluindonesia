@@ -17,6 +17,7 @@ interface BookmarkResponse {
 
 const { isAuthenticated, getAuthHeader } = useAuth()
 const toast = useToast()
+const config = useRuntimeConfig()
 
 const bookmarks = ref<BookmarkItem[]>([])
 const loading = ref(true)
@@ -52,7 +53,7 @@ onMounted(async () => {
 async function fetchBookmarks() {
   loading.value = true
   try {
-    const response = await $fetch<BookmarkResponse>('https://api.masterluindonesia.com/api/bookmark', {
+    const response = await $fetch<BookmarkResponse>(`${config.public.apiBaseUrl}/bookmark`, {
       headers: getAuthHeader() as Record<string, string>
     })
     if (response.success) {
@@ -89,7 +90,7 @@ async function saveEdit() {
 
   isSaving.value = true
   try {
-    const response = await $fetch<{ success: boolean; message: string }>('https://api.masterluindonesia.com/api/bookmark', {
+    const response = await $fetch<{ success: boolean; message: string }>(`${config.public.apiBaseUrl}/bookmark`, {
       method: 'PUT',
       headers: getAuthHeader() as Record<string, string>,
       body: {
@@ -131,7 +132,7 @@ async function confirmDelete() {
 
   isDeleting.value = true
   try {
-    const response = await $fetch<{ success: boolean; message: string }>(`https://api.masterluindonesia.com/api/bookmark/${deletingItem.value.id}`, {
+    const response = await $fetch<{ success: boolean; message: string }>(`${config.public.apiBaseUrl}/bookmark/${deletingItem.value.id}`, {
       method: 'DELETE',
       headers: getAuthHeader() as Record<string, string>
     })
@@ -169,7 +170,7 @@ async function createFolder() {
 
   isCreatingFolder.value = true
   try {
-    const response = await $fetch<{ success: boolean; message: string }>('https://api.masterluindonesia.com/api/bookmark', {
+    const response = await $fetch<{ success: boolean; message: string }>(`${config.public.apiBaseUrl}/bookmark`, {
       method: 'POST',
       headers: getAuthHeader() as Record<string, string>,
       body: {

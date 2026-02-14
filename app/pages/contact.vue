@@ -12,8 +12,10 @@ interface ApiResponse {
   data: Contact[]
 }
 
+const config = useRuntimeConfig()
+
 const { data: contacts, status } = await useFetch<ApiResponse>(
-  'https://api.masterluindonesia.com/api/contact/wa',
+  `${config.public.apiBaseUrl}/contact/wa`,
   {
     transform: (response) => response.data.filter(c => c.status === 1)
   }

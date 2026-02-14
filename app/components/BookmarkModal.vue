@@ -81,6 +81,7 @@
 </template>
 
 <script setup lang="ts">
+const config = useRuntimeConfig()
 import { useBookmark } from '~/composables/useBookmark'
 import { useAuth } from '~/lib/auth'
 
@@ -116,7 +117,7 @@ const createFolder = async () => {
 
   isCreatingFolder.value = true
   try {
-    const response = await $fetch<{ success: boolean; message: string }>('https://api.masterluindonesia.com/api/bookmark', {
+    const response = await $fetch<{ success: boolean; message: string }>(`${config.public.apiBaseUrl}/bookmark`, {
       method: 'POST',
       headers: useAuth().getAuthHeader() as Record<string, string>,
       body: {

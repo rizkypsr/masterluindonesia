@@ -99,22 +99,33 @@
         <template v-else>
           <NuxtLink v-for="book in books" :key="book.id"
             :to="{ path: `/books/${book.id}`, query: { title: book.title, cover: book.url } }" class="shrink-0 w-28">
-            <ClientOnly>
-              <NuxtImg :src="book.url" :alt="book.title" class="w-28 h-40 object-cover rounded-xl" loading="lazy"
-                format="webp" quality="60" />
-              <template #fallback>
-                <USkeleton class="w-28 h-40 rounded-xl" />
-              </template>
-            </ClientOnly>
+            <template v-if="book.url">
+              <ClientOnly>
+                <NuxtImg :src="book.url" :alt="book.title" class="w-28 h-40 object-cover rounded-xl" loading="lazy"
+                  format="webp" quality="60" />
+                <template #fallback>
+                  <USkeleton class="w-28 h-40 rounded-xl" />
+                </template>
+              </ClientOnly>
+            </template>
+            <template v-else>
+              <div class="w-28 h-40 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl flex items-center justify-center p-2">
+                <p class="text-center font-medium text-black dark:text-white text-xs line-clamp-6">{{ book.title }}</p>
+              </div>
+            </template>
             <p class="mt-2 text-sm font-medium text-black dark:text-white line-clamp-2">{{ book.title }}</p>
           </NuxtLink>
         </template>
       </div>
     </div>
+
+    <!-- Community Playlist Section -->
+    <CommunityPlaylistSection />
   </div>
 </template>
 
 <script setup lang="ts">
+const config = useRuntimeConfig()
 import { ref, nextTick, computed, onMounted, watch } from "vue"
 
 interface MediaItem {
@@ -174,10 +185,10 @@ const dateRefs = ref<HTMLElement[]>([])
 
 const { data: allData, status } = useAsyncData('tabTerbaruData', async () => {
   const [mediaRes, topicsRes, booksRes, recipesRes] = await Promise.all([
-    $fetch<{ success: boolean; data: MediaItem[] }>('https://api.masterluindonesia.com/api/app/media'),
-    $fetch<{ success: boolean; data: Topic[] }>('https://api.masterluindonesia.com/api/topics'),
-    $fetch<{ success: boolean; data: Book[] }>('https://api.masterluindonesia.com/api/bookspaginate?page=1'),
-    $fetch<{ success: boolean; data: Recipe[] }>('https://api.masterluindonesia.com/api/recipe/popular')
+    $fetch<{ success: boolean; data: MediaItem[] }>(`${config.public.apiBaseUrl}/app/media`),
+    $fetch<{ success: boolean; data: Topic[] }>(`${config.public.apiBaseUrl}/topics`),
+    $fetch<{ success: boolean; data: Book[] }>(`${config.public.apiBaseUrl}/bookspaginate?page=1`),
+    $fetch<{ success: boolean; data: Recipe[] }>(`${config.public.apiBaseUrl}/recipe/popular`)
   ])
   return { media: mediaRes, topics: topicsRes, books: booksRes, recipes: recipesRes }
 })
@@ -198,7 +209,7 @@ const formatDateParam = (date: Date): string => date.toISOString().split('T')[0]
 const selectedDate = ref<string>(formatDateParam(today))
 
 const { data: allAgendaData, status: agendaStatus } = useAsyncData('agendaData', () =>
-  $fetch<{ success: boolean; data: Agenda[] }>('https://api.masterluindonesia.com/api/app/agenda')
+  $fetch<{ success: boolean; data: Agenda[] }>(`${config.public.apiBaseUrl}/app/agenda`)
 )
 
 const isLoading = computed(() => status.value === 'pending')

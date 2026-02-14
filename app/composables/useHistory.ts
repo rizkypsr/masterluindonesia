@@ -1,7 +1,5 @@
 import { useAuth } from '~/lib/auth'
 
-const API_BASE = 'https://api.masterluindonesia.com/api'
-
 export interface HistoryPayload {
   id: null
   type: number // 1=video, 2=audio, 3=book
@@ -27,12 +25,13 @@ export interface HistoryPayload {
 
 export const useHistory = () => {
   const { getAuthHeader, isAuthenticated } = useAuth()
+  const config = useRuntimeConfig()
 
   const saveHistory = async (payload: HistoryPayload) => {
     if (!isAuthenticated.value) return
 
     try {
-      await $fetch(`${API_BASE}/history`, {
+      await $fetch(`${config.public.apiBaseUrl}/history`, {
         method: 'POST',
         headers: getAuthHeader() as Record<string, string>,
         body: payload

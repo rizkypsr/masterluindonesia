@@ -177,6 +177,9 @@
                 <Icon :name="isAudioBookmarked ? 'mdi:star' : 'mdi:star-outline'"
                   :class="isAudioBookmarked ? 'text-yellow-500' : 'text-gray-600 dark:text-gray-400'" class="w-6 h-6" />
               </button>
+              <button class="p-1" @click="addToPlaylist">
+                <Icon name="mdi:playlist-plus" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
+              </button>
               <button class="p-1" @click="shareContent">
                 <Icon name="mdi:share-variant-outline" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
               </button>
@@ -205,6 +208,9 @@
 
     <!-- Bookmark Modal -->
     <BookmarkModal />
+    
+    <!-- Playlist Modal -->
+    <PlaylistModal />
   </div>
 </template>
 
@@ -248,6 +254,7 @@ interface AudioGroup {
 }
 
 const route = useRoute()
+const config = useRuntimeConfig()
 const categoryId = computed(() => route.params.id)
 const pageTitle = computed(() => (route.query.title as string) || 'Audio')
 
@@ -255,7 +262,7 @@ const pageTitle = computed(() => (route.query.title as string) || 'Audio')
 const { saveAudioHistory } = useHistory()
 
 const { data: audioData, pending } = await useFetch<{ success: boolean; data: AudioGroup[] }>(
-  () => `https://api.masterluindonesia.com/api/audio?audio_category_id=${categoryId.value}`
+  () => `${config.public.apiBaseUrl}/audio?audio_category_id=${categoryId.value}`
 )
 
 const audioGroups = computed(() => audioData.value?.data?.sort((a, b) => a.order - b.order) || [])
@@ -507,6 +514,9 @@ const formatTime = (seconds: number) => {
 // Bookmark
 const { createAudioBookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
 
+// Playlist
+const { openPlaylistModal } = usePlaylist()
+
 const isAudioBookmarked = computed(() => {
   if (!currentAudio.value) return false
   return isBookmarked(2, currentAudio.value.title)
@@ -528,6 +538,14 @@ const addToBookmark = () => {
     currentAudio.value.id,
     Number(categoryId.value)
   )
+}
+
+const addToPlaylist = () => {
+  if (!currentAudio.value) return
+  openPlaylistModal(2, {
+    audioId: currentAudio.value.id,
+    audio_category_id: Number(categoryId.value)
+  })
 }
 
 const shareContent = () => {

@@ -28,6 +28,7 @@ interface HistoryResponse {
 }
 
 const { isAuthenticated, getAuthHeader } = useAuth()
+const config = useRuntimeConfig()
 const toast = useToast()
 
 const historyItems = ref<HistoryItem[]>([])
@@ -86,7 +87,7 @@ async function fetchHistory(page = 1, search?: string) {
   }
   
   try {
-    let url = `https://api.masterluindonesia.com/api/history?page=${page}`
+    let url = `${config.public.apiBaseUrl}/history?page=${page}`
     if (search) {
       url += `&search=${encodeURIComponent(search)}`
     }
@@ -115,7 +116,7 @@ async function fetchHistory(page = 1, search?: string) {
 
 async function deleteHistory(range: number) {
   try {
-    await $fetch(`https://api.masterluindonesia.com/api/history/${range}`, {
+    await $fetch(`${config.public.apiBaseUrl}/history/${range}`, {
       method: 'DELETE',
       headers: getAuthHeader() as Record<string, string>
     })

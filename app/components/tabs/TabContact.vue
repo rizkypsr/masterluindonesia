@@ -168,6 +168,8 @@
 </template>
 
 <script setup lang="ts">
+const config = useRuntimeConfig()
+
 interface ContactDetail {
   id: number
   name: string
@@ -198,7 +200,7 @@ interface ApiResponse {
 const searchQuery = ref('')
 
 const { data, pending, error, refresh } = await useFetch<ApiResponse>(
-  'https://api.masterluindonesia.com/api/contact'
+  `${config.public.apiBaseUrl}/contact`
 )
 
 const countries = computed(() => data.value?.data || [])

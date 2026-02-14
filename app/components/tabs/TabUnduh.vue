@@ -80,6 +80,8 @@
 </template>
 
 <script setup lang="ts">
+const config = useRuntimeConfig()
+
 interface UnduhItem {
   id: number
   unduh_category_id: number
@@ -110,7 +112,7 @@ interface ApiResponse {
 }
 
 const { data, pending, error, refresh } = await useFetch<ApiResponse>(
-  'https://api.masterluindonesia.com/api/unduh'
+  `${config.public.apiBaseUrl}/unduh`
 )
 
 const categories = computed(() => data.value?.data || [])

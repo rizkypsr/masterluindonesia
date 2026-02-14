@@ -77,6 +77,7 @@
 
 <script setup lang="ts">
 const route = useRoute()
+const config = useRuntimeConfig()
 
 interface RecipeDetail {
     title: string
@@ -92,7 +93,7 @@ interface RecipeDetail {
 const recipeId = computed(() => route.params.id as string)
 
 const { data: recipeData } = await useFetch<{ success: boolean; data: RecipeDetail }>(
-    () => `https://api.masterluindonesia.com/api/recipe/detail/${recipeId.value}`
+    () => `${config.public.apiBaseUrl}/recipe/detail/${recipeId.value}`
 )
 
 const recipe = computed(() => recipeData.value?.data)

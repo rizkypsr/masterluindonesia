@@ -78,12 +78,13 @@ interface VideoGroup {
 }
 
 const route = useRoute()
+const config = useRuntimeConfig()
 const categoryId = computed(() => route.params.categoryId)
 const subCategoryId = computed(() => route.params.subCategoryId)
 const pageTitle = computed(() => (route.query.title as string) || 'Video')
 
 const { data: videoData, pending } = await useFetch<{ success: boolean; data: VideoGroup[] }>(
-  () => `https://api.masterluindonesia.com/api/videoCategory?category_id=${categoryId.value}&sub_category_id=${subCategoryId.value}`
+  () => `${config.public.apiBaseUrl}/videoCategory?category_id=${categoryId.value}&sub_category_id=${subCategoryId.value}`
 )
 
 const videoGroups = computed(() => videoData.value?.data?.sort((a, b) => a.order - b.order) || [])

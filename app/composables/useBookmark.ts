@@ -47,8 +47,6 @@ export interface BookmarkResponse {
   message: string
 }
 
-const API_BASE = 'https://api.masterluindonesia.com/api'
-
 // Shared state - defined outside the composable function
 const isModalOpen = ref(false)
 const isLoading = ref(false)
@@ -62,13 +60,14 @@ const loadingBookmarks = ref<Record<number, boolean>>({})
 export const useBookmark = () => {
   const { getAuthHeader, isAuthenticated } = useAuth()
   const toast = useToast()
+  const config = useRuntimeConfig()
 
   // Fetch bookmark folders (type=0 returns folders)
   const fetchFolders = async () => {
     try {
       const headers = getAuthHeader()
       const response = await $fetch<{ success: boolean; data: BookmarkFolder[] }>(
-        `${API_BASE}/bookmark/detail?type=0`,
+        `${config.public.apiBaseUrl}/bookmark/detail?type=0`,
         { headers: headers as Record<string, string> }
       )
       if (response.success) {
@@ -88,7 +87,7 @@ export const useBookmark = () => {
     try {
       const headers = getAuthHeader()
       const response = await $fetch<{ success: boolean; data: BookmarkItem[] }>(
-        `${API_BASE}/bookmark/detail?type=${type}`,
+        `${config.public.apiBaseUrl}/bookmark/detail?type=${type}`,
         { headers: headers as Record<string, string> }
       )
       if (response.success) {
@@ -149,7 +148,7 @@ export const useBookmark = () => {
         folderId: selectedFolderId.value
       }
 
-      const response = await $fetch<BookmarkResponse>(`${API_BASE}/bookmark`, {
+      const response = await $fetch<BookmarkResponse>(`${config.public.apiBaseUrl}/bookmark`, {
         method: 'POST',
         headers: getAuthHeader() as Record<string, string>,
         body: payload

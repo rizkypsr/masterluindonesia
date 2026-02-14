@@ -59,6 +59,7 @@
 </template>
 
 <script setup lang="ts">
+const config = useRuntimeConfig()
 import { ref, computed } from "vue"
 
 interface SubCategory {
@@ -88,7 +89,7 @@ const searchQuery = ref("")
 const expandedCategories = ref<number[]>([])
 
 const { data: categoriesData, pending } = await useFetch<{ success: boolean; data: Category[] }>(
-  'https://api.masterluindonesia.com/api/category?type=audio&languange=CH'
+  `${config.public.apiBaseUrl}/category?type=audio&languange=CH`
 )
 
 const categories = computed(() => categoriesData.value?.data?.sort((a, b) => a.order - b.order) || [])

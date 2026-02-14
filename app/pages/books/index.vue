@@ -38,13 +38,20 @@
           <div class="grid grid-cols-3 gap-3">
             <NuxtLink v-for="book in category.book" :key="book.id"
               :to="{ path: `/books/${book.id}`, query: { title: book.title, cover: book.url } }" class="block">
-              <ClientOnly>
-                <NuxtImg :src="book.url ?? './fallback.svg'" :alt="book.title" class="w-full aspect-3/4 object-cover rounded-xl"
-                  loading="lazy" />
-                <template #fallback>
-                  <div class="w-full aspect-3/4 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse"></div>
-                </template>
-              </ClientOnly>
+              <template v-if="book.url">
+                <ClientOnly>
+                  <NuxtImg :src="book.url" :alt="book.title" class="w-full aspect-3/4 object-cover rounded-xl"
+                    loading="lazy" />
+                  <template #fallback>
+                    <div class="w-full aspect-3/4 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse"></div>
+                  </template>
+                </ClientOnly>
+              </template>
+              <template v-else>
+                <div class="w-full aspect-3/4 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl flex items-center justify-center p-4">
+                  <p class="text-center font-medium text-black dark:text-white text-sm line-clamp-6">{{ book.title }}</p>
+                </div>
+              </template>
               <p class="mt-2 font-medium text-black dark:text-white line-clamp-3">{{ book.title }}</p>
             </NuxtLink>
           </div>
@@ -63,6 +70,7 @@
 </template>
 
 <script setup lang="ts">
+const config = useRuntimeConfig()
 const searchQuery = ref('')
 
 interface Book {
@@ -83,7 +91,7 @@ interface BookCategory {
 }
 
 const { data: booksData } = await useFetch<{ success: boolean; data: BookCategory[] }>(
-  'https://api.masterluindonesia.com/api/books'
+  `${config.public.apiBaseUrl}/books`
 )
 
 const categories = computed(() => {

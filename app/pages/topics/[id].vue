@@ -46,6 +46,7 @@
 
 <script setup lang="ts">
 const route = useRoute()
+const config = useRuntimeConfig()
 
 interface SubCategory {
   id: number
@@ -66,7 +67,7 @@ const topicId = computed(() => route.params.id as string)
 const topicTitle = computed(() => (route.query.title as string) || 'Topic')
 
 const { data: categoriesData } = await useFetch<{ success: boolean; data: TopicCategory[] }>(
-  () => `https://api.masterluindonesia.com/api/topics/category/${topicId.value}`
+  () => `${config.public.apiBaseUrl}/topics/category/${topicId.value}`
 )
 
 const categories = computed(() => {
