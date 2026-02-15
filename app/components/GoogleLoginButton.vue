@@ -11,6 +11,8 @@ const error = ref<string | null>(null);
 let tokenClient: any = null;
 
 onMounted(async () => {
+  if (!import.meta.client) return
+  
   try {
     await $googleSignIn.load();
     

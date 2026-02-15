@@ -66,9 +66,11 @@ onMounted(async () => {
   }
   
   // Load saved retention setting
-  const savedRetention = localStorage.getItem(STORAGE_KEY)
-  if (savedRetention) {
-    selectedRetention.value = parseInt(savedRetention, 10)
+  if (import.meta.client) {
+    const savedRetention = localStorage.getItem(STORAGE_KEY)
+    if (savedRetention) {
+      selectedRetention.value = parseInt(savedRetention, 10)
+    }
   }
   
   // If "Hapus semua saat buka aplikasi" is selected, delete all history first
@@ -221,7 +223,9 @@ function navigateToItem(item: HistoryItem) {
 
 function selectRetention(value: number) {
   selectedRetention.value = value
-  localStorage.setItem(STORAGE_KEY, value.toString())
+  if (import.meta.client) {
+    localStorage.setItem(STORAGE_KEY, value.toString())
+  }
   isSettingsOpen.value = false
   
   toast.add({

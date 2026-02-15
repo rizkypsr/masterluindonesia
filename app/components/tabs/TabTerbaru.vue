@@ -1,18 +1,16 @@
 <template>
   <div class="py-6">
     <!-- Carousel -->
-    <ClientOnly>
-      <template v-if="isLoading">
-        <USkeleton class="w-full h-40 rounded-xl mx-auto" style="width: 80%;" />
+    <template v-if="isLoading">
+      <USkeleton class="w-full h-40 rounded-xl mx-auto" style="width: 80%;" />
+    </template>
+    <UCarousel v-else-if="media.length > 0" :items="media" :ui="{ item: 'basis-[80%]' }" :autoplay="{ delay: 3000 }"
+      loop class="overflow-hidden">
+      <template #default="slotProps">
+        <NuxtImg v-if="slotProps?.item" :src="getImageUrl(slotProps.item.url)" :alt="slotProps.item.name"
+          class="w-full h-40 object-cover rounded-xl" loading="eager" fetchpriority="high" format="webp" quality="60" width="600" height="160" />
       </template>
-      <UCarousel v-else-if="media.length > 0" :items="media" :ui="{ item: 'basis-[80%]' }" :autoplay="{ delay: 3000 }" loop
-        class="overflow-hidden">
-        <template #default="slotProps">
-          <NuxtImg v-if="slotProps?.item" :src="slotProps.item.url" :alt="slotProps.item.name"
-            class="w-full h-40 object-cover rounded-xl" loading="lazy" format="webp" quality="60"/>
-        </template>
-      </UCarousel>
-    </ClientOnly>
+    </UCarousel>
 
     <!-- Agenda Section -->
     <div class="mt-4 px-4">
@@ -100,16 +98,12 @@
           <NuxtLink v-for="book in books" :key="book.id"
             :to="{ path: `/books/${book.id}`, query: { title: book.title, cover: book.url } }" class="shrink-0 w-28">
             <template v-if="book.url">
-              <ClientOnly>
-                <NuxtImg :src="book.url" :alt="book.title" class="w-28 h-40 object-cover rounded-xl" loading="lazy"
-                  format="webp" quality="60" />
-                <template #fallback>
-                  <USkeleton class="w-28 h-40 rounded-xl" />
-                </template>
-              </ClientOnly>
+              <NuxtImg :src="getImageUrl(book.url)" :alt="book.title" class="w-28 h-40 object-cover rounded-xl" loading="lazy"
+                format="webp" quality="60" width="112" height="160" />
             </template>
             <template v-else>
-              <div class="w-28 h-40 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl flex items-center justify-center p-2">
+              <div
+                class="w-28 h-40 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl flex items-center justify-center p-2">
                 <p class="text-center font-medium text-black dark:text-white text-xs line-clamp-6">{{ book.title }}</p>
               </div>
             </template>
@@ -119,8 +113,8 @@
       </div>
     </div>
 
-    <!-- Community Playlist Section -->
-    <CommunityPlaylistSection />
+    <!-- Community Playlist Section - Lazy loaded with hydration on visible -->
+    <LazyCommunityPlaylistSection hydrate-on-visible />
   </div>
 </template>
 
@@ -230,12 +224,12 @@ const todayIndex = computed(() => {
   // First try to find exact match
   const exactIndex = dateRange.value.findIndex(d => d.full === todayStr)
   if (exactIndex !== -1) return exactIndex
-  
+
   // If today not found, find the closest date
   const todayTime = today.getTime()
   let closestIndex = 0
   let closestDiff = Infinity
-  
+
   dateRange.value.forEach((d, index) => {
     const dateTime = new Date(d.full + 'T00:00:00').getTime()
     const diff = Math.abs(dateTime - todayTime)
@@ -244,7 +238,7 @@ const todayIndex = computed(() => {
       closestIndex = index
     }
   })
-  
+
   return dateRange.value.length > 0 ? closestIndex : -1
 })
 
@@ -311,11 +305,34 @@ watch(() => allAgendaData.value, (newData) => {
 </script>
 
 <style scoped>
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-.scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
-.custom-scrollbar { scrollbar-width: thin; scrollbar-color: rgba(0, 0, 0, 0.2) transparent; }
-.custom-scrollbar::-webkit-scrollbar { height: 6px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
-.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.35); }
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.35);
+}
 </style>

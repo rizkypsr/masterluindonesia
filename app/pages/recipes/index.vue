@@ -22,13 +22,8 @@
         <div class="flex gap-4 overflow-x-auto custom-scrollbar pb-2">
           <NuxtLink v-for="recipe in popularRecipes" :key="recipe.id" :to="`/recipes/${recipe.id}`"
             class="shrink-0 w-64">
-            <ClientOnly>
-              <NuxtImg :src="recipe.cover || '/fallback.svg'" :alt="recipe.title"
-                class="w-full h-40 object-cover rounded-xl" loading="lazy" />
-              <template #fallback>
-                <div class="w-full h-40 bg-gray-200 rounded-xl animate-pulse"></div>
-              </template>
-            </ClientOnly>
+            <NuxtImg :src="getImageUrl(recipe.cover) || '/fallback.svg'" :alt="recipe.title"
+              class="w-full h-40 object-cover rounded-xl" loading="lazy" format="webp" width="256" height="160" />
             <h3 class="mt-2 text-base font-semibold text-black line-clamp-1">{{ recipe.title }}</h3>
             <div class="flex items-center gap-4 mt-2">
               <div class="flex items-center gap-2">
@@ -54,13 +49,8 @@
         <div class="grid grid-cols-3 gap-3">
           <NuxtLink v-for="category in categories" :key="category.id" :to="`/recipes/category/${category.id}`"
             class="block relative overflow-hidden rounded-xl aspect-square">
-            <ClientOnly>
-              <NuxtImg :src="category.image || '/fallback.svg'" :alt="category.title" class="w-full h-full object-cover"
-                loading="lazy" />
-              <template #fallback>
-                <div class="w-full h-full bg-gray-200 animate-pulse"></div>
-              </template>
-            </ClientOnly>
+            <NuxtImg :src="category.image || '/fallback.svg'" :alt="category.title" class="w-full h-full object-cover"
+              loading="lazy" format="webp" width="200" height="200" />
             <div class="absolute inset-0 bg-linear-to-t from-black/60 to-transparent"></div>
             <div class="absolute bottom-2 left-2 right-2">
               <p class="text-white text-sm font-medium leading-tight">{{ category.title }}</p>
@@ -96,18 +86,15 @@
             :to="`/recipes/${recipe.id}`"
             class="block"
           >
-            <ClientOnly>
-              <img
-                :src="recipe.cover || '/fallback.svg'"
-                :alt="recipe.title"
-                class="w-full h-36 object-cover rounded-xl"
-                loading="lazy"
-                @error="(e: Event) => (e.target as HTMLImageElement).src = '/fallback.svg'"
-              />
-              <template #fallback>
-                <div class="w-full h-36 bg-gray-200 rounded-xl animate-pulse"></div>
-              </template>
-            </ClientOnly>
+            <NuxtImg
+              :src="getImageUrl(recipe.cover) || '/fallback.svg'"
+              :alt="recipe.title"
+              class="w-full h-36 object-cover rounded-xl"
+              loading="lazy"
+              format="webp"
+              width="300"
+              height="144"
+            />
             <h3 class="mt-2 text-sm font-semibold text-black line-clamp-2">{{ recipe.title }}</h3>
             <div class="flex items-center gap-2 mt-2">
               <div class="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center">

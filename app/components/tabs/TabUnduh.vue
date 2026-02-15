@@ -37,20 +37,16 @@
               >
                 <!-- Cover Image -->
                 <div class="relative">
-                  <ClientOnly>
-                    <NuxtImg
-                      :src="item.cover"
-                      :alt="item.title"
-                      class="w-full aspect-3/4 object-cover rounded-lg shadow-md"
-                      loading="lazy"
-                      format="webp"
-                      quality="60"
-                      placeholder="/fallback.svg"
-                    />
-                    <template #fallback>
-                      <div class="w-full aspect-3/4 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
-                    </template>
-                  </ClientOnly>
+                  <NuxtImg
+                    :src="item.cover"
+                    :alt="item.title"
+                    class="w-full aspect-3/4 object-cover rounded-lg shadow-md"
+                    loading="lazy"
+                    format="webp"
+                    quality="60"
+                    width="200"
+                    height="267"
+                  />
                   <!-- PDF Badge -->
                   <div
                     v-if="item.is_pdf"

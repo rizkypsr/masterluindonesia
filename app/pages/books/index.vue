@@ -19,8 +19,16 @@
     <div class="flex-1 overflow-y-auto custom-scrollbar">
       <!-- Banner Image -->
       <div class="w-full">
-        <img src="https://masterluindonesia.com/assets/assets/images/buku_page_banner.png"
-          alt="Banner" class="w-full h-48 object-cover" onerror="this.style.display='none'" />
+        <NuxtImg 
+          src="https://masterluindonesia.com/assets/assets/images/buku_page_banner.png"
+          alt="Banner" 
+          class="w-full h-48 object-cover" 
+          format="webp"
+          loading="eager"
+          fetchpriority="high"
+          width="768"
+          height="192"
+        />
       </div>
 
       <!-- Description -->
@@ -39,13 +47,8 @@
             <NuxtLink v-for="book in category.book" :key="book.id"
               :to="{ path: `/books/${book.id}`, query: { title: book.title, cover: book.url } }" class="block">
               <template v-if="book.url">
-                <ClientOnly>
-                  <NuxtImg :src="book.url" :alt="book.title" class="w-full aspect-3/4 object-cover rounded-xl"
-                    loading="lazy" />
-                  <template #fallback>
-                    <div class="w-full aspect-3/4 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse"></div>
-                  </template>
-                </ClientOnly>
+                <NuxtImg :src="getImageUrl(book.url)" :alt="book.title" class="w-full aspect-3/4 object-cover rounded-xl"
+                  loading="lazy" format="webp" width="200" height="267" />
               </template>
               <template v-else>
                 <div class="w-full aspect-3/4 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl flex items-center justify-center p-4">

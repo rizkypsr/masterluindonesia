@@ -132,8 +132,8 @@
 
     <!-- Bottom Section Container -->
     <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto">
-      <!-- Floating Action Button (positioned above bottom drawer) -->
-      <FabZoom v-model:isOpen="showFabMenu" class="absolute right-0 bottom-full z-10" @zoomIn="zoomIn"
+      <!-- Floating Action Button (positioned above bottom drawer) - Lazy loaded -->
+      <LazyFabZoom v-model:isOpen="showFabMenu" class="absolute right-0 bottom-full z-10" @zoomIn="zoomIn"
         @zoomOut="zoomOut" @scrollTop="scrollToTop" />
 
       <!-- Bottom Audio Player Drawer -->
@@ -206,11 +206,11 @@
       </div>
     </div>
 
-    <!-- Bookmark Modal -->
-    <BookmarkModal />
+    <!-- Bookmark Modal - Lazy loaded -->
+    <LazyBookmarkModal />
     
-    <!-- Playlist Modal -->
-    <PlaylistModal />
+    <!-- Playlist Modal - Lazy loaded -->
+    <LazyPlaylistModal />
   </div>
 </template>
 

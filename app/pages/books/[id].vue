@@ -25,13 +25,8 @@
 
     <!-- Book Info -->
     <div class="px-4 py-6 flex items-center gap-4 shrink-0">
-      <ClientOnly>
-        <NuxtImg :src="bookCover" :alt="bookTitle" class="w-24 h-32 object-cover rounded-xl shrink-0" loading="lazy"
-          placeholder="/fallback.svg" fallback="/fallback.svg" />
-        <template #fallback>
-          <div class="w-24 h-32 bg-gray-200 dark:bg-gray-700 rounded-xl animate-pulse shrink-0"></div>
-        </template>
-      </ClientOnly>
+      <NuxtImg :src="bookCover" :alt="bookTitle" class="w-24 h-32 object-cover rounded-xl shrink-0" loading="lazy"
+        format="webp" width="96" height="128" />
       <h2 class="font-semibold text-black dark:text-white" :style="{ fontSize: (fontSize + 4) + 'px' }">{{ bookTitle }}</h2>
     </div>
 
@@ -74,7 +69,8 @@
 
     <!-- Bottom Section with FAB -->
     <div class="shrink-0 relative pb-[env(safe-area-inset-bottom)]">
-      <FabZoom 
+      <!-- Floating Action Button - Lazy loaded -->
+      <LazyFabZoom 
         v-model:isOpen="showFabMenu"
         class="absolute right-4 bottom-4 z-10 mb-[env(safe-area-inset-bottom)]"
         @zoomIn="zoomIn"
@@ -83,11 +79,11 @@
       />
     </div>
 
-    <!-- Bookmark Modal -->
-    <BookmarkModal />
+    <!-- Bookmark Modal - Lazy loaded -->
+    <LazyBookmarkModal />
     
-    <!-- Playlist Modal -->
-    <PlaylistModal />
+    <!-- Playlist Modal - Lazy loaded -->
+    <LazyPlaylistModal />
   </div>
 </template>
 

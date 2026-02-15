@@ -20,7 +20,7 @@ export const useAuth = () => {
   const config = useRuntimeConfig()
   const token = useCookie('auth_token', {
     maxAge: 60 * 60 * 24 * 365, // 1 year
-    secure: process.env.NODE_ENV === 'production',
+    secure: import.meta.env.PROD,
     sameSite: 'lax',
   });
 

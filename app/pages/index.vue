@@ -94,7 +94,7 @@ onMounted(async () => {
   }
 
   // Handle history retention - delete old history based on setting
-  if (isAuthenticated.value) {
+  if (isAuthenticated.value && import.meta.client) {
     const retention = localStorage.getItem(HISTORY_RETENTION_KEY)
     // Default to 1 month if no setting saved
     const retentionValue = retention ? parseInt(retention, 10) : 1

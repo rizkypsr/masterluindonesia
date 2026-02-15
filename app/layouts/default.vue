@@ -4,7 +4,8 @@
       <div class="flex-1 overflow-hidden" :class="{ 'pb-20': showBottomNav }">
         <slot />
       </div>
-      <BottomNav v-if="showBottomNav" class="shrink-0" />
+      <!-- Lazy hydration: only hydrate when visible -->
+      <LazyBottomNav v-if="showBottomNav" class="shrink-0" hydrate-on-visible />
     </div>
   </div>
 </template>

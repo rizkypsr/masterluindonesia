@@ -109,17 +109,17 @@
         </template>
         </div>
 
-        <!-- Bottom Section with FAB -->
+        <!-- Bottom Section with FAB - Lazy loaded -->
         <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto">
-            <FabZoom v-model:isOpen="showFabMenu" class="absolute right-0 bottom-full z-10" @zoomIn="zoomIn"
+            <LazyFabZoom v-model:isOpen="showFabMenu" class="absolute right-0 bottom-full z-10" @zoomIn="zoomIn"
                 @zoomOut="zoomOut" @scrollTop="scrollToTop" />
         </div>
 
-        <!-- Bookmark Modal -->
-        <BookmarkModal />
+        <!-- Bookmark Modal - Lazy loaded -->
+        <LazyBookmarkModal />
         
-        <!-- Playlist Modal -->
-        <PlaylistModal />
+        <!-- Playlist Modal - Lazy loaded -->
+        <LazyPlaylistModal />
     </div>
 </template>
 

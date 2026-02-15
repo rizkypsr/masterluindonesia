@@ -11,7 +11,8 @@
         </NuxtLink>
       </div>
       <div class="relative overflow-hidden">
-        <img src="https://masterluindonesia.com/assets/assets/images/pr/image_1.png" alt="Baca PR" class="w-full" />
+        <NuxtImg src="https://masterluindonesia.com/assets/assets/images/pr/image_1.png" alt="Baca PR" 
+          class="w-full" format="webp" loading="lazy" width="768" height="400" />
       </div>
     </div>
 
@@ -43,8 +44,8 @@
             <div v-if="item.id === 2" class="relative min-h-125">
               <!-- XFZ Paper - Left -->
               <div class="absolute left-0 top-0 w-36">
-                <img src="https://masterluindonesia.com/assets/assets/images/xfz/xfz_full.png" alt="Xiao Fang Zi"
-                  class="w-full object-contain" />
+                <NuxtImg src="https://masterluindonesia.com/assets/assets/images/xfz/xfz_full.png" alt="Xiao Fang Zi"
+                  class="w-full object-contain" format="webp" loading="lazy" width="144" height="200" />
                 <button @click="showPerlengkapanInfo('xfz')"
                   class="absolute bottom-4 right-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                   <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -53,8 +54,8 @@
 
               <!-- Counter - Right Top -->
               <div class="absolute right-8 top-0 w-16">
-                <img src="https://masterluindonesia.com/assets/assets/images/xfz/counter.png" alt="Counter"
-                  class="w-full object-contain" />
+                <NuxtImg src="https://masterluindonesia.com/assets/assets/images/xfz/counter.png" alt="Counter"
+                  class="w-full object-contain" format="webp" loading="lazy" width="64" height="80" />
                 <button @click="showPerlengkapanInfo('counter')"
                   class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                   <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -63,8 +64,8 @@
 
               <!-- Kain Merah - Right -->
               <div class="absolute right-4 top-24 w-24">
-                <img src="https://masterluindonesia.com/assets/assets/images/xfz/kain.png" alt="Kain Merah"
-                  class="w-full object-contain" />
+                <NuxtImg src="https://masterluindonesia.com/assets/assets/images/xfz/kain.png" alt="Kain Merah"
+                  class="w-full object-contain" format="webp" loading="lazy" width="96" height="120" />
                 <button @click="showPerlengkapanInfo('kain')"
                   class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                   <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -73,8 +74,8 @@
 
               <!-- Pena Merah - Left Middle -->
               <div class="absolute left-10 top-[48%] w-28">
-                <img src="https://masterluindonesia.com/assets/assets/images/xfz/pen_full.png" alt="Pena Merah"
-                  class="w-full object-contain" />
+                <NuxtImg src="https://masterluindonesia.com/assets/assets/images/xfz/pen_full.png" alt="Pena Merah"
+                  class="w-full object-contain" format="webp" loading="lazy" width="112" height="140" />
                 <button @click="showPerlengkapanInfo('pena-merah')"
                   class="absolute top-4 right-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                   <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -83,8 +84,8 @@
 
               <!-- Pena Hitam - Right Middle -->
               <div class="absolute right-8 top-[50%] w-24">
-                <img src="https://masterluindonesia.com/assets/assets/images/xfz/black_pen.png" alt="Pena Hitam"
-                  class="w-full object-contain" />
+                <NuxtImg src="https://masterluindonesia.com/assets/assets/images/xfz/black_pen.png" alt="Pena Hitam"
+                  class="w-full object-contain" format="webp" loading="lazy" width="96" height="120" />
                 <button @click="showPerlengkapanInfo('pena-hitam')"
                   class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                   <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -93,8 +94,8 @@
 
               <!-- Amplop - Left Bottom -->
               <div class="absolute left-4 top-[76%] w-24">
-                <img src="https://masterluindonesia.com/assets/assets/images/xfz/amplop.png" alt="Amplop"
-                  class="w-full object-contain" />
+                <NuxtImg src="https://masterluindonesia.com/assets/assets/images/xfz/amplop.png" alt="Amplop"
+                  class="w-full object-contain" format="webp" loading="lazy" width="96" height="120" />
                 <button @click="showPerlengkapanInfo('amplop')"
                   class="absolute -bottom-2 right-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                   <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -103,8 +104,8 @@
 
               <!-- Buku - Right Bottom -->
               <div class="absolute right-4 top-[80%] w-24">
-                <img src="https://masterluindonesia.com/assets/assets/images/xfz/book.png" alt="Buku Paritta"
-                  class="w-full object-contain" />
+                <NuxtImg src="https://masterluindonesia.com/assets/assets/images/xfz/book.png" alt="Buku Paritta"
+                  class="w-full object-contain" format="webp" loading="lazy" width="96" height="120" />
                 <button @click="showPerlengkapanInfo('buku')"
                   class="absolute top-0 right-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                   <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -113,17 +114,18 @@
             </div>
             <!-- 1 image -->
             <div v-else-if="item.images.length === 1">
-              <img :src="item.images[0]" :alt="item.title" :class="['w-full rounded-lg object-contain', item.height]" />
+              <NuxtImg :src="item.images[0]" :alt="item.title" :class="['w-full rounded-lg object-contain', item.height]" 
+                format="webp" loading="lazy" width="600" height="400" />
             </div>
             <!-- 2 images: side by side, aligned to bottom -->
             <div v-else-if="item.images.length === 2" class="grid grid-cols-2 gap-4 items-end">
-              <img v-for="(img, idx) in item.images" :key="idx" :src="img" :alt="item.title"
-                class="w-full rounded-lg object-contain max-h-72" />
+              <NuxtImg v-for="(img, idx) in item.images" :key="idx" :src="img" :alt="item.title"
+                class="w-full rounded-lg object-contain max-h-72" format="webp" loading="lazy" width="300" height="288" />
             </div>
             <!-- More than 2 images: grid -->
             <div v-else class="grid grid-cols-2 gap-2 items-end">
-              <img v-for="(img, idx) in item.images" :key="idx" :src="img" :alt="item.title"
-                :class="['w-full rounded-lg object-contain', item.height]" />
+              <NuxtImg v-for="(img, idx) in item.images" :key="idx" :src="img" :alt="item.title"
+                :class="['w-full rounded-lg object-contain', item.height]" format="webp" loading="lazy" width="300" height="200" />
             </div>
           </div>
         </div>
@@ -158,8 +160,8 @@
               <Icon name="heroicons:x-mark" class="w-6 h-6 text-gray-500" />
             </button>
           </div>
-          <img :src="selectedPerlengkapan?.image" :alt="selectedPerlengkapan?.title"
-            class="w-32 h-32 object-contain mx-auto mb-4" />
+          <NuxtImg :src="selectedPerlengkapan?.image" :alt="selectedPerlengkapan?.title"
+            class="w-32 h-32 object-contain mx-auto mb-4" format="webp" loading="lazy" width="128" height="128" />
           <p class="text-gray-700 dark:text-gray-300 text-center">{{ selectedPerlengkapan?.description }}</p>
         </div>
       </template>
@@ -177,8 +179,8 @@
         </NuxtLink>
       </div>
       <div class="relative overflow-hidden">
-        <img src="https://masterluindonesia.com/assets/assets/images/sembayang/image_1.png" alt="Tata Cara Sembahyang"
-          class="w-full" />
+        <NuxtImg src="https://masterluindonesia.com/assets/assets/images/sembayang/image_1.png" alt="Tata Cara Sembahyang"
+          class="w-full" format="webp" loading="lazy" width="768" height="400" />
       </div>
     </div>
 
@@ -193,8 +195,8 @@
         </NuxtLink>
       </div>
       <div class="relative overflow-hidden">
-        <img src="https://masterluindonesia.com/assets/assets/images/altarbesar/image_1.png" alt="Altar Besar"
-          class="w-full" />
+        <NuxtImg src="https://masterluindonesia.com/assets/assets/images/altarbesar/image_1.png" alt="Altar Besar"
+          class="w-full" format="webp" loading="lazy" width="768" height="400" />
       </div>
     </div>
 
@@ -209,8 +211,8 @@
         </NuxtLink>
       </div>
       <div class="relative overflow-hidden">
-        <img src="https://masterluindonesia.com/assets/assets/images/altarkecil/altar_kecil.png" alt="Altar Kecil"
-          class="w-full" />
+        <NuxtImg src="https://masterluindonesia.com/assets/assets/images/altarkecil/altar_kecil.png" alt="Altar Kecil"
+          class="w-full" format="webp" loading="lazy" width="768" height="400" />
       </div>
     </div>
 
@@ -226,8 +228,8 @@
         </NuxtLink>
       </div>
       <div class="relative overflow-hidden">
-        <img src="https://masterluindonesia.com/assets/assets/images/bimbingan/bimbingan.png"
-          alt="Permohonan Bimbingan Spiritual" class="w-full" />
+        <NuxtImg src="https://masterluindonesia.com/assets/assets/images/bimbingan/bimbingan.png"
+          alt="Permohonan Bimbingan Spiritual" class="w-full" format="webp" loading="lazy" width="768" height="400" />
       </div>
     </div>
 
@@ -243,8 +245,8 @@
         </NuxtLink>
       </div>
       <div class="relative overflow-hidden">
-        <img src="https://masterluindonesia.com/assets/assets/images/bimbingan/ganti_nama.png"
-          alt="Permohonan Penggantian Nama" class="w-full" />
+        <NuxtImg src="https://masterluindonesia.com/assets/assets/images/bimbingan/ganti_nama.png"
+          alt="Permohonan Penggantian Nama" class="w-full" format="webp" loading="lazy" width="768" height="400" />
       </div>
     </div>
   </div>

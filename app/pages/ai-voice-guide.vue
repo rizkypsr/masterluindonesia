@@ -69,10 +69,14 @@ function nextXiaomi() {
           </button>
         </div>
         <div class="flex justify-center">
-          <img 
+          <NuxtImg 
             :src="samsungImages[samsungIndex]" 
             alt="Pengaturan Samsung" 
             class="max-h-125 object-contain rounded-lg"
+            format="webp"
+            loading="lazy"
+            width="600"
+            height="500"
           />
         </div>
       </div>
@@ -91,10 +95,14 @@ function nextXiaomi() {
           </button>
         </div>
         <div class="flex justify-center">
-          <img 
+          <NuxtImg 
             :src="xiaomiImages[xiaomiIndex]" 
             alt="Pengaturan Xiaomi" 
             class="max-h-125 object-contain rounded-lg"
+            format="webp"
+            loading="lazy"
+            width="600"
+            height="500"
           />
         </div>
       </div>

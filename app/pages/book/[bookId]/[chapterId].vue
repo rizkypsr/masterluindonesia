@@ -614,8 +614,8 @@ onBeforeUnmount(() => {
 
         <!-- Bottom Section Container -->
         <div class="shrink-0 relative">
-            <!-- Floating Tools Button (positioned above bottom nav) -->
-            <FabZoom 
+      <!-- Floating Tools Button (positioned above bottom nav) - Lazy loaded -->
+            <LazyFabZoom 
                 v-model:isOpen="isToolsExpanded"
                 class="absolute right-0 bottom-full z-10"
                 @zoomIn="zoomIn"
@@ -723,11 +723,11 @@ onBeforeUnmount(() => {
             </template>
         </UModal>
 
-        <!-- Bookmark Modal -->
-        <BookmarkModal />
+        <!-- Bookmark Modal - Lazy loaded -->
+        <LazyBookmarkModal />
         
-        <!-- Playlist Modal -->
-        <PlaylistModal />
+        <!-- Playlist Modal - Lazy loaded -->
+        <LazyPlaylistModal />
     </div>
 </template>
 

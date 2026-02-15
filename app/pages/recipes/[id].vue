@@ -24,13 +24,8 @@
         </div>
         <!-- Fallback Image if no YouTube -->
         <div v-else-if="recipe?.image?.length" class="w-full aspect-video shrink-0">
-            <ClientOnly>
-                <NuxtImg :src="recipe.image[0]" :alt="recipe.title" class="w-full h-full object-cover" loading="lazy"
-                    placeholder="/fallback.svg" />
-                <template #fallback>
-                    <div class="w-full h-full bg-gray-200 animate-pulse"></div>
-                </template>
-            </ClientOnly>
+            <NuxtImg :src="recipe.image[0]" :alt="recipe.title" class="w-full h-full object-cover" loading="lazy"
+              format="webp" width="768" height="432" />
         </div>
 
         <!-- Recipe Info (Scrollable) -->
