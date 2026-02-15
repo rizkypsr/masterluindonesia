@@ -123,7 +123,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       googleClientId: '',
-      apiBaseUrl: 'https://api.masterluindonesia.com/api',
+      apiBaseUrl: 'https://api.cms.masterluindonesia.com/api',
     },
   },
 })
