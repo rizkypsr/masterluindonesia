@@ -15,17 +15,17 @@ onMounted(() => {
 })
 
 const samsungImages = [
-  'https://masterluindonesia.com/assets/assets/images/pengaturan_samsung_1.jpeg',
-  'https://masterluindonesia.com/assets/assets/images/pengaturan_samsung_2.jpeg',
-  'https://masterluindonesia.com/assets/assets/images/pengaturan_samsung_3.jpeg',
-  'https://masterluindonesia.com/assets/assets/images/pengaturan_samsung_4.jpeg',
+  'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpengaturan_samsung_1.jpeg?alt=media&token=9979ebcd-bb26-4ef5-9d4d-4c43d839ab9a',
+  'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpengaturan_samsung_2.jpeg?alt=media&token=9a9d4447-4915-43df-89b6-0590835e7c2b',
+  'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpengaturan_samsung_3.jpeg?alt=media&token=158ac829-262f-4dfa-b746-8a39515d7759',
+  'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpengaturan_samsung_4.jpeg?alt=media&token=7723d63c-be44-4d84-9147-bd75faf3f3c5',
 ]
 
 const xiaomiImages = [
-  'https://masterluindonesia.com/assets/assets/images/pengaturan_xiaomi_1.jpeg',
-  'https://masterluindonesia.com/assets/assets/images/pengaturan_xiaomi_2.jpeg',
-  'https://masterluindonesia.com/assets/assets/images/pengaturan_xiaomi_3.jpeg',
-  'https://masterluindonesia.com/assets/assets/images/pengaturan_xiaomi_4.jpeg',
+  'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpengaturan_xiaomi_1.jpeg?alt=media&token=19af5c80-a137-43c0-8e69-bcbdca38ae97',
+  'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpengaturan_xiaomi_2.jpeg?alt=media&token=554bb496-e016-4998-935c-bad2c5fdbb63',
+  'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpengaturan_xiaomi_3.jpeg?alt=media&token=5e586be3-0ad5-484f-8f8f-dfb8504a10d8',
+  'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpengaturan_xiaomi_4.jpeg?alt=media&token=8d438340-61bf-41be-a155-5ed9a41c69eb',
 ]
 
 const samsungIndex = ref(0)

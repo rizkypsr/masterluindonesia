@@ -14,7 +14,7 @@
     <div class="flex-1 overflow-y-auto py-4 px-4">
       <!-- Banner Images -->
       <div class="pb-4">
-        <NuxtImg src="https://masterluindonesia.com/assets/assets/images/main_image_audio_screen.jpeg" alt="Gambar" class="rounded-lg" />
+        <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmain_image_audio_screen.jpeg?alt=media&token=ba63e4f9-e51b-4e3d-a34e-a38c139ace1f" alt="Gambar" class="rounded-lg" />
       </div>
 
       <!-- Description -->

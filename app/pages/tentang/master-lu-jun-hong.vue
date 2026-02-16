@@ -9,7 +9,7 @@
 
     <!-- Hero Image -->
     <div class="relative">
-      <img src="https://masterluindonesia.com/assets/assets/images/tentang/image8.png" alt="Master Lu Jun Hong"
+      <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage8.png?alt=media&token=44885b91-8155-4160-85a3-f358a9237924" alt="Master Lu Jun Hong"
         class="w-full" />
     </div>
 
@@ -142,7 +142,7 @@ const penghargaanItems = [
   {
     id: 1,
     title: 'Penghargaan Perdamaian Dunia (Buddha)',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image9.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage9.png?alt=media&token=81bc03a8-2ba0-416c-8363-4afa2b615a04',
     content: [
       '8 Juli 2012 Master Jun Hong Lu diundang ke London untuk berpartisipasi dalam "Kongres Agama Sedunia", salah satu perayaan ulang tahun ke-60 Ratu Inggris dan Keluarga Kerajaan Inggris.',
       'Master Jun Hong Lu dianugerahi "Penghargaan Perdamaian Dunia (Buddhisme)" dan gelar "Duta Besar untuk Perdamaian Dunia" tahun ini.',
@@ -153,7 +153,7 @@ const penghargaanItems = [
   {
     id: 2,
     title: 'Penghargaan untuk Kontribusi Luar Biasa dan Advokasi Perdamaian kepada Komunitas Global',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image10.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage10.png?alt=media&token=21ddc863-7907-4da7-998c-78a878f9ce14',
     content: [
       '18 Desember 2013 – Jun Hong Lu JP menerima Penghargaan untuk Kontribusi Luar Biasa dan Advokasi Perdamaian kepada Komunitas Global di Berlin, Jerman.',
       'Institut untuk Diplomasi Budaya mengakui dengan kontribusi yang luar biasa kepada Master Jun Hong Lu yang telah melampaui tugasnya.',
@@ -165,7 +165,7 @@ const penghargaanItems = [
   {
     id: 3,
     title: 'Konferensi Tahunan Tentang Diplomasi Budaya 2013',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image11.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage11.png?alt=media&token=3229c10a-e7c0-422b-819a-88c30c8002a2',
     content: [
       '18 Desember 2013, Master Jun Hong Lu menghadiri Konferensi Tahunan tentang Diplomasi Budaya, "Diplomasi Budaya & Kerjasama Lintas Benua: Membangun Jembatan untuk Komunitas Global Bersatu" 17-20 Desember 2013, bersama dengan para pemimpin politik dan agama dari seluruh dunia di Berlin, Jerman.',
       'Konferensi Tahunan tentang Diplomasi Budaya adalah acara terkemuka dunia di bidang diplomasi budaya yang diselenggarakan bersama dan disponsori oleh Institute for Cultural Diplomacy dan The IIAN Foundation.',
@@ -180,7 +180,7 @@ const penghargaanItems = [
   {
     id: 4,
     title: 'Honorary Visiting Professorship - Universitas Siena',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image12.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage12.png?alt=media&token=29587abe-d031-4a0e-9a39-01f1a5f2a9b0',
     content: [
       'Pada tanggal 1 April 2014, Master Jun Hong Lu, Duta Besar untuk Perdamaian Dunia dan seorang guru Buddhis yang terkenal di dunia, dianugerahi "Guest Professor" dari Universitas Siena.',
       'Profesor turut datang di bawah Program Magister Tata Kelola Global dan Diplomasi Budaya Universitas Siena, bekerja sama dengan Institute for Cultural Diplomacy (ICD).',
@@ -190,7 +190,7 @@ const penghargaanItems = [
   {
     id: 5,
     title: 'Duta Perdamaian Dunia - Kongres AS',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image13.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage13.png?alt=media&token=1c76c681-b501-46ec-a90e-6200d8a715df',
     content: [
       '24 Maret 2014, Master Lu diundang untuk menghadiri KTT yang diadakan PBB mengenakan global di markas besar PBB di New York. KTT ini bertujuan untuk membangun pola pikir yang bisa memberikan solusi atas pengurangan dan mediasi konflik.',
       'Sebagai penghargaan atas dedikasi Master Lu, kepemimpinan dan kerja keras untuk promosi perdamaian, budaya dan kemanusiaan, KTT yang digelar PBB menganugerahi Master Lu dengan gelar "Duta Perdamaian Dunia".',
@@ -200,7 +200,7 @@ const penghargaanItems = [
   {
     id: 6,
     title: 'Menghadiri KTT Budaya Perdamaian yang diadakan di Markas Besar PBB',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image14.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage14.png?alt=media&token=da1b81eb-6fbf-425e-be22-797afc1313e2',
     content: [
       '24 Maret 2014 – Jun Hong Lu JP diundang untuk menghadiri dan berbicara pada KTT Budaya Perdamaian yang diadakan di Markas Besar PBB di New York.',
       'Sebagai pembicara kunci, Jun Hong Lu JP membawakan pidato tentang "Bagaimana Meneruskan Buddhisme dan Budaya Tradisional China Untuk Mempromosikan Perdamaian Dunia".',
@@ -210,7 +210,7 @@ const penghargaanItems = [
   {
     id: 7,
     title: 'Konferensi Buddhis Internasional 2015',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image15.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage15.png?alt=media&token=eb7d7d50-dcf9-4ed9-8acf-09c5d87bb99b',
     content: [
       '29-30 Mei 2015 – Master Jun Hong Lu telah menghadiri "Konferensi Buddhis Internasional 2015" pada Hari Raya Waisak PBB dengan para pemimpin agama dari seluruh dunia di Bangkok, Thailand. (Foto: Baris Pertama, Kesepuluh dari Kiri).',
       'Ia diundang oleh PBB untuk menghadiri konferensi tersebut sebagai tamu istimewa di United Nations Conference Centre, Thailand.',
@@ -221,7 +221,7 @@ const penghargaanItems = [
   {
     id: 8,
     title: 'Menghadiri Forum Tingkat Tinggi PBB tentang Budaya Perdamaian',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image16.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage16.png?alt=media&token=ee684184-086c-4186-b657-aa9d62fddda5',
     content: [
       'September 2015, Jun Hong Lu JP diundang untuk menghadiri "Forum Tingkat Tinggi PBB tentang Budaya Perdamaian" di Trusteeship Council Chamber, Markas Besar PBB di New York, bersama dengan para pemimpin dari seluruh dunia.',
       'Forum tersebut diselenggarakan oleh Presiden Sidang Umum ke-69 Yang Mulia Bapak Sam K. Kutesa bersama sama dengan Dewan Dunia untuk Perdamaian Budaya (SWCPC).',
@@ -231,7 +231,7 @@ const penghargaanItems = [
   {
     id: 9,
     title: 'Undangan oleh Presiden Sri Lanka untuk mengunjungi Sri Lanka',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image17.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage17.png?alt=media&token=58ff332a-a26b-465c-ab51-c36d3348ad2a',
     content: [
       '17 Maret 2017 – Presiden Sri Lanka, Maithripala Sirisena telah mengundang Master Jun Hong Lu untuk berdiskusi tentang perkembangan dan kontribusi agama Buddha di Sri Lanka.',
       'Presiden telah memberikan penghargaan sebagai penghargaan atas kontribusi luar biasa Master Lu pada pertukaran ekonomi dan budaya antara Sri Lanka dan Asosiasi Amal Buddha Media Oriental Australia.'
@@ -240,7 +240,7 @@ const penghargaanItems = [
   {
     id: 10,
     title: 'Festival Waisak PBB',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image18.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage18.png?alt=media&token=dc829f82-ba68-43ff-a2fe-33ee5602f120',
     content: [
       '24 Mei 2018, UNESCO mengadakan "Festival Waisak Persekutuan Bangsa-Bangsa 2018" di kantor pusatnya di Paris, Prancis. Tema tahun ini adalah "Promosi Perdamaian dan Non-Kekerasan: Cara Hidup Buddha".',
       'Sesi diadakan untuk mempromosikan dialog antar budaya dan antar agama untuk perdamaian yang berkelanjutan.',

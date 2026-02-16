@@ -39,7 +39,7 @@
 
             <!-- Hero Image -->
             <div class="mb-8">
-                <img src="https://masterluindonesia.com/assets/assets/images/xfz/xfz-2.png" alt="Xiao Fang Zi"
+                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fxfz-2.png?alt=media&token=882e2ea1-1778-4d65-8a18-b71fb8deea82" alt="Xiao Fang Zi"
                     class="w-full object-contain rounded-lg" />
             </div>
 
@@ -62,7 +62,7 @@
                 <div class="relative dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 min-h-150">
                     <!-- Xiao Fang Zi Paper - Left -->
                     <div class="absolute left-4 top-8 w-40">
-                        <img src="https://masterluindonesia.com/assets/assets/images/xfz/xfz_full.png"
+                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fxfz_full.png?alt=media&token=a3ecb219-8552-4f51-acc0-9c4688c48a93"
                             alt="Xiao Fang Zi" class="w-full object-contain drop-shadow-lg" />
                         <button @click="showPerlengkapanDetail('xfz')"
                             class="absolute -bottom-2 right-4 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -72,7 +72,7 @@
 
                     <!-- Counter - Right Top -->
                     <div class="absolute right-8 top-4 w-20">
-                        <img src="https://masterluindonesia.com/assets/assets/images/xfz/counter.png" alt="Counter"
+                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fcounter.png?alt=media&token=b5437729-203e-4107-a12a-b06cd45a9c1f" alt="Counter"
                             class="w-full object-contain drop-shadow-lg" />
                         <button @click="showPerlengkapanDetail('counter')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -82,7 +82,7 @@
 
                     <!-- Kain Merah - Right Middle -->
                     <div class="absolute right-6 top-36 w-24">
-                        <img src="https://masterluindonesia.com/assets/assets/images/xfz/kain.png" alt="Kain Merah"
+                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fkain.png?alt=media&token=77715de1-05ab-4e7a-ab7e-90e8df7461bf" alt="Kain Merah"
                             class="w-full object-contain drop-shadow-lg" />
                         <button @click="showPerlengkapanDetail('kain')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -92,7 +92,7 @@
 
                     <!-- Pena Merah - Left Middle -->
                     <div class="absolute left-4 top-72 w-28">
-                        <img src="https://masterluindonesia.com/assets/assets/images/xfz/pen_full.png" alt="Pena Merah"
+                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fpen_full.png?alt=media&token=2bf2ef24-256a-4921-a2a1-223b7237394e" alt="Pena Merah"
                             class="w-full object-contain drop-shadow-lg" />
                         <button @click="showPerlengkapanDetail('pena-merah')"
                             class="absolute top-10 left-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -102,7 +102,7 @@
 
                     <!-- Pena Hitam - Right Middle -->
                     <div class="absolute right-8 top-64 w-24">
-                        <img src="https://masterluindonesia.com/assets/assets/images/xfz/black_pen.png" alt="Pena Hitam"
+                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fblack_pen.png?alt=media&token=596786cf-9bd4-4ad2-af2f-52e5093a82a9" alt="Pena Hitam"
                             class="w-full object-contain drop-shadow-lg" />
                         <button @click="showPerlengkapanDetail('pena-hitam')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -112,7 +112,7 @@
 
                     <!-- Amplop - Left Bottom -->
                     <div class="absolute left-8 top-96 w-28">
-                        <img src="https://masterluindonesia.com/assets/assets/images/xfz/amplop.png" alt="Amplop"
+                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Famplop.png?alt=media&token=c1698c89-0335-483b-ae36-28825a315908" alt="Amplop"
                             class="w-full object-contain drop-shadow-lg" />
                         <button @click="showPerlengkapanDetail('amplop')"
                             class="absolute -bottom-2 left-4 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -122,7 +122,7 @@
 
                     <!-- Buku - Right Bottom -->
                     <div class="absolute right-4 bottom-8 w-28">
-                        <img src="https://masterluindonesia.com/assets/assets/images/xfz/book.png" alt="Buku Paritta"
+                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fbook.png?alt=media&token=c0b11515-be28-4df3-8f11-0edd6bc21222" alt="Buku Paritta"
                             class="w-full object-contain drop-shadow-lg" />
                         <button @click="showPerlengkapanDetail('buku')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -167,7 +167,7 @@
             <div id="bagian-bacaan" class="mb-8">
                 <h2 class="text-3xl font-bold dark:text-white mb-4">Bagian Bacaan di Xiao Fang Zi</h2>
 
-                <img src="https://masterluindonesia.com/assets/assets/images/xfz/bagian_baca_xfz.png"
+                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fbagian_baca_xfz.png?alt=media&token=35da47a8-2795-428c-9f93-47ec8faa9db4"
                     alt="Bagian Bacaan" class="w-full object-contain rounded-lg mb-4" />
                 <div class="px-2 space-y-2">
                     <div class="flex items-start gap-2">
@@ -230,7 +230,7 @@
                 <h2 class="text-3xl font-bold dark:text-white mb-6">Komponen di Xiao Fang Zi</h2>
 
                 <div class="relative">
-                    <img src="https://masterluindonesia.com/assets/assets/images/xfz/xfz_full.png"
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fxfz_full.png?alt=media&token=a3ecb219-8552-4f51-acc0-9c4688c48a93"
                         alt="Komponen Xiao Fang Zi" class="w-full object-contain" />
 
                     <!-- Button: Jing Zeng (敬贈) - Right top -->
@@ -561,7 +561,7 @@
                 <div class="relative dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 min-h-175">
                     <!-- Piring - Left Top -->
                     <div class="absolute left-8 top-8 w-28">
-                        <img src="https://masterluindonesia.com/assets/assets/images/xfz/ic_piring.png" alt="Piring"
+                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_piring.png?alt=media&token=3c78b3f5-afb8-4b35-95c2-3f7e7ae7c0cd" alt="Piring"
                             class="w-full object-contain drop-shadow-lg" />
                         <button @click="showBakarDetail('piring')"
                             class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -571,7 +571,7 @@
 
                     <!-- Penjepit - Right Top -->
                     <div class="absolute right-12 top-12 w-24">
-                        <img src="https://masterluindonesia.com/assets/assets/images/xfz/ic_pinset.png" alt="Penjepit"
+                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_pinset.png?alt=media&token=fbf15b5e-4cf5-4756-9bda-64375a398971" alt="Penjepit"
                             class="w-full object-contain drop-shadow-lg" />
                         <button @click="showBakarDetail('pinset')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -581,7 +581,7 @@
 
                     <!-- Tisu - Right -->
                     <div class="absolute right-8 top-36 w-28">
-                        <img src="https://masterluindonesia.com/assets/assets/images/xfz/ic_tissue.png" alt="Tisu"
+                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_tissue.png?alt=media&token=e5d569e0-24db-45d0-bebe-a99486f8dd2f" alt="Tisu"
                             class="w-full object-contain drop-shadow-lg" />
                         <button @click="showBakarDetail('tisu')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -591,7 +591,7 @@
 
                     <!-- Kain Merah - Left -->
                     <div class="absolute left-4 top-52 w-28">
-                        <img src="https://masterluindonesia.com/assets/assets/images/xfz/ic_kain_merah_tools.png"
+                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_kain_merah_tools.png?alt=media&token=9280343a-2744-4116-bb37-5adcb378d9a0"
                             alt="Kain Merah" class="w-full object-contain drop-shadow-lg" />
                         <button @click="showBakarDetail('kain-bakar')"
                             class="absolute -bottom-2 right-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -601,7 +601,7 @@
 
                     <!-- Amplop Putih - Right Middle -->
                     <div class="absolute right-8 top-72 w-24">
-                        <img src="https://masterluindonesia.com/assets/assets/images/xfz/ic_amplop_putih.png"
+                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_amplop_putih.png?alt=media&token=bc772baf-7821-4d24-bdaa-c57bdb02deef"
                             alt="Amplop Putih" class="w-full object-contain drop-shadow-lg" />
                         <button @click="showBakarDetail('amplop-putih')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -611,7 +611,7 @@
 
                     <!-- Korek Api - Center -->
                     <div class="absolute right-8 top-96 w-32">
-                        <img src="https://masterluindonesia.com/assets/assets/images/xfz/ic_korek.png" alt="Korek Api"
+                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_korek.png?alt=media&token=aa964d7f-86e3-454d-862e-84810c506b90" alt="Korek Api"
                             class="w-full object-contain drop-shadow-lg" />
                         <button @click="showBakarDetail('korek')"
                             class="absolute -bottom-2 right-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -621,7 +621,7 @@
 
                     <!-- Meja Kecil - Bottom -->
                     <div class="absolute left-4 bottom-32 w-36">
-                        <img src="https://masterluindonesia.com/assets/assets/images/xfz/ic_meja_kayu.png"
+                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_meja_kayu.png?alt=media&token=919243c2-0ba4-4c3c-8ca9-c9ab174802b7"
                             alt="Meja Kecil" class="w-full object-contain drop-shadow-lg" />
                         <button @click="showBakarDetail('meja')"
                             class="absolute -bottom-3 right-4 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
@@ -1012,37 +1012,37 @@ const selectedPerlengkapan = ref<{ title: string; image: string; description: st
 const perlengkapanWajibDetails: Record<string, { title: string; image: string; description: string }> = {
     'xfz': {
         title: 'Xiao Fang Zi',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/xfz_full.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fxfz_full.png?alt=media&token=a3ecb219-8552-4f51-acc0-9c4688c48a93',
         description: 'Kertas kuning khusus untuk mencatat bacaan paritta. Terdiri dari 4 kolom untuk Da Bei Zhou, Xin Jing, Wang Sheng Zhou, dan Qi Fo Mie Zui Zhen Yan.'
     },
     'counter': {
         title: 'Counter / Penghitung',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/counter.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fcounter.png?alt=media&token=b5437729-203e-4107-a12a-b06cd45a9c1f',
         description: 'Alat penghitung untuk membantu menghitung jumlah bacaan paritta yang telah dibaca.'
     },
     'kain': {
         title: 'Kain Merah',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/kain.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fkain.png?alt=media&token=77715de1-05ab-4e7a-ab7e-90e8df7461bf',
         description: 'Kain merah digunakan sebagai alas saat membakar Xiao Fang Zi untuk menunjukkan rasa hormat.'
     },
     'pena-merah': {
         title: 'Pena Merah',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/pen_full.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fpen_full.png?alt=media&token=2bf2ef24-256a-4921-a2a1-223b7237394e',
         description: 'Pena merah digunakan untuk memberi titik pada Xiao Fang Zi setiap kali selesai membaca satu kali paritta.'
     },
     'pena-hitam': {
         title: 'Pena Hitam',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/black_pen.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fblack_pen.png?alt=media&token=596786cf-9bd4-4ad2-af2f-52e5093a82a9',
         description: 'Pena hitam digunakan untuk menulis nama penerima dan tanggal pada Xiao Fang Zi.'
     },
     'amplop': {
         title: 'Amplop Merah',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/amplop.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Famplop.png?alt=media&token=c1698c89-0335-483b-ae36-28825a315908',
         description: 'Amplop merah digunakan untuk menyimpan Xiao Fang Zi yang sudah selesai sebelum dibakar.'
     },
     'buku': {
         title: 'Buku Paritta',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/book.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fbook.png?alt=media&token=c0b11515-be28-4df3-8f11-0edd6bc21222',
         description: 'Buku kumpulan paritta Buddha yang berisi bacaan Da Bei Zhou, Xin Jing, Wang Sheng Zhou, dan Qi Fo Mie Zui Zhen Yan.'
     }
 }
@@ -1119,8 +1119,8 @@ const halPerhatikanItems = [
 
 // Penulisan Nama Carousel Images
 const penulisanNamaImages = [
-    { src: 'https://masterluindonesia.com/assets/assets/images/xfz/write_name_6_eng.jpeg', alt: 'Penulisan Nama (English)' },
-    { src: 'https://masterluindonesia.com/assets/assets/images/xfz/write_name_6.jpeg', alt: 'Penulisan Nama (Mandarin)' }
+    { src: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fwrite_name_6_eng.jpeg?alt=media&token=387cd642-4361-4f31-bfe7-7bcf1cba46b6', alt: 'Penulisan Nama (English)' },
+    { src: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fwrite_name_6.jpeg?alt=media&token=6aeb55d8-dc5a-4914-8552-931146308f90', alt: 'Penulisan Nama (Mandarin)' }
 ]
 
 const penulisanNamaItems = [
@@ -1137,27 +1137,27 @@ const currentLangkahIndex = ref(0)
 
 const langkahMengisiItems = [
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_kain_merah.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_kain_merah.png?alt=media&token=3597b8f6-050d-4104-965f-eb7802b8b3ab',
         title: 'Letakan Kain Merah',
         description: 'Letakan kain merah di atas meja untuk menjadi alas saat menulis di kertas Xiao Fang Zi'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_pen_left_big.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_pen_left_big.png?alt=media&token=4ba0731f-63ce-4a67-8abc-bb6df32814d8',
         title: 'Siapkan Pena Hitam',
         description: 'Gunakan pena hitam untuk menulis nama pembaca dan nama penerima'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/01-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F01-rev.gif',
         title: 'Tulis Nama Pembaca',
         description: 'Tulis nama pembaca dengan pena hitam di sebelah kiri kertas Xiao Fang Zi'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/02-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F02-rev.gif',
         title: 'Tulis Nama Penerima',
         description: 'Tulis nama penerima dengan pena hitam di sebelah kanan kertas Xiao Fang Zi'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/03-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F03-rev.gif',
         title: 'Masukkan Ke Amplop Merah',
         description: 'Masukkan kertas Xiao Fang Zi yang sudah diberi nama ke amplop merah'
     }
@@ -1180,17 +1180,17 @@ const currentMembacaIndex = ref(0)
 
 const langkahMembacaItems = [
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_image_pr.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_image_pr.png?alt=media&token=c9a6a3a4-c0a4-46ba-88a8-39cc8c99f7fc',
         title: 'Membaca Pekerjaan Rumah',
         description: 'Membaca pekerjaan rumah terlebih dahulu sebelum membaca Xiao Fang Zi'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_wish.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_wish.png?alt=media&token=937b1b93-bbfa-4aed-b98d-a2e44ea3c407',
         title: 'Ucapkan Permohonan',
         description: 'Memohon kepada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa menjadi saksi saya XXX ingin membaca Xiao Fang Zi'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_xiao_fang_zi.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_xiao_fang_zi.png?alt=media&token=cb2e433f-b8a7-4d81-8d6c-88e917502e55',
         title: 'Membaca Xiao Fang Zi',
         description: 'Mulai membaca Xiao Fang Zi'
     }
@@ -1213,28 +1213,28 @@ const currentTitikIndex = ref(0)
 
 const langkahTitikItems = [
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_kain_merah_tools.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_kain_merah_tools.png?alt=media&token=9280343a-2744-4116-bb37-5adcb378d9a0',
         title: 'Letakkan Kain Merah',
         description: 'Letakan kain merah diatas meja untuk menjadi alas saat menulis di kertas Xiao Fang Zi'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_red_pen_big.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_red_pen_big.png?alt=media&token=8973be4f-15ec-4fd4-8578-58d23251817a',
         title: 'Siapkan Spidol Merah',
         description: 'Gunakan spidol merah untuk memberi titik pada kertas Xiao Fang Zi'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/bonus-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fbonus-rev.gif',
         title: 'Beri Titik',
         description: 'Memberi titik dengan spidol merah diawali dari sisi bawah'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/04-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F04-rev.gif',
         title: 'Memberi Tanggal',
         description: 'Setelah selesai menitikkan SEMUA tulis tanggal sesuai kalendar masehi',
         note: 'Catatan: Boleh tulis tanggal di hari selesai atau di hari bakar'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/05-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F05-rev.gif',
         title: 'Masukkan Ke Amplop Merah',
         description: 'Masukkan kertas Xiao Fang Zi yang sudah diberi titik ke amplop merah'
     }
@@ -1257,32 +1257,32 @@ const currentSalahIndex = ref(0)
 
 const langkahSalahItems = [
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_wish.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_wish.png?alt=media&token=937b1b93-bbfa-4aed-b98d-a2e44ea3c407',
         title: 'Ucapkan Permohonan',
         description: 'Memohon kepada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa, saya XXX salah menulis Xiao Fang Zi ini, maka Xiao Fang Zi ini dianggap hangus'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/06-rev-1.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F06-rev-1.gif',
         title: 'Pindahkan Titik',
         description: 'Memindahkan titik dari kertas XFZ yang salah ke kertas XFZ yang baru'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/07-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F07-rev.gif',
         title: 'Coret Nama',
         description: 'Coret kedua nama pembaca dan nama penerima dari kertas XFZ yang salah menggunakan pena hitam'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/08-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F08-rev.gif',
         title: 'Lipat Jadi Kecil',
         description: 'Lipat kertas XFZ yang telah dicoret menjadi kecil, sehingga muat dimasukkan ke dalam amplop putih'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/09-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F09-rev.gif',
         title: 'Bungkus Kertas XFZ',
         description: 'Bungkus kertas XFZ yang salah menggunakan amplop putih sebelum dibuang ke tong sampah'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/10-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F10-rev.gif',
         title: 'Buang ke Tong Sampah',
         description: 'Buang kertas XFZ yang sudah dibungkus amplop putih ke tong sampah'
     }
@@ -1307,37 +1307,37 @@ const selectedBakar = ref<{ title: string; image: string; description: string } 
 const perlengkapanBakarDetails: Record<string, { title: string; image: string; description: string }> = {
     'piring': {
         title: 'Piring Keramik',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_piring.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_piring.png?alt=media&token=3c78b3f5-afb8-4b35-95c2-3f7e7ae7c0cd',
         description: 'Piring keramik atau porselen digunakan sebagai wadah untuk membakar Xiao Fang Zi. Pastikan piring tahan panas.'
     },
     'pinset': {
         title: 'Pinset',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_pinset.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_pinset.png?alt=media&token=fbf15b5e-4cf5-4756-9bda-64375a398971',
         description: 'Pinset digunakan untuk memegang kertas Xiao Fang Zi saat dibakar agar tangan tidak terkena api.'
     },
     'tisu': {
         title: 'Tisu Putih',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_tissue.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_tissue.png?alt=media&token=e5d569e0-24db-45d0-bebe-a99486f8dd2f',
         description: 'Tisu digunakan untuk membersihkan piring setelah selesai membakar Xiao Fang Zi.'
     },
     'kain-bakar': {
         title: 'Kain Merah',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_kain_merah_tools.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_kain_merah_tools.png?alt=media&token=9280343a-2744-4116-bb37-5adcb378d9a0',
         description: 'Kain merah digunakan sebagai alas meja saat membakar Xiao Fang Zi untuk menunjukkan rasa hormat.'
     },
     'amplop-putih': {
         title: 'Amplop Putih',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_amplop_putih.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_amplop_putih.png?alt=media&token=bc772baf-7821-4d24-bdaa-c57bdb02deef',
         description: 'Amplop putih digunakan untuk membungkus abu sisa pembakaran sebelum dibuang.'
     },
     'korek': {
         title: 'Pemantik/Korek Api',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_korek.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_korek.png?alt=media&token=aa964d7f-86e3-454d-862e-84810c506b90',
         description: 'Korek api gas panjang digunakan untuk menyalakan api saat membakar Xiao Fang Zi.'
     },
     'meja': {
         title: 'Meja/Papan Kayu',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_meja_kayu.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_meja_kayu.png?alt=media&token=919243c2-0ba4-4c3c-8ca9-c9ab174802b7',
         description: 'Meja/Papan Kayu digunakan sebagai tempat untuk meletakkan perlengkapan membakar Xiao Fang Zi.'
     }
 }
@@ -1351,23 +1351,23 @@ function showBakarDetail(key: string) {
 const contohXfzItems = [
     {
         label: 'Untuk Diri Sendiri',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_for_my_self.png'
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_for_my_self.png?alt=media&token=4ea7156f-e026-4ad0-be30-0f845940fcbb'
     },
     {
         label: 'Untuk Almarhum',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_for_almarhum.png'
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_for_almarhum.png?alt=media&token=c4339b0f-152a-4da9-84c5-4252ed41685b'
     },
     {
         label: 'Untuk Anak Keguguran',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_anak_keguguran.png'
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_anak_keguguran.png?alt=media&token=959b3b51-c447-4a9d-a391-903909d2ef2d'
     },
     {
         label: 'Untuk Menguraikan Ikatan Karma Buruk',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_bad_karma.png'
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_bad_karma.png?alt=media&token=dfdc6602-792d-48f3-adfc-c61eedcadd70'
     },
     {
         label: 'Untuk Penunggu Rumah',
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_penunggu_rumah.png'
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_penunggu_rumah.png?alt=media&token=f2e529fd-2595-44eb-ac69-40bc804113d3'
     }
 ]
 
@@ -1376,32 +1376,32 @@ const currentTanpaAltarIndex = ref(0)
 
 const langkahTanpaAltarItems = [
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ta1.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ta1.png?alt=media&token=44ca812f-522f-403f-9c4b-b0760422b289',
         title: 'Di Rumah',
         description: 'Jika Anda tidak memiliki altar di rumah, boleh membakar XFZ di balkon, dekat jendela ruang tamu, atau di halaman belakang'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ta2.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ta2.png?alt=media&token=ee4dc080-1343-4066-b727-f186914ad01f',
         title: 'Visualisasi Sembahyang',
         description: 'Membayangkan ada Rupang Pu Sa, Menyalakan minyak lalu dupa, Mengangkat dupa di atas dahi, pasang dupa di tempat dupa'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ta3.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ta3.png?alt=media&token=39e2ade0-edc7-4b07-bd17-cb10f3a39f67',
         title: 'Baca XFZ',
         description: 'Baca Da Bei Zhou 1x dan Xin Jing 1x'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ta4.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ta4.png?alt=media&token=09a8966c-6003-430e-a7bd-5ad8cb31d902',
         title: 'Angkat Kertas XFZ',
         description: 'Angkat kertas XFZ setinggi dahi'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ta5.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ta5.png?alt=media&token=51da85c4-08b4-40b7-a625-3b45933a6498',
         title: 'Ucapkan Permohonan',
         description: 'Dengan hormat memohon kepada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa membantu saya XXX memberikan berapa lembar XFZ untuk YYY'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ta6.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ta6.png?alt=media&token=0bbed0a1-5b86-4644-9220-8b92ffb19b1d',
         title: 'Sebelum Membakar',
         description: 'Saat membakar XFZ jangan mengatakan apapun maupun membaca paritta, cukup katakan "Dengan hormat memohon pada Da Ci Da Bei Guan Shi Yin Pu Sa berwelas asih"'
     }
@@ -1424,32 +1424,32 @@ const currentAltarKecilIndex = ref(0)
 
 const langkahAltarKecilItems = [
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ak1.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ak1.png?alt=media&token=26e29ddf-486e-46cb-81af-74d8ac99661a',
         title: 'Altar Kecil',
         description: 'Siapkan dan rapikan altar kecil'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ak2.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ak2.png?alt=media&token=e9ee31cf-727e-4867-82cc-18bcd09478d6',
         title: 'Sembahyang',
         description: 'Menyalakan dupa, kemudian mengangkat dupa di atas dahi. Pasang dupa di tempat dupa'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ak3.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ak3.png?alt=media&token=8e292a49-2803-4065-93ba-aa13a403db28',
         title: 'Baca XFZ',
         description: 'Baca Da Bei Zhou 1x dan Xin Jing 1x'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ak4.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ak4.png?alt=media&token=037dff8a-3464-47db-a948-00f610637526',
         title: 'Angkat Kertas XFZ',
         description: 'Angkat kertas XFZ setinggi dahi'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ak5.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ak5.png?alt=media&token=9970ff71-9390-41ab-9e1f-2d56f8146377',
         title: 'Ucapkan Permohonan',
         description: 'Dengan hormat memohon kepada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa membantu saya XXX memberikan berapa lembar XFZ untuk YYY'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ak6.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ak6.png?alt=media&token=df07ade5-a914-40a0-8be6-f2124e6daced',
         title: 'Sebelum Membakar',
         description: 'Saat membakar XFZ jangan mengatakan apapun maupun membaca paritta, cukup katakan "Dengan hormat memohon pada Da Ci Da Bei Guan Shi Yin Pu Sa berwelas asih"'
     }
@@ -1472,37 +1472,37 @@ const currentAltarBesarIndex = ref(0)
 
 const langkahAltarBesarItems = [
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ab1.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ab1.png?alt=media&token=129c6e47-1af1-4fbb-b7cc-635fc4b08417',
         title: 'Altar Besar',
         description: 'Siapkan dan rapikan altar besar'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ab2.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ab2.png?alt=media&token=ce2defb3-744d-40e9-a8b4-bae762d59ad5',
         title: 'Sembahyang',
         description: 'Menyalakan dupa, kemudian mengangkat dupa di atas dahi. Pasang dupa di tempat dupa'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ab3.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ab3.png?alt=media&token=9038c085-ea22-4c9a-99e6-4f1fee1e5a70',
         title: 'Ucapkan',
         description: '"Terima kasih Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa" sebanyak 3x'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ab4.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ab4.png?alt=media&token=933074ab-4a31-4cd8-b6df-d6c10d92711c',
         title: 'Angkat Kertas XFZ',
         description: 'Angkat kertas XFZ setinggi dahi lalu letakkan di atas altar'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ab6.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ab6.png?alt=media&token=98144d7e-56fa-4ec2-992e-87cb03a5b419',
         title: 'Letakkan XFZ di Atas Altar',
         description: 'Lihat contoh di gambar untuk cara memegang kertas XFZ'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ab3.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ab3.png?alt=media&token=9038c085-ea22-4c9a-99e6-4f1fee1e5a70',
         title: 'Ucapkan Permohonan',
         description: 'Dengan hormat memohon kepada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa membantu saya XXX memberikan berapa lembar XFZ untuk YYY'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ab5.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ab5.png?alt=media&token=b63d6f7f-f4c1-413d-9b53-8c6c6ffd5b5f',
         title: 'Sebelum Membakar',
         description: 'Saat membakar XFZ jangan mengatakan apapun maupun membaca paritta, cukup katakan "Dengan hormat memohon pada Da Ci Da Bei Guan Shi Yin Pu Sa berwelas asih"'
     }
@@ -1549,17 +1549,17 @@ const currentSetelahBakarIndex = ref(0)
 
 const langkahSetelahBakarItems = [
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ta21.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ta21.png?alt=media&token=9f309652-80bd-4c5b-baa5-8ad464836cd8',
         description: 'Memohon kepada Na Mo Da Ci Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa',
         subdescription: 'Telah membantu saya memberikan berapa lembar Xiao Fang Zi untuk YYY'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ak3.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ak3.png?alt=media&token=8e292a49-2803-4065-93ba-aa13a403db28',
         description: 'Memohon kepada Na Mo Da Ci Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa',
         subdescription: 'Telah membantu saya memberikan berapa lembar Xiao Fang Zi untuk YYY'
     },
     {
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/ic_ta23.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ta23.png?alt=media&token=8d457992-a655-4fc8-9ea9-7cf1aed26623',
         description: 'Memohon kepada Na Mo Da Ci Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa',
         subdescription: 'Telah membantu saya memberikan berapa lembar Xiao Fang Zi untuk YYY'
     }
@@ -1616,7 +1616,7 @@ const faqItems = [
 <li>Harus memakai nama resmi asli, tidak boleh menggunakan nama panggilan atau nama samaran. Bagi para biksu atau biksuni boleh menggunakan gelar atau nama pentahbisan sendiri.</li>
 <li>Jika biasanya sering menggunakan nama Mandarin dan Inggris atau kedua nama sudah dikukuhkan melalui ritual penyampaian nama, boleh menuliskan kedua nama (Mandarin dan Inggris) pada Xiao Fang Zi.</li>
 </ul>`,
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/faq_5.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Ffaq_5.png',
         imageCaption: '(Gambar 30 - Dua cara penulisan nama Mandarin dan Inggris yang dapat digunakan)',
         contentAfterImage: `<ul class="list-disc list-inside">
 <li>Jika sebelumnya pernah mengganti nama, harus menggunakan nama yang sudah lama dipanggil (sudah melekat), sebaiknya melakukan ritual perubahan nama (perihal ritual perubahan nama, silakan membaca buku {Panduan Pengenalan Xin Ling Fa Men}, {Tanya Jawab Seputar Dharma})</li>
@@ -1651,7 +1651,7 @@ const faqItems = [
         label: '9. Apakah boleh satu lembar Xiao Fang Zi dilafalkan oleh 2 orang?',
         content: `<p>Boleh saja 2 orang bersama-sama melafalkan 1 lembar Xiao Fang Zi, juga boleh keduanya membaca satu jenis paritta yang sama. Kedua orang yang melafalkan ini harus menuliskan sendiri namanya masing-masing di bagian kiri bagian nama pelafal, nama keduanya boleh ditulis tegak lurus.</p>
 <p class="mt-3">Biasanya tidak disarankan untuk melafalkan seperti ini, jika tidak ada kondisi khusus, sebaiknya melafalkan Xiao Fang Zi sendiri-sendiri.</p>`,
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/faq_6.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Ffaq_6.png',
         imageCaption: '(Gambar 31 - Xiao Fang Zi yang dilafal 2 orang, masing-masing harus tulis sendiri namanya di kertas Xiao Fang Zi)'
     },
     {
@@ -1664,7 +1664,7 @@ const faqItems = [
     {
         label: '11. Apa yang harus diperhatikan pada saat membubuhkan titik merah Xiao Fang Zi?',
         content: `<p>Jangan sampai titik merah yang dititikkan keluar dari lingkaran, lingkaran tidak boleh dititik penuh, tidak boleh dicentang. Titik merah yang dititik paling sedikit memenuhi 50%-80% lingkaran, tidak boleh terlalu kecil.</p>`,
-        image: 'https://masterluindonesia.com/assets/assets/images/xfz/faq_11.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Ffaq_11.png',
         imageCaption: '(Gambar 32 - Berbagai contoh titik merah yang salah)'
     },
     {

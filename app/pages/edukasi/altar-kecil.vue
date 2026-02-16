@@ -34,7 +34,7 @@
         <div ref="contentRef" class="flex-1 overflow-y-auto px-4 py-6">
             <!-- Hero Image -->
             <div class="mb-6">
-                <img src="https://masterluindonesia.com/assets/assets/images/altarkecil/altar_kecil.png"
+                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarkecil%2Faltar_kecil.png?alt=media&token=339fefa9-d2be-4124-9d98-98cca6501f41"
                     alt="Altar Kecil" class="w-full h-96 object-cover rounded-lg" />
             </div>
 

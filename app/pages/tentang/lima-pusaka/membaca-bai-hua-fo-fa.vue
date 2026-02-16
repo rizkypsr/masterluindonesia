@@ -8,8 +8,8 @@
     </div>
 
     <!-- Hero Image -->
-    <div class="relative bg-gradient-to-b from-yellow-100 to-yellow-50 dark:from-gray-800 dark:to-gray-900">
-      <img src="https://masterluindonesia.com/assets/assets/images/tentang/image6.png" alt="Membaca Bai Hua Fo Fa"
+    <div class="relative bg-linear-to-b from-yellow-100 to-yellow-50 dark:from-gray-800 dark:to-gray-900">
+      <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage6.png?alt=media&token=8c71ab9b-52c7-4785-bcbe-15f714a05c1b" alt="Membaca Bai Hua Fo Fa"
         class="w-full" />
     </div>
 

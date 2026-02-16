@@ -10,7 +10,7 @@
     <!-- Hero Image -->
     <div class="relative">
       <img 
-        src="https://masterluindonesia.com/assets/assets/images/tentang/image1.png" 
+        src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage1.png?alt=media&token=c5343a10-a496-4db8-b3dc-2cf22a13b19b" 
         alt="Xin Ling Fa Men" 
         class="w-full"
       />

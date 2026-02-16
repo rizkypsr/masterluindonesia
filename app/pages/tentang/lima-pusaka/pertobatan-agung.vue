@@ -8,8 +8,8 @@
     </div>
 
     <!-- Hero Image -->
-    <div class="relative bg-gradient-to-b from-yellow-100 to-yellow-50 dark:from-gray-800 dark:to-gray-900">
-      <img src="https://masterluindonesia.com/assets/assets/images/tentang/image7.png" alt="Pertobatan Agung"
+    <div class="relative bg-linear-to-b from-yellow-100 to-yellow-50 dark:from-gray-800 dark:to-gray-900">
+      <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage7.png?alt=media&token=22f42218-523d-4450-9875-cba0144c16e6" alt="Pertobatan Agung"
         class="w-full" />
     </div>
 

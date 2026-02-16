@@ -17,6 +17,22 @@
         "https://ui.nuxt.com/mcp"
       ],
       "env": {}
+    },
+    "firebase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "firebase-tools@latest",
+        "mcp",
+        "--dir",
+        ".",
+        "--only",
+        "storage"
+      ],
+      "env": {},
+      "autoApprove": [
+        "storage_get_object_download_url"
+      ]
     }
   }
 }

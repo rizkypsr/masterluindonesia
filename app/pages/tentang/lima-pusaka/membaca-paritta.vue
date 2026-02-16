@@ -8,9 +8,9 @@
     </div>
 
     <!-- Hero Image -->
-    <div class="relative bg-gradient-to-b from-yellow-100 to-yellow-50 dark:from-gray-800 dark:to-gray-900">
+    <div class="relative bg-linear-to-b from-yellow-100 to-yellow-50 dark:from-gray-800 dark:to-gray-900">
       <img 
-        src="https://masterluindonesia.com/assets/assets/images/tentang/image3.png" 
+        src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage3.png?alt=media&token=98afcfd4-3ed7-474d-8deb-2bd750862666" 
         alt="Membaca Paritta" 
         class="w-full"
       />

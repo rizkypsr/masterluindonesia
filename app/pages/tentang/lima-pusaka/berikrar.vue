@@ -9,7 +9,7 @@
 
     <!-- Hero Image -->
     <div class="relative bg-gradient-to-b from-yellow-100 to-yellow-50 dark:from-gray-800 dark:to-gray-900">
-      <img src="https://masterluindonesia.com/assets/assets/images/tentang/image4.png" alt="Berikrar" class="w-full" />
+      <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage4.png?alt=media&token=949f6ff0-4895-4e81-bdde-4ab0fb843841" alt="Berikrar" class="w-full" />
     </div>
 
     <!-- Content -->
@@ -201,7 +201,7 @@ const tanpaAltarItems = [
   {
     step: 1,
     title: 'Ucapkan',
-    image: 'https://masterluindonesia.com/assets/assets/images/sembayang/image_1.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
     content: [
       'Saya XXX (Nama sendiri) di sini ingin berikrar kepada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa...',
       'Guan Shi Yin Pu Sa Berwelas Asih, Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa...'
@@ -210,7 +210,7 @@ const tanpaAltarItems = [
   {
     step: 2,
     title: 'Berikrar',
-    image: 'https://masterluindonesia.com/assets/assets/images/sembayang/image_1.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
     content: [
       'Saya XXX (Nama sendiri) di sini ingin berikrar kepada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa...'
     ]
@@ -218,7 +218,7 @@ const tanpaAltarItems = [
   {
     step: 3,
     title: 'Catatan',
-    image: 'https://masterluindonesia.com/assets/assets/images/sembayang/image_1.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
     content: [
       'Boleh berikrar tidak menyusun. Bersembahyang pagi dan malam. Menyebarkan ajaran Buddha Dharma pada orang lain. Memperbanyak CD/DVD dan lainnya lagi.',
       'Disesuaikan dengan tekad kebajikan sendiri, selamanya, dan keadaan masing-masing.',
@@ -228,7 +228,7 @@ const tanpaAltarItems = [
   {
     step: 4,
     title: 'Setelah Berikrar Bisa Memohon',
-    image: 'https://masterluindonesia.com/assets/assets/images/sembayang/image_1.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
     content: [
       'Seperti memperoleh tubuh yang sehat, ketenangan dalam hati, keluarga yang harmonis dan lainnya.',
       'Paling cepat bisa memohon 2-3 hal, tidak bisa hanya memohon kesehatan untuk satu keluarga, perlu mengajukan permohonan yang mendetail tentang seseorang atau suatu hal.',
@@ -238,7 +238,7 @@ const tanpaAltarItems = [
   {
     step: 5,
     title: 'Ucapkan',
-    image: 'https://masterluindonesia.com/assets/assets/images/sembayang/image_1.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
     content: [
       'Guan Shi Yin Pu Sa Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa'
     ]
@@ -246,7 +246,7 @@ const tanpaAltarItems = [
   {
     step: 6,
     title: 'Menyembah 7 Kali',
-    image: 'https://masterluindonesia.com/assets/assets/images/sembayang/image_1.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
     content: [
       'Hua Po Pu Sa Da Ci Da Bei, Shou Chang Cing Jing Da Hai Zhong Pu Sa'
     ]
@@ -254,7 +254,7 @@ const tanpaAltarItems = [
   {
     step: 7,
     title: 'Setelah bangkit berdiri, bersikap anjali, lalu membungkuk hormat kepada Guan Shi Yin Pu Sa dan para Pu Sa',
-    image: 'https://masterluindonesia.com/assets/assets/images/sembayang/langkah_keduabelas.png',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_keduabelas.png?alt=media&token=14c8121f-901a-4151-a7d7-72b7dabbe905',
     content: []
   }
 ]
@@ -262,15 +262,15 @@ const tanpaAltarItems = [
 const denganAltarItems = [
   {
     type: 'Tanpa Altar',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image25.png'
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage25.png?alt=media&token=25418c86-484d-48ee-8557-458f932e22d1'
   },
   {
     type: 'Altar Kecil',
-    image: 'https://masterluindonesia.com/assets/assets/images/tentang/image26.png'
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage26.png?alt=media&token=53ddd2cf-f711-4108-931c-a6ff7a0760e8'
   },
   {
     type: 'Altar Besar',
-    image: 'https://masterluindonesia.com/assets/assets/images/sembayang/image_1.png'
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6'
   }
 ]
 </script>

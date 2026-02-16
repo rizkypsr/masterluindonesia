@@ -94,7 +94,7 @@ export default defineNuxtConfig({
     domains: ['masterluindonesia.com', 'masterlu.buildbyriz.io', 'api.masterluindonesia.com'],
     alias: {
       masterlu: 'https://masterluindonesia.com',
-      api: 'https://api.masterluindonesia.com',
+      api: 'https://api.cms.masterluindonesia.com',
     },
     // Don't optimize external images during prerender
     provider: 'ipx',

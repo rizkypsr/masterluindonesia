@@ -20,7 +20,7 @@
       <!-- Banner Image -->
       <div class="w-full">
         <NuxtImg 
-          src="https://masterluindonesia.com/assets/assets/images/buku_page_banner.png"
+          src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fbuku_page_banner.png?alt=media&token=61276825-5a25-4cfb-bfcc-ac44a5e03157"
           alt="Banner" 
           class="w-full h-48 object-cover" 
           format="webp"

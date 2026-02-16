@@ -41,7 +41,7 @@
 
             <!-- Hero Image -->
             <div class="mb-6">
-                <img src="https://masterluindonesia.com/assets/assets/images/pr/image_1.png" alt="Baca PR"
+                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Fimage_1.png?alt=media&token=6f17ea10-22f2-4ec0-949b-4dc7b1f90eeb" alt="Baca PR"
                     class="w-full h-96 object-cover rounded-lg" />
             </div>
 
@@ -89,7 +89,7 @@
                 <h2 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Membaca PR</h2>
 
                 <div class="relative">
-                    <img src="https://masterluindonesia.com/assets/assets/images/pr/image_2.png"
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Fimage_2.png?alt=media&token=a2845619-d101-4039-b25d-6a3f6d07b97f"
                         alt="Perlengkapan Membaca PR" class="w-full h-96 object-cover rounded-lg" />
 
                     <!-- Plus button 1: PR Sheet -->
@@ -252,7 +252,7 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Pertama</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://masterluindonesia.com/assets/assets/images/pr/langkah_pertama_1.png"
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_pertama_1.png?alt=media&token=f546cc0c-f9b0-4d5a-8179-221ab1d2a669"
                         alt="Jing Kou Ye Zhen Yan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Membaca Jing</h3>
@@ -291,7 +291,7 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Ketiga</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://masterluindonesia.com/assets/assets/images/pr/langkah_ketiga_1.png"
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_ketiga_1.png?alt=media&token=3de2e2e5-a80b-4aa8-92b8-23974685f90f"
                         alt="Langkah Ketiga" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Ucapkan</h3>
@@ -359,7 +359,7 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kelima</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://masterluindonesia.com/assets/assets/images/pr/langkah_kelima_1.png"
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_kelima_1.png?alt=media&token=d5913d86-4e23-41cb-b64f-045282c5a92b"
                         alt="Bu Que Zhen Yan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Bu Que Zhen Yan</h3>
@@ -373,7 +373,7 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Keenam</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://masterluindonesia.com/assets/assets/images/pr/langkah_keenam_1.png"
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_keenam_1.png?alt=media&token=dad7e92c-a5df-4462-a887-21e6790a8276"
                         alt="Qi Fo Mie Zui Zhen Yan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Qi Fo Mie Zui Zhen Yan</h3>
@@ -387,7 +387,7 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Ketujuh</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://masterluindonesia.com/assets/assets/images/pr/langkah_ketiga_1.png"
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_ketiga_1.png?alt=media&token=3de2e2e5-a80b-4aa8-92b8-23974685f90f"
                         alt="Langkah Ketujuh" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Setelah selesai</h3>
@@ -419,7 +419,7 @@
                 <p class="text-gray-600 dark:text-gray-400 mb-4">*Download gambar di tab Beranda Unduh</p>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://masterluindonesia.com/assets/assets/images/pr/pedoman_pr.png"
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Fpedoman_pr.png?alt=media&token=253a718d-0443-40ca-86a2-a55970bdffb0"
                         alt="Pedoman PR" class="w-full h-96 object-cover rounded-lg" />
                 </UCard>
             </div>
@@ -487,17 +487,17 @@ function scrollNextLangkahKedua() {
 const langkahKeduaItems = [
     {
         id: 1,
-        image: 'https://masterluindonesia.com/assets/assets/images/pr/langkah_kedua_1.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_kedua_1.png?alt=media&token=dbfcee81-d1b1-4732-b34e-d9b6430c580d',
         title: 'Jika memiliki Altar, Pasang dupa di Altar'
     },
     {
         id: 2,
-        image: 'https://masterluindonesia.com/assets/assets/images/pr/langkah_kedua_2.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_kedua_2.png?alt=media&token=b53bc834-7684-4734-8bfb-a991f3b167fa',
         title: 'Jika tidak memiliki altar, lakukan dupa hati'
     },
     {
         id: 3,
-        image: 'https://masterluindonesia.com/assets/assets/images/pr/langkah_kedua_3.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_kedua_3.png?alt=media&token=d5cd258e-5593-41d0-87fd-e823fd6d4a55',
         title: 'Jika tidak memiliki altar, sembahyang di altar kecil'
     }
 ]
@@ -521,21 +521,21 @@ function scrollNextLangkahKeempat() {
 const langkahKeempatItems = [
     {
         id: 1,
-        image: 'https://masterluindonesia.com/assets/assets/images/pr/langkah_keempat_1_1.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_keempat_1_1.png?alt=media&token=df0de14a-3d29-4d2b-b338-5b5b4f46d1d4',
         title: 'Qian Shou Qian Yan Wu Ai Da Bei Xin Tuo Luo Ni / Da Bei Zhou',
         description: 'Dengan hormat memohon pada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa memberkati saya XXX (nama sendiri) dengan kesehatan dan kekuatan.',
         count: 'Sebanyak 3 - 7x'
     },
     {
         id: 2,
-        image: 'https://masterluindonesia.com/assets/assets/images/pr/langkah_keempat_1_2.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_keempat_1_2.png?alt=media&token=ee3537f7-dbf2-4bbc-8acd-237e7370c0bd',
         title: 'Bo Re Buo Luo Mi Duo Xin Jing',
         description: 'Dengan hormat memohon pada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa memberkati saya XXX (nama sendiri) dengan kebijaksanaan, ketenangan pikiran, dan menghilangkan kekhawatiran yang berlebihan.',
         count: 'Sebanyak 3 - 7x'
     },
     {
         id: 3,
-        image: 'https://masterluindonesia.com/assets/assets/images/pr/langkah_keempat_1_3.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_keempat_1_3.png?alt=media&token=c3cd3d26-a23d-44f5-bace-99f1223867f5',
         title: 'Li Fo Da Chan Hui Wen',
         description: 'Dengan hormat memohon pada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa memberkati saya XXX (nama sendiri), membantu saya untuk bertobat dan menghilangkan karma buruk yang ada di tubuh saya (bisa menyebutkan bagian tertentu), memberkati saya dengan kesehatan dan kebijaksanaan.',
         count: 'Sebanyak 1 - 7x'
@@ -561,35 +561,35 @@ function scrollNextLangkahKeempat2() {
 const langkahKeempat2Items = [
     {
         id: 1,
-        image: 'https://masterluindonesia.com/assets/assets/images/pr/langkah_ketiga_1.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_ketiga_1.png?alt=media&token=3de2e2e5-a80b-4aa8-92b8-23974685f90f',
         title: 'Catatan',
         description: 'Membaca Paritta Pendek disesuaikan dengan keadaan atau permasalahan yang dihadapi sebanyak 21x, 27x atau 49x. Bagi para pemula perlu membaca paritta Wang Sheng Jing Tu Shen Zhou',
         count: 'Sebanyak 21, 27 atau 49x'
     },
     {
         id: 2,
-        image: 'https://masterluindonesia.com/assets/assets/images/pr/langkah_keempat_2_2.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_keempat_2_2.png?alt=media&token=18e61f22-e7d0-41d4-8bdc-484380cd003a',
         title: 'Wang Sheng Jing Tu Shen Zhou',
         description: 'Dengan hormat memohon pada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa memberkati saya XXX (nama sendiri), mendoakan arwah kecil (binatang) yang mati karena saya agar bisa pergi ke alam yang lebih baik, membantu saya menghapus karma buruk saya.',
         count: 'Sebanyak 21, 27 atau 49x'
     },
     {
         id: 3,
-        image: 'https://masterluindonesia.com/assets/assets/images/pr/langkah_keempat_2_3.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_keempat_2_3.png?alt=media&token=14b93a7e-cef9-4549-85a9-49557537c8ca',
         title: 'Jie Jie Zhou',
         description: 'Dengan hormat memohon pada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa mengurai hubungan buruk antara saya XXX (nama sendiri) dengan YYY (nama anggota keluarga / nama teman / nama rekan kerja).',
         count: 'Sebanyak 21, 27 atau 49x'
     },
     {
         id: 4,
-        image: 'https://masterluindonesia.com/assets/assets/images/pr/langkah_keempat_2_4.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_keempat_2_4.png?alt=media&token=9324bbbe-a22d-4900-a35e-a39b52696a07',
         title: 'Xiao Zai Ji Xiang Shen Zhou',
         description: 'Dengan hormat memohon pada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa membantu saya XXX (nama sendiri) agar terhindar dari bencana, memberkati saya dengan kesehatan dan kebijaksanaan.',
         count: 'Sebanyak 21, 27 atau 49x'
     },
     {
         id: 5,
-        image: 'https://masterluindonesia.com/assets/assets/images/pr/langkah_keempat_2_5.png',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_keempat_2_5.png?alt=media&token=90848663-bbdb-49d2-bd1d-06a0e3a61178',
         title: 'Zhun Ti Shen Zhou',
         description: 'Dengan hormat memohon pada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa memberkati saya XXX (nama sendiri), agar apa yang diharapkan tercapai (boleh dalam pekerjaan / keluarga yang bahagia dan harmonis, berprestasi dalam pendidikan).',
         count: 'Sebanyak 21, 27 atau 49x'

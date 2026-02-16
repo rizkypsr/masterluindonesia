@@ -87,7 +87,7 @@ const audioUrl = computed(() => {
     if (!paritta.value) return ''
     const index = (parittaData as Paritta[]).findIndex(p => p.href === `/paritta/${slug}`)
     if (index === -1) return ''
-    return `https://masterluindonesia.com/assets/assets/images/paritta/audio${index + 1}.mp3`
+    return `https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fparitta%2Faudio${index + 1}.mp3?alt=media&token=e45fc412-ac8e-4c4f-8853-fa7f936678bf`
 })
 
 function formatTime(seconds: number): string {
@@ -247,7 +247,7 @@ function togglePlayerExpanded() {
                     <span class="text-gray-500 dark:text-gray-400" style="font-size: 0.75em;">{{ char.pinyin }}</span>
                     <span class="text-black dark:text-white" style="font-size: 1.5em;">{{ char.chinese }}</span>
                     <span class="text-gray-500 dark:text-gray-400" style="font-size: 0.75em;">{{ char.pinyinAlt
-                        }}</span>
+                    }}</span>
                 </div>
             </div>
 
@@ -256,10 +256,10 @@ function togglePlayerExpanded() {
                 <template v-for="(char, index) in dharaniChars" :key="'dharani-' + index">
                     <div v-if="!char.isPunctuation" class="flex flex-col items-center min-w-[1.5em]">
                         <span class="text-gray-500 dark:text-gray-400 h-4" style="font-size: 0.75em;">{{ char.pinyin
-                            }}</span>
+                        }}</span>
                         <span class="text-black dark:text-white" style="font-size: 1.25em;">{{ char.chinese }}</span>
                         <span class="text-gray-500 dark:text-gray-400 h-4" style="font-size: 0.75em;">{{ char.pinyinAlt
-                            }}</span>
+                        }}</span>
                     </div>
                     <span v-else class="text-black dark:text-white self-center" style="font-size: 1.25em;">{{
                         char.chinese }}</span>
