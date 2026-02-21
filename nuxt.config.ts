@@ -24,19 +24,20 @@ export default defineNuxtConfig({
 
   
   routeRules: {
-    // Home page - ISR instead of prerender (has dynamic content from API)
-    '/': { isr: 3600 },
+    // Home page - SSR with cache headers for performance
+    '/': { ssr: true, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
     
     '/edukasi/**': { prerender: true },
     '/tentang/**': { prerender: true },
     '/contact': { prerender: true },
     '/lainnya': { prerender: true },
     
-    '/audio/**': { isr: 3600 },
-    '/books/**': { isr: 3600 },
-    '/recipes/**': { isr: 3600 },
-    '/paritta/**': { isr: 3600 },
-    '/community-playlists/**': { isr: 3600 },
+    // Dynamic content pages - SSR with cache headers
+    '/audio/**': { ssr: true, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
+    '/books/**': { ssr: true, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
+    '/recipes/**': { ssr: true, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
+    '/paritta/**': { ssr: true, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
+    '/community-playlists/**': { ssr: true, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
     
     '/bookmark': { ssr: false },
     '/bookmark-manager': { ssr: false },
