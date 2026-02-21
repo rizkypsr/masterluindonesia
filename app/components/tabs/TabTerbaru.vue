@@ -115,7 +115,7 @@
     </div>
 
     <!-- Topics2 Section -->
-    <Topics2Section v-if="isTopic2MenuEnabled" />
+    <Topics2Section v-if="isTopic2MenuEnabled" :key="'topics2-section'" />
 
     <!-- Community Playlist Section - Lazy loaded with hydration on visible -->
     <LazyCommunityPlaylistSection v-if="isCommunityMenuEnabled" hydrate-on-visible />

@@ -44,9 +44,20 @@ interface Topic2 {
 const config = useRuntimeConfig()
 const router = useRouter()
 
-const { data, status } = useAsyncData('topics2Preview', () =>
-  $fetch<{ success: boolean; data: Topic2[] }>(`${config.public.apiBaseUrl}/topics2?limit=5`)
+const { data, status, error } = await useAsyncData(
+  'topics2Preview',
+  () => $fetch<{ success: boolean; data: Topic2[] }>(`${config.public.apiBaseUrl}/topics2?limit=5`),
+  {
+    server: true,
+    lazy: false,
+    default: () => ({ success: true, data: [] })
+  }
 )
+
+// Log error in development
+if (error.value) {
+  console.error('Topics2Section fetch error:', error.value)
+}
 
 // Transform API data to TreeItem format
 const treeItems = computed<TreeItem[]>(() => {
