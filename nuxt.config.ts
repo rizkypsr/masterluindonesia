@@ -30,8 +30,6 @@ export default defineNuxtConfig({
     },
   },
   
-
-  
   routeRules: {
     // Home page - SSR with cache headers for performance
     '/': { ssr: true, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
@@ -115,12 +113,6 @@ export default defineNuxtConfig({
     },
   },
   
-  experimental: {
-    payloadExtraction: false,
-    renderJsonPayloads: true,
-    viewTransition: false,
-    inlineRouteRules: true,
-  },
   runtimeConfig: {
     public: {
       googleClientId: '',
