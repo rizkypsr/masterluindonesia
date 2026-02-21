@@ -2,7 +2,7 @@
   <div class="h-full bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
     <!-- Header -->
     <div
-      class="px-4 pt-6 pb-4 shadow-md bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 shrink-0">
+      class="px-4 pt-6 pb-4 shadow-md bg-linear-to-r from-yellow-400 via-yellow-300 to-yellow-500 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 shrink-0">
       <h1 class="text-black dark:text-white mb-2 font-semibold">
         Apa yang ingin kamu pelajari?
       </h1>

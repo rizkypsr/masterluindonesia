@@ -17,6 +17,11 @@ export default defineNuxtConfig({
         { rel: 'shortcut icon', href: '/favicon.ico' },
         { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
         { rel: 'manifest', href: '/site.webmanifest' },
+        // Preconnect to external domains for faster resource loading
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
+        { rel: 'preconnect', href: 'https://firebasestorage.googleapis.com' },
+        { rel: 'dns-prefetch', href: 'https://api.cms.masterluindonesia.com' },
       ],
     },
   },
@@ -27,10 +32,10 @@ export default defineNuxtConfig({
     // Home page - SSR with cache headers for performance
     '/': { ssr: true, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
     
-    '/edukasi/**': { prerender: true },
-    '/tentang/**': { prerender: true },
-    '/contact': { prerender: true },
-    '/lainnya': { prerender: true },
+    '/edukasi/**': { prerender: true, headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    '/tentang/**': { prerender: true, headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    '/contact': { prerender: true, headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    '/lainnya': { prerender: true, headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
     
     // Dynamic content pages - SSR with cache headers
     '/audio/**': { ssr: true, headers: { 'cache-control': 's-maxage=3600, stale-while-revalidate=86400' } },
@@ -44,7 +49,10 @@ export default defineNuxtConfig({
     '/article-history': { ssr: false },
     '/search': { ssr: false },
     
-    // API routes - no prerendering
+    // Static assets - long cache
+    '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
+    
+    // API routes
     '/api/**': { cors: true, headers: { 'cache-control': 'max-age=300' } },
   },
   
@@ -55,11 +63,10 @@ export default defineNuxtConfig({
     minify: true,
     sourceMap: false,
     prerender: {
-      failOnError: false, // Don't fail build on prerender errors
+      failOnError: false,
       crawlLinks: true,
       ignore: [
         '/api',
-        '/_ipx', // Ignore image optimization routes during prerender
       ],
     },
   },
@@ -72,26 +79,8 @@ export default defineNuxtConfig({
   ],
   
   image: {
-    format: ['webp'],
-    quality: 80,
-    screens: {
-      xs: 320,
-      sm: 640,
-      md: 768,
-      lg: 1024,
-      xl: 1280,
-      xxl: 1536,
-    },
-    domains: ['masterluindonesia.com', 'masterlu.buildbyriz.io', 'api.masterluindonesia.com'],
-    alias: {
-      masterlu: 'https://masterluindonesia.com',
-      api: 'https://api.cms.masterluindonesia.com',
-    },
-    // Don't optimize external images during prerender
-    provider: 'ipx',
-    ipx: {
-      maxAge: 60 * 60 * 24 * 365, // 1 year cache
-    },
+    provider: 'none',
+    domains: ['masterluindonesia.com', 'masterlu.buildbyriz.io', 'api.masterluindonesia.com', 'firebasestorage.googleapis.com'],
   },
   colorMode: {
     preference: 'light'
@@ -102,14 +91,22 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
     build: {
+      cssCodeSplit: true,
       rollupOptions: {
         output: {
           manualChunks: {
             'vendor-vue': ['vue', 'vue-router'],
+            'vendor-pinia': ['pinia'],
           },
         },
       },
     },
+  },
+  
+  experimental: {
+    payloadExtraction: false,
+    renderJsonPayloads: true,
+    viewTransition: false,
   },
   runtimeConfig: {
     public: {

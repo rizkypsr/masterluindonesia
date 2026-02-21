@@ -8,7 +8,8 @@
       loop class="overflow-hidden">
       <template #default="slotProps">
         <NuxtImg v-if="slotProps?.item" :src="getImageUrl(slotProps.item.url)" :alt="slotProps.item.name"
-          class="w-full h-40 object-cover rounded-xl" loading="eager" fetchpriority="high" format="webp" quality="60" width="600" height="160" />
+          class="w-full h-40 object-cover rounded-xl" loading="eager" fetchpriority="high" 
+          width="600" height="160" />
       </template>
     </UCarousel>
 
@@ -99,7 +100,7 @@
             :to="{ path: `/books/${book.id}`, query: { title: book.title, cover: book.url } }" class="shrink-0 w-28">
             <template v-if="book.url">
               <NuxtImg :src="getImageUrl(book.url)" :alt="book.title" class="w-28 h-40 object-cover rounded-xl" loading="lazy"
-                format="webp" quality="60" width="112" height="160" />
+                width="112" height="160" />
             </template>
             <template v-else>
               <div
@@ -219,7 +220,6 @@ const { data: allData, status } = useAsyncData('tabTerbaruData', async () => {
 
 const topics = computed(() => allData.value?.topics?.data?.sort((a, b) => a.seq - b.seq) || [])
 const books = computed(() => allData.value?.books?.data?.sort((a, b) => a.seq - b.seq) || [])
-const recipes = computed(() => allData.value?.recipes?.data?.sort((a, b) => a.seq - b.seq) || [])
 const media = computed(() => allData.value?.media?.data?.sort((a, b) => a.seq - b.seq) || [])
 
 // Check which menus are enabled
