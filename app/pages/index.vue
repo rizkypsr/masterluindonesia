@@ -44,6 +44,14 @@
 import { ref, nextTick, onMounted } from "vue"
 import { useAuth } from '~/lib/auth'
 
+// Set page title and meta
+useHead({
+  title: 'Beranda',
+  meta: [
+    { name: 'description', content: 'Jelajahi koleksi audio dharma, buku, paritta, dan materi edukasi Buddha terlengkap' }
+  ]
+})
+
 interface SearchItem {
   id: number
   header_id: string | number

@@ -7,9 +7,12 @@ export default defineNuxtConfig({
   ssr: true,
   app: {
     head: {
+      title: 'Master Lu Indonesia',
+      titleTemplate: '%s | Master Lu Indonesia',
       viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
       meta: [
         { name: 'apple-mobile-web-app-title', content: 'Master Lu' },
+        { name: 'description', content: 'Platform pembelajaran dengan koleksi audio, buku, paritta, dan materi edukasi lengkap' },
       ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/favicon-96x96.png', sizes: '96x96' },
@@ -21,6 +24,7 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
         { rel: 'preconnect', href: 'https://firebasestorage.googleapis.com' },
+        { rel: 'preconnect', href: 'https://api.cms.masterluindonesia.com' },
         { rel: 'dns-prefetch', href: 'https://api.cms.masterluindonesia.com' },
       ],
     },
@@ -59,7 +63,10 @@ export default defineNuxtConfig({
   // Use Node.js preset for SSR on shared hosting
   nitro: {
     preset: 'node-server',
-    compressPublicAssets: true,
+    compressPublicAssets: {
+      gzip: true,
+      brotli: true,
+    },
     minify: true,
     sourceMap: false,
     prerender: {
@@ -86,12 +93,17 @@ export default defineNuxtConfig({
     preference: 'light'
   },
   css: ['~/assets/css/main.css'],
+  
+  features: {
+    inlineStyles: false,
+  },
   vite: {
     plugins: [
       tailwindcss(),
     ],
     build: {
       cssCodeSplit: true,
+      cssMinify: 'lightningcss',
       rollupOptions: {
         output: {
           manualChunks: {
@@ -107,6 +119,7 @@ export default defineNuxtConfig({
     payloadExtraction: false,
     renderJsonPayloads: true,
     viewTransition: false,
+    inlineRouteRules: true,
   },
   runtimeConfig: {
     public: {
