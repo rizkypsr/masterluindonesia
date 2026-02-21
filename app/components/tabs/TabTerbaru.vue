@@ -13,7 +13,7 @@
     </UCarousel>
 
     <!-- Agenda Section -->
-    <div class="mt-4 px-4">
+    <div v-if="isAgendaMenuEnabled" class="mt-4 px-4">
       <h2 class="text-lg font-semibold text-black dark:text-white mb-4">Agenda Hari Ini</h2>
 
       <!-- Date Selector -->
@@ -57,7 +57,7 @@
     </div>
 
     <!-- Topics Section -->
-    <div class="mt-6 px-4">
+    <div v-if="isTopicMenuEnabled" class="mt-6 px-4">
       <template v-if="isLoading">
         <USkeleton class="h-12 w-full rounded-lg mb-2" />
         <div class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -113,8 +113,11 @@
       </div>
     </div>
 
+    <!-- Topics2 Section -->
+    <Topics2Section v-if="isTopic2MenuEnabled" />
+
     <!-- Community Playlist Section - Lazy loaded with hydration on visible -->
-    <LazyCommunityPlaylistSection hydrate-on-visible />
+    <LazyCommunityPlaylistSection v-if="isCommunityMenuEnabled" hydrate-on-visible />
   </div>
 </template>
 
@@ -174,23 +177,71 @@ interface Recipe {
   cover: string
 }
 
+interface MenuMobile {
+  id: number
+  nama: string
+  code: string
+  status: boolean
+}
+
 const dateContainer = ref<HTMLElement | null>(null)
 const dateRefs = ref<HTMLElement[]>([])
 
 const { data: allData, status } = useAsyncData('tabTerbaruData', async () => {
+  // Fetch menu mobile settings first
+  const menuRes = await $fetch<{ success: boolean; data: MenuMobile[] }>(`${config.public.apiBaseUrl}/menumobile`)
+  const menuSettings = menuRes.data || []
+  
+  // Check which menus are enabled
+  const topicMenu = menuSettings.find(m => m.code === 'topic')
+  const agendaMenu = menuSettings.find(m => m.code === 'agenda')
+  const topic2Menu = menuSettings.find(m => m.code === 'topic2')
+  
+  const shouldFetchTopics = topicMenu?.status === true
+  const shouldFetchAgenda = agendaMenu?.status === true
+  
   const [mediaRes, topicsRes, booksRes, recipesRes] = await Promise.all([
     $fetch<{ success: boolean; data: MediaItem[] }>(`${config.public.apiBaseUrl}/app/media`),
-    $fetch<{ success: boolean; data: Topic[] }>(`${config.public.apiBaseUrl}/topics`),
+    shouldFetchTopics 
+      ? $fetch<{ success: boolean; data: Topic[] }>(`${config.public.apiBaseUrl}/topics`)
+      : Promise.resolve({ success: true, data: [] }),
     $fetch<{ success: boolean; data: Book[] }>(`${config.public.apiBaseUrl}/bookspaginate?page=1`),
     $fetch<{ success: boolean; data: Recipe[] }>(`${config.public.apiBaseUrl}/recipe/popular`)
   ])
-  return { media: mediaRes, topics: topicsRes, books: booksRes, recipes: recipesRes }
+  return { 
+    media: mediaRes, 
+    topics: topicsRes, 
+    books: booksRes, 
+    recipes: recipesRes,
+    menuSettings 
+  }
 })
 
 const topics = computed(() => allData.value?.topics?.data?.sort((a, b) => a.seq - b.seq) || [])
 const books = computed(() => allData.value?.books?.data?.sort((a, b) => a.seq - b.seq) || [])
 const recipes = computed(() => allData.value?.recipes?.data?.sort((a, b) => a.seq - b.seq) || [])
 const media = computed(() => allData.value?.media?.data?.sort((a, b) => a.seq - b.seq) || [])
+
+// Check which menus are enabled
+const isTopicMenuEnabled = computed(() => {
+  const topicMenu = allData.value?.menuSettings?.find(m => m.code === 'topic')
+  return topicMenu?.status === true
+})
+
+const isAgendaMenuEnabled = computed(() => {
+  const agendaMenu = allData.value?.menuSettings?.find(m => m.code === 'agenda')
+  return agendaMenu?.status === true
+})
+
+const isTopic2MenuEnabled = computed(() => {
+  const topic2Menu = allData.value?.menuSettings?.find(m => m.code === 'topic2')
+  return topic2Menu?.status === true
+})
+
+const isCommunityMenuEnabled = computed(() => {
+  const communityMenu = allData.value?.menuSettings?.find(m => m.code === 'community')
+  return communityMenu?.status === true
+})
 
 const topicsAccordionItems = computed(() => [{
   label: 'Pelajari Topik Tertentu',
@@ -202,9 +253,17 @@ const today = new Date()
 const formatDateParam = (date: Date): string => date.toISOString().split('T')[0] ?? ''
 const selectedDate = ref<string>(formatDateParam(today))
 
-const { data: allAgendaData, status: agendaStatus } = useAsyncData('agendaData', () =>
-  $fetch<{ success: boolean; data: Agenda[] }>(`${config.public.apiBaseUrl}/app/agenda`)
-)
+// Only fetch agenda if menu is enabled
+const { data: allAgendaData, status: agendaStatus } = useAsyncData('agendaData', async () => {
+  const menuRes = await $fetch<{ success: boolean; data: MenuMobile[] }>(`${config.public.apiBaseUrl}/menumobile`)
+  const agendaMenu = menuRes.data?.find(m => m.code === 'agenda')
+  
+  if (agendaMenu?.status === true) {
+    return $fetch<{ success: boolean; data: Agenda[] }>(`${config.public.apiBaseUrl}/app/agenda`)
+  }
+  
+  return { success: true, data: [] }
+})
 
 const isLoading = computed(() => status.value === 'pending')
 const isAgendaLoading = computed(() => agendaStatus.value === 'pending')

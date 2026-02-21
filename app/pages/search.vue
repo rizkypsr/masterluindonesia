@@ -50,14 +50,48 @@ const hideKeywordInput = ref('')
 const showKeywordInput = ref('')
 
 const categoryOptions = ['Buku', 'Audio', 'Video']
-const radioOptions = ['Wenda', 'Zhishuo', 'Zongshu', 'Shuhua']
-const videoOptions = ['Totem', 'Ceramah', 'Tanya Jawab', 'Kisah Buddhis']
+const dynamicFilters = ref<Array<{
+  title: string
+  keyword: string[]
+}>>([])
 const yearOptions = [2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008]
 
 const isLoading = ref(false)
 
+// Fetch filter options from API
+async function fetchFilterOptions() {
+  try {
+    const response = await $fetch<{
+      success: boolean
+      message: string
+      data: Array<{
+        title: string
+        keyword: string[]
+      }>
+    }>(`${config.public.apiBaseUrl}/search/keyword`)
+
+    if (response.success && response.data) {
+      // Show all items with non-empty keywords, exclude only "Buku"
+      dynamicFilters.value = response.data.filter(item => 
+        item.keyword && item.keyword.length > 0 && item.title !== 'Buku'
+      )
+    }
+  } catch (error) {
+    console.error('Failed to fetch filter options:', error)
+    // Fallback to default values if API fails
+    dynamicFilters.value = [
+      { title: 'Surat Tanya Jawab', keyword: ['2015', '2016'] },
+      { title: 'Acara Program Radio', keyword: ['Wenda', 'Zhishuo', 'Zongshu', 'Shuohua'] },
+      { title: 'Video', keyword: ['Totem', 'Ceramah', 'Tanya Jawab', 'Kisah Buddhis'] }
+    ]
+  }
+}
+
 // Auto-search on mount if coming from index page with keyword
-onMounted(() => {
+onMounted(async () => {
+  // Fetch filter options first
+  await fetchFilterOptions()
+  
   if (hasSearched.value && searchQuery.value && results.value.length === 0) {
     fetchResults()
   }
@@ -189,6 +223,16 @@ function toggleKeyword(keyword: string) {
   } else {
     filterPayload.value.selectedKeyword.push(keyword)
   }
+}
+
+// Toggle filter item - all items go to selectedKeyword
+function toggleFilterItem(filterTitle: string, item: string) {
+  toggleKeyword(item)
+}
+
+// Check if filter item is selected - all items check selectedKeyword
+function isFilterItemSelected(filterTitle: string, item: string): boolean {
+  return filterPayload.value.selectedKeyword.includes(item)
 }
 
 function applyFilter() {
@@ -366,30 +410,17 @@ function navigateToDetail(item: SearchItem) {
             </div>
           </div>
 
-          <!-- Acara Program Radio -->
-          <div>
-            <h3 class="font-semibold text-black dark:text-white mb-3">Acara Program Radio</h3>
+          <!-- Dynamic Filters from API -->
+          <div v-for="filter in dynamicFilters" :key="filter.title">
+            <h3 class="font-semibold text-black dark:text-white mb-3">{{ filter.title }}</h3>
             <div class="flex flex-wrap gap-2">
-              <button v-for="radio in radioOptions" :key="radio"
-                class="px-4 py-1.5 rounded-full text-sm border transition-colors" :class="filterPayload.selectedKeyword.includes(radio)
+              <button v-for="item in filter.keyword" :key="item"
+                class="px-4 py-1.5 rounded-full text-sm border transition-colors" 
+                :class="isFilterItemSelected(filter.title, item)
                   ? 'bg-primary border-primary text-black dark:bg-yellow-500'
                   : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-black dark:text-white'"
-                @click="toggleKeyword(radio)">
-                {{ radio }}
-              </button>
-            </div>
-          </div>
-
-          <!-- Video -->
-          <div>
-            <h3 class="font-semibold text-black dark:text-white mb-3">Video</h3>
-            <div class="flex flex-wrap gap-2">
-              <button v-for="video in videoOptions" :key="video"
-                class="px-4 py-1.5 rounded-full text-sm border transition-colors" :class="filterPayload.selectedKeyword.includes(video)
-                  ? 'bg-primary border-primary text-black dark:bg-yellow-500'
-                  : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-black dark:text-white'"
-                @click="toggleKeyword(video)">
-                {{ video }}
+                @click="toggleFilterItem(filter.title, item)">
+                {{ item }}
               </button>
             </div>
           </div>
@@ -406,7 +437,7 @@ function navigateToDetail(item: SearchItem) {
             <UInput v-model="showKeywordInput" placeholder="Masukan kata kunci" size="md" />
           </div>
 
-          <!-- Tahun -->
+          <!-- Tahun (Static) -->
           <div>
             <h3 class="font-semibold text-black dark:text-white mb-3">Tahun</h3>
             <div class="flex flex-wrap gap-2">
