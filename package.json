@@ -8,10 +8,7 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "check-ssr": "./scripts/check-ssr-compatibility.sh",
-    "analyze": "nuxt analyze",
-    "find-lazy": "./scripts/find-lazy-candidates.sh",
-    "perf": "npm run build && npm run analyze"
+    "analyze": "nuxt analyze"
   },
   "dependencies": {
     "@elevenlabs/elevenlabs-js": "^2.32.0",

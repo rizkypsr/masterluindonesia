@@ -162,22 +162,6 @@ interface Book {
   date: string | null
 }
 
-interface Recipe {
-  id: number
-  parent_id: number
-  recipe_category_id: number
-  title: string
-  link_youtube: string
-  time_cook: string
-  for_people: string
-  ingredients: string
-  how_to_cook: string
-  seq: number
-  count_click: number
-  have_child: number
-  cover: string
-}
-
 interface MenuMobile {
   id: number
   nama: string
@@ -195,25 +179,20 @@ const { data: allData, status } = useAsyncData('tabTerbaruData', async () => {
   
   // Check which menus are enabled
   const topicMenu = menuSettings.find(m => m.code === 'topic')
-  const agendaMenu = menuSettings.find(m => m.code === 'agenda')
-  const topic2Menu = menuSettings.find(m => m.code === 'topic2')
   
   const shouldFetchTopics = topicMenu?.status === true
-  const shouldFetchAgenda = agendaMenu?.status === true
   
-  const [mediaRes, topicsRes, booksRes, recipesRes] = await Promise.all([
+  const [mediaRes, topicsRes, booksRes] = await Promise.all([
     $fetch<{ success: boolean; data: MediaItem[] }>(`${config.public.apiBaseUrl}/app/media`),
     shouldFetchTopics 
       ? $fetch<{ success: boolean; data: Topic[] }>(`${config.public.apiBaseUrl}/topics`)
       : Promise.resolve({ success: true, data: [] }),
-    $fetch<{ success: boolean; data: Book[] }>(`${config.public.apiBaseUrl}/bookspaginate?page=1`),
-    $fetch<{ success: boolean; data: Recipe[] }>(`${config.public.apiBaseUrl}/recipe/popular`)
+    $fetch<{ success: boolean; data: Book[] }>(`${config.public.apiBaseUrl}/bookspaginate?page=1`)
   ])
   return { 
     media: mediaRes, 
     topics: topicsRes, 
-    books: booksRes, 
-    recipes: recipesRes,
+    books: booksRes,
     menuSettings 
   }
 })
@@ -255,8 +234,9 @@ const selectedDate = ref<string>(formatDateParam(today))
 
 // Only fetch agenda if menu is enabled
 const { data: allAgendaData, status: agendaStatus } = useAsyncData('agendaData', async () => {
-  const menuRes = await $fetch<{ success: boolean; data: MenuMobile[] }>(`${config.public.apiBaseUrl}/menumobile`)
-  const agendaMenu = menuRes.data?.find(m => m.code === 'agenda')
+  // Reuse menu settings from allData if available
+  const menuSettings = allData.value?.menuSettings
+  const agendaMenu = menuSettings?.find(m => m.code === 'agenda')
   
   if (agendaMenu?.status === true) {
     return $fetch<{ success: boolean; data: Agenda[] }>(`${config.public.apiBaseUrl}/app/agenda`)
