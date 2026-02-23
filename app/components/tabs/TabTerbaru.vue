@@ -1,10 +1,16 @@
 <template>
-  <div class="py-6">
-    <!-- Carousel -->
-    <template v-if="isLoading">
-      <USkeleton class="w-full h-40 rounded-xl mx-auto" style="width: 80%;" />
+  <ClientOnly>
+    <template #fallback>
+      <div class="py-6 flex items-center justify-center min-h-[400px]">
+        <Icon name="svg-spinners:ring-resize" class="w-12 h-12 text-primary dark:text-yellow-500" />
+      </div>
     </template>
-    <UCarousel v-else-if="media.length > 0" :items="media" :ui="{ item: 'basis-[80%]' }" :autoplay="{ delay: 3000 }"
+    <div v-if="isLoading" class="py-6 flex items-center justify-center min-h-[400px]">
+      <Icon name="svg-spinners:ring-resize" class="w-12 h-12 text-primary dark:text-yellow-500" />
+    </div>
+    <div v-else class="py-6">
+    <!-- Carousel -->
+    <UCarousel v-if="media.length > 0" :items="media" :ui="{ item: 'basis-[80%]' }" :autoplay="{ delay: 3000 }"
       loop class="overflow-hidden">
       <template #default="slotProps">
         <NuxtImg v-if="slotProps?.item" :src="getImageUrl(slotProps.item.url)" :alt="slotProps.item.name"
@@ -18,12 +24,7 @@
       <h2 class="text-lg font-semibold text-black dark:text-white mb-4">Agenda Hari Ini</h2>
 
       <!-- Date Selector -->
-      <template v-if="isAgendaLoading">
-        <div class="flex gap-2 overflow-hidden pb-2 justify-center">
-          <USkeleton v-for="i in 5" :key="i" class="min-w-14 h-16 rounded-lg shrink-0" />
-        </div>
-      </template>
-      <div v-else ref="dateContainer" class="flex gap-2 overflow-x-scroll scrollbar-hide pb-2 px-[calc(50%-28px)]"
+      <div ref="dateContainer" class="flex gap-2 overflow-x-scroll scrollbar-hide pb-2 px-[calc(50%-28px)]"
         style="scroll-snap-type: x proximity;" @scroll="onDateScroll">
         <button v-for="(date, index) in dateRange" :key="date.full" :ref="el => (dateRefs[index] = el as HTMLElement)"
           @click="selectDate(date.full, index)"
@@ -37,16 +38,7 @@
 
       <!-- Agenda Card -->
       <div class="mt-3 border-3 border-secondary rounded-xl p-2 shadow-xl">
-        <template v-if="isAgendaLoading">
-          <div class="rounded-xl px-4 py-8 text-center"
-            style="background: linear-gradient(to bottom, #fdd746 0%, #d79204 100%);">
-            <USkeleton class="h-7 w-48 mx-auto" />
-            <div class="flex items-center justify-center gap-2 mt-2">
-              <USkeleton class="h-5 w-32" />
-            </div>
-          </div>
-        </template>
-        <div v-else class="rounded-xl px-4 py-8 text-center"
+        <div class="rounded-xl px-4 py-8 text-center"
           style="background: linear-gradient(to bottom, #fdd746 0%, #d79204 100%);">
           <h3 class="text-xl font-semibold text-black">{{ formattedSelectedDate }}</h3>
           <div class="flex items-center justify-center gap-2 mt-2 text-black/80">
@@ -59,26 +51,27 @@
 
     <!-- Topics Section -->
     <div v-if="isTopicMenuEnabled" class="mt-6 px-4">
+      <div class="mb-4">
+        <h2 class="text-xl font-semibold text-black dark:text-white">Pelajari Topik Tertentu</h2>
+      </div>
+
       <template v-if="isLoading">
-        <USkeleton class="h-12 w-full rounded-lg mb-2" />
-        <div class="divide-y divide-gray-200 dark:divide-gray-700">
-          <div v-for="i in 4" :key="i" class="py-4">
-            <USkeleton class="h-5 w-3/4" />
-          </div>
+        <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
+          <USkeleton class="h-5 w-3/4 mb-2" />
+          <USkeleton class="h-4 w-full mb-2" />
+          <USkeleton class="h-4 w-2/3" />
         </div>
       </template>
-      <UAccordion v-else :items="topicsAccordionItems" default-value="Pelajari Topik Tertentu" class="topics-accordion"
-        :ui="{ trigger: 'text-black dark:text-white text-xl font-semibold' }">
-        <template #topics>
-          <div class="divide-y divide-gray-200 dark:divide-gray-700">
-            <NuxtLink v-for="topic in topics" :key="topic.id"
-              :to="{ path: `/topics/${topic.id}`, query: { title: topic.title } }"
-              class="block py-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800">
-              <span class="text-base font-medium text-black dark:text-white">{{ topic.title }}</span>
-            </NuxtLink>
-          </div>
-        </template>
-      </UAccordion>
+
+      <template v-else-if="topicsTreeItems.length > 0">
+        <UTree :items="topicsTreeItems" :get-key="(item) => String(item.id)" size="xl" expanded-icon=""
+          collapsed-icon="" :ui="{ linkLeadingIcon: 'hidden' }" @select="handleTopicSelect" />
+      </template>
+
+      <div v-else class="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">
+        <Icon name="mdi:folder-outline" class="w-12 h-12 text-gray-400 mx-auto mb-2" />
+        <p class="text-gray-500 dark:text-gray-400">Belum ada topik</p>
+      </div>
     </div>
 
     <!-- Books Section -->
@@ -88,29 +81,20 @@
         <NuxtLink to="/books" class="text-primary dark:text-yellow-400 font-medium">Lihat semua</NuxtLink>
       </div>
       <div class="flex gap-3 pb-3 overflow-x-auto custom-scrollbar">
-        <template v-if="isLoading">
-          <div v-for="i in 4" :key="i" class="shrink-0 w-28">
-            <USkeleton class="w-28 h-40 rounded-xl" />
-            <USkeleton class="mt-2 h-4 w-full" />
-            <USkeleton class="mt-1 h-4 w-2/3" />
-          </div>
-        </template>
-        <template v-else>
-          <NuxtLink v-for="book in books" :key="book.id"
-            :to="{ path: `/books/${book.id}`, query: { title: book.title, cover: book.url } }" class="shrink-0 w-28">
-            <template v-if="book.url">
-              <NuxtImg :src="getImageUrl(book.url)" :alt="book.title" class="w-28 h-40 object-cover rounded-xl" loading="lazy"
-                width="112" height="160" />
-            </template>
-            <template v-else>
-              <div
-                class="w-28 h-40 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl flex items-center justify-center p-2">
-                <p class="text-center font-medium text-black dark:text-white text-xs line-clamp-6">{{ book.title }}</p>
-              </div>
-            </template>
-            <p class="mt-2 text-sm font-medium text-black dark:text-white line-clamp-2">{{ book.title }}</p>
-          </NuxtLink>
-        </template>
+        <NuxtLink v-for="book in books" :key="book.id"
+          :to="{ path: `/books/${book.id}`, query: { title: book.title, cover: book.url } }" class="shrink-0 w-28">
+          <template v-if="book.url">
+            <NuxtImg :src="getImageUrl(book.url)" :alt="book.title" class="w-28 h-40 object-cover rounded-xl" loading="lazy"
+              width="112" height="160" />
+          </template>
+          <template v-else>
+            <div
+              class="w-28 h-40 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl flex items-center justify-center p-2">
+              <p class="text-center font-medium text-black dark:text-white text-xs line-clamp-6">{{ book.title }}</p>
+            </div>
+          </template>
+          <p class="mt-2 text-sm font-medium text-black dark:text-white line-clamp-2">{{ book.title }}</p>
+        </NuxtLink>
       </div>
     </div>
 
@@ -120,11 +104,13 @@
     <!-- Community Playlist Section - Lazy loaded with hydration on visible -->
     <LazyCommunityPlaylistSection v-if="isCommunityMenuEnabled" hydrate-on-visible />
   </div>
+  </ClientOnly>
 </template>
 
 <script setup lang="ts">
-const config = useRuntimeConfig()
 import { ref, nextTick, computed, onMounted, watch } from "vue"
+import type { TreeItem } from '@nuxt/ui'
+import type { TreeItemSelectEvent } from 'reka-ui'
 
 interface MediaItem {
   id: number
@@ -171,55 +157,57 @@ interface MenuMobile {
 
 const dateContainer = ref<HTMLElement | null>(null)
 const dateRefs = ref<HTMLElement[]>([])
+const router = useRouter()
 
+// Single optimized API call with server-side caching
 const { data: allData, status } = useAsyncData('tabTerbaruData', async () => {
-  // Fetch menu mobile settings first
-  const menuRes = await $fetch<{ success: boolean; data: MenuMobile[] }>(`${config.public.apiBaseUrl}/menumobile`)
-  const menuSettings = menuRes.data || []
-  
-  // Check which menus are enabled
-  const topicMenu = menuSettings.find(m => m.code === 'topic')
-  
-  const shouldFetchTopics = topicMenu?.status === true
-  
-  const [mediaRes, topicsRes, booksRes] = await Promise.all([
-    $fetch<{ success: boolean; data: MediaItem[] }>(`${config.public.apiBaseUrl}/app/media`),
-    shouldFetchTopics 
-      ? $fetch<{ success: boolean; data: Topic[] }>(`${config.public.apiBaseUrl}/topics`)
-      : Promise.resolve({ success: true, data: [] }),
-    $fetch<{ success: boolean; data: Book[] }>(`${config.public.apiBaseUrl}/bookspaginate?page=1`)
-  ])
-  return { 
-    media: mediaRes, 
-    topics: topicsRes, 
-    books: booksRes,
-    menuSettings 
-  }
+  return $fetch<{ 
+    success: boolean
+    data: {
+      media: MediaItem[]
+      topics: Topic[]
+      books: Book[]
+      agenda: Agenda[]
+      menuSettings: MenuMobile[]
+    }
+  }>('/api/terbaru')
+}, {
+  server: false
 })
 
-const topics = computed(() => allData.value?.topics?.data?.sort((a, b) => a.seq - b.seq) || [])
-const books = computed(() => allData.value?.books?.data?.sort((a, b) => a.seq - b.seq) || [])
-const media = computed(() => allData.value?.media?.data?.sort((a, b) => a.seq - b.seq) || [])
+const topics = computed(() => allData.value?.data?.topics?.sort((a, b) => a.seq - b.seq) || [])
+const books = computed(() => allData.value?.data?.books?.sort((a, b) => a.seq - b.seq) || [])
+const media = computed(() => allData.value?.data?.media?.sort((a, b) => a.seq - b.seq) || [])
+const agendaList = computed(() => allData.value?.data?.agenda || [])
 
 // Check which menus are enabled
 const isTopicMenuEnabled = computed(() => {
-  const topicMenu = allData.value?.menuSettings?.find(m => m.code === 'topic')
+  const topicMenu = allData.value?.data?.menuSettings?.find(m => m.code === 'topic')
   return topicMenu?.status === true
 })
 
 const isAgendaMenuEnabled = computed(() => {
-  const agendaMenu = allData.value?.menuSettings?.find(m => m.code === 'agenda')
+  const agendaMenu = allData.value?.data?.menuSettings?.find(m => m.code === 'agenda')
   return agendaMenu?.status === true
 })
 
 const isTopic2MenuEnabled = computed(() => {
-  const topic2Menu = allData.value?.menuSettings?.find(m => m.code === 'topic2')
+  const topic2Menu = allData.value?.data?.menuSettings?.find(m => m.code === 'topic2')
   return topic2Menu?.status === true
 })
 
 const isCommunityMenuEnabled = computed(() => {
-  const communityMenu = allData.value?.menuSettings?.find(m => m.code === 'community')
+  const communityMenu = allData.value?.data?.menuSettings?.find(m => m.code === 'community')
   return communityMenu?.status === true
+})
+
+// Transform topics to TreeItem format (flat list, no children)
+const topicsTreeItems = computed<TreeItem[]>(() => {
+  return topics.value.map(topic => ({
+    id: topic.id,
+    label: topic.title,
+    defaultExpanded: false
+  }))
 })
 
 const topicsAccordionItems = computed(() => [{
@@ -232,26 +220,12 @@ const today = new Date()
 const formatDateParam = (date: Date): string => date.toISOString().split('T')[0] ?? ''
 const selectedDate = ref<string>(formatDateParam(today))
 
-// Only fetch agenda if menu is enabled
-const { data: allAgendaData, status: agendaStatus } = useAsyncData('agendaData', async () => {
-  // Reuse menu settings from allData if available
-  const menuSettings = allData.value?.menuSettings
-  const agendaMenu = menuSettings?.find(m => m.code === 'agenda')
-  
-  if (agendaMenu?.status === true) {
-    return $fetch<{ success: boolean; data: Agenda[] }>(`${config.public.apiBaseUrl}/app/agenda`)
-  }
-  
-  return { success: true, data: [] }
-})
-
 const isLoading = computed(() => status.value === 'pending')
-const isAgendaLoading = computed(() => agendaStatus.value === 'pending')
 
 const dateRange = computed(() => {
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des']
-  if (!allAgendaData.value?.data) return []
-  return allAgendaData.value.data.map(agenda => {
+  if (!agendaList.value) return []
+  return agendaList.value.map(agenda => {
     const dateStr = agenda.date || ''
     const date = new Date(dateStr + 'T00:00:00')
     return { full: dateStr, day: date.getDate(), month: months[date.getMonth()] }
@@ -289,7 +263,20 @@ const formattedSelectedDate = computed(() => {
   return `${days[date.getDay()]}, ${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
 })
 
-const agendaData = computed(() => allAgendaData.value?.data?.find(a => a.date === selectedDate.value) || null)
+const agendaData = computed(() => agendaList.value?.find(a => a.date === selectedDate.value) || null)
+
+function handleTopicSelect(e: TreeItemSelectEvent<TreeItem>) {
+  const item = e.detail.value
+  if (item?.id) {
+    const topic = topics.value.find(t => t.id === item.id)
+    if (topic) {
+      router.push({
+        path: `/topics/${topic.id}`,
+        query: { title: topic.title }
+      })
+    }
+  }
+}
 
 const selectDate = (date: string, index: number) => {
   selectedDate.value = date
@@ -329,9 +316,9 @@ onMounted(() => {
   }, 300)
 })
 
-// Watch for agenda data to load and set initial date
-watch(() => allAgendaData.value, (newData) => {
-  if (newData?.data && dateRange.value.length > 0) {
+// Watch for data to load and set initial date
+watch(() => allData.value, (newData) => {
+  if (newData?.data?.agenda && dateRange.value.length > 0) {
     const index = todayIndex.value
     if (index !== -1 && dateRange.value[index]) {
       selectedDate.value = dateRange.value[index].full

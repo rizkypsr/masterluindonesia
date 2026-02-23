@@ -22,28 +22,18 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' },
         { rel: 'preconnect', href: 'https://firebasestorage.googleapis.com' },
-        { rel: 'preconnect', href: 'https://api.cms.masterluindonesia.com' },
-        { rel: 'dns-prefetch', href: 'https://api.cms.masterluindonesia.com' },
       ],
     },
   },
   nitro: {
     preset: 'node-server',
-    compressPublicAssets: {
-      gzip: true,
-      brotli: true,
-    },
-    minify: true,
-    sourceMap: false,
   },
-  
   modules: [
     '@nuxt/ui',
     '@nuxt/icon',
     '@nuxt/image',
     '@pinia/nuxt',
   ],
-  
   image: {
     provider: 'none',
     domains: ['masterluindonesia.com', 'masterlu.buildbyriz.io', 'api.masterluindonesia.com', 'firebasestorage.googleapis.com'],
@@ -52,20 +42,11 @@ export default defineNuxtConfig({
     preference: 'light'
   },
   css: ['~/assets/css/main.css'],
-  
-  features: {
-    inlineStyles: false,
-  },
   vite: {
     plugins: [
       tailwindcss(),
     ],
-    build: {
-      cssCodeSplit: true,
-      cssMinify: 'lightningcss',
-    },
   },
-  
   runtimeConfig: {
     public: {
       googleClientId: '',

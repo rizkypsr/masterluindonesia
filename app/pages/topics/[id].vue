@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen bg-white dark:bg-gray-900">
+  <div class="h-full flex flex-col bg-white dark:bg-gray-900">
     <!-- Header -->
-    <div class="flex items-center gap-4 px-4 py-4 border-b border-gray-200 dark:border-gray-700">
+    <div class="flex items-center gap-4 px-4 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
       <button @click="$router.back()" class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
         <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
       </button>
@@ -9,7 +9,7 @@
     </div>
 
     <!-- Content -->
-    <div class="px-4 py-4">
+    <div class="flex-1 overflow-y-auto px-4 py-4">
       <!-- Empty State -->
       <div v-if="categories.length === 0" class="flex flex-col items-center justify-center py-32">
         <div class="w-32 h-32 rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center mb-4 relative">
@@ -25,7 +25,7 @@
       <div v-else>
         <div v-for="category in categories" :key="category.id" class="mb-2">
           <!-- Category Title -->
-          <h2 class="text-base font-semibold text-black dark:text-white py-3">{{ category.title }}</h2>
+          <h2 class="text-lg font-semibold text-black dark:text-white py-3">{{ category.title }}</h2>
           
           <!-- Sub Categories -->
           <div v-if="category.sub_category && category.sub_category.length > 0" class="divide-y divide-gray-200 dark:divide-gray-700">
@@ -35,7 +35,7 @@
               :to="{ path: '/topics/detail', query: { subId: sub.id, title: sub.title } }"
               class="py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 block"
             >
-              <span class="text-sm text-black dark:text-white">{{ sub.title }}</span>
+              <span class="text-base text-black dark:text-white">{{ sub.title }}</span>
             </NuxtLink>
           </div>
         </div>
