@@ -1,5 +1,3 @@
-import tailwindcss from "@tailwindcss/vite";
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
@@ -24,9 +22,17 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://firebasestorage.googleapis.com' },
       ],
     },
+    buildAssetsDir: '/_nuxt/',
   },
   nitro: {
     preset: 'node-server',
+    routeRules: {
+      // Disable caching for HTML pages
+      '/**': { headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' } },
+      // Cache static assets with versioning
+      '/_nuxt/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+      '/assets/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+    },
   },
   modules: [
     '@nuxt/ui',
@@ -42,15 +48,10 @@ export default defineNuxtConfig({
     preference: 'light'
   },
   css: ['~/assets/css/main.css'],
-  vite: {
-    plugins: [
-      tailwindcss(),
-    ],
-  },
   runtimeConfig: {
     public: {
       googleClientId: '',
-      apiBaseUrl: 'https://api.cms.masterluindonesia.com/api',
+      apiBaseUrl: '',
     },
   },
 })
