@@ -50,8 +50,8 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
     public: {
-      googleClientId: '', // can be overridden by NUXT_PUBLIC_GOOGLE_CLIENT_ID environment variable
-      apiBaseUrl: '', // can be overridden by NUXT_PUBLIC_API_BASE_URL environment variable
+      googleClientId: process.env.NUXT_PUBLIC_GOOGLE_CLIENT_ID || '',
+      apiBaseUrl: process.env.NUXT_PUBLIC_API_BASE_URL || '',
     },
   },
 })
