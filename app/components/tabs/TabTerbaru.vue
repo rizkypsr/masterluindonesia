@@ -52,7 +52,7 @@
     <!-- Topics Section -->
     <div v-if="isTopicMenuEnabled" class="mt-6 px-4">
       <div class="mb-4">
-        <h2 class="text-xl font-semibold text-black dark:text-white">Pelajari Topik Tertentu</h2>
+        <h2 class="text-xl font-semibold text-black dark:text-white">Ensiklopedia</h2>
       </div>
 
       <template v-if="isLoading">

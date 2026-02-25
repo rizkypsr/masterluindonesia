@@ -2,9 +2,14 @@
   <div class="min-h-screen bg-white dark:bg-gray-900">
     <!-- Header -->
     <div class="sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-      <div class="flex items-center gap-4 px-4 py-4">
-        <BackButton />
-        <h1 class="text-lg font-semibold text-black dark:text-white">Detail Topik 2</h1>
+      <div class="flex items-center justify-between px-4 py-4">
+        <div class="flex items-center gap-4">
+          <BackButton />
+          <h1 class="text-lg font-semibold text-black dark:text-white">{{ topicTitle }}</h1>
+        </div>
+        <button class="p-1" @click="shareTopic">
+          <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
+        </button>
       </div>
     </div>
 
@@ -53,6 +58,7 @@ const route = useRoute()
 const router = useRouter()
 const config = useRuntimeConfig()
 const topicId = computed(() => route.params.id as string)
+const topicTitle = computed(() => (route.query.title as string) || 'Detail Topik')
 
 const { data, status } = useAsyncData(`topics2Detail-${topicId.value}`, () =>
   $fetch<{ success: boolean; data: Topic2TreeItem[] }>(`${config.public.apiBaseUrl}/topics2/${topicId.value}`)
@@ -92,6 +98,26 @@ function handleSelect(e: TreeItemSelectEvent<TreeItem>) {
   // Only navigate if item has no children (is a leaf node)
   if (item?.id && !item.children?.length) {
     router.push(`/topics2/content/${item.id}`)
+  }
+}
+
+const shareTopic = async () => {
+  const shareData = {
+    title: 'Topik',
+    text: topicTitle.value,
+    url: window.location.href
+  }
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData)
+    } catch (err) {
+      // User cancelled or error
+    }
+  } else {
+    // Fallback: copy to clipboard
+    await navigator.clipboard.writeText(`Lihat Topik "${topicTitle.value}" di\n${window.location.href}`)
+    alert('Link berhasil disalin!')
   }
 }
 </script>

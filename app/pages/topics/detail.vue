@@ -40,11 +40,11 @@
                     <div class="p-3 cursor-pointer" @click="toggleExpand(item.id)">
                         <div class="flex items-start justify-between gap-3">
                             <div class="flex-1">
-                                <h3 class="font-bold"
+                                <h3 class="font-bold text-xl"
                                     :class="expandedItems.has(item.id) ? 'text-black' : 'text-black dark:text-white'">
                                     {{ item.title }}
                                 </h3>
-                                <p class="mt-1 text-sm"
+                                <p class="mt-1 text-lg"
                                     :class="expandedItems.has(item.id) ? 'text-black' : 'text-gray-600 dark:text-gray-300'">
                                     {{ item.description }}
                                 </p>

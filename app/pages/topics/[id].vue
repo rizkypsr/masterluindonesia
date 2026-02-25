@@ -1,20 +1,28 @@
 <template>
   <div class="h-full flex flex-col bg-white dark:bg-gray-900">
     <!-- Header -->
-    <div class="flex items-center gap-4 px-4 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
-      <button @click="$router.back()" class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
-        <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
+    <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
+      <div class="flex items-center gap-4">
+        <button @click="$router.back()"
+          class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
+          <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
+        </button>
+        <h1 class="text-lg font-semibold text-black dark:text-white">{{ topicTitle }}</h1>
+      </div>
+      <button class="p-1" @click="shareTopic">
+        <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
       </button>
-      <h1 class="text-lg font-semibold text-black dark:text-white">{{ topicTitle }}</h1>
     </div>
 
     <!-- Content -->
     <div class="flex-1 overflow-y-auto px-4 py-4">
       <!-- Empty State -->
       <div v-if="categories.length === 0" class="flex flex-col items-center justify-center py-32">
-        <div class="w-32 h-32 rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center mb-4 relative">
+        <div
+          class="w-32 h-32 rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center mb-4 relative">
           <Icon name="mdi:package-variant" class="w-16 h-16 text-gray-300 dark:text-gray-600" />
-          <div class="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center">
+          <div
+            class="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center">
             <Icon name="mdi:cancel" class="w-6 h-6 text-gray-300 dark:text-gray-600" />
           </div>
         </div>
@@ -25,17 +33,15 @@
       <div v-else>
         <div v-for="category in categories" :key="category.id" class="mb-2">
           <!-- Category Title -->
-          <h2 class="text-lg font-semibold text-black dark:text-white py-3">{{ category.title }}</h2>
-          
+          <h2 class="text-xl font-bold text-black dark:text-white py-3">{{ category.title }}</h2>
+
           <!-- Sub Categories -->
-          <div v-if="category.sub_category && category.sub_category.length > 0" class="divide-y divide-gray-200 dark:divide-gray-700">
-            <NuxtLink
-              v-for="sub in category.sub_category"
-              :key="sub.id"
+          <div v-if="category.sub_category && category.sub_category.length > 0"
+            class="divide-y divide-gray-200 dark:divide-gray-700">
+            <NuxtLink v-for="sub in category.sub_category" :key="sub.id"
               :to="{ path: '/topics/detail', query: { subId: sub.id, title: sub.title } }"
-              class="py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 block"
-            >
-              <span class="text-base text-black dark:text-white">{{ sub.title }}</span>
+              class="py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 block">
+              <span class="text-lg text-black dark:text-white">{{ sub.title }}</span>
             </NuxtLink>
           </div>
         </div>
@@ -73,4 +79,24 @@ const { data: categoriesData } = await useFetch<{ success: boolean; data: TopicC
 const categories = computed(() => {
   return categoriesData.value?.data || []
 })
+
+const shareTopic = async () => {
+  const shareData = {
+    title: 'Ensiklopedia',
+    text: topicTitle.value,
+    url: window.location.href
+  }
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData)
+    } catch (err) {
+      // User cancelled or error
+    }
+  } else {
+    // Fallback: copy to clipboard
+    await navigator.clipboard.writeText(`Lihat Topik "${topicTitle.value}" di\n${window.location.href}`)
+    alert('Link berhasil disalin!')
+  }
+}
 </script>

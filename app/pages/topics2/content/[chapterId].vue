@@ -66,7 +66,7 @@ interface SearchResult {
 }
 
 // Chapter title from query
-const chapterTitle = ref(route.query.chapter as string || 'Topik 2')
+const chapterTitle = ref(route.query.chapter as string || 'Topik')
 
 // Fetch contents
 onMounted(async () => {
