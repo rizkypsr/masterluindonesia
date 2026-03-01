@@ -24,15 +24,8 @@
       </template>
 
       <template v-else-if="treeItems.length > 0">
-        <UTree 
-          :items="treeItems" 
-          :get-key="(item) => String(item.id)"
-          size="xl"
-          expanded-icon=""
-          collapsed-icon=""
-          :ui="{ linkLeadingIcon: 'hidden' }"
-          @select="handleSelect"
-        />
+        <UTree :items="treeItems" :get-key="(item) => String(item.id)" size="xl" expanded-icon="" collapsed-icon=""
+          :ui="{ linkLeadingIcon: 'hidden', link: 'text-xl' }" @select="handleSelect" />
       </template>
 
       <div v-else class="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">
@@ -67,16 +60,16 @@ const { data, status } = useAsyncData(`topics2Detail-${topicId.value}`, () =>
 // Transform API data to TreeItem format
 const treeItems = computed<TreeItem[]>(() => {
   const apiData = data.value?.data || []
-  
+
   function transformToTreeItem(item: Topic2TreeItem): TreeItem {
     const hasChildren = item.children && item.children.length > 0
-    
+
     const treeItem: TreeItem = {
       id: item.id,
       label: item.title,
       defaultExpanded: true
     }
-    
+
     if (hasChildren) {
       treeItem.children = item.children!.map(transformToTreeItem)
       // Prevent parent items from being selected
@@ -84,10 +77,10 @@ const treeItems = computed<TreeItem[]>(() => {
         e.preventDefault()
       }
     }
-    
+
     return treeItem
   }
-  
+
   return apiData.map(transformToTreeItem)
 })
 

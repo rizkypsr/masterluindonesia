@@ -65,7 +65,10 @@
 
       <template v-else-if="topicsTreeItems.length > 0">
         <UTree :items="topicsTreeItems" :get-key="(item) => String(item.id)" size="xl" expanded-icon=""
-          collapsed-icon="" :ui="{ linkLeadingIcon: 'hidden' }" @select="handleTopicSelect" />
+          collapsed-icon="" :ui="{ 
+            linkLeadingIcon: 'hidden',
+            link: 'text-xl'
+          }" @select="handleTopicSelect" />
       </template>
 
       <div v-else class="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">
@@ -90,10 +93,10 @@
           <template v-else>
             <div
               class="w-28 h-40 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl flex items-center justify-center p-2">
-              <p class="text-center font-medium text-black dark:text-white text-xs line-clamp-6">{{ book.title }}</p>
+              <p class="text-center font-medium text-black dark:text-white text-sm line-clamp-6">{{ book.title }}</p>
             </div>
           </template>
-          <p class="mt-2 text-sm font-medium text-black dark:text-white line-clamp-2">{{ book.title }}</p>
+          <p class="mt-2 text-lg font-medium text-black dark:text-white line-clamp-2">{{ book.title }}</p>
         </NuxtLink>
       </div>
     </div>

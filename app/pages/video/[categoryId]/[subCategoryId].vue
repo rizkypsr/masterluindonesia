@@ -25,22 +25,13 @@
       <div v-else>
         <div v-for="group in videoGroups" :key="group.id" class="border-b border-gray-400 dark:border-gray-600 pb-2 mb-4">
           <!-- Group Title -->
-          <h2 class="text-base font-semibold text-black dark:text-white mb-3">{{ group.title }}</h2>
+          <h2 class="text-lg font-semibold text-black dark:text-white mb-3">{{ group.title }}</h2>
 
           <!-- Video Items -->
           <div class="space-y-1">
             <NuxtLink v-for="video in group.sub_category" :key="video.id"
               :to="{ path: `/video/play/${video.id}`, query: { title: video.title } }"
-              class="flex items-center gap-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 pl-4 rounded">
-              <!-- Indonesian Flag -->
-              <NuxtImg v-if="video.translate_id === 1" src="https://flagsapi.com/ID/flat/64.png" alt="ID"
-                class="w-8 h-5 object-cover shrink-0 rounded-sm" />
-              <!-- Chinese Flag -->
-              <NuxtImg v-else-if="video.translate_ch === 1" src="https://flagsapi.com/CN/flat/64.png" alt="CN"
-                class="w-8 h-5 object-cover shrink-0 rounded-sm" />
-              <!-- No flag -->
-              <div v-else class="w-8 shrink-0"></div>
-
+              class="items-center hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
               <!-- Video Title -->
               <span class="text-lg text-gray-700 dark:text-gray-300 flex-1">{{ video.title }}</span>
             </NuxtLink>

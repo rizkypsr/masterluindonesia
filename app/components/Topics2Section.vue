@@ -15,7 +15,7 @@
 
     <template v-else-if="treeItems.length > 0">
       <UTree :items="treeItems" :get-key="(item) => String(item.id)" size="xl" expanded-icon=""
-        collapsed-icon="" :ui="{ linkLeadingIcon: 'hidden' }" @select="handleSelect" />
+        collapsed-icon="" :ui="{ linkLeadingIcon: 'hidden', link: 'text-xl' }" @select="handleSelect" />
     </template>
 
     <div v-else class="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">

@@ -35,17 +35,20 @@
                 </div>
 
                 <div v-for="item in filteredContents" :key="item.id" class="rounded-xl overflow-hidden"
-                    :class="expandedItems.has(item.id) ? 'bg-[#c09637] dark:bg-yellow-600' : 'bg-white dark:bg-gray-800'">
+                    :class="expandedItems.has(item.id) ? 'bg-[#c09637] dark:bg-yellow-600' : 'bg-white dark:bg-gray-800'"
+                    :style="{ fontSize: fontSize + 'px' }">
                     <!-- Card Header -->
                     <div class="p-3 cursor-pointer" @click="toggleExpand(item.id)">
                         <div class="flex items-start justify-between gap-3">
                             <div class="flex-1">
-                                <h3 class="font-bold text-xl"
-                                    :class="expandedItems.has(item.id) ? 'text-black' : 'text-black dark:text-white'">
+                                <h3 class="font-bold"
+                                    :class="expandedItems.has(item.id) ? 'text-black' : 'text-black dark:text-white'"
+                                    :style="{ fontSize: fontSize + 'px' }">
                                     {{ item.title }}
                                 </h3>
-                                <p class="mt-1 text-lg"
-                                    :class="expandedItems.has(item.id) ? 'text-black' : 'text-gray-600 dark:text-gray-300'">
+                                <p class="mt-1"
+                                    :class="expandedItems.has(item.id) ? 'text-black' : 'text-gray-600 dark:text-gray-300'"
+                                    :style="{ fontSize: fontSize + 'px' }">
                                     {{ item.description }}
                                 </p>
                             </div>
@@ -61,7 +64,7 @@
                         <div class="text-black dark:text-white leading-relaxed" v-html="item.script"></div>
                         <div class="flex items-center gap-4 pt-3 mt-3 border-t border-gray-200 dark:border-gray-600">
                             <button @click.stop="copyContent(item)"
-                                class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300 hover:font-bold">
+                                class="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:font-bold">
                                 <Icon name="mdi:content-copy" class="w-4 h-4" />
                                 <span>Salin</span>
                             </button>
@@ -102,7 +105,7 @@ const expandedItems = ref<Set<number>>(new Set())
 
 // FAB Menu State
 const showFabMenu = ref(false)
-const fontSize = ref(14)
+const fontSize = ref(18)
 
 const zoomIn = () => {
     fontSize.value = Math.min(fontSize.value + 2, 24)

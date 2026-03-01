@@ -125,7 +125,7 @@
         <!-- Expanded View -->
         <template v-else>
           <div class="flex items-center justify-between mb-2">
-            <p class="text-sm font-medium text-black dark:text-white flex-1 line-clamp-1">{{ audioData.data.title?.trim() }}</p>
+            <p class="text-lg font-medium text-black dark:text-white flex-1 line-clamp-1">{{ audioData.data.title?.trim() }}</p>
           </div>
 
           <!-- Progress Bar -->
@@ -241,7 +241,7 @@ const subtitleSearch = ref('')
 
 // FAB Menu State
 const showFabMenu = ref(false)
-const fontSize = ref(14) // base font size in px
+const fontSize = ref(18) // base font size in px
 const isPlayerMinimized = ref(false)
 
 const zoomIn = () => {

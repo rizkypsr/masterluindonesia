@@ -303,7 +303,7 @@ const subtitleSearch = ref('')
 
 // FAB Menu State
 const showFabMenu = ref(false)
-const fontSize = ref(16) // base font size in px
+const fontSize = ref(18) // base font size in px
 const isPlayerMinimized = ref(false)
 
 const zoomIn = () => {
