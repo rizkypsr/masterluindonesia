@@ -68,6 +68,13 @@
                                 <Icon name="mdi:content-copy" class="w-4 h-4" />
                                 <span>Salin</span>
                             </button>
+                            <button @click.stop="speakContent(item)"
+                                class="flex items-center gap-1 hover:font-bold"
+                                :class="speakingItemId === item.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
+                                <Icon :name="speakingItemId === item.id ? 'mdi:stop' : 'mdi:account-voice'"
+                                    class="w-4 h-4" />
+                                <span>{{ speakingItemId === item.id ? 'Stop' : 'Voice' }}</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -102,6 +109,8 @@ const pageTitle = computed(() => (route.query.title as string) || 'Detail')
 
 const searchQuery = ref('')
 const expandedItems = ref<Set<number>>(new Set())
+const speakingItemId = ref<number | null>(null)
+const isSpeaking = ref(false)
 
 // FAB Menu State
 const showFabMenu = ref(false)
@@ -161,6 +170,49 @@ const copyContent = async (item: TopicContent) => {
     } catch (err) {
         console.error('Failed to copy:', err)
     }
+}
+
+const speakContent = (item: TopicContent) => {
+    if (typeof window === 'undefined' || !window.speechSynthesis) {
+        console.error('Speech synthesis not supported')
+        return
+    }
+
+    // If already speaking this item, stop it
+    if (isSpeaking.value && speakingItemId.value === item.id) {
+        window.speechSynthesis.cancel()
+        isSpeaking.value = false
+        speakingItemId.value = null
+        return
+    }
+
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel()
+
+    const text = stripHtml(item.script)
+    const utterance = new SpeechSynthesisUtterance(text)
+
+    // Set Indonesian language
+    utterance.lang = 'id-ID'
+    utterance.rate = 1
+    utterance.pitch = 1
+
+    utterance.onstart = () => {
+        isSpeaking.value = true
+        speakingItemId.value = item.id
+    }
+
+    utterance.onend = () => {
+        isSpeaking.value = false
+        speakingItemId.value = null
+    }
+
+    utterance.onerror = () => {
+        isSpeaking.value = false
+        speakingItemId.value = null
+    }
+
+    window.speechSynthesis.speak(utterance)
 }
 
 const goToAudioDetail = (item: TopicContent) => {
