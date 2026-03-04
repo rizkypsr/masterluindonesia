@@ -29,13 +29,25 @@
     </div>
 
     <!-- Content -->
-    <div class="flex-1 overflow-y-auto">
-      <TabsTabTerbaru v-if="activeTab === 'terbaru'" />
-      <TabsTabParitta v-else-if="activeTab === 'paritta'" />
-      <TabsTabUnduh v-else-if="activeTab === 'unduh'" />
-      <TabsTabEdukasi v-else-if="activeTab === 'edukasi'" />
-      <TabsTabTentang v-else-if="activeTab === 'tentang'" />
-      <TabsTabContact v-else-if="activeTab === 'contact'" />
+    <div ref="contentContainer" class="flex-1 overflow-y-auto">
+      <KeepAlive>
+        <TabsTabTerbaru v-if="activeTab === 'terbaru'" :scroll-container="contentContainer" />
+      </KeepAlive>
+      <KeepAlive>
+        <TabsTabParitta v-if="activeTab === 'paritta'" />
+      </KeepAlive>
+      <KeepAlive>
+        <TabsTabUnduh v-if="activeTab === 'unduh'" />
+      </KeepAlive>
+      <KeepAlive>
+        <TabsTabEdukasi v-if="activeTab === 'edukasi'" />
+      </KeepAlive>
+      <KeepAlive>
+        <TabsTabTentang v-if="activeTab === 'tentang'" />
+      </KeepAlive>
+      <KeepAlive>
+        <TabsTabContact v-if="activeTab === 'contact'" />
+      </KeepAlive>
     </div>
   </div>
 </template>
@@ -72,6 +84,7 @@ const activeTab = ref("terbaru")
 const tabContainer = ref<HTMLElement | null>(null)
 const tabRefs = ref<HTMLElement[]>([])
 const searchKeyword = ref('')
+const contentContainer = ref<HTMLElement | null>(null)
 
 // Search state from search page (to pre-fill)
 const searchQuery = useState('search-query', () => '')

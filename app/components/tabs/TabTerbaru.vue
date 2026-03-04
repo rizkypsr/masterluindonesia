@@ -111,9 +111,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, computed, onMounted, watch } from "vue"
+import { ref, nextTick, computed, onMounted, onActivated, onDeactivated, onBeforeUnmount, watch } from "vue"
 import type { TreeItem } from '@nuxt/ui'
 import type { TreeItemSelectEvent } from 'reka-ui'
+
+// Define props
+const props = defineProps<{
+  scrollContainer?: HTMLElement | null
+}>()
 
 interface MediaItem {
   id: number
@@ -161,6 +166,28 @@ interface MenuMobile {
 const dateContainer = ref<HTMLElement | null>(null)
 const dateRefs = ref<HTMLElement[]>([])
 const router = useRouter()
+const contentScrollContainer = ref<HTMLElement | null>(null)
+
+// Store scroll positions for restoration using sessionStorage for persistence across navigation
+const SCROLL_KEY = 'tabTerbaru-scroll-position'
+const DATE_SCROLL_KEY = 'tabTerbaru-date-scroll'
+
+const getStoredScrollPosition = () => {
+  if (import.meta.client) {
+    return {
+      main: parseInt(sessionStorage.getItem(SCROLL_KEY) || '0', 10),
+      dateScroll: parseInt(sessionStorage.getItem(DATE_SCROLL_KEY) || '0', 10)
+    }
+  }
+  return { main: 0, dateScroll: 0 }
+}
+
+const saveScrollPosition = (main: number, dateScroll: number) => {
+  if (import.meta.client) {
+    sessionStorage.setItem(SCROLL_KEY, String(main))
+    sessionStorage.setItem(DATE_SCROLL_KEY, String(dateScroll))
+  }
+}
 
 // Single optimized API call with server-side caching
 const { data: allData, status } = useAsyncData('tabTerbaruData', async () => {
@@ -309,12 +336,37 @@ const onDateScroll = () => {
 }
 
 onMounted(() => {
+  // Get the parent scroll container
+  if (import.meta.client) {
+    const findScrollContainer = () => {
+      const container = props.scrollContainer || document.querySelector('.flex-1.overflow-y-auto') as HTMLElement
+      if (container) {
+        contentScrollContainer.value = container
+        
+        // Restore scroll position after a short delay
+        setTimeout(() => {
+          const stored = getStoredScrollPosition()
+          if (stored.main > 0) {
+            container.scrollTop = stored.main
+          }
+          if (dateContainer.value && stored.dateScroll > 0) {
+            dateContainer.value.scrollLeft = stored.dateScroll
+          }
+        }, 150)
+      }
+    }
+    findScrollContainer()
+  }
+
   setTimeout(() => {
     const index = todayIndex.value
+    const stored = getStoredScrollPosition()
     if (index !== -1 && dateRange.value[index]) {
-      // Set selected date to the found date (today or closest)
-      selectedDate.value = dateRange.value[index].full
-      dateRefs.value[index]?.scrollIntoView({ behavior: 'auto', inline: 'center', block: 'nearest' })
+      // Only scroll to today if we haven't saved a scroll position
+      if (stored.main === 0) {
+        selectedDate.value = dateRange.value[index].full
+        dateRefs.value[index]?.scrollIntoView({ behavior: 'auto', inline: 'center', block: 'nearest' })
+      }
     }
   }, 300)
 })
@@ -331,6 +383,48 @@ watch(() => allData.value, (newData) => {
     }
   }
 }, { immediate: true })
+
+// Save scroll position when component is deactivated (navigating away)
+onDeactivated(() => {
+  if (import.meta.client) {
+    const container = props.scrollContainer || contentScrollContainer.value
+    if (container) {
+      const mainScroll = container.scrollTop
+      const dateScroll = dateContainer.value?.scrollLeft || 0
+      saveScrollPosition(mainScroll, dateScroll)
+    }
+  }
+})
+
+// Restore scroll position when component is activated (coming back)
+onActivated(() => {
+  if (import.meta.client) {
+    nextTick(() => {
+      const container = props.scrollContainer || contentScrollContainer.value
+      const stored = getStoredScrollPosition()
+      
+      // Restore scroll positions
+      if (container && stored.main > 0) {
+        container.scrollTop = stored.main
+      }
+      if (dateContainer.value && stored.dateScroll > 0) {
+        dateContainer.value.scrollLeft = stored.dateScroll
+      }
+    })
+  }
+})
+
+// Also save on beforeunmount as backup
+onBeforeUnmount(() => {
+  if (import.meta.client) {
+    const container = props.scrollContainer || contentScrollContainer.value
+    if (container) {
+      const mainScroll = container.scrollTop
+      const dateScroll = dateContainer.value?.scrollLeft || 0
+      saveScrollPosition(mainScroll, dateScroll)
+    }
+  }
+})
 </script>
 
 <style scoped>

@@ -1,16 +1,27 @@
 export const useScrollState = () => {
-  const scrollPositions = useState<Record<string, number>>('scroll-positions', () => ({}))
-
   const saveScrollPosition = (key: string, position: number) => {
-    scrollPositions.value[key] = position
+    if (import.meta.client) {
+      sessionStorage.setItem(`scroll-${key}`, String(position))
+    }
   }
 
   const getScrollPosition = (key: string): number => {
-    return scrollPositions.value[key] || 0
+    if (import.meta.client) {
+      const position = parseInt(sessionStorage.getItem(`scroll-${key}`) || '0', 10)
+      return position
+    }
+    return 0
+  }
+
+  const clearScrollPosition = (key: string) => {
+    if (import.meta.client) {
+      sessionStorage.removeItem(`scroll-${key}`)
+    }
   }
 
   return {
     saveScrollPosition,
-    getScrollPosition
+    getScrollPosition,
+    clearScrollPosition
   }
 }

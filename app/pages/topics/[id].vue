@@ -15,7 +15,7 @@
     </div>
 
     <!-- Content -->
-    <div class="flex-1 overflow-y-auto px-4 py-4">
+    <div ref="contentContainer" class="flex-1 overflow-y-auto px-4 py-4">
       <!-- Empty State -->
       <div v-if="categories.length === 0" class="flex flex-col items-center justify-center py-32">
         <div
@@ -51,6 +51,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, onMounted, onActivated, onDeactivated, onBeforeUnmount } from 'vue'
+
 const route = useRoute()
 const config = useRuntimeConfig()
 
@@ -71,6 +73,23 @@ interface TopicCategory {
 
 const topicId = computed(() => route.params.id as string)
 const topicTitle = computed(() => (route.query.title as string) || 'Topic')
+const contentContainer = ref<HTMLElement | null>(null)
+
+// Scroll position management
+const SCROLL_KEY = `topics-${topicId.value}-scroll`
+
+const getStoredScrollPosition = () => {
+  if (import.meta.client) {
+    return parseInt(sessionStorage.getItem(SCROLL_KEY) || '0', 10)
+  }
+  return 0
+}
+
+const saveScrollPosition = (position: number) => {
+  if (import.meta.client) {
+    sessionStorage.setItem(SCROLL_KEY, String(position))
+  }
+}
 
 const { data: categoriesData } = await useFetch<{ success: boolean; data: TopicCategory[] }>(
   () => `${config.public.apiBaseUrl}/topics/category/${topicId.value}`
@@ -99,4 +118,41 @@ const shareTopic = async () => {
     alert('Link berhasil disalin!')
   }
 }
+
+// Restore scroll position on mount
+onMounted(() => {
+  if (import.meta.client && contentContainer.value) {
+    setTimeout(() => {
+      const savedPosition = getStoredScrollPosition()
+      if (savedPosition > 0 && contentContainer.value) {
+        contentContainer.value.scrollTop = savedPosition
+      }
+    }, 100)
+  }
+})
+
+// Save scroll position when navigating away
+onBeforeUnmount(() => {
+  if (import.meta.client && contentContainer.value) {
+    saveScrollPosition(contentContainer.value.scrollTop)
+  }
+})
+
+// Handle keepalive activation/deactivation
+onActivated(() => {
+  if (import.meta.client && contentContainer.value) {
+    setTimeout(() => {
+      const savedPosition = getStoredScrollPosition()
+      if (savedPosition > 0 && contentContainer.value) {
+        contentContainer.value.scrollTop = savedPosition
+      }
+    }, 50)
+  }
+})
+
+onDeactivated(() => {
+  if (import.meta.client && contentContainer.value) {
+    saveScrollPosition(contentContainer.value.scrollTop)
+  }
+})
 </script>

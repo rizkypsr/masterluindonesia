@@ -16,7 +16,7 @@
     </div>
 
     <!-- Content -->
-    <div class="flex-1 overflow-y-auto custom-scrollbar">
+    <div ref="contentContainer" class="flex-1 overflow-y-auto custom-scrollbar">
       <!-- Banner Image -->
       <div class="w-full">
         <NuxtImg 
@@ -45,7 +45,9 @@
           <h2 class="text-lg font-semibold text-black dark:text-white mb-3 border-b border-gray-300 dark:border-gray-600 pb-2">{{ category.title }}</h2>
           <div class="grid grid-cols-3 gap-3">
             <NuxtLink v-for="book in category.book" :key="book.id"
-              :to="{ path: `/books/${book.id}`, query: { title: book.title, cover: book.url } }" class="block">
+              :to="{ path: `/books/${book.id}`, query: { title: book.title, cover: book.url } }" 
+              class="block"
+              @click="saveScroll">
               <template v-if="book.url">
                 <NuxtImg :src="getImageUrl(book.url)" :alt="book.title" class="w-full aspect-3/4 object-cover rounded-xl"
                   loading="lazy" format="webp" width="200" height="267" />
@@ -73,8 +75,18 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, onMounted, onActivated, onBeforeUnmount, nextTick } from 'vue'
+
+// Enable keepalive for this page
+definePageMeta({
+  keepalive: true
+})
+
 const config = useRuntimeConfig()
+const route = useRoute()
 const searchQuery = ref('')
+const contentContainer = ref<HTMLElement | null>(null)
+const { saveScrollPosition, getScrollPosition } = useScrollState()
 
 interface Book {
   id: number
@@ -115,6 +127,50 @@ const filteredCategories = computed(() => {
       )
     }))
     .filter(category => category.book.length > 0)
+})
+
+const restoreScroll = () => {
+  if (contentContainer.value) {
+    const savedPosition = getScrollPosition('books')
+    if (savedPosition > 0) {
+      contentContainer.value.scrollTop = savedPosition
+    }
+  }
+}
+
+const saveScroll = () => {
+  if (contentContainer.value) {
+    const position = contentContainer.value.scrollTop
+    saveScrollPosition('books', position)
+  }
+}
+
+// Restore scroll position on mount
+onMounted(() => {
+  if (import.meta.client) {
+    nextTick(() => {
+      setTimeout(restoreScroll, 200)
+    })
+  }
+})
+
+// Save scroll position when navigating away
+onBeforeUnmount(() => {
+  saveScroll()
+})
+
+// Handle keepalive activation
+onActivated(() => {
+  if (import.meta.client) {
+    nextTick(() => {
+      setTimeout(restoreScroll, 100)
+    })
+  }
+})
+
+// Save on deactivation - using beforeRouteLeave instead
+onBeforeRouteLeave(() => {
+  saveScroll()
 })
 </script>
 

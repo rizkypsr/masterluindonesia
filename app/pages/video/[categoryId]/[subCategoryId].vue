@@ -9,7 +9,7 @@
     </div>
 
     <!-- Content -->
-    <div class="flex-1 overflow-y-auto p-4">
+    <div ref="contentContainer" class="flex-1 overflow-y-auto p-4">
       <!-- Loading State -->
       <div v-if="pending" class="space-y-6">
         <div v-for="i in 3" :key="i" class="animate-pulse">
@@ -23,17 +23,18 @@
 
       <!-- Video Groups -->
       <div v-else>
-        <div v-for="group in videoGroups" :key="group.id" class="border-b border-gray-400 dark:border-gray-600 pb-2 mb-4">
+        <div v-for="group in videoGroups" :key="group.id"
+          class="border-b border-gray-400 dark:border-gray-600 pb-2 mb-4">
           <!-- Group Title -->
-          <h2 class="text-lg font-semibold text-black dark:text-white mb-3">{{ group.title }}</h2>
+          <h2 class="text-xl font-semibold text-black dark:text-white mb-3">{{ group.title }}</h2>
 
           <!-- Video Items -->
-          <div class="space-y-1">
+          <div class="space-y-2">
             <NuxtLink v-for="video in group.sub_category" :key="video.id"
               :to="{ path: `/video/play/${video.id}`, query: { title: video.title } }"
-              class="items-center hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
+              class="block py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors">
               <!-- Video Title -->
-              <span class="text-lg text-gray-700 dark:text-gray-300 flex-1">{{ video.title }}</span>
+              <span class="text-xl text-gray-700 dark:text-gray-300">{{ video.title }}</span>
             </NuxtLink>
           </div>
         </div>
@@ -43,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue"
+import { ref, computed, onMounted, onActivated, onDeactivated, onBeforeUnmount } from "vue"
 
 interface VideoItem {
   id: number
@@ -73,10 +74,64 @@ const config = useRuntimeConfig()
 const categoryId = computed(() => route.params.categoryId)
 const subCategoryId = computed(() => route.params.subCategoryId)
 const pageTitle = computed(() => (route.query.title as string) || 'Video')
+const contentContainer = ref<HTMLElement | null>(null)
+
+// Scroll position management
+const SCROLL_KEY = `video-${categoryId.value}-${subCategoryId.value}-scroll`
+
+const getStoredScrollPosition = () => {
+  if (import.meta.client) {
+    return parseInt(sessionStorage.getItem(SCROLL_KEY) || '0', 10)
+  }
+  return 0
+}
+
+const saveScrollPosition = (position: number) => {
+  if (import.meta.client) {
+    sessionStorage.setItem(SCROLL_KEY, String(position))
+  }
+}
 
 const { data: videoData, pending } = await useFetch<{ success: boolean; data: VideoGroup[] }>(
   () => `${config.public.apiBaseUrl}/videoCategory?category_id=${categoryId.value}&sub_category_id=${subCategoryId.value}`
 )
 
 const videoGroups = computed(() => videoData.value?.data?.sort((a, b) => a.order - b.order) || [])
+
+// Restore scroll position on mount
+onMounted(() => {
+  if (import.meta.client && contentContainer.value) {
+    setTimeout(() => {
+      const savedPosition = getStoredScrollPosition()
+      if (savedPosition > 0 && contentContainer.value) {
+        contentContainer.value.scrollTop = savedPosition
+      }
+    }, 100)
+  }
+})
+
+// Save scroll position when navigating away
+onBeforeUnmount(() => {
+  if (import.meta.client && contentContainer.value) {
+    saveScrollPosition(contentContainer.value.scrollTop)
+  }
+})
+
+// Handle keepalive activation/deactivation
+onActivated(() => {
+  if (import.meta.client && contentContainer.value) {
+    setTimeout(() => {
+      const savedPosition = getStoredScrollPosition()
+      if (savedPosition > 0 && contentContainer.value) {
+        contentContainer.value.scrollTop = savedPosition
+      }
+    }, 50)
+  }
+})
+
+onDeactivated(() => {
+  if (import.meta.client && contentContainer.value) {
+    saveScrollPosition(contentContainer.value.scrollTop)
+  }
+})
 </script>

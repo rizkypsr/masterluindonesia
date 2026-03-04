@@ -88,11 +88,18 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onActivated, onBeforeUnmount, nextTick } from 'vue'
 import { useBookmark } from '~/composables/useBookmark'
 import { useHistory } from '~/composables/useHistory'
 
+// Enable keepalive for this page
+definePageMeta({
+  keepalive: true
+})
+
 const route = useRoute()
 const config = useRuntimeConfig()
+const { saveScrollPosition, getScrollPosition } = useScrollState()
 
 // FAB Menu State
 const showFabMenu = ref(false)
@@ -108,15 +115,58 @@ const { openPlaylistModal } = usePlaylist()
 // History
 const { saveBookHistory } = useHistory()
 
+const bookId = computed(() => route.params.id as string)
+const bookTitle = computed(() => (route.query.title as string) || 'Buku')
+const bookCover = computed(() => (route.query.cover as string) || '/fallback.svg')
+
 const isBookBookmarked = computed(() => {
   return isBookmarked(3, bookTitle.value)
 })
+
+const restoreScroll = () => {
+  if (scrollContainer.value) {
+    const savedPosition = getScrollPosition(`book-${bookId.value}`)
+    if (savedPosition > 0) {
+      scrollContainer.value.scrollTop = savedPosition
+    }
+  }
+}
+
+const saveScroll = () => {
+  if (scrollContainer.value) {
+    const position = scrollContainer.value.scrollTop
+    saveScrollPosition(`book-${bookId.value}`, position)
+  }
+}
 
 onMounted(async () => {
   await fetchBookmarksByType(3)
   
   // Save to history
   saveBookHistory(bookTitle.value, Number(bookId.value))
+
+  // Restore scroll position
+  if (import.meta.client) {
+    nextTick(() => {
+      setTimeout(restoreScroll, 200)
+    })
+  }
+})
+
+onBeforeUnmount(() => {
+  saveScroll()
+})
+
+onActivated(() => {
+  if (import.meta.client) {
+    nextTick(() => {
+      setTimeout(restoreScroll, 100)
+    })
+  }
+})
+
+onBeforeRouteLeave(() => {
+  saveScroll()
 })
 
 const zoomIn = () => {
@@ -150,10 +200,6 @@ interface Chapter {
   have_child: number
   sub_chapters: SubChapter[]
 }
-
-const bookId = computed(() => route.params.id as string)
-const bookTitle = computed(() => (route.query.title as string) || 'Buku')
-const bookCover = computed(() => (route.query.cover as string) || '/fallback.svg')
 
 const { data: chaptersData } = await useFetch<{ success: boolean; data: Chapter[] }>(
   () => `${config.public.apiBaseUrl}/books/${bookId.value}`
