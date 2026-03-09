@@ -1,12 +1,17 @@
 <template>
     <div class="h-screen flex flex-col bg-white dark:bg-gray-900">
         <!-- Header -->
-        <div class="flex items-center gap-4 px-4 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
-            <button @click="$router.back()"
-                class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
-                <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
+        <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
+            <div class="flex items-center gap-4 flex-1 min-w-0">
+                <button @click="$router.back()"
+                    class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded shrink-0">
+                    <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
+                </button>
+                <h1 class="text-lg font-semibold text-black dark:text-white line-clamp-1">{{ pageTitle }}</h1>
+            </div>
+            <button @click="shareContent" class="p-1 shrink-0">
+                <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
             </button>
-            <h1 class="text-lg font-semibold text-black dark:text-white line-clamp-1">{{ pageTitle }}</h1>
         </div>
 
         <!-- Search -->
@@ -223,5 +228,25 @@ const goToAudioDetail = (item: TopicContent) => {
             subtitle_id: item.id
         }
     })
+}
+
+const shareContent = async () => {
+    const shareData = {
+        title: 'Ensiklopedia',
+        text: pageTitle.value,
+        url: window.location.href
+    }
+
+    if (navigator.share) {
+        try {
+            await navigator.share(shareData)
+        } catch (err) {
+            // User cancelled or error
+        }
+    } else {
+        // Fallback: copy to clipboard
+        await navigator.clipboard.writeText(`Lihat "${pageTitle.value}" di\n${window.location.href}`)
+        alert('Link berhasil disalin!')
+    }
 }
 </script>
