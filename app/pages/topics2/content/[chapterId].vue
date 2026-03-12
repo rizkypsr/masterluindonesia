@@ -377,6 +377,12 @@ function onTouchEnd(e: TouchEvent) {
 onBeforeUnmount(() => {
     stopSpeech()
 })
+
+// Open video page function
+const openVideoPage = () => {
+    const videoUrl = `/video/topic2-chapter/${chapterId}`
+    navigateTo(videoUrl)
+}
 </script>
 
 <template>
@@ -526,6 +532,11 @@ onBeforeUnmount(() => {
                     <!-- Copy Text Button -->
                     <button @click="copyText" class="w-10 h-10 rounded-lg bg-[#ffcb00] flex items-center justify-center">
                         <Icon name="mdi:content-copy" class="w-5 h-5 text-[#221b00] font-bold" />
+                    </button>
+
+                    <!-- Video Button -->
+                    <button @click="openVideoPage" class="w-10 h-10 rounded-lg bg-[#ffcb00] flex items-center justify-center">
+                        <Icon name="mdi:play" class="w-5 h-5 text-[#221b00] font-bold" />
                     </button>
 
                     <button @click="nextPage" :disabled="currentPageIndex >= totalPages - 1"

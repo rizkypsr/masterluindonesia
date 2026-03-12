@@ -12,9 +12,11 @@ export default defineCachedEventHandler(async (event) => {
     // Determine which data to fetch based on menu settings
     const shouldFetchTopics = menuSettings.find(m => m.code === 'topic')?.status === true
     const shouldFetchAgenda = menuSettings.find(m => m.code === 'agenda')?.status === true
+    const shouldFetchTopics2 = menuSettings.find(m => m.code === 'topic2')?.status === true
+    const shouldFetchTopics3 = menuSettings.find(m => m.code === 'topic3')?.status === true
 
     // Parallel fetch all required data from external API
-    const [mediaRes, topicsRes, booksRes, agendaRes] = await Promise.all([
+    const [mediaRes, topicsRes, booksRes, agendaRes, topics2Res, topics3Res] = await Promise.all([
       $fetch<{ success: boolean; data: any[] }>(`${baseUrl}/app/media`),
       shouldFetchTopics 
         ? $fetch<{ success: boolean; data: any[] }>(`${baseUrl}/topics`)
@@ -22,6 +24,12 @@ export default defineCachedEventHandler(async (event) => {
       $fetch<{ success: boolean; data: any[] }>(`${baseUrl}/bookspaginate?page=1`),
       shouldFetchAgenda
         ? $fetch<{ success: boolean; data: any[] }>(`${baseUrl}/app/agenda`)
+        : Promise.resolve({ success: true, data: [] }),
+      shouldFetchTopics2
+        ? $fetch<{ success: boolean; data: any[] }>(`${baseUrl}/topics2?limit=5`)
+        : Promise.resolve({ success: true, data: [] }),
+      shouldFetchTopics3
+        ? $fetch<{ success: boolean; data: any[] }>(`${baseUrl}/topics3?limit=5`)
         : Promise.resolve({ success: true, data: [] })
     ])
 
@@ -32,6 +40,8 @@ export default defineCachedEventHandler(async (event) => {
         topics: topicsRes.data || [],
         books: booksRes.data || [],
         agenda: agendaRes.data || [],
+        topics2: topics2Res.data || [],
+        topics3: topics3Res.data || [],
         menuSettings
       }
     }
@@ -45,6 +55,8 @@ export default defineCachedEventHandler(async (event) => {
         topics: [],
         books: [],
         agenda: [],
+        topics2: [],
+        topics3: [],
         menuSettings: []
       }
     }

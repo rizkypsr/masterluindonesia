@@ -1,11 +1,11 @@
 <template>
   <div class="mt-6 px-4">
     <div class="flex items-center justify-between mb-4">
-      <h2 class="text-xl font-semibold text-black dark:text-white">Topik</h2>
-      <NuxtLink to="/topics2" class="text-primary dark:text-yellow-400 font-medium">Lihat semua</NuxtLink>
+      <h2 class="text-xl font-semibold text-black dark:text-white">Topik 3</h2>
+      <NuxtLink to="/topics3" class="text-primary dark:text-yellow-400 font-medium">Lihat semua</NuxtLink>
     </div>
 
-    <template v-if="!topics2Data">
+    <template v-if="!topics3Data">
       <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
         <USkeleton class="h-5 w-3/4 mb-2" />
         <USkeleton class="h-4 w-full mb-2" />
@@ -29,29 +29,29 @@
 import type { TreeItem } from '@nuxt/ui'
 import type { TreeItemSelectEvent } from 'reka-ui'
 
-interface Topic2Child {
+interface Topic3Child {
   id: number
   book_category_id: number
   title: string
 }
 
-interface Topic2 {
+interface Topic3 {
   id: number
   title: string
-  children: Topic2Child[]
+  children: Topic3Child[]
 }
 
 const props = defineProps<{
-  topics2Data?: Topic2[]
+  topics3Data?: Topic3[]
 }>()
 
 const router = useRouter()
 
 // Use props data if available, otherwise show empty state
 const treeItems = computed<TreeItem[]>(() => {
-  const apiData = props.topics2Data || []
+  const apiData = props.topics3Data || []
 
-  function transformToTreeItem(item: Topic2 | Topic2Child, isParent = false): TreeItem {
+  function transformToTreeItem(item: Topic3 | Topic3Child, isParent = false): TreeItem {
     const treeItem: TreeItem = {
       id: item.id,
       label: item.title,
@@ -75,13 +75,13 @@ const treeItems = computed<TreeItem[]>(() => {
   return apiData.map(item => transformToTreeItem(item, true))
 })
 
-const isLoading = computed(() => !props.topics2Data)
+const isLoading = computed(() => !props.topics3Data)
 
 function handleSelect(e: TreeItemSelectEvent<TreeItem>) {
   const item = e.detail.value
   // Only navigate if item has no children (is a leaf node)
   if (item?.id && !item.children?.length) {
-    router.push(`/topics2/${item.id}`)
+    router.push(`/topics3/${item.id}`)
   }
 }
 </script>

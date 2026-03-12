@@ -102,7 +102,10 @@
     </div>
 
     <!-- Topics2 Section -->
-    <Topics2Section v-if="isTopic2MenuEnabled" :key="'topics2-section'" />
+    <Topics2Section v-if="isTopic2MenuEnabled" :topics2-data="topics2" :key="'topics2-section'" />
+
+    <!-- Topics3 Section -->
+    <Topics3Section v-if="isTopic3MenuEnabled" :topics3-data="topics3" :key="'topics3-section'" />
 
     <!-- Community Playlist Section - Lazy loaded with hydration on visible -->
     <LazyCommunityPlaylistSection v-if="isCommunityMenuEnabled" hydrate-on-visible />
@@ -198,6 +201,8 @@ const { data: allData, status } = useAsyncData('tabTerbaruData', async () => {
       topics: Topic[]
       books: Book[]
       agenda: Agenda[]
+      topics2: any[]
+      topics3: any[]
       menuSettings: MenuMobile[]
     }
   }>('/api/terbaru')
@@ -206,6 +211,8 @@ const { data: allData, status } = useAsyncData('tabTerbaruData', async () => {
 })
 
 const topics = computed(() => allData.value?.data?.topics?.sort((a, b) => a.seq - b.seq) || [])
+const topics2 = computed(() => allData.value?.data?.topics2?.sort((a: any, b: any) => a.seq - b.seq) || [])
+const topics3 = computed(() => allData.value?.data?.topics3?.sort((a: any, b: any) => a.seq - b.seq) || [])
 const books = computed(() => allData.value?.data?.books?.sort((a, b) => a.seq - b.seq) || [])
 const media = computed(() => allData.value?.data?.media?.sort((a, b) => a.seq - b.seq) || [])
 const agendaList = computed(() => allData.value?.data?.agenda || [])
@@ -229,6 +236,11 @@ const isTopic2MenuEnabled = computed(() => {
 const isCommunityMenuEnabled = computed(() => {
   const communityMenu = allData.value?.data?.menuSettings?.find(m => m.code === 'community')
   return communityMenu?.status === true
+})
+
+const isTopic3MenuEnabled = computed(() => {
+  const topic3Menu = allData.value?.data?.menuSettings?.find(m => m.code === 'topic3')
+  return topic3Menu?.status === true
 })
 
 // Transform topics to TreeItem format (flat list, no children)
