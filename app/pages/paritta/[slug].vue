@@ -83,6 +83,9 @@ const maxFontSize = 32
 
 const playbackRates = [0.5, 0.75, 1, 1.25, 1.5, 2]
 
+// Content area ref for scrolling
+const contentRef = ref<HTMLElement | null>(null)
+
 const audioUrl = computed(() => {
     if (!paritta.value) return ''
     const index = (parittaData as Paritta[]).findIndex(p => p.href === `/paritta/${slug}`)
@@ -128,6 +131,18 @@ function onPause() {
 function onEnded() {
     isPlaying.value = false
     reciteCount.value++
+    
+    // Replay audio from start
+    if (audioRef.value) {
+        audioRef.value.currentTime = 0
+        audioRef.value.play()
+        isPlaying.value = true
+    }
+    
+    // Scroll content area to top
+    if (contentRef.value) {
+        contentRef.value.scrollTo({ top: 0, behavior: 'smooth' })
+    }
 }
 
 function seekTo(event: Event) {
@@ -178,6 +193,18 @@ function increasePlaybackRate() {
 
 function incrementCount() {
     reciteCount.value++
+    
+    // Replay audio from start
+    if (audioRef.value) {
+        audioRef.value.currentTime = 0
+        audioRef.value.play()
+        isPlaying.value = true
+    }
+    
+    // Scroll content area to top
+    if (contentRef.value) {
+        contentRef.value.scrollTo({ top: 0, behavior: 'smooth' })
+    }
 }
 
 function decrementCount() {
@@ -235,7 +262,7 @@ function togglePlayerExpanded() {
         </div>
 
         <!-- Content Area -->
-        <div v-if="paritta" class="flex-1 overflow-y-auto px-4 py-6" :style="{ fontSize: fontSize + 'px' }">
+        <div v-if="paritta" ref="contentRef" class="flex-1 overflow-y-auto px-4 py-6" :style="{ fontSize: fontSize + 'px' }">
             <!-- English Title -->
             <h2 class="font-bold text-black dark:text-white mb-8 text-center" style="font-size: 1.25em;">
                 {{ paritta.englishTitle }}
