@@ -52,7 +52,6 @@
             <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-3">
               <span v-if="video.seq">
                 <Icon name="mdi:format-list-numbered" class="w-4 h-4 inline mr-1" />
-                 {{ video.seq }}
               </span>
               <span v-if="video.date">
                 <Icon name="mdi:calendar" class="w-4 h-4 inline mr-1" />

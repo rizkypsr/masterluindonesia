@@ -2,9 +2,7 @@
   <div class="h-full bg-gray-50 dark:bg-gray-900 flex flex-col overflow-hidden">
     <!-- Header -->
     <div class="bg-white dark:bg-gray-800 px-4 py-4 flex items-center gap-3 shadow-sm shrink-0">
-      <button @click="$router.back()" class="p-1">
-        <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
-      </button>
+      <BackButton />
       <h1 class="text-lg font-semibold text-black dark:text-white">Video</h1>
     </div>
 
@@ -37,19 +35,19 @@
       <div v-else class="space-y-4">
         <div v-for="video in videos" :key="video.topic_video_id"
           class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow-sm border border-gray-200 dark:border-gray-700">
-          
+
           <!-- Video Content -->
           <div class="w-full">
             <!-- Video Title -->
             <h3 class="text-lg font-semibold text-black dark:text-white mb-2 line-clamp-2">
               {{ video.title }}
             </h3>
-            
+
             <!-- Video Description -->
             <p v-if="video.synopsis" class="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-3">
               {{ video.synopsis }}
             </p>
-            
+
             <!-- Video Meta -->
             <div class="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-3">
               <span v-if="video.seq">
@@ -60,27 +58,21 @@
                 {{ formatDate(video.date) }}
               </span>
             </div>
-            
+
             <!-- Action Buttons -->
             <div class="flex gap-2">
-              <button 
-                v-if="video.video_id"
-                @click="playVideo(video)"
-                class="px-4 py-2 bg-[#ffcb00] text-[#221b00] rounded-lg font-medium hover:bg-yellow-500 transition-colors"
-              >
+              <button v-if="video.video_id" @click="playVideo(video)"
+                class="px-4 py-2 bg-[#ffcb00] text-[#221b00] rounded-lg font-medium hover:bg-yellow-500 transition-colors">
                 <Icon name="mdi:play" class="w-4 h-4 inline mr-1" />
                 Putar Video
               </button>
-              
-              <button 
-                v-if="video.url"
-                @click="openVideoUrl(video.url)"
-                class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-              >
+
+              <button v-if="video.url" @click="openVideoUrl(video.url)"
+                class="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <Icon name="mdi:open-in-new" class="w-4 h-4 inline mr-1" />
                 Buka Link
               </button>
-              
+
               <!-- No video available message -->
               <div v-if="!video.video_id && !video.url" class="px-4 py-2 text-gray-500 dark:text-gray-400 text-sm">
                 Video tidak tersedia

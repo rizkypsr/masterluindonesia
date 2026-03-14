@@ -19,12 +19,6 @@ const { saveBookChapterHistory } = useHistory()
 
 const isBookBookmarked = ref(false)
 
-interface BookAudio {
-    id: number
-    title: string
-    url: string
-}
-
 interface BookDetail {
     id: number
     book_category_id: number
@@ -42,7 +36,6 @@ interface BookContent {
     content: string
     content_wa: string
     page: number
-    bookaudio: BookAudio[] | null
 }
 
 interface ContentResponse {
@@ -68,11 +61,7 @@ const searchQuery = ref('')
 const searchResults = ref<{ pageIndex: number; snippet: string; highlightedSnippet: string }[]>([])
 const highlightTerm = ref('')
 
-// Audio player state
-const audioRef = ref<HTMLAudioElement | null>(null)
-const isPlaying = ref(false)
-const currentTime = ref(0)
-const duration = ref(0)
+// Speech state
 const isSpeaking = ref(false)
 
 // Swipe gesture state
@@ -157,12 +146,6 @@ const currentContent = computed(() => {
     return contents.value[currentPageIndex.value]
 })
 
-// Current audio
-const currentAudio = computed(() => {
-    if (!currentContent.value?.bookaudio?.length) return null
-    return currentContent.value.bookaudio[0]
-})
-
 // Generate page options for select
 const pageOptions = computed(() => {
     return Array.from({ length: totalPages.value }, (_, i) => ({
@@ -190,7 +173,7 @@ const highlightedTitle = computed(() => {
     return bookData.value.title.replace(regex, '<mark class="bg-yellow-300">$1</mark>')
 })
 
-// Format time for audio player
+// Format time for display (keeping for potential future use)
 const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60)
     const seconds = Math.floor(time % 60)
@@ -212,7 +195,6 @@ function stripHtml(html: string): string {
 
 function nextPage() {
     if (currentPageIndex.value < totalPages.value - 1) {
-        stopAudio()
         currentPageIndex.value++
         scrollToTop()
     }
@@ -220,7 +202,6 @@ function nextPage() {
 
 function prevPage() {
     if (currentPageIndex.value > 0) {
-        stopAudio()
         currentPageIndex.value--
         scrollToTop()
     }
@@ -279,7 +260,6 @@ function goToPage() {
 }
 
 function confirmGoToPage() {
-    stopAudio()
     currentPageIndex.value = selectedPage.value - 1
     isPageModalOpen.value = false
     scrollToTop()
@@ -348,63 +328,6 @@ function goToSearchResult(pageIndex: number) {
     scrollToTop()
 }
 
-// Audio functions
-function togglePlay() {
-    if (!audioRef.value) return
-    if (isPlaying.value) {
-        audioRef.value.pause()
-    } else {
-        audioRef.value.play()
-    }
-    isPlaying.value = !isPlaying.value
-}
-
-function stopAudio() {
-    if (audioRef.value) {
-        audioRef.value.pause()
-        audioRef.value.currentTime = 0
-        isPlaying.value = false
-        currentTime.value = 0
-    }
-    stopSpeech()
-}
-
-function seekBackward() {
-    if (audioRef.value) {
-        audioRef.value.currentTime = Math.max(0, audioRef.value.currentTime - 10)
-    }
-}
-
-function seekForward() {
-    if (audioRef.value) {
-        audioRef.value.currentTime = Math.min(duration.value, audioRef.value.currentTime + 10)
-    }
-}
-
-function onTimeUpdate() {
-    if (audioRef.value) {
-        currentTime.value = audioRef.value.currentTime
-    }
-}
-
-function onLoadedMetadata() {
-    if (audioRef.value) {
-        duration.value = audioRef.value.duration
-    }
-}
-
-function onSeek(event: Event) {
-    const target = event.target as HTMLInputElement
-    if (audioRef.value) {
-        audioRef.value.currentTime = parseFloat(target.value)
-    }
-}
-
-function onAudioEnded() {
-    isPlaying.value = false
-    currentTime.value = 0
-}
-
 // Speech to text (Text to Speech)
 function toggleSpeech() {
     if (isSpeaking.value) {
@@ -461,9 +384,9 @@ async function copyText() {
     }
 }
 
-// Watch for page changes to stop audio/speech
+// Watch for page changes to stop speech
 watch(currentPageIndex, () => {
-    stopAudio()
+    stopSpeech()
 })
 
 // Swipe gesture handlers
@@ -504,7 +427,6 @@ function onTouchEnd(e: TouchEvent) {
 // Stop speech when leaving the page
 onBeforeUnmount(() => {
     stopSpeech()
-    stopAudio()
 })
 
 // Open video page function
@@ -615,8 +537,7 @@ const openVideoPage = () => {
         </div>
 
         <!-- Hidden Audio Element -->
-        <audio v-if="currentAudio" ref="audioRef" :src="currentAudio.url" @timeupdate="onTimeUpdate"
-            @loadedmetadata="onLoadedMetadata" @ended="onAudioEnded" />
+        <!-- Audio player removed -->
 
         <!-- Bottom Section Container -->
         <div class="shrink-0 relative">
@@ -645,39 +566,6 @@ const openVideoPage = () => {
                 class="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 transition-all duration-300 overflow-hidden"
                 :class="isBottomNavHidden ? 'max-h-0' : 'max-h-96 pb-[env(safe-area-inset-bottom)]'"
             >
-                <!-- Audio Player Section -->
-                <div v-if="currentAudio" class="px-4 pt-4">
-                    <!-- Audio Title Badge -->
-                    <div class="flex justify-center mb-3">
-                        <span class="px-4 py-2 bg-primary rounded-full text-black font-medium text-sm">
-                            {{ currentAudio.title }}
-                        </span>
-                    </div>
-
-                    <!-- Progress Bar -->
-                    <div class="flex items-center gap-3 mb-3">
-                        <input type="range" :value="currentTime" :max="duration || 100" @input="onSeek"
-                            class="flex-1 h-1 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-primary" />
-                        <span class="text-xs text-gray-600 whitespace-nowrap">
-                            {{ formatTime(currentTime) }}/{{ formatTime(duration) }}
-                        </span>
-                    </div>
-
-                    <!-- Audio Controls -->
-                    <div class="flex items-center justify-center gap-4 mb-3">
-                        <button @click="seekBackward" class="p-2">
-                            <Icon name="mdi:rewind" class="w-6 h-6 text-black dark:text-white" />
-                        </button>
-                        <button @click="togglePlay"
-                            class="w-12 h-12 rounded-full bg-primary flex items-center justify-center">
-                            <Icon :name="isPlaying ? 'mdi:pause' : 'mdi:play'" class="w-6 h-6 text-black" />
-                        </button>
-                        <button @click="seekForward" class="p-2">
-                            <Icon name="mdi:fast-forward" class="w-6 h-6 text-black dark:text-white" />
-                        </button>
-                    </div>
-                </div>
-
                 <!-- Navigation Row -->
                 <div class="flex items-center justify-between px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
                     <button @click="prevPage" :disabled="currentPageIndex === 0" class="p-2 disabled:opacity-30">
@@ -741,24 +629,3 @@ const openVideoPage = () => {
         <LazyPlaylistModal />
     </div>
 </template>
-
-<style scoped>
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: #fbbf24;
-    cursor: pointer;
-}
-
-input[type="range"]::-moz-range-thumb {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: #fbbf24;
-    cursor: pointer;
-    border: none;
-}
-</style>
