@@ -43,6 +43,29 @@
                 </div>
             </div>
 
+            <!-- Related Chapters Section -->
+            <div v-if="videoData.related_chapters?.length" class="bg-white dark:bg-gray-800 mt-2">
+                <button @click="showRelatedChapters = !showRelatedChapters"
+                    class="w-full px-4 py-3 flex items-center justify-between">
+                    <span class="font-semibold text-black dark:text-white">RELATED CHAPTERS</span>
+                    <Icon :name="showRelatedChapters ? 'mdi:chevron-up' : 'mdi:chevron-down'"
+                        class="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                </button>
+
+                <div v-if="showRelatedChapters" class="px-4 pb-4 space-y-2">
+                    <NuxtLink v-for="chapter in videoData.related_chapters" :key="chapter.chapter_id"
+                        :to="getChapterUrl(chapter)"
+                        class="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        <Icon :name="getChapterIcon(chapter.type)" class="w-6 h-6 shrink-0 text-primary dark:text-yellow-400 mt-0.5" />
+                        <div class="flex-1 min-w-0">
+                            <p class="font-medium text-black dark:text-white line-clamp-2">{{ chapter.chapter_title }}</p>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ chapter.parent_title }}</p>
+                        </div>
+                        <Icon name="mdi:chevron-right" class="w-5 h-5 shrink-0 text-gray-400 dark:text-gray-500 mt-1" />
+                    </NuxtLink>
+                </div>
+            </div>
+
             <!-- Subtitle Section -->
             <div v-if="videoData.subtitle?.length" class="bg-white dark:bg-gray-800 mt-2">
                 <button @click="showSubtitle = !showSubtitle"
@@ -152,6 +175,14 @@ interface SubVideoGroup {
     child: SubVideo[]
 }
 
+interface RelatedChapter {
+    type: string
+    chapter_id: number
+    chapter_title: string
+    parent_title: string
+    parent_id?: number
+}
+
 interface VideoDetail {
     id: number
     parent_id: number | null
@@ -166,6 +197,7 @@ interface VideoDetail {
     date: string | null
     subtitle: Subtitle[]
     sub_video: SubVideoGroup[]
+    related_chapters: RelatedChapter[]
 }
 
 const route = useRoute()
@@ -174,6 +206,7 @@ const videoId = computed(() => route.params.id)
 const pageTitle = computed(() => (route.query.title as string) || 'Video')
 
 const showSubtitle = ref(false)
+const showRelatedChapters = ref(false)
 const subtitleSearch = ref("")
 
 // FAB Menu State
@@ -367,6 +400,31 @@ const shareContent = () => {
         const shareText = `${title}\n${shareUrl}`
         navigator.clipboard.writeText(shareText)
     }
+}
+
+// Get chapter URL based on type
+const getChapterUrl = (chapter: RelatedChapter) => {
+    if (chapter.type === 'book') {
+        // Navigate to book chapter with just chapter_id
+        return `/book/${chapter.chapter_id}?chapter=${encodeURIComponent(chapter.chapter_title)}`
+    } else if (chapter.type === 'topic2') {
+        return `/topics2/content/${chapter.chapter_id}?chapter=${encodeURIComponent(chapter.chapter_title)}`
+    } else if (chapter.type === 'topic3') {
+        return `/topics3/content/${chapter.chapter_id}?title=${encodeURIComponent(chapter.chapter_title)}`
+    }
+    return '#'
+}
+
+// Get icon based on chapter type
+const getChapterIcon = (type: string) => {
+    if (type === 'book') {
+        return 'mdi:book-open-variant'
+    } else if (type === 'topic2') {
+        return 'mdi:file-document-outline'
+    } else if (type === 'topic3') {
+        return 'mdi:file-document-multiple-outline'
+    }
+    return 'mdi:file-outline'
 }
 </script>
 

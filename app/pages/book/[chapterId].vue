@@ -5,7 +5,7 @@ import { useHistory } from '~/composables/useHistory'
 const route = useRoute()
 const config = useRuntimeConfig()
 
-const bookId = route.params.bookId as string
+const bookId = ref<number | null>(null)
 const chapterId = route.params.chapterId as string
 
 // Bookmark
@@ -44,6 +44,8 @@ interface ContentResponse {
     data: {
         chapter_id: number
         chapter_title: string
+        book_id: number
+        book_title: string
         video_category_id: number | null
         contents: BookContent[]
     }
@@ -84,10 +86,8 @@ interface SearchResult {
     highlightedSnippet: string
 }
 
-// Fetch book detail
-const { data: bookDetail } = await useFetch<BookDetail>(
-    `${config.public.apiBaseUrl}/books/detail/${bookId}`
-)
+// Fetch book detail - will be fetched after we get book_id from contents
+const bookDetail = ref<BookDetail | null>(null)
 
 const bookData = computed(() => bookDetail.value)
 
@@ -107,6 +107,33 @@ onMounted(async () => {
         videoCategoryId.value = response.data.video_category_id
         hasVideo.value = response.data.video_category_id !== null
         
+        // Get book_id and book_title from response
+        bookId.value = response.data.book_id
+        chapterTitle.value = response.data.chapter_title || (route.query.chapter as string) || ''
+        
+        // Fetch book details if needed (for additional info)
+        if (bookId.value) {
+            try {
+                const bookResponse = await $fetch<BookDetail>(
+                    `${config.public.apiBaseUrl}/books/detail/${bookId.value}`
+                )
+                bookDetail.value = bookResponse
+            } catch (e) {
+                console.error('Failed to load book details', e)
+                // Use book_title from chapter response as fallback
+                bookDetail.value = {
+                    id: bookId.value,
+                    title: response.data.book_title,
+                    book_category_id: 0,
+                    url: '',
+                    url_pdf: null,
+                    synopsis: null,
+                    seq: 0,
+                    date: null
+                }
+            }
+        }
+        
         // Start at first content page (skip cover)
         currentPageIndex.value = 0
         
@@ -124,12 +151,12 @@ onMounted(async () => {
         }
         
         // Save to history
-        if (bookData.value?.title && currentContent.value) {
+        if (bookData.value?.title && currentContent.value && bookId.value) {
             const chapTitle = chapterTitle.value || `Page ${currentContent.value.page}`
             saveBookChapterHistory(
                 bookData.value.title,
                 chapTitle,
-                Number(bookId),
+                bookId.value,
                 Number(chapterId)
             )
         }
@@ -255,12 +282,14 @@ function shareContent() {
 function addBookmark() {
     // Get the actual page number from content, not the index
     const actualPage = currentContent.value?.page || 1
-    createBookBookmark(
-        bookData.value?.title || '',
-        Number(bookId),
-        Number(chapterId),
-        actualPage
-    )
+    if (bookId.value) {
+        createBookBookmark(
+            bookData.value?.title || '',
+            bookId.value,
+            Number(chapterId),
+            actualPage
+        )
+    }
 }
 
 function goToPage() {
@@ -438,11 +467,16 @@ onBeforeUnmount(() => {
     stopSpeech()
 })
 
+// Computed property for video button state
+const isVideoButtonEnabled = computed(() => {
+    return !isLoadingContents.value && hasVideo.value && videoCategoryId.value !== null
+})
+
 // Open video page function
 const openVideoPage = () => {
     if (videoCategoryId.value) {
         const title = bookData.value?.title || 'Video'
-        const videoUrl = `/video/play/sub/${videoCategoryId.value}?title=${encodeURIComponent(title)}`
+        const videoUrl = `/video/play/${videoCategoryId.value}?title=${encodeURIComponent(title)}`
         navigateTo(videoUrl)
     }
 }
@@ -455,7 +489,7 @@ const openVideoPage = () => {
             <div class="flex items-center gap-3">
                 <BackButton />
                 <h1 class="text-lg font-semibold text-black dark:text-white truncate max-w-[200px]">
-                    {{ bookData?.title }}
+                    {{ chapterTitle || bookData?.title }}
                 </h1>
             </div>
             <div class="relative">
@@ -601,10 +635,10 @@ const openVideoPage = () => {
                     </button>
 
                     <!-- Video Button -->
-                    <button @click="openVideoPage" :disabled="isLoadingContents || !hasVideo" 
+                    <button @click="openVideoPage" :disabled="!isVideoButtonEnabled" 
                         class="w-10 h-10 rounded-lg flex items-center justify-center transition-opacity"
-                        :class="!isLoadingContents && hasVideo ? 'bg-[#ffcb00] hover:bg-yellow-500' : 'bg-gray-300 dark:bg-gray-600 cursor-not-allowed opacity-50'">
-                        <Icon name="mdi:play" class="w-5 h-5" :class="!isLoadingContents && hasVideo ? 'text-[#221b00]' : 'text-gray-500 dark:text-gray-400'" />
+                        :class="isVideoButtonEnabled ? 'bg-[#ffcb00] hover:bg-yellow-500' : 'bg-gray-300 dark:bg-gray-600 cursor-not-allowed opacity-50'">
+                        <Icon name="mdi:play" class="w-5 h-5" :class="isVideoButtonEnabled ? 'text-[#221b00]' : 'text-gray-500 dark:text-gray-400'" />
                     </button>
 
                     <button @click="nextPage" :disabled="currentPageIndex >= totalPages - 1"

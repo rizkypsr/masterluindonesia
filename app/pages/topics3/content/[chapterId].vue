@@ -10,10 +10,10 @@
         <h1 class="text-lg font-semibold text-black dark:text-white line-clamp-1">{{ pageTitle }}</h1>
       </div>
       <div class="flex items-center gap-2 shrink-0">
-        <button @click="openVideoPage" :disabled="isLoading || !hasVideo" class="p-1"
-          :class="!isLoading && hasVideo ? '' : 'opacity-50 cursor-not-allowed'">
+        <button @click="openVideoPage" :disabled="!isVideoButtonEnabled" class="p-1"
+          :class="isVideoButtonEnabled ? '' : 'opacity-50 cursor-not-allowed'">
           <Icon name="mdi:play" class="w-6 h-6" 
-            :class="!isLoading && hasVideo ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-600'" />
+            :class="isVideoButtonEnabled ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-600'" />
         </button>
         <button @click="shareContent" class="p-1">
           <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
@@ -298,10 +298,15 @@ const speakContent = (item: Content) => {
   window.speechSynthesis.speak(utterance)
 }
 
+// Computed property for video button state
+const isVideoButtonEnabled = computed(() => {
+  return !isLoading.value && hasVideo.value && videoCategoryId.value !== null
+})
+
 // Open video page function
 const openVideoPage = () => {
   if (videoCategoryId.value) {
-    const videoUrl = `/video/play/sub/${videoCategoryId.value}?title=${encodeURIComponent(pageTitle.value)}`
+    const videoUrl = `/video/play/${videoCategoryId.value}?title=${encodeURIComponent(pageTitle.value)}`
     navigateTo(videoUrl)
   }
 }

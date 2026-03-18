@@ -268,7 +268,7 @@ function navigateToDetail(item: SearchItem) {
     const parts = headerId.split('#')
     const [bookId, chapterId, page] = parts
     router.push({
-      path: `/book/${bookId}/${chapterId}`,
+      path: `/book/${chapterId}`,
       query: { page }
     })
   } else if (itemType === 'audio') {

@@ -14,7 +14,7 @@
     <!-- Clickable Chapter Link (no children) -->
     <NuxtLink 
       v-else
-      :to="{ path: `/book/${bookId}/${chapter.id}`, query: { chapter: chapter.title } }"
+      :to="{ path: `/book/${chapter.id}`, query: { chapter: chapter.title } }"
       class="block cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800"
     >
       <div 

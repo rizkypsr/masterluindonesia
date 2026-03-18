@@ -387,10 +387,15 @@ onBeforeUnmount(() => {
     stopSpeech()
 })
 
+// Computed property for video button state
+const isVideoButtonEnabled = computed(() => {
+    return !isLoadingContents.value && hasVideo.value && videoCategoryId.value !== null
+})
+
 // Open video page function
 const openVideoPage = () => {
     if (videoCategoryId.value) {
-        const videoUrl = `/video/play/sub/${videoCategoryId.value}?title=${encodeURIComponent(chapterTitle.value)}`
+        const videoUrl = `/video/play/${videoCategoryId.value}?title=${encodeURIComponent(chapterTitle.value)}`
         navigateTo(videoUrl)
     }
 }
@@ -546,10 +551,10 @@ const openVideoPage = () => {
                     </button>
 
                     <!-- Video Button -->
-                    <button @click="openVideoPage" :disabled="isLoadingContents || !hasVideo" 
+                    <button @click="openVideoPage" :disabled="!isVideoButtonEnabled" 
                         class="w-10 h-10 rounded-lg flex items-center justify-center transition-opacity"
-                        :class="!isLoadingContents && hasVideo ? 'bg-[#ffcb00] hover:bg-yellow-500' : 'bg-gray-300 dark:bg-gray-600 cursor-not-allowed opacity-50'">
-                        <Icon name="mdi:play" class="w-5 h-5" :class="!isLoadingContents && hasVideo ? 'text-[#221b00]' : 'text-gray-500 dark:text-gray-400'" />
+                        :class="isVideoButtonEnabled ? 'bg-[#ffcb00] hover:bg-yellow-500' : 'bg-gray-300 dark:bg-gray-600 cursor-not-allowed opacity-50'">
+                        <Icon name="mdi:play" class="w-5 h-5" :class="isVideoButtonEnabled ? 'text-[#221b00]' : 'text-gray-500 dark:text-gray-400'" />
                     </button>
 
                     <button @click="nextPage" :disabled="currentPageIndex >= totalPages - 1"

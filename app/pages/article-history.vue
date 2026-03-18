@@ -203,7 +203,7 @@ function navigateToItem(item: HistoryItem) {
         if (bookId) {
           if (contentId) {
             navigateTo({
-              path: `/book/${bookId}/${contentId}`,
+              path: `/book/${contentId}`,
               query: linkData.page ? { page: linkData.page } : undefined
             })
           } else {

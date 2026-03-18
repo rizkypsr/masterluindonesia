@@ -191,7 +191,7 @@ function navigateToItem(item: PlaylistItem) {
           if (chapterId) {
             // Go to specific chapter with page
             navigateTo({
-              path: `/book/${bookId}/${chapterId}`,
+              path: `/book/${chapterId}`,
               query: itemData.page ? { page: itemData.page } : undefined
             })
           } else {
