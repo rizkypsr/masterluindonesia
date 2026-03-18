@@ -32,17 +32,37 @@
       <!-- Categories List -->
       <div v-else>
         <div v-for="category in categories" :key="category.id" class="mb-2">
-          <!-- Category Title -->
-          <h2 class="text-xl font-bold text-black dark:text-white py-3">{{ category.title }}</h2>
+          <!-- Category Title with Search -->
+          <div v-if="!searchModes[category.id]" class="flex items-center justify-between py-3">
+            <h2 class="text-xl font-bold text-black dark:text-white">{{ category.title }}</h2>
+            <button @click="openSearch(category.id)" class="p-1">
+              <Icon name="mdi:magnify" class="w-6 h-6 text-black dark:text-white" />
+            </button>
+          </div>
+
+          <!-- Search Input -->
+          <div v-else class="flex items-center gap-3 py-3">
+            <input v-model="searchQueries[category.id]" type="text" placeholder="Cari..."
+              class="flex-1 text-black dark:text-white bg-transparent border-b border-gray-300 dark:border-gray-600 focus:border-primary focus:outline-none py-1"
+              autofocus />
+            <button @click="closeSearch(category.id)" class="p-1">
+              <Icon name="mdi:close" class="w-6 h-6 text-black dark:text-white" />
+            </button>
+          </div>
 
           <!-- Sub Categories -->
-          <div v-if="category.sub_category && category.sub_category.length > 0"
+          <div v-if="getFilteredSubCategories(category).length > 0"
             class="divide-y divide-gray-200 dark:divide-gray-700">
-            <NuxtLink v-for="sub in category.sub_category" :key="sub.id"
+            <NuxtLink v-for="sub in getFilteredSubCategories(category)" :key="sub.id"
               :to="{ path: '/topics/detail', query: { subId: sub.id, title: sub.title } }"
               class="py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 block">
               <span class="text-lg text-black dark:text-white">{{ sub.title }}</span>
             </NuxtLink>
+          </div>
+          
+          <!-- No results message -->
+          <div v-else-if="searchModes[category.id] && searchQueries[category.id]" class="py-4 text-center">
+            <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
           </div>
         </div>
       </div>
@@ -75,6 +95,10 @@ const topicId = computed(() => route.params.id as string)
 const topicTitle = computed(() => (route.query.title as string) || 'Topic')
 const contentContainer = ref<HTMLElement | null>(null)
 
+// Search state
+const searchModes = ref<Record<number, boolean>>({})
+const searchQueries = ref<Record<number, string>>({})
+
 // Scroll position management
 const SCROLL_KEY = `topics-${topicId.value}-scroll`
 
@@ -98,6 +122,27 @@ const { data: categoriesData } = await useFetch<{ success: boolean; data: TopicC
 const categories = computed(() => {
   return categoriesData.value?.data || []
 })
+
+// Filtered categories based on search
+const getFilteredSubCategories = (category: TopicCategory) => {
+  const query = searchQueries.value[category.id]
+  if (!query || !query.trim()) return category.sub_category
+  
+  const searchTerm = query.toLowerCase()
+  return category.sub_category.filter(sub =>
+    sub.title.toLowerCase().includes(searchTerm)
+  )
+}
+
+const openSearch = (categoryId: number) => {
+  searchModes.value[categoryId] = true
+  searchQueries.value[categoryId] = ''
+}
+
+const closeSearch = (categoryId: number) => {
+  searchModes.value[categoryId] = false
+  searchQueries.value[categoryId] = ''
+}
 
 const shareTopic = async () => {
   const shareData = {

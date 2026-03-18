@@ -29,7 +29,12 @@ interface Topic2Content {
 interface ContentResponse {
     success: boolean
     message: string
-    data: Topic2Content[]
+    data: {
+        chapter_id: number
+        chapter_title: string
+        video_category_id: number | null
+        contents: Topic2Content[]
+    }
 }
 
 const isMenuOpen = ref(false)
@@ -42,6 +47,8 @@ const contentRef = ref<HTMLElement | null>(null)
 const isPageModalOpen = ref(false)
 const selectedPage = ref(1)
 const fontSize = ref(16)
+const hasVideo = ref(false)
+const videoCategoryId = ref<number | null>(null)
 
 // Search state
 const isSearchMode = ref(false)
@@ -77,7 +84,9 @@ onMounted(async () => {
         const response = await $fetch<ContentResponse>(
             `${config.public.apiBaseUrl}/topics2/contents/${chapterId}`
         )
-        contents.value = response.data || []
+        contents.value = response.data.contents || []
+        videoCategoryId.value = response.data.video_category_id
+        hasVideo.value = response.data.video_category_id !== null
         
         // Start at first content page
         currentPageIndex.value = 0
@@ -380,8 +389,10 @@ onBeforeUnmount(() => {
 
 // Open video page function
 const openVideoPage = () => {
-    const videoUrl = `/video/topic2-chapter/${chapterId}`
-    navigateTo(videoUrl)
+    if (videoCategoryId.value) {
+        const videoUrl = `/video/play/sub/${videoCategoryId.value}?title=${encodeURIComponent(chapterTitle.value)}`
+        navigateTo(videoUrl)
+    }
 }
 </script>
 
@@ -535,8 +546,10 @@ const openVideoPage = () => {
                     </button>
 
                     <!-- Video Button -->
-                    <button @click="openVideoPage" class="w-10 h-10 rounded-lg bg-[#ffcb00] flex items-center justify-center">
-                        <Icon name="mdi:play" class="w-5 h-5 text-[#221b00] font-bold" />
+                    <button @click="openVideoPage" :disabled="isLoadingContents || !hasVideo" 
+                        class="w-10 h-10 rounded-lg flex items-center justify-center transition-opacity"
+                        :class="!isLoadingContents && hasVideo ? 'bg-[#ffcb00] hover:bg-yellow-500' : 'bg-gray-300 dark:bg-gray-600 cursor-not-allowed opacity-50'">
+                        <Icon name="mdi:play" class="w-5 h-5" :class="!isLoadingContents && hasVideo ? 'text-[#221b00]' : 'text-gray-500 dark:text-gray-400'" />
                     </button>
 
                     <button @click="nextPage" :disabled="currentPageIndex >= totalPages - 1"

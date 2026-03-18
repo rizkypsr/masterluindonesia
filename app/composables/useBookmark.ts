@@ -6,8 +6,7 @@ export interface BookmarkFolder {
 }
 
 export interface VideoLink {
-  videoId: number | null
-  video_category_id: number
+  videoId: number
   lang: string
 }
 

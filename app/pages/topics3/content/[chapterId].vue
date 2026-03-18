@@ -9,9 +9,16 @@
         </button>
         <h1 class="text-lg font-semibold text-black dark:text-white line-clamp-1">{{ pageTitle }}</h1>
       </div>
-      <button @click="shareContent" class="p-1 shrink-0">
-        <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
-      </button>
+      <div class="flex items-center gap-2 shrink-0">
+        <button @click="openVideoPage" :disabled="isLoading || !hasVideo" class="p-1"
+          :class="!isLoading && hasVideo ? '' : 'opacity-50 cursor-not-allowed'">
+          <Icon name="mdi:play" class="w-6 h-6" 
+            :class="!isLoading && hasVideo ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-600'" />
+        </button>
+        <button @click="shareContent" class="p-1">
+          <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
+        </button>
+      </div>
     </div>
 
     <!-- Search -->
@@ -60,7 +67,7 @@
                   <div class="font-bold"
                     :class="expandedItems.has(item.id) ? 'text-black' : 'text-black dark:text-white'"
                     :style="{ fontSize: fontSize + 'px' }"
-                    v-html="item.content">
+                    v-html="getContentPreview(item.content)">
                   </div>
                 </div>
                 <button class="p-2 shrink-0">
@@ -84,11 +91,6 @@
                   :class="speakingItemId === item.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
                   <Icon :name="speakingItemId === item.id ? 'mdi:stop' : 'mdi:account-voice'" class="w-4 h-4" />
                   <span>{{ speakingItemId === item.id ? 'Stop' : 'Voice' }}</span>
-                </button>
-                <button @click.stop="openVideoPage"
-                  class="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:font-bold">
-                  <Icon name="mdi:play" class="w-4 h-4" />
-                  <span>Video</span>
                 </button>
               </div>
             </div>
@@ -129,6 +131,16 @@ interface Category {
   contents: Content[]
 }
 
+interface ContentResponse {
+  success: boolean
+  data: {
+    chapter_id: number
+    chapter_title: string
+    video_category_id: number | null
+    contents: Category[]
+  }
+}
+
 const route = useRoute()
 const config = useRuntimeConfig()
 const toast = useToast()
@@ -143,6 +155,8 @@ const searchQuery = ref('')
 const expandedItems = ref<Set<number>>(new Set())
 const speakingItemId = ref<number | null>(null)
 const isSpeaking = ref(false)
+const hasVideo = ref(false)
+const videoCategoryId = ref<number | null>(null)
 
 // FAB Menu State
 const showFabMenu = ref(false)
@@ -218,6 +232,12 @@ const stripHtml = (html: string): string => {
     .trim()
 }
 
+const getContentPreview = (html: string): string => {
+  const text = stripHtml(html)
+  // Get first 100 characters as preview
+  return text.length > 100 ? text.substring(0, 100) + '...' : text
+}
+
 const copyContent = async (item: Content) => {
   const text = stripHtml(item.content_wa || item.content)
   try {
@@ -280,8 +300,10 @@ const speakContent = (item: Content) => {
 
 // Open video page function
 const openVideoPage = () => {
-  const videoUrl = `/video/topic3-chapter/${chapterId.value}`
-  navigateTo(videoUrl)
+  if (videoCategoryId.value) {
+    const videoUrl = `/video/play/sub/${videoCategoryId.value}?title=${encodeURIComponent(pageTitle.value)}`
+    navigateTo(videoUrl)
+  }
 }
 
 // Share content
@@ -314,10 +336,12 @@ const shareContent = async () => {
 onMounted(async () => {
   // Fetch content data
   try {
-    const response = await $fetch<{ success: boolean; data: Category[] }>(
+    const response = await $fetch<ContentResponse>(
       `${config.public.apiBaseUrl}/topics3/contents/${chapterId.value}`
     )
-    contents.value = response.data || []
+    contents.value = response.data.contents || []
+    videoCategoryId.value = response.data.video_category_id
+    hasVideo.value = response.data.video_category_id !== null
   } catch (error) {
     console.error('Error fetching topics3 content:', error)
     toast.add({

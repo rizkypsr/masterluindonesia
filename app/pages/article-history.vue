@@ -6,7 +6,6 @@ interface HistoryLink {
   contentId?: number | null
   page?: number | null
   videoId?: number | null
-  video_category_id?: number | null
   lang?: string
   audioId?: number
   subtitleId?: number | null
@@ -180,11 +179,8 @@ function navigateToItem(item: HistoryItem) {
 
     switch (item.type) {
       case 1: // Video
-        const videoCategoryId = linkData.video_category_id
         const videoId = linkData.videoId
-        if (videoCategoryId) {
-          navigateTo({ path: `/video/play/${videoCategoryId}`, query: { title: item.title } })
-        } else if (videoId) {
+        if (videoId) {
           navigateTo({ path: `/video/play/sub/${videoId}`, query: { title: item.title } })
         }
         break
