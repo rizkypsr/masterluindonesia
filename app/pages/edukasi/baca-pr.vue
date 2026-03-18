@@ -231,7 +231,7 @@
                     <h3 class="font-bold text-gray-900 dark:text-white mb-6">Hal Yang Perlu Diperhatikan</h3>
                     <ol class="text-[#353026] dark:text-gray-300 font-semibold list-decimal list-outside space-y-2 px-4">
                         <li>Boleh kali membaca paritta bila kamu membaca judul paritanya</li>
-                        <li>Tidak membaca paritta dari jam 5 pagi sampai jam 5 sore</li>
+                        <li>Waktu Membaca paritta dari jam 5 pagi sampai jam 12 malam</li>
                         <li>Saat membaca paritta lalu terhenti karena ada gangguan, sebelumnya ulang paritta dari
                             awal</li>
                         <li>Xin Jing dan Wang Sheng Zhou boleh dibaca di pagi atau siang tapi hingga jam 10 malam
