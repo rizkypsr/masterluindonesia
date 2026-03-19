@@ -57,13 +57,13 @@ interface AudioVideo {
 interface AudioSubGroup {
   sub_group_id: number
   sub_group_name: string
-  videos: AudioVideo[]
+  audios: AudioVideo[]
 }
 
 interface AudioData {
   sub_group_id: number
   sub_group_name: string
-  videos: AudioVideo[]
+  audios: AudioVideo[]
 }
 
 interface VideoData {
@@ -98,18 +98,144 @@ const showKeywordInput = ref('')
 const bookChapters = ref<BookData[]>([])
 const selectedChapterIds = ref<number[]>([])
 const isLoadingBookChapters = ref(false)
+const bookChaptersPage = ref(1)
+const bookChaptersHasMore = ref(true)
 
 // Deep search state for audio
 const audioList = ref<AudioData[]>([])
 const selectedVideoIds = ref<number[]>([])
 const isLoadingAudioList = ref(false)
+const audioListPage = ref(1)
+const audioListHasMore = ref(true)
 
 // Deep search state for video
 const videoList = ref<VideoData[]>([])
 const isLoadingVideoList = ref(false)
+const videoListPage = ref(1)
+const videoListHasMore = ref(true)
 
 // Deep search filter
 const deepSearchQuery = ref('')
+
+// Scroll container ref
+const deepSearchScrollContainer = ref<HTMLElement | null>(null)
+
+// Computed filtered lists
+const filteredBookChapters = computed(() => {
+  if (!deepSearchQuery.value.trim()) return bookChapters.value
+  
+  const query = deepSearchQuery.value.toLowerCase()
+  return bookChapters.value.map(book => {
+    // Check if book title matches
+    const bookMatches = book.book_title.toLowerCase().includes(query)
+    
+    // Filter chapters
+    const filteredChapters = book.chapters.filter(chapter => {
+      const chapterMatches = chapter.title.toLowerCase().includes(query)
+      const childMatches = chapter.children?.some(child => 
+        child.title.toLowerCase().includes(query)
+      )
+      return chapterMatches || childMatches
+    }).map(chapter => {
+      // If chapter matches, show all children
+      if (chapter.title.toLowerCase().includes(query)) {
+        return chapter
+      }
+      // Otherwise, filter children
+      return {
+        ...chapter,
+        children: chapter.children?.filter(child => 
+          child.title.toLowerCase().includes(query)
+        )
+      }
+    })
+    
+    // Return book if it matches or has matching chapters
+    if (bookMatches || filteredChapters.length > 0) {
+      return {
+        ...book,
+        chapters: bookMatches ? book.chapters : filteredChapters
+      }
+    }
+    return null
+  }).filter(book => book !== null) as BookData[]
+})
+
+const filteredAudioList = computed(() => {
+  if (!deepSearchQuery.value.trim()) return audioList.value
+  
+  const query = deepSearchQuery.value.toLowerCase()
+  return audioList.value.map(subGroup => {
+    const groupMatches = subGroup.sub_group_name.toLowerCase().includes(query)
+    const filteredAudios = subGroup.audios.filter(audio => 
+      audio.title.toLowerCase().includes(query)
+    )
+    
+    if (groupMatches || filteredAudios.length > 0) {
+      return {
+        ...subGroup,
+        audios: groupMatches ? subGroup.audios : filteredAudios
+      }
+    }
+    return null
+  }).filter(group => group !== null) as AudioData[]
+})
+
+const filteredVideoList = computed(() => {
+  if (!deepSearchQuery.value.trim()) return videoList.value
+  
+  const query = deepSearchQuery.value.toLowerCase()
+  return videoList.value.map(subGroup => {
+    const groupMatches = subGroup.sub_group_name.toLowerCase().includes(query)
+    const filteredVideos = subGroup.videos.filter(video => 
+      video.title.toLowerCase().includes(query)
+    )
+    
+    if (groupMatches || filteredVideos.length > 0) {
+      return {
+        ...subGroup,
+        videos: groupMatches ? subGroup.videos : filteredVideos
+      }
+    }
+    return null
+  }).filter(group => group !== null) as VideoData[]
+})
+
+// Setup infinite scroll for books
+useInfiniteScroll(
+  deepSearchScrollContainer,
+  () => {
+    const firstCategory = filterPayload.value.selectedCategory[0]
+    if (firstCategory === 'Buku' && bookChaptersHasMore.value && !isLoadingBookChapters.value) {
+      fetchBookChapters(true)
+    }
+  },
+  { distance: 200, canLoadMore: () => bookChaptersHasMore.value }
+)
+
+// Setup infinite scroll for audio
+useInfiniteScroll(
+  deepSearchScrollContainer,
+  () => {
+    const firstCategory = filterPayload.value.selectedCategory[0]
+    if (firstCategory === 'Audio' && audioListHasMore.value && !isLoadingAudioList.value) {
+      fetchAudioList(true)
+    }
+  },
+  { distance: 200, canLoadMore: () => audioListHasMore.value }
+)
+
+// Setup infinite scroll for video
+useInfiniteScroll(
+  deepSearchScrollContainer,
+  () => {
+    const firstCategory = filterPayload.value.selectedCategory[0]
+    if (firstCategory === 'Video' && videoListHasMore.value && !isLoadingVideoList.value) {
+      fetchVideoList(true)
+    }
+  },
+  { distance: 200, canLoadMore: () => videoListHasMore.value }
+)
 
 const categoryOptions = [
   { label: 'Buku', value: 'Buku' },
@@ -126,74 +252,6 @@ const selectedCategoryLabel = computed(() => {
   const firstSelected = filterPayload.value.selectedCategory[0]
   const category = categoryOptions.find(cat => cat.value === firstSelected)
   return category ? category.label : null
-})
-
-// Filtered book chapters based on search query
-const filteredBookChapters = computed(() => {
-  if (!deepSearchQuery.value.trim()) return bookChapters.value
-  
-  const query = deepSearchQuery.value.toLowerCase()
-  return bookChapters.value.map(book => {
-    const filteredChapters = book.chapters.filter(chapter => {
-      const titleMatch = chapter.title.toLowerCase().includes(query)
-      const childMatch = chapter.children?.some(child => 
-        child.title.toLowerCase().includes(query)
-      )
-      return titleMatch || childMatch
-    }).map(chapter => {
-      if (chapter.children) {
-        return {
-          ...chapter,
-          children: chapter.children.filter(child =>
-            child.title.toLowerCase().includes(query) ||
-            chapter.title.toLowerCase().includes(query)
-          )
-        }
-      }
-      return chapter
-    })
-    
-    return {
-      ...book,
-      chapters: filteredChapters
-    }
-  }).filter(book => book.chapters.length > 0)
-})
-
-// Filtered audio list based on search query
-const filteredAudioList = computed(() => {
-  if (!deepSearchQuery.value.trim()) return audioList.value
-  
-  const query = deepSearchQuery.value.toLowerCase()
-  return audioList.value.map(subGroup => {
-    const filteredVideos = subGroup.videos.filter(video =>
-      video.title.toLowerCase().includes(query) ||
-      subGroup.sub_group_name.toLowerCase().includes(query)
-    )
-    
-    return {
-      ...subGroup,
-      videos: filteredVideos
-    }
-  }).filter(subGroup => subGroup.videos.length > 0)
-})
-
-// Filtered video list based on search query
-const filteredVideoList = computed(() => {
-  if (!deepSearchQuery.value.trim()) return videoList.value
-  
-  const query = deepSearchQuery.value.toLowerCase()
-  return videoList.value.map(subGroup => {
-    const filteredVideos = subGroup.videos.filter(video =>
-      video.title.toLowerCase().includes(query) ||
-      subGroup.sub_group_name.toLowerCase().includes(query)
-    )
-    
-    return {
-      ...subGroup,
-      videos: filteredVideos
-    }
-  }).filter(subGroup => subGroup.videos.length > 0)
 })
 const dynamicFilters = ref<Array<{
   title: string
@@ -355,17 +413,36 @@ function toggleCategory(value: string) {
 }
 
 // Fetch book chapters for deep search
-async function fetchBookChapters() {
+async function fetchBookChapters(loadMore = false) {
+  if (isLoadingBookChapters.value) return
+  if (loadMore && !bookChaptersHasMore.value) return
+  
   isLoadingBookChapters.value = true
   try {
+    const page = bookChaptersPage.value
     const response = await $fetch<{
       success: boolean
       message: string
       data: BookData[]
-    }>(`${config.public.apiBaseUrl}/search/book/chapters`)
+      pagination: {
+        current_page: number
+        per_page: number
+        total: number
+        last_page: number
+        has_more: boolean
+      }
+    }>(`${config.public.apiBaseUrl}/search/book/chapters?page=${page}&per_page=10`)
     
     if (response.success && response.data) {
-      bookChapters.value = response.data
+      if (loadMore) {
+        // Just push new data - no reassignment needed
+        bookChapters.value.push(...response.data)
+      } else {
+        bookChapters.value = response.data
+      }
+      // Increment page for next fetch
+      bookChaptersPage.value = page + 1
+      bookChaptersHasMore.value = response.pagination.has_more
     }
   } catch (error) {
     console.error('Failed to fetch book chapters:', error)
@@ -375,17 +452,36 @@ async function fetchBookChapters() {
 }
 
 // Fetch audio list for deep search
-async function fetchAudioList() {
+async function fetchAudioList(loadMore = false) {
+  if (isLoadingAudioList.value) return
+  if (loadMore && !audioListHasMore.value) return
+  
   isLoadingAudioList.value = true
   try {
+    const page = audioListPage.value
     const response = await $fetch<{
       success: boolean
       message: string
       data: AudioData[]
-    }>(`${config.public.apiBaseUrl}/search/audio/list`)
+      pagination: {
+        current_page: number
+        per_page: number
+        total: number
+        last_page: number
+        has_more: boolean
+      }
+    }>(`${config.public.apiBaseUrl}/search/audio/list?page=${page}&per_page=10`)
     
     if (response.success && response.data) {
-      audioList.value = response.data
+      if (loadMore) {
+        // Just push new data - no reassignment needed
+        audioList.value.push(...response.data)
+      } else {
+        audioList.value = response.data
+      }
+      // Increment page for next fetch
+      audioListPage.value = page + 1
+      audioListHasMore.value = response.pagination.has_more
     }
   } catch (error) {
     console.error('Failed to fetch audio list:', error)
@@ -395,22 +491,62 @@ async function fetchAudioList() {
 }
 
 // Fetch video list for deep search
-async function fetchVideoList() {
+async function fetchVideoList(loadMore = false) {
+  if (isLoadingVideoList.value) return
+  if (loadMore && !videoListHasMore.value) return
+  
   isLoadingVideoList.value = true
   try {
+    const page = videoListPage.value
     const response = await $fetch<{
       success: boolean
       message: string
       data: VideoData[]
-    }>(`${config.public.apiBaseUrl}/search/video/list`)
+      pagination: {
+        current_page: number
+        per_page: number
+        total: number
+        last_page: number
+        has_more: boolean
+      }
+    }>(`${config.public.apiBaseUrl}/search/video/list?page=${page}&per_page=10`)
     
     if (response.success && response.data) {
-      videoList.value = response.data
+      if (loadMore) {
+        // Just push new data - no reassignment needed
+        videoList.value.push(...response.data)
+      } else {
+        videoList.value = response.data
+      }
+      // Increment page for next fetch
+      videoListPage.value = page + 1
+      videoListHasMore.value = response.pagination.has_more
     }
   } catch (error) {
     console.error('Failed to fetch video list:', error)
   } finally {
     isLoadingVideoList.value = false
+  }
+}
+
+// Handle scroll event for infinite loading
+function handleDeepSearchScroll(event: Event) {
+  const target = event.target as HTMLElement
+  const scrollTop = target.scrollTop
+  const scrollHeight = target.scrollHeight
+  const clientHeight = target.clientHeight
+  
+  // Load more when user scrolls to 80% of the content
+  if (scrollTop + clientHeight >= scrollHeight * 0.8) {
+    const firstCategory = filterPayload.value.selectedCategory[0]
+    
+    if (firstCategory === 'Buku' && bookChaptersHasMore.value && !isLoadingBookChapters.value) {
+      fetchBookChapters(true)
+    } else if (firstCategory === 'Audio' && audioListHasMore.value && !isLoadingAudioList.value) {
+      fetchAudioList(true)
+    } else if (firstCategory === 'Video' && videoListHasMore.value && !isLoadingVideoList.value) {
+      fetchVideoList(true)
+    }
   }
 }
 
@@ -443,30 +579,33 @@ function toggleVideoSelection(videoId: number) {
 }
 
 // Toggle all videos in a sub group
-function toggleSubGroupVideos(subGroup: AudioSubGroup) {
-  const allSelected = subGroup.videos.every(video => selectedVideoIds.value.includes(video.id))
+function toggleSubGroupVideos(subGroup: AudioSubGroup | VideoData) {
+  const items = 'audios' in subGroup ? subGroup.audios : subGroup.videos
+  const allSelected = items.every(item => selectedVideoIds.value.includes(item.id))
   
   if (allSelected) {
-    // Unselect all videos in this sub group
-    subGroup.videos.forEach(video => {
-      const idx = selectedVideoIds.value.indexOf(video.id)
+    // Unselect all items in this sub group
+    items.forEach(item => {
+      const idx = selectedVideoIds.value.indexOf(item.id)
       if (idx > -1) {
         selectedVideoIds.value.splice(idx, 1)
       }
     })
   } else {
-    // Select all videos in this sub group
-    subGroup.videos.forEach(video => {
-      if (!selectedVideoIds.value.includes(video.id)) {
-        selectedVideoIds.value.push(video.id)
+    // Select all items in this sub group
+    items.forEach(item => {
+      if (!selectedVideoIds.value.includes(item.id)) {
+        selectedVideoIds.value.push(item.id)
       }
     })
   }
 }
 
 // Check if all videos in sub group are selected
-function isSubGroupSelected(subGroup: AudioSubGroup): boolean {
-  return subGroup.videos.every(video => selectedVideoIds.value.includes(video.id))
+function isSubGroupSelected(subGroup: AudioSubGroup | VideoData): boolean {
+  const items = 'audios' in subGroup ? subGroup.audios : subGroup.videos
+  if (!items || items.length === 0) return false
+  return items.every(item => selectedVideoIds.value.includes(item.id))
 }
 
 // Select all children recursively
@@ -609,7 +748,12 @@ function applyDeepSearch() {
 function resetDeepSearch() {
   selectedChapterIds.value = []
   selectedVideoIds.value = []
-  deepSearchQuery.value = ''
+  bookChaptersPage.value = 1
+  bookChaptersHasMore.value = true
+  audioListPage.value = 1
+  audioListHasMore.value = true
+  videoListPage.value = 1
+  videoListHasMore.value = true
   delete filterPayload.value.chapter_ids
   delete filterPayload.value.video_ids
 }
@@ -878,76 +1022,57 @@ function navigateToDetail(item: SearchItem) {
     <!-- Deep Search Drawer -->
     <UDrawer v-model:open="isDeepSearchOpen" direction="bottom" :title="selectedCategoryLabel || 'Pencarian Mendalam'">
       <template #content>
-        <div class="p-4 space-y-4 overflow-y-auto max-h-[80vh] bg-white dark:bg-gray-900">
-          <!-- Header with Apply Button -->
-          <div class="flex items-center justify-between sticky top-0 bg-white dark:bg-gray-900 pb-3 border-b border-gray-200 dark:border-gray-700 z-10">
-            <div>
-              <h2 class="text-lg font-semibold text-black dark:text-white">{{ selectedCategoryLabel || 'Pencarian Mendalam' }}</h2>
-              <p v-if="filterPayload.selectedCategory[0] === 'Buku' && selectedChapterIds.length > 0" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                {{ selectedChapterIds.length }} bab dipilih
-              </p>
-              <p v-else-if="(filterPayload.selectedCategory[0] === 'Audio' || filterPayload.selectedCategory[0] === 'Video') && selectedVideoIds.length > 0" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                {{ selectedVideoIds.length }} video dipilih
-              </p>
-            </div>
-            <div class="flex gap-2">
-              <button class="text-gray-500 dark:text-gray-400 text-sm hover:text-gray-700 dark:hover:text-gray-300" @click="resetDeepSearch">
-                Reset
-              </button>
-              <UButton size="md" class="bg-primary hover:bg-primary/90 text-black" @click="applyDeepSearch">
-                Terapkan
-              </UButton>
-            </div>
-          </div>
-
-          <!-- Description -->
-          <p v-if="filterPayload.selectedCategory[0] === 'Buku'" class="text-sm text-gray-600 dark:text-gray-400">
-            Pilih bab buku untuk pencarian yang lebih spesifik dalam konten buku
-          </p>
-          <p v-else-if="filterPayload.selectedCategory[0] === 'Audio'" class="text-sm text-gray-600 dark:text-gray-400">
-            Pilih audio untuk pencarian yang lebih spesifik
-          </p>
-          <p v-else-if="filterPayload.selectedCategory[0] === 'Video'" class="text-sm text-gray-600 dark:text-gray-400">
-            Pilih video untuk pencarian yang lebih spesifik
-          </p>
-
-          <!-- Search Input -->
-          <div class="sticky top-18 bg-white dark:bg-gray-900 z-10 pb-2">
-            <UInput v-model="deepSearchQuery" placeholder="Cari..." size="md" class="w-full">
-              <template #leading>
-                <Icon name="mdi:magnify" class="w-5 h-5 text-gray-400" />
-              </template>
-              <template #trailing v-if="deepSearchQuery">
-                <button @click="deepSearchQuery = ''" class="text-gray-400 hover:text-gray-600">
-                  <Icon name="mdi:close" class="w-5 h-5" />
+        <div class="flex flex-col max-h-[80vh] bg-white dark:bg-gray-900">
+          <!-- Fixed Header Section -->
+          <div class="p-4 space-y-4 shrink-0">
+            <!-- Header with Apply Button -->
+            <div class="flex items-center justify-between pb-3 border-b border-gray-200 dark:border-gray-700">
+              <div>
+                <h2 class="text-lg font-semibold text-black dark:text-white">{{ selectedCategoryLabel || 'Pencarian Mendalam' }}</h2>
+                <p v-if="filterPayload.selectedCategory[0] === 'Buku' && selectedChapterIds.length > 0" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  {{ selectedChapterIds.length }} bab dipilih
+                </p>
+                <p v-else-if="(filterPayload.selectedCategory[0] === 'Audio' || filterPayload.selectedCategory[0] === 'Video') && selectedVideoIds.length > 0" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  {{ selectedVideoIds.length }} video dipilih
+                </p>
+              </div>
+              <div class="flex gap-2">
+                <button class="text-gray-500 dark:text-gray-400 text-sm hover:text-gray-700 dark:hover:text-gray-300" @click="resetDeepSearch">
+                  Reset
                 </button>
-              </template>
-            </UInput>
+                <UButton size="md" class="bg-primary hover:bg-primary/90 text-black" @click="applyDeepSearch">
+                  Terapkan
+                </UButton>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <p v-if="filterPayload.selectedCategory[0] === 'Buku'" class="text-sm text-gray-600 dark:text-gray-400">
+              Pilih bab buku untuk pencarian yang lebih spesifik dalam konten buku
+            </p>
+            <p v-else-if="filterPayload.selectedCategory[0] === 'Audio'" class="text-sm text-gray-600 dark:text-gray-400">
+              Pilih audio untuk pencarian yang lebih spesifik
+            </p>
+            <p v-else-if="filterPayload.selectedCategory[0] === 'Video'" class="text-sm text-gray-600 dark:text-gray-400">
+              Pilih video untuk pencarian yang lebih spesifik
+            </p>
+
+            <!-- Search Input -->
+            <div class="w-full">
+              <UInput v-model="deepSearchQuery" placeholder="Cari..." size="md" icon="i-heroicons-magnifying-glass" class="w-full" />
+            </div>
           </div>
 
-          <!-- Loading State for Books -->
-          <div v-if="filterPayload.selectedCategory[0] === 'Buku' && isLoadingBookChapters" class="flex justify-center py-8">
-            <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500" />
-          </div>
-
-          <!-- Loading State for Audio -->
-          <div v-else-if="filterPayload.selectedCategory[0] === 'Audio' && isLoadingAudioList" class="flex justify-center py-8">
-            <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500" />
-          </div>
-
-          <!-- Loading State for Video -->
-          <div v-else-if="filterPayload.selectedCategory[0] === 'Video' && isLoadingVideoList" class="flex justify-center py-8">
-            <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500" />
-          </div>
-
-          <!-- Book Chapters List -->
-          <div v-else-if="filterPayload.selectedCategory[0] === 'Buku'" class="space-y-4">
-            <div v-for="book in filteredBookChapters" :key="book.book_id" class="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+          <!-- Scrollable List Section -->
+          <div ref="deepSearchScrollContainer" class="flex-1 overflow-y-auto px-4 pb-4">
+            <!-- Book Chapters List -->
+            <div v-if="filterPayload.selectedCategory[0] === 'Buku'" class="space-y-4">
+            <div v-for="book in filteredBookChapters" :key="`book-${book.book_id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
               <h3 class="font-semibold text-black dark:text-white mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
                 {{ book.book_title }}
               </h3>
               <div class="space-y-2">
-                <div v-for="chapter in book.chapters" :key="chapter.id">
+                <div v-for="chapter in book.chapters" :key="`ch-${chapter.id}`">
                   <div class="flex items-start gap-2 py-1">
                     <input type="checkbox" :id="`deep-chapter-${chapter.id}`"
                       :checked="selectedChapterIds.includes(chapter.id)"
@@ -958,12 +1083,12 @@ function navigateToDetail(item: SearchItem) {
                     </label>
                   </div>
                   <div v-if="chapter.children && chapter.children.length > 0" class="ml-6 mt-1 space-y-1">
-                    <div v-for="child in chapter.children" :key="child.id" class="flex items-start gap-2 py-1">
-                      <input type="checkbox" :id="`deep-chapter-${child.id}`"
+                    <div v-for="child in chapter.children" :key="`chd-${child.id}`" class="flex items-start gap-2 py-1">
+                      <input type="checkbox" :id="`deep-chapter-child-${child.id}`"
                         :checked="selectedChapterIds.includes(child.id)"
                         @change="toggleChapterSelection(child.id, child)"
                         class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                      <label :for="`deep-chapter-${child.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                      <label :for="`deep-chapter-child-${child.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
                         {{ child.title }}
                       </label>
                     </div>
@@ -971,16 +1096,26 @@ function navigateToDetail(item: SearchItem) {
                 </div>
               </div>
             </div>
-            <div v-if="filteredBookChapters.length === 0" class="text-center py-8">
+            <div v-if="filteredBookChapters.length === 0 && !isLoadingBookChapters" class="text-center py-8">
               <p class="text-sm text-gray-500 dark:text-gray-400">
-                {{ deepSearchQuery ? 'Tidak ada hasil ditemukan' : 'Tidak ada data bab buku' }}
+                {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data bab buku' }}
               </p>
+            </div>
+            
+            <!-- Loading More Indicator for Books - Fixed at bottom -->
+            <div v-if="isLoadingBookChapters && bookChapters.length > 0" class="flex justify-center py-4">
+              <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
+            </div>
+            
+            <!-- Initial Loading for Books -->
+            <div v-if="bookChapters.length === 0 && isLoadingBookChapters" class="flex justify-center py-8">
+              <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
             </div>
           </div>
 
           <!-- Audio List -->
           <div v-else-if="filterPayload.selectedCategory[0] === 'Audio'" class="space-y-4">
-            <div v-for="subGroup in filteredAudioList" :key="subGroup.sub_group_id" class="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+            <div v-for="subGroup in filteredAudioList" :key="`ag-${subGroup.sub_group_id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
               <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
                 <input type="checkbox" :id="`audio-group-${subGroup.sub_group_id}`"
                   :checked="isSubGroupSelected(subGroup)"
@@ -991,27 +1126,37 @@ function navigateToDetail(item: SearchItem) {
                 </label>
               </div>
               <div class="space-y-1 ml-6">
-                <div v-for="video in subGroup.videos" :key="video.id" class="flex items-start gap-2 py-1">
-                  <input type="checkbox" :id="`audio-video-${video.id}`"
-                    :checked="selectedVideoIds.includes(video.id)"
-                    @change="toggleVideoSelection(video.id)"
+                <div v-for="audio in subGroup.audios" :key="`av-${audio.id}`" class="flex items-start gap-2 py-1">
+                  <input type="checkbox" :id="`audio-video-${audio.id}`"
+                    :checked="selectedVideoIds.includes(audio.id)"
+                    @change="toggleVideoSelection(audio.id)"
                     class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                  <label :for="`audio-video-${video.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
-                    {{ video.title }}
+                  <label :for="`audio-video-${audio.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                    {{ audio.title }}
                   </label>
                 </div>
               </div>
             </div>
-            <div v-if="filteredAudioList.length === 0" class="text-center py-8">
+            <div v-if="filteredAudioList.length === 0 && !isLoadingAudioList" class="text-center py-8">
               <p class="text-sm text-gray-500 dark:text-gray-400">
-                {{ deepSearchQuery ? 'Tidak ada hasil ditemukan' : 'Tidak ada data audio' }}
+                {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data audio' }}
               </p>
+            </div>
+            
+            <!-- Loading More Indicator for Audio -->
+            <div v-if="isLoadingAudioList && audioList.length > 0" class="flex justify-center py-4">
+              <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
+            </div>
+            
+            <!-- Initial Loading for Audio -->
+            <div v-if="audioList.length === 0 && isLoadingAudioList" class="flex justify-center py-8">
+              <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
             </div>
           </div>
 
           <!-- Video List -->
           <div v-else-if="filterPayload.selectedCategory[0] === 'Video'" class="space-y-4">
-            <div v-for="subGroup in filteredVideoList" :key="subGroup.sub_group_id" class="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+            <div v-for="subGroup in filteredVideoList" :key="`vg-${subGroup.sub_group_id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
               <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
                 <input type="checkbox" :id="`video-group-${subGroup.sub_group_id}`"
                   :checked="isSubGroupSelected(subGroup)"
@@ -1022,7 +1167,7 @@ function navigateToDetail(item: SearchItem) {
                 </label>
               </div>
               <div class="space-y-1 ml-6">
-                <div v-for="video in subGroup.videos" :key="video.id" class="flex items-start gap-2 py-1">
+                <div v-for="video in subGroup.videos" :key="`vv-${video.id}`" class="flex items-start gap-2 py-1">
                   <input type="checkbox" :id="`video-video-${video.id}`"
                     :checked="selectedVideoIds.includes(video.id)"
                     @change="toggleVideoSelection(video.id)"
@@ -1033,11 +1178,22 @@ function navigateToDetail(item: SearchItem) {
                 </div>
               </div>
             </div>
-            <div v-if="filteredVideoList.length === 0" class="text-center py-8">
+            <div v-if="filteredVideoList.length === 0 && !isLoadingVideoList" class="text-center py-8">
               <p class="text-sm text-gray-500 dark:text-gray-400">
-                {{ deepSearchQuery ? 'Tidak ada hasil ditemukan' : 'Tidak ada data video' }}
+                {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data video' }}
               </p>
             </div>
+            
+            <!-- Loading More Indicator for Video -->
+            <div v-if="isLoadingVideoList && videoList.length > 0" class="flex justify-center py-4">
+              <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
+            </div>
+            
+            <!-- Initial Loading for Video -->
+            <div v-if="videoList.length === 0 && isLoadingVideoList" class="flex justify-center py-8">
+              <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
+            </div>
+          </div>
           </div>
         </div>
       </template>

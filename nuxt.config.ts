@@ -34,12 +34,7 @@ export default defineNuxtConfig({
       '/assets/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
     },
   },
-  modules: [
-    '@nuxt/ui',
-    '@nuxt/icon',
-    '@nuxt/image',
-    '@pinia/nuxt',
-  ],
+  modules: ['@nuxt/ui', '@nuxt/icon', '@nuxt/image', '@pinia/nuxt', '@vueuse/nuxt'],
   image: {
     provider: 'none',
     domains: ['masterluindonesia.com', 'masterlu.buildbyriz.io', 'api.masterluindonesia.com', 'firebasestorage.googleapis.com'],
