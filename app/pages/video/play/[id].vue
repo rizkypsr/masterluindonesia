@@ -9,127 +9,134 @@
         <!-- Content -->
         <div class="flex-1 overflow-y-auto pb-8">
 
-        <!-- Loading State -->
-        <div v-if="pending" class="p-4 space-y-4">
-            <div class="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
-            <div class="h-6 bg-gray-200 dark:bg-gray-700 rounded w-3/4 animate-pulse"></div>
-            <div class="h-40 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
-        </div>
-
-        <template v-else-if="videoData">
-            <!-- YouTube Player -->
-            <div class="aspect-video bg-black">
-                <div id="youtube-player"></div>
+            <!-- Loading State -->
+            <div v-if="pending" class="p-4 space-y-4">
+                <div class="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
+                <div class="h-6 bg-gray-200 dark:bg-gray-700 rounded w-3/4 animate-pulse"></div>
+                <div class="h-40 bg-gray-200 dark:bg-gray-700 rounded animate-pulse"></div>
             </div>
 
-            <!-- Video Info -->
-            <div class="px-4 py-4 bg-white dark:bg-gray-800">
-                <div class="flex items-start justify-between">
-                    <h2 class="font-semibold text-black dark:text-white flex-1" :style="{ fontSize: fontSize + 'px' }">
-                        {{ videoData.title }}</h2>
-                    <div class="flex items-center gap-3 shrink-0">
-                        <button class="p-2" @click="addToBookmark">
-                            <Icon :name="isVideoBookmarked ? 'mdi:star' : 'mdi:star-outline'"
-                                :class="isVideoBookmarked ? 'text-yellow-500' : 'text-gray-600 dark:text-gray-400'"
-                                class="w-6 h-6" />
-                        </button>
-                        <button class="p-2" @click="addToPlaylist">
-                            <Icon name="mdi:playlist-plus" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
-                        </button>
-                        <button class="p-2" @click="shareContent">
-                            <Icon name="mdi:share-variant-outline" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
-                        </button>
-                    </div>
+            <template v-else-if="videoData">
+                <!-- YouTube Player -->
+                <div class="aspect-video bg-black">
+                    <div id="youtube-player"></div>
                 </div>
-            </div>
 
-            <!-- Related Chapters Section -->
-            <div v-if="videoData.related_chapters?.length" class="bg-white dark:bg-gray-800 mt-2">
-                <button @click="showRelatedChapters = !showRelatedChapters"
-                    class="w-full px-4 py-3 flex items-center justify-between">
-                    <span class="font-semibold text-black dark:text-white">TEKS</span>
-                    <Icon :name="showRelatedChapters ? 'mdi:chevron-up' : 'mdi:chevron-down'"
-                        class="w-6 h-6 text-gray-600 dark:text-gray-400" />
-                </button>
-
-                <div v-if="showRelatedChapters" class="px-4 pb-4 space-y-2">
-                    <NuxtLink v-for="chapter in videoData.related_chapters" :key="chapter.chapter_id"
-                        :to="getChapterUrl(chapter)"
-                        class="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                        <Icon :name="getChapterIcon(chapter.type)" class="w-6 h-6 shrink-0 text-primary dark:text-yellow-400 mt-0.5" />
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium text-black dark:text-white line-clamp-2">{{ chapter.chapter_title }}</p>
-                            <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ chapter.parent_title }}</p>
-                        </div>
-                        <Icon name="mdi:chevron-right" class="w-5 h-5 shrink-0 text-gray-400 dark:text-gray-500 mt-1" />
-                    </NuxtLink>
-                </div>
-            </div>
-
-            <!-- Subtitle Section -->
-            <div v-if="videoData.subtitle?.length" class="bg-white dark:bg-gray-800 mt-2">
-                <button @click="showSubtitle = !showSubtitle"
-                    class="w-full px-4 py-3 flex items-center justify-between">
-                    <span class="font-semibold text-black dark:text-white">SUBTITLE</span>
-                    <Icon :name="showSubtitle ? 'mdi:chevron-up' : 'mdi:chevron-down'"
-                        class="w-6 h-6 text-gray-600 dark:text-gray-400" />
-                </button>
-
-                <div v-if="showSubtitle" class="px-4 pb-4">
-                    <!-- Search -->
-                    <div class="mb-4">
-                        <input v-model="subtitleSearch" type="text" placeholder="Masukan kata kunci"
-                            class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-sm bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500" />
-                    </div>
-
-                    <!-- Subtitle List -->
-                    <div class="max-h-80 overflow-y-auto space-y-6">
-                        <div v-for="sub in filteredSubtitles" :key="sub.timestamp"
+                <!-- Video Info -->
+                <div class="px-4 py-4 bg-white dark:bg-gray-800">
+                    <div class="flex items-start justify-between">
+                        <h2 class="font-semibold text-black dark:text-white flex-1"
                             :style="{ fontSize: fontSize + 'px' }">
-                            <!-- Timestamp row with actions -->
-                            <div class="flex items-center mb-2 text-black dark:text-white">
-                                <div class="flex-1"></div>
-                                <p class="cursor-pointer hover:text-primary dark:hover:text-yellow-400" @click="seekToTimestamp(sub.timestamp)">{{ formatTimestamp(sub.timestamp) }}</p>
-                                <div class="flex-1 flex justify-end">
-                                    <div class="flex items-center gap-2">
-                                        <button @click="copyToClipboard(sub.description_wa)" class="p-1">
-                                            <Icon name="mdi:content-copy" class="w-5 h-5 text-black dark:text-white" />
-                                        </button>
-                                        <button @click="speakText(sub.description_wa)" class="p-1">
-                                            <Icon name="mdi:account-voice" class="w-5 h-5 text-black dark:text-white" />
-                                        </button>
+                            {{ videoData.title }}</h2>
+                        <div class="flex items-center gap-3 shrink-0">
+                            <button class="p-2" @click="addToBookmark">
+                                <Icon :name="isVideoBookmarked ? 'mdi:star' : 'mdi:star-outline'"
+                                    :class="isVideoBookmarked ? 'text-yellow-500' : 'text-gray-600 dark:text-gray-400'"
+                                    class="w-6 h-6" />
+                            </button>
+                            <button class="p-2" @click="shareContent">
+                                <Icon name="mdi:share-variant-outline"
+                                    class="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Related Chapters Section -->
+                <div v-if="videoData.related_chapters?.length" class="bg-white dark:bg-gray-800 mt-2">
+                    <button @click="showRelatedChapters = !showRelatedChapters"
+                        class="w-full px-4 py-3 flex items-center justify-between">
+                        <span class="font-semibold text-black dark:text-white">TEKS</span>
+                        <Icon :name="showRelatedChapters ? 'mdi:chevron-up' : 'mdi:chevron-down'"
+                            class="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                    </button>
+
+                    <div v-if="showRelatedChapters" class="px-4 pb-4 space-y-2">
+                        <NuxtLink v-for="chapter in videoData.related_chapters" :key="chapter.chapter_id"
+                            :to="getChapterUrl(chapter)"
+                            class="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                            <Icon :name="getChapterIcon(chapter.type)"
+                                class="w-6 h-6 shrink-0 text-primary dark:text-yellow-400 mt-0.5" />
+                            <div class="flex-1 min-w-0">
+                                <p class="font-medium text-black dark:text-white line-clamp-2">{{ chapter.chapter_title
+                                    }}</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">{{ chapter.parent_title }}</p>
+                            </div>
+                            <Icon name="mdi:chevron-right"
+                                class="w-5 h-5 shrink-0 text-gray-400 dark:text-gray-500 mt-1" />
+                        </NuxtLink>
+                    </div>
+                </div>
+
+                <!-- Subtitle Section -->
+                <div v-if="videoData.subtitle?.length" class="bg-white dark:bg-gray-800 mt-2">
+                    <button @click="showSubtitle = !showSubtitle"
+                        class="w-full px-4 py-3 flex items-center justify-between">
+                        <span class="font-semibold text-black dark:text-white">SUBTITLE</span>
+                        <Icon :name="showSubtitle ? 'mdi:chevron-up' : 'mdi:chevron-down'"
+                            class="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                    </button>
+
+                    <div v-if="showSubtitle" class="px-4 pb-4">
+                        <!-- Search -->
+                        <div class="mb-4">
+                            <input v-model="subtitleSearch" type="text" placeholder="Masukan kata kunci"
+                                class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-sm bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500" />
+                        </div>
+
+                        <!-- Subtitle List -->
+                        <div class="max-h-80 overflow-y-auto space-y-6">
+                            <div v-for="sub in filteredSubtitles" :key="sub.timestamp"
+                                :style="{ fontSize: fontSize + 'px' }">
+                                <!-- Timestamp row with actions -->
+                                <div class="flex items-center mb-2 text-black dark:text-white">
+                                    <div class="flex-1"></div>
+                                    <p class="cursor-pointer hover:text-primary dark:hover:text-yellow-400"
+                                        @click="seekToTimestamp(sub.timestamp)">{{ formatTimestamp(sub.timestamp) }}</p>
+                                    <div class="flex-1 flex justify-end">
+                                        <div class="flex items-center gap-2">
+                                            <button @click="copyToClipboard(sub.description_wa)" class="p-1">
+                                                <Icon name="mdi:content-copy"
+                                                    class="w-5 h-5 text-black dark:text-white" />
+                                            </button>
+                                            <button @click="speakText(sub.description_wa)" class="p-1">
+                                                <Icon name="mdi:account-voice"
+                                                    class="w-5 h-5 text-black dark:text-white" />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- Description text -->
+                                <p class="text-black dark:text-white text-center" v-html="sub.description"></p>
                             </div>
-                            <!-- Description text -->
-                            <p class="text-black dark:text-white text-center" v-html="sub.description"></p>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Sub Videos by Group -->
-            <div v-if="videoData.sub_video?.length" class="mt-2 space-y-4">
-                <div v-for="group in videoData.sub_video" :key="group.group_sub_video_id"
-                    class="bg-white dark:bg-gray-800 py-4">
-                    <h3 class="px-4 font-semibold text-black dark:text-white mb-3">{{ group.group_sub_video_name }}</h3>
+                <!-- Sub Videos by Group -->
+                <div v-if="videoData.sub_video?.length" class="mt-2 space-y-4">
+                    <div v-for="group in videoData.sub_video" :key="group.group_sub_video_id"
+                        class="bg-white dark:bg-gray-800 py-4">
+                        <h3 class="px-4 font-semibold text-black dark:text-white mb-3">{{ group.group_sub_video_name }}
+                        </h3>
 
-                    <!-- Horizontal Carousel -->
-                    <UCarousel v-slot="{ item }" :items="group.child" :ui="{
-                        item: 'basis-full',
-                        dot: 'bg-secondary'
-                    }" dots class="px-4">
-                        <NuxtLink :to="{ path: `/video/play/sub/${item.id}`, query: { title: item.title } }"
-                            class="flex items-center gap-4 pr-4">
-                            <img :src="getYoutubeThumbnail(item.url)" :alt="item.title"
-                                class="w-36 h-24 object-cover rounded-lg bg-gray-200 dark:bg-gray-700 shrink-0" />
-                            <p class="text-sm font-semibold text-black dark:text-white line-clamp-3">{{ item.title }}
-                            </p>
-                        </NuxtLink>
-                    </UCarousel>
+                        <!-- Horizontal Carousel -->
+                        <UCarousel v-slot="{ item }" :items="group.child" :ui="{
+                            item: 'basis-full',
+                            dot: 'bg-secondary'
+                        }" dots class="px-4">
+                            <NuxtLink :to="{ path: `/video/play/sub/${item.id}`, query: { title: item.title } }"
+                                class="flex items-center gap-4 pr-4">
+                                <img :src="getYoutubeThumbnail(item.url)" :alt="item.title"
+                                    class="w-36 h-24 object-cover rounded-lg bg-gray-200 dark:bg-gray-700 shrink-0" />
+                                <p class="text-sm font-semibold text-black dark:text-white line-clamp-3">{{ item.title
+                                    }}
+                                </p>
+                            </NuxtLink>
+                        </UCarousel>
+                    </div>
                 </div>
-            </div>
-        </template>
+            </template>
         </div>
 
         <!-- Bottom Section with FAB - Lazy loaded -->
@@ -140,9 +147,6 @@
 
         <!-- Bookmark Modal - Lazy loaded -->
         <LazyBookmarkModal />
-        
-        <!-- Playlist Modal - Lazy loaded -->
-        <LazyPlaylistModal />
     </div>
 </template>
 
@@ -245,10 +249,10 @@ const initYouTubePlayer = () => {
         tag.src = 'https://www.youtube.com/iframe_api'
         const firstScriptTag = document.getElementsByTagName('script')[0]
         firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag)
-        
-        ;(window as any).onYouTubeIframeAPIReady = () => {
-            createPlayer(videoIdYT)
-        }
+
+            ; (window as any).onYouTubeIframeAPIReady = () => {
+                createPlayer(videoIdYT)
+            }
     } else {
         createPlayer(videoIdYT)
     }
@@ -340,9 +344,6 @@ const speakText = (text: string) => {
 // Bookmark
 const { createVideoBookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
 
-// Playlist
-const { openPlaylistModal } = usePlaylist()
-
 const isVideoBookmarked = computed(() => {
     if (!videoData.value) return false
     return isBookmarked(1, videoData.value.title)
@@ -375,18 +376,9 @@ const addToBookmark = () => {
     )
 }
 
-const addToPlaylist = () => {
-    if (!videoData.value) return
-    openPlaylistModal(1, {
-        lang: 'CN',
-        videoId: null,
-        video_category_id: videoData.value.video_category_id
-    })
-}
-
 const shareContent = () => {
     if (!videoData.value) return
-    
+
     const title = videoData.value.title
     const shareUrl = `${window.location.origin}${window.location.pathname}?title=${encodeURIComponent(title)}`
 
