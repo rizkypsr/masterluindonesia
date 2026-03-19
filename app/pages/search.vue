@@ -230,37 +230,40 @@ const topic3ListHasMore = ref(true)
 // Deep search filter
 const deepSearchQuery = ref('')
 
+// Accordion state for deep search
+const expandedAccordions = ref<Set<string>>(new Set())
+
 // Scroll container ref
 const deepSearchScrollContainer = ref<HTMLElement | null>(null)
 
 // Computed filtered lists
 const filteredBookChapters = computed(() => {
   if (!deepSearchQuery.value.trim()) return bookChapters.value
-  
+
   const query = deepSearchQuery.value.toLowerCase()
-  
+
   return bookChapters.value.map(bookGroup => {
     // Check if book group title matches
     const groupMatches = bookGroup.title.toLowerCase().includes(query)
-    
+
     // If group matches, return entire group with all books
     if (groupMatches) {
       return bookGroup
     }
-    
+
     // Filter books within the group
     const filteredBooks = bookGroup.books.map(book => {
       const bookMatches = book.title.toLowerCase().includes(query)
-      
+
       // If book matches, return entire book with all chapters
       if (bookMatches) {
         return book
       }
-      
+
       // Filter chapters
       const filteredChapters = book.chapters.filter(chapter => {
         const chapterMatches = chapter.title.toLowerCase().includes(query)
-        const childMatches = chapter.children?.some(child => 
+        const childMatches = chapter.children?.some(child =>
           child.title.toLowerCase().includes(query)
         )
         return chapterMatches || childMatches
@@ -272,12 +275,12 @@ const filteredBookChapters = computed(() => {
         // Otherwise, filter children
         return {
           ...chapter,
-          children: chapter.children?.filter(child => 
+          children: chapter.children?.filter(child =>
             child.title.toLowerCase().includes(query)
           )
         }
       })
-      
+
       // Return book if it has matching chapters
       if (filteredChapters.length > 0) {
         return {
@@ -287,7 +290,7 @@ const filteredBookChapters = computed(() => {
       }
       return null
     }).filter(book => book !== null) as Book[]
-    
+
     // Return group if it has matching books
     if (filteredBooks.length > 0) {
       return {
@@ -301,31 +304,31 @@ const filteredBookChapters = computed(() => {
 
 const filteredAudioList = computed(() => {
   if (!deepSearchQuery.value.trim()) return audioList.value
-  
+
   const query = deepSearchQuery.value.toLowerCase()
-  
+
   return audioList.value.map(audioGroup => {
     // Check if audio group title matches
     const groupMatches = audioGroup.title.toLowerCase().includes(query)
-    
+
     // If group matches, return entire group
     if (groupMatches) {
       return audioGroup
     }
-    
+
     // Filter categories within the group
     const filteredCategories = audioGroup.children.map(category => {
       const categoryMatches = category.title.toLowerCase().includes(query)
-      
+
       // If category matches, return entire category
       if (categoryMatches) {
         return category
       }
-      
+
       // Filter sub groups
       const filteredSubGroups = category.sub_groups.filter(subGroup => {
         const subGroupMatches = subGroup.name.toLowerCase().includes(query)
-        const audioMatches = subGroup.audios.some(audio => 
+        const audioMatches = subGroup.audios.some(audio =>
           audio.title.toLowerCase().includes(query)
         )
         return subGroupMatches || audioMatches
@@ -337,12 +340,12 @@ const filteredAudioList = computed(() => {
         // Otherwise, filter audios
         return {
           ...subGroup,
-          audios: subGroup.audios.filter(audio => 
+          audios: subGroup.audios.filter(audio =>
             audio.title.toLowerCase().includes(query)
           )
         }
       })
-      
+
       // Return category if it has matching sub groups
       if (filteredSubGroups.length > 0) {
         return {
@@ -352,7 +355,7 @@ const filteredAudioList = computed(() => {
       }
       return null
     }).filter(category => category !== null) as AudioCategory[]
-    
+
     // Return group if it has matching categories
     if (filteredCategories.length > 0) {
       return {
@@ -366,18 +369,18 @@ const filteredAudioList = computed(() => {
 
 const filteredTopic3List = computed(() => {
   if (!deepSearchQuery.value.trim()) return topic3List.value
-  
+
   const query = deepSearchQuery.value.toLowerCase()
-  
+
   // Recursive function to filter chapters
   function filterChapters(chapters: Topic3Chapter[]): Topic3Chapter[] {
     return chapters.map(chapter => {
       const chapterMatches = chapter.title.toLowerCase().includes(query)
-      
+
       if (chapterMatches) {
         return chapter
       }
-      
+
       if (chapter.children) {
         const filteredChildren = filterChapters(chapter.children)
         if (filteredChildren.length > 0) {
@@ -387,37 +390,37 @@ const filteredTopic3List = computed(() => {
           }
         }
       }
-      
+
       return null
     }).filter(chapter => chapter !== null) as Topic3Chapter[]
   }
-  
+
   return topic3List.value.map(topic3Group => {
     const groupMatches = topic3Group.title.toLowerCase().includes(query)
-    
+
     if (groupMatches) {
       return topic3Group
     }
-    
+
     const filteredTopics = topic3Group.topics.map(topic => {
       const topicMatches = topic.title.toLowerCase().includes(query)
-      
+
       if (topicMatches) {
         return topic
       }
-      
+
       const filteredChapters = filterChapters(topic.chapters)
-      
+
       if (filteredChapters.length > 0) {
         return {
           ...topic,
           chapters: filteredChapters
         }
       }
-      
+
       return null
     }).filter(topic => topic !== null) as Topic3Topic[]
-    
+
     if (filteredTopics.length > 0) {
       return {
         ...topic3Group,
@@ -430,18 +433,18 @@ const filteredTopic3List = computed(() => {
 
 const filteredTopic2List = computed(() => {
   if (!deepSearchQuery.value.trim()) return topic2List.value
-  
+
   const query = deepSearchQuery.value.toLowerCase()
-  
+
   // Recursive function to filter chapters
   function filterChapters(chapters: Topic2Chapter[]): Topic2Chapter[] {
     return chapters.map(chapter => {
       const chapterMatches = chapter.title.toLowerCase().includes(query)
-      
+
       if (chapterMatches) {
         return chapter
       }
-      
+
       if (chapter.children) {
         const filteredChildren = filterChapters(chapter.children)
         if (filteredChildren.length > 0) {
@@ -451,37 +454,37 @@ const filteredTopic2List = computed(() => {
           }
         }
       }
-      
+
       return null
     }).filter(chapter => chapter !== null) as Topic2Chapter[]
   }
-  
+
   return topic2List.value.map(topic2Group => {
     const groupMatches = topic2Group.title.toLowerCase().includes(query)
-    
+
     if (groupMatches) {
       return topic2Group
     }
-    
+
     const filteredTopics = topic2Group.topics.map(topic => {
       const topicMatches = topic.title.toLowerCase().includes(query)
-      
+
       if (topicMatches) {
         return topic
       }
-      
+
       const filteredChapters = filterChapters(topic.chapters)
-      
+
       if (filteredChapters.length > 0) {
         return {
           ...topic,
           chapters: filteredChapters
         }
       }
-      
+
       return null
     }).filter(topic => topic !== null) as Topic2Topic[]
-    
+
     if (filteredTopics.length > 0) {
       return {
         ...topic2Group,
@@ -494,29 +497,29 @@ const filteredTopic2List = computed(() => {
 
 const filteredTopic1List = computed(() => {
   if (!deepSearchQuery.value.trim()) return topic1List.value
-  
+
   const query = deepSearchQuery.value.toLowerCase()
-  
+
   return topic1List.value.map(topic1Group => {
     const groupMatches = topic1Group.topic_title.toLowerCase().includes(query)
-    
+
     if (groupMatches) {
       return topic1Group
     }
-    
+
     const filteredCategories = topic1Group.categories.map(category => {
       const categoryMatches = category.title.toLowerCase().includes(query)
-      
+
       if (categoryMatches) {
         return category
       }
-      
+
       // Filter children if they exist
       if (category.children) {
-        const filteredChildren = category.children.filter(child => 
+        const filteredChildren = category.children.filter(child =>
           child.title.toLowerCase().includes(query)
         )
-        
+
         if (filteredChildren.length > 0) {
           return {
             ...category,
@@ -524,10 +527,10 @@ const filteredTopic1List = computed(() => {
           }
         }
       }
-      
+
       return null
     }).filter(category => category !== null) as Topic1Category[]
-    
+
     if (filteredCategories.length > 0) {
       return {
         ...topic1Group,
@@ -540,40 +543,40 @@ const filteredTopic1List = computed(() => {
 
 const filteredVideoList = computed(() => {
   if (!deepSearchQuery.value.trim()) return videoList.value
-  
+
   const query = deepSearchQuery.value.toLowerCase()
-  
+
   return videoList.value.map(videoGroup => {
     const groupMatches = videoGroup.title.toLowerCase().includes(query)
-    
+
     if (groupMatches) {
       return videoGroup
     }
-    
+
     const filteredChildren = videoGroup.children.map(yearGroup => {
       const yearMatches = yearGroup.title.toLowerCase().includes(query)
-      
+
       if (yearMatches) {
         return yearGroup
       }
-      
+
       const filteredCategories = yearGroup.video_categories.map(category => {
         const categoryMatches = category.title.toLowerCase().includes(query)
-        
+
         if (categoryMatches) {
           return category
         }
-        
+
         const filteredCategoryChildren = category.children.map(child => {
           const childMatches = child.title.toLowerCase().includes(query)
-          
+
           if (childMatches) {
             return child
           }
-          
+
           const filteredSubGroups = child.sub_groups.filter(subGroup => {
             const subGroupMatches = subGroup.name.toLowerCase().includes(query)
-            const videoMatches = subGroup.videos.some(video => 
+            const videoMatches = subGroup.videos.some(video =>
               video.title.toLowerCase().includes(query)
             )
             return subGroupMatches || videoMatches
@@ -583,12 +586,12 @@ const filteredVideoList = computed(() => {
             }
             return {
               ...subGroup,
-              videos: subGroup.videos.filter(video => 
+              videos: subGroup.videos.filter(video =>
                 video.title.toLowerCase().includes(query)
               )
             }
           })
-          
+
           if (filteredSubGroups.length > 0) {
             return {
               ...child,
@@ -597,7 +600,7 @@ const filteredVideoList = computed(() => {
           }
           return null
         }).filter(child => child !== null) as VideoChild[]
-        
+
         if (filteredCategoryChildren.length > 0) {
           return {
             ...category,
@@ -606,7 +609,7 @@ const filteredVideoList = computed(() => {
         }
         return null
       }).filter(category => category !== null) as VideoCategory[]
-      
+
       if (filteredCategories.length > 0) {
         return {
           ...yearGroup,
@@ -615,7 +618,7 @@ const filteredVideoList = computed(() => {
       }
       return null
     }).filter(yearGroup => yearGroup !== null) as VideoYearGroup[]
-    
+
     if (filteredChildren.length > 0) {
       return {
         ...videoGroup,
@@ -632,9 +635,9 @@ useInfiniteScroll(
   () => {
     // Only trigger if modal is open
     if (!isDeepSearchOpen.value) return
-    
+
     const firstCategory = filterPayload.value.selectedCategory[0]
-    
+
     if (firstCategory === 'Buku' && bookChaptersHasMore.value && !isLoadingBookChapters.value) {
       fetchBookChapters(true)
     } else if (firstCategory === 'Audio' && audioListHasMore.value && !isLoadingAudioList.value) {
@@ -649,16 +652,16 @@ useInfiniteScroll(
       fetchTopic3List(true)
     }
   },
-  { 
+  {
     distance: 200,
     interval: 500,
     canLoadMore: () => {
       // Only allow loading if modal is open
       if (!isDeepSearchOpen.value) return false
-      
+
       // Don't load if there's a search query (filtered results)
       if (deepSearchQuery.value.trim()) return false
-      
+
       const firstCategory = filterPayload.value.selectedCategory[0]
       if (firstCategory === 'Buku') return bookChaptersHasMore.value
       if (firstCategory === 'Audio') return audioListHasMore.value
@@ -683,8 +686,20 @@ watch(isDeepSearchOpen, (isOpen) => {
   } else {
     // Clear search when modal closes to prevent filtered state issues
     deepSearchQuery.value = ''
+    // Clear expanded accordions
+    expandedAccordions.value.clear()
   }
 })
+
+// Toggle accordion
+function toggleAccordion(key: string) {
+  if (expandedAccordions.value.has(key)) {
+    expandedAccordions.value.delete(key)
+  } else {
+    expandedAccordions.value.add(key)
+  }
+  expandedAccordions.value = new Set(expandedAccordions.value)
+}
 
 const categoryOptions = [
   { label: 'Buku', value: 'Buku' },
@@ -724,7 +739,7 @@ async function fetchFilterOptions() {
 
     if (response.success && response.data) {
       // Show all items with non-empty keywords, exclude only "Buku"
-      dynamicFilters.value = response.data.filter(item => 
+      dynamicFilters.value = response.data.filter(item =>
         item.keyword && item.keyword.length > 0 && item.title !== 'Buku'
       )
     }
@@ -743,7 +758,7 @@ async function fetchFilterOptions() {
 onMounted(async () => {
   // Fetch filter options first
   await fetchFilterOptions()
-  
+
   if (hasSearched.value && searchQuery.value && results.value.length === 0) {
     fetchResults()
   }
@@ -868,7 +883,7 @@ function toggleCategory(value: string) {
 async function fetchBookChapters(loadMore = false) {
   if (isLoadingBookChapters.value) return
   if (loadMore && !bookChaptersHasMore.value) return
-  
+
   isLoadingBookChapters.value = true
   try {
     const page = bookChaptersPage.value
@@ -884,7 +899,7 @@ async function fetchBookChapters(loadMore = false) {
         has_more: boolean
       }
     }>(`${config.public.apiBaseUrl}/search/book/chapters?page=${page}&per_page=10`)
-    
+
     if (response.success && response.data) {
       if (loadMore) {
         // Just push new data - no reassignment needed
@@ -907,7 +922,7 @@ async function fetchBookChapters(loadMore = false) {
 async function fetchAudioList(loadMore = false) {
   if (isLoadingAudioList.value) return
   if (loadMore && !audioListHasMore.value) return
-  
+
   isLoadingAudioList.value = true
   try {
     const page = audioListPage.value
@@ -923,7 +938,7 @@ async function fetchAudioList(loadMore = false) {
         has_more: boolean
       }
     }>(`${config.public.apiBaseUrl}/search/audio/list?page=${page}&per_page=10`)
-    
+
     if (response.success && response.data) {
       if (loadMore) {
         // Just push new data - no reassignment needed
@@ -946,7 +961,7 @@ async function fetchAudioList(loadMore = false) {
 async function fetchTopic3List(loadMore = false) {
   if (isLoadingTopic3List.value) return
   if (loadMore && !topic3ListHasMore.value) return
-  
+
   isLoadingTopic3List.value = true
   try {
     const page = topic3ListPage.value
@@ -962,7 +977,7 @@ async function fetchTopic3List(loadMore = false) {
         has_more: boolean
       }
     }>(`${config.public.apiBaseUrl}/search/topic3/list?page=${page}&per_page=10`)
-    
+
     if (response.success && response.data) {
       if (loadMore) {
         topic3List.value.push(...response.data)
@@ -983,7 +998,7 @@ async function fetchTopic3List(loadMore = false) {
 async function fetchTopic1List(loadMore = false) {
   if (isLoadingTopic1List.value) return
   if (loadMore && !topic1ListHasMore.value) return
-  
+
   isLoadingTopic1List.value = true
   try {
     const page = topic1ListPage.value
@@ -999,7 +1014,7 @@ async function fetchTopic1List(loadMore = false) {
         has_more: boolean
       }
     }>(`${config.public.apiBaseUrl}/search/topic1/list?page=${page}&per_page=10`)
-    
+
     if (response.success && response.data) {
       if (loadMore) {
         topic1List.value.push(...response.data)
@@ -1020,7 +1035,7 @@ async function fetchTopic1List(loadMore = false) {
 async function fetchTopic2List(loadMore = false) {
   if (isLoadingTopic2List.value) return
   if (loadMore && !topic2ListHasMore.value) return
-  
+
   isLoadingTopic2List.value = true
   try {
     const page = topic2ListPage.value
@@ -1036,7 +1051,7 @@ async function fetchTopic2List(loadMore = false) {
         has_more: boolean
       }
     }>(`${config.public.apiBaseUrl}/search/topic2/list?page=${page}&per_page=10`)
-    
+
     if (response.success && response.data) {
       if (loadMore) {
         topic2List.value.push(...response.data)
@@ -1057,7 +1072,7 @@ async function fetchTopic2List(loadMore = false) {
 async function fetchVideoList(loadMore = false) {
   if (isLoadingVideoList.value) return
   if (loadMore && !videoListHasMore.value) return
-  
+
   isLoadingVideoList.value = true
   try {
     const page = videoListPage.value
@@ -1073,7 +1088,7 @@ async function fetchVideoList(loadMore = false) {
         has_more: boolean
       }
     }>(`${config.public.apiBaseUrl}/search/video/list?page=${page}&per_page=10`)
-    
+
     if (response.success && response.data) {
       if (loadMore) {
         // Just push new data - no reassignment needed
@@ -1211,11 +1226,11 @@ function handleDeepSearchScroll(event: Event) {
   const scrollTop = target.scrollTop
   const scrollHeight = target.scrollHeight
   const clientHeight = target.clientHeight
-  
+
   // Load more when user scrolls to 80% of the content
   if (scrollTop + clientHeight >= scrollHeight * 0.8) {
     const firstCategory = filterPayload.value.selectedCategory[0]
-    
+
     if (firstCategory === 'Buku' && bookChaptersHasMore.value && !isLoadingBookChapters.value) {
       fetchBookChapters(true)
     } else if (firstCategory === 'Audio' && audioListHasMore.value && !isLoadingAudioList.value) {
@@ -1260,7 +1275,7 @@ function toggleVideoSelection(videoId: number) {
 function toggleSubGroupVideos(subGroup: AudioSubGroup | VideoSubGroup) {
   const items = 'audios' in subGroup ? subGroup.audios : subGroup.videos
   const allSelected = items.every(item => selectedVideoIds.value.includes(item.id))
-  
+
   if (allSelected) {
     // Unselect all items in this sub group
     items.forEach(item => {
@@ -1339,14 +1354,50 @@ function toggleKeyword(keyword: string) {
   }
 }
 
-// Toggle filter item - all items go to selectedKeyword
-function toggleFilterItem(_filterTitle: string, item: string) {
-  toggleKeyword(item)
+// Add hide keyword
+function addHideKeyword() {
+  const keyword = hideKeywordInput.value.trim()
+  if (keyword && !filterPayload.value.listHideKeyword.includes(keyword)) {
+    filterPayload.value.listHideKeyword.push(keyword)
+    hideKeywordInput.value = ''
+  }
 }
 
-// Check if filter item is selected - all items check selectedKeyword
-function isFilterItemSelected(_filterTitle: string, item: string): boolean {
-  return filterPayload.value.selectedKeyword.includes(item)
+// Remove hide keyword
+function removeHideKeyword(index: number) {
+  filterPayload.value.listHideKeyword.splice(index, 1)
+}
+
+// Add show keyword
+function addShowKeyword() {
+  const keyword = showKeywordInput.value.trim()
+  if (keyword && !filterPayload.value.listShowKeyword.includes(keyword)) {
+    filterPayload.value.listShowKeyword.push(keyword)
+    showKeywordInput.value = ''
+  }
+}
+
+// Remove show keyword
+function removeShowKeyword(index: number) {
+  filterPayload.value.listShowKeyword.splice(index, 1)
+}
+
+// Toggle filter item - use unique key combining filter title and item
+function toggleFilterItem(filterTitle: string, item: string) {
+  // Create unique key: "filterTitle::item"
+  const uniqueKey = `${filterTitle}::${item}`
+  const idx = filterPayload.value.selectedKeyword.indexOf(uniqueKey)
+  if (idx > -1) {
+    filterPayload.value.selectedKeyword.splice(idx, 1)
+  } else {
+    filterPayload.value.selectedKeyword.push(uniqueKey)
+  }
+}
+
+// Check if filter item is selected - use unique key
+function isFilterItemSelected(filterTitle: string, item: string): boolean {
+  const uniqueKey = `${filterTitle}::${item}`
+  return filterPayload.value.selectedKeyword.includes(uniqueKey)
 }
 
 // Navigate to related chapter
@@ -1376,13 +1427,13 @@ function applyFilter() {
   } else {
     delete filterPayload.value.chapter_ids
   }
-  
+
   if (selectedVideoIds.value.length > 0) {
     filterPayload.value.video_ids = selectedVideoIds.value
   } else {
     delete filterPayload.value.video_ids
   }
-  
+
   isFilterOpen.value = false
   currentPage.value = 1
   fetchResults()
@@ -1391,7 +1442,7 @@ function applyFilter() {
 function openDeepSearch() {
   // Load data based on selected category
   const firstCategory = filterPayload.value.selectedCategory[0]
-  
+
   if (firstCategory === 'Buku' && !bookChapters.value.length) {
     fetchBookChapters()
   } else if (firstCategory === 'Audio' && !audioList.value.length) {
@@ -1405,18 +1456,18 @@ function openDeepSearch() {
   } else if (firstCategory === 'topik3' && !topic3List.value.length) {
     fetchTopic3List()
   }
-  
+
   isDeepSearchOpen.value = true
 }
 
 function applyDeepSearch() {
   const firstCategory = filterPayload.value.selectedCategory[0]
-  
+
   console.log('applyDeepSearch called for category:', firstCategory)
   console.log('selectedTopic1CategoryIds:', selectedTopic1CategoryIds.value)
   console.log('selectedTopic2ChapterIds:', selectedTopic2ChapterIds.value)
   console.log('selectedTopic3ChapterIds:', selectedTopic3ChapterIds.value)
-  
+
   // Add chapter_ids, video_ids, topic1_category_ids, topic2_chapter_ids, or topic3_chapter_ids based on category
   if (firstCategory === 'Buku') {
     if (selectedChapterIds.value.length > 0) {
@@ -1469,12 +1520,12 @@ function applyDeepSearch() {
     delete filterPayload.value.topic1_category_ids
     delete filterPayload.value.topic2_chapter_ids
   }
-  
+
   console.log('filterPayload after update:', filterPayload.value)
-  
+
   isDeepSearchOpen.value = false
   currentPage.value = 1
-  
+
   // Always refetch results
   fetchResults()
 }
@@ -1525,7 +1576,7 @@ function loadMore() {
 
 function navigateToDetail(item: SearchItem) {
   const itemType = item.type.toLowerCase()
-  
+
   console.log('navigateToDetail called:', { itemType, id: item.id, item })
 
   if (itemType === 'book' || itemType === 'buku') {
@@ -1556,9 +1607,9 @@ function navigateToDetail(item: SearchItem) {
     // Navigate to topics (topik1) detail page
     router.push({
       path: `/topics/detail`,
-      query: { 
+      query: {
         subId: item.id,
-        title: item.title 
+        title: item.title
       }
     })
   } else if (itemType === 'topic2' || itemType === 'topik2' || itemType === 'topik') {
@@ -1613,8 +1664,8 @@ function navigateToDetail(item: SearchItem) {
             Filter
             <Icon name="mdi:tune-variant" class="w-4 h-4 ml-1" />
           </UButton>
-          <UButton v-if="selectedCategoryLabel" size="lg" class="bg-primary hover:bg-primary/90 text-black rounded-full font-bold"
-            @click="openDeepSearch">
+          <UButton v-if="selectedCategoryLabel" size="lg"
+            class="bg-primary hover:bg-primary/90 text-black rounded-full font-bold" @click="openDeepSearch">
             {{ selectedCategoryLabel }}
             <Icon name="mdi:book-search" class="w-4 h-4 ml-1" />
           </UButton>
@@ -1657,9 +1708,10 @@ function navigateToDetail(item: SearchItem) {
               <p class="text-black dark:text-white leading-relaxed whitespace-pre-wrap">
                 {{ stripHtml(item.full_detail) }}
               </p>
-              
+
               <!-- Related Chapters Section -->
-              <div v-if="item.related_chapters && item.related_chapters.length > 0" class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+              <div v-if="item.related_chapters && item.related_chapters.length > 0"
+                class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
                 <h4 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Bab Terkait:</h4>
                 <div class="space-y-2">
                   <button v-for="(chapter, idx) in item.related_chapters" :key="idx"
@@ -1699,7 +1751,7 @@ function navigateToDetail(item: SearchItem) {
     <!-- Filter Drawer -->
     <UDrawer v-model:open="isFilterOpen" direction="bottom" title="Filter Pencarian">
       <template #content>
-        <div class="p-4 space-y-6 overflow-y-auto max-h-[80vh] bg-white dark:bg-gray-900">
+        <div class="p-4 space-y-6 overflow-y-auto max-h-[80vh] bg-white dark:bg-gray-900 pb-12" style="font-size: 1.2em;">
           <!-- Header -->
           <div class="flex items-center justify-between">
             <h2 class="text-lg font-semibold text-black dark:text-white">Filter Pencarian</h2>
@@ -1725,8 +1777,7 @@ function navigateToDetail(item: SearchItem) {
             <h3 class="font-semibold text-black dark:text-white mb-3">{{ filter.title }}</h3>
             <div class="flex flex-wrap gap-2">
               <button v-for="item in filter.keyword" :key="item"
-                class="px-4 py-1.5 rounded-full text-sm border transition-colors" 
-                :class="isFilterItemSelected(filter.title, item)
+                class="px-4 py-1.5 rounded-full text-sm border transition-colors" :class="isFilterItemSelected(filter.title, item)
                   ? 'bg-primary border-primary text-black dark:bg-yellow-500'
                   : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-black dark:text-white'"
                 @click="toggleFilterItem(filter.title, item)">
@@ -1738,13 +1789,53 @@ function navigateToDetail(item: SearchItem) {
           <!-- Sembunyikan kata kunci -->
           <div>
             <h3 class="font-semibold text-black dark:text-white mb-3">Sembunyikan kata kunci</h3>
-            <UInput v-model="hideKeywordInput" placeholder="Masukan kata kunci" size="md" />
+            <div class="flex gap-2 mb-2">
+              <UInput v-model="hideKeywordInput" placeholder="Masukan kata kunci" size="md" class="flex-1"
+                @keyup.enter="addHideKeyword" />
+              <button @click="addHideKeyword" :disabled="!hideKeywordInput.trim()"
+                class="px-3 py-2 rounded-lg transition-colors shrink-0" :class="hideKeywordInput.trim()
+                  ? 'bg-primary hover:bg-primary/90 text-black'
+                  : 'bg-gray-300 dark:bg-gray-700 text-gray-500 cursor-not-allowed'">
+                <Icon name="mdi:plus" class="w-5 h-5" />
+              </button>
+            </div>
+            <!-- List of hide keywords -->
+            <div v-if="filterPayload.listHideKeyword.length > 0" class="flex flex-wrap gap-2">
+              <div v-for="(keyword, idx) in filterPayload.listHideKeyword" :key="`hide-${idx}`"
+                class="flex items-center gap-1 px-3 py-1.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full text-sm">
+                <span>{{ keyword }}</span>
+                <button @click="removeHideKeyword(idx)"
+                  class="hover:bg-red-200 dark:hover:bg-red-800/50 rounded-full p-0.5">
+                  <Icon name="mdi:close" class="w-4 h-4" />
+                </button>
+              </div>
+            </div>
           </div>
 
           <!-- Tambahkan kata kunci -->
           <div>
             <h3 class="font-semibold text-black dark:text-white mb-3">Tambahkan kata kunci</h3>
-            <UInput v-model="showKeywordInput" placeholder="Masukan kata kunci" size="md" />
+            <div class="flex gap-2 mb-2">
+              <UInput v-model="showKeywordInput" placeholder="Masukan kata kunci" size="md" class="flex-1"
+                @keyup.enter="addShowKeyword" />
+              <button @click="addShowKeyword" :disabled="!showKeywordInput.trim()"
+                class="px-3 py-2 rounded-lg transition-colors shrink-0" :class="showKeywordInput.trim()
+                  ? 'bg-primary hover:bg-primary/90 text-black'
+                  : 'bg-gray-300 dark:bg-gray-700 text-gray-500 cursor-not-allowed'">
+                <Icon name="mdi:plus" class="w-5 h-5" />
+              </button>
+            </div>
+            <!-- List of show keywords -->
+            <div v-if="filterPayload.listShowKeyword.length > 0" class="flex flex-wrap gap-2">
+              <div v-for="(keyword, idx) in filterPayload.listShowKeyword" :key="`show-${idx}`"
+                class="flex items-center gap-1 px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-sm">
+                <span>{{ keyword }}</span>
+                <button @click="removeShowKeyword(idx)"
+                  class="hover:bg-green-200 dark:hover:bg-green-800/50 rounded-full p-0.5">
+                  <Icon name="mdi:close" class="w-4 h-4" />
+                </button>
+              </div>
+            </div>
           </div>
 
           <!-- Tahun (Static) -->
@@ -1762,7 +1853,7 @@ function navigateToDetail(item: SearchItem) {
           </div>
 
           <!-- Terapkan Button -->
-          <div class="pt-4">
+          <div class="pt-4 pb-8">
             <UButton block size="lg" class="bg-primary hover:bg-primary/90 text-black" @click="applyFilter">
               Terapkan
             </UButton>
@@ -1774,28 +1865,33 @@ function navigateToDetail(item: SearchItem) {
     <!-- Deep Search Drawer -->
     <UDrawer v-model:open="isDeepSearchOpen" direction="bottom" :title="selectedCategoryLabel || 'Pencarian Mendalam'">
       <template #content>
-        <div class="flex flex-col max-h-[80vh] bg-white dark:bg-gray-900">
+        <div class="flex flex-col max-h-[80vh] bg-white dark:bg-gray-900" style="font-size: 1.2em;">
           <!-- Fixed Header Section -->
           <div class="p-4 space-y-4 shrink-0">
             <!-- Header with Apply Button -->
             <div class="flex items-center justify-between pb-3 border-b border-gray-200 dark:border-gray-700">
               <div>
                 <h2 class="text-lg font-semibold text-black dark:text-white">{{ selectedCategoryLabel || 'Pencarian Mendalam' }}</h2>
-                <p v-if="filterPayload.selectedCategory[0] === 'Buku' && selectedChapterIds.length > 0" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <p v-if="filterPayload.selectedCategory[0] === 'Buku' && selectedChapterIds.length > 0"
+                  class="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   {{ selectedChapterIds.length }} bab dipilih
                 </p>
-                <p v-else-if="(filterPayload.selectedCategory[0] === 'Audio' || filterPayload.selectedCategory[0] === 'Video') && selectedVideoIds.length > 0" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <p v-else-if="(filterPayload.selectedCategory[0] === 'Audio' || filterPayload.selectedCategory[0] === 'Video') && selectedVideoIds.length > 0"
+                  class="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   {{ selectedVideoIds.length }} video dipilih
                 </p>
-                <p v-else-if="filterPayload.selectedCategory[0] === 'topik1' && selectedTopic1CategoryIds.length > 0" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <p v-else-if="filterPayload.selectedCategory[0] === 'topik1' && selectedTopic1CategoryIds.length > 0"
+                  class="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   {{ selectedTopic1CategoryIds.length }} kategori dipilih
                 </p>
-                <p v-else-if="filterPayload.selectedCategory[0] === 'topik2' && selectedTopic2ChapterIds.length > 0" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <p v-else-if="filterPayload.selectedCategory[0] === 'topik2' && selectedTopic2ChapterIds.length > 0"
+                  class="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   {{ selectedTopic2ChapterIds.length }} bab dipilih
                 </p>
               </div>
               <div class="flex gap-2">
-                <button class="text-gray-500 dark:text-gray-400 text-sm hover:text-gray-700 dark:hover:text-gray-300" @click="resetDeepSearch">
+                <button class="text-gray-500 dark:text-gray-400 text-sm hover:text-gray-700 dark:hover:text-gray-300"
+                  @click="resetDeepSearch">
                   Reset
                 </button>
                 <UButton size="md" class="bg-primary hover:bg-primary/90 text-black" @click="applyDeepSearch">
@@ -1808,197 +1904,155 @@ function navigateToDetail(item: SearchItem) {
             <p v-if="filterPayload.selectedCategory[0] === 'Buku'" class="text-sm text-gray-600 dark:text-gray-400">
               Pilih bab buku untuk pencarian yang lebih spesifik dalam konten buku
             </p>
-            <p v-else-if="filterPayload.selectedCategory[0] === 'Audio'" class="text-sm text-gray-600 dark:text-gray-400">
+            <p v-else-if="filterPayload.selectedCategory[0] === 'Audio'"
+              class="text-sm text-gray-600 dark:text-gray-400">
               Pilih audio untuk pencarian yang lebih spesifik
             </p>
-            <p v-else-if="filterPayload.selectedCategory[0] === 'Video'" class="text-sm text-gray-600 dark:text-gray-400">
+            <p v-else-if="filterPayload.selectedCategory[0] === 'Video'"
+              class="text-sm text-gray-600 dark:text-gray-400">
               Pilih video untuk pencarian yang lebih spesifik
             </p>
-            <p v-else-if="filterPayload.selectedCategory[0] === 'topik1'" class="text-sm text-gray-600 dark:text-gray-400">
+            <p v-else-if="filterPayload.selectedCategory[0] === 'topik1'"
+              class="text-sm text-gray-600 dark:text-gray-400">
               Pilih kategori ensiklopedia untuk pencarian yang lebih spesifik
             </p>
-            <p v-else-if="filterPayload.selectedCategory[0] === 'topik2'" class="text-sm text-gray-600 dark:text-gray-400">
+            <p v-else-if="filterPayload.selectedCategory[0] === 'topik2'"
+              class="text-sm text-gray-600 dark:text-gray-400">
               Pilih bab topik untuk pencarian yang lebih spesifik
             </p>
-            <p v-else-if="filterPayload.selectedCategory[0] === 'topik3'" class="text-sm text-gray-600 dark:text-gray-400">
+            <p v-else-if="filterPayload.selectedCategory[0] === 'topik3'"
+              class="text-sm text-gray-600 dark:text-gray-400">
               Pilih bab kumpulan tanya jawab untuk pencarian yang lebih spesifik
             </p>
 
             <!-- Search Input -->
             <div class="w-full">
-              <UInput v-model="deepSearchQuery" placeholder="Cari..." size="md" icon="i-heroicons-magnifying-glass" class="w-full" />
+              <UInput v-model="deepSearchQuery" placeholder="Cari..." size="md" icon="i-heroicons-magnifying-glass"
+                class="w-full" />
             </div>
           </div>
 
           <!-- Scrollable List Section -->
-          <div ref="deepSearchScrollContainer" class="flex-1 overflow-y-auto px-4 pb-4">
+          <div ref="deepSearchScrollContainer" class="flex-1 overflow-y-auto px-4 pb-32">
             <!-- Book Chapters List -->
             <div v-if="filterPayload.selectedCategory[0] === 'Buku'" class="space-y-4">
-              <!-- Book Group Level -->
-              <div v-for="bookGroup in filteredBookChapters" :key="`group-${bookGroup.id}`" class="space-y-3">
-                <h2 class="text-base font-bold text-primary dark:text-yellow-400 sticky top-0 bg-white dark:bg-gray-900 py-2 z-10">
-                  {{ bookGroup.title }}
-                </h2>
-                
-                <!-- Book Level -->
-                <div v-for="book in bookGroup.books" :key="`book-${book.id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 ml-2">
-                  <h3 class="font-semibold text-black dark:text-white mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
-                    {{ book.title }}
-                  </h3>
-                  
-                  <!-- Chapter Level -->
-                  <div class="space-y-2">
-                    <div v-for="chapter in book.chapters" :key="`ch-${chapter.id}`">
-                      <div class="flex items-start gap-2 py-1">
-                        <input type="checkbox" :id="`deep-chapter-${chapter.id}`"
-                          :checked="selectedChapterIds.includes(chapter.id)"
-                          @change="toggleChapterSelection(chapter.id, chapter)"
-                          class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                        <label :for="`deep-chapter-${chapter.id}`" class="text-sm text-black dark:text-white cursor-pointer flex-1">
-                          {{ chapter.title }}
-                        </label>
-                      </div>
-                      
-                      <!-- Sub-chapter Level -->
-                      <div v-if="chapter.children && chapter.children.length > 0" class="ml-6 mt-1 space-y-1">
-                        <div v-for="child in chapter.children" :key="`chd-${child.id}`" class="flex items-start gap-2 py-1">
-                          <input type="checkbox" :id="`deep-chapter-child-${child.id}`"
-                            :checked="selectedChapterIds.includes(child.id)"
-                            @change="toggleChapterSelection(child.id, child)"
-                            class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                          <label :for="`deep-chapter-child-${child.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
-                            {{ child.title }}
+              <!-- Book Group Level (Accordion) -->
+              <div v-for="bookGroup in filteredBookChapters" :key="`group-${bookGroup.id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                <!-- Accordion Header -->
+                <button @click="toggleAccordion(`book-group-${bookGroup.id}`)" 
+                  class="w-full flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                  <h2 class="text-base font-bold text-black dark:text-white">
+                    {{ bookGroup.title }}
+                  </h2>
+                  <Icon :name="expandedAccordions.has(`book-group-${bookGroup.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                    class="w-5 h-5 text-black dark:text-white" />
+                </button>
+
+                <!-- Accordion Content -->
+                <div v-if="expandedAccordions.has(`book-group-${bookGroup.id}`)" class="p-3 space-y-3">
+                  <!-- Book Level -->
+                  <div v-for="book in bookGroup.books" :key="`book-${book.id}`"
+                    class="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+                    <h3
+                      class="font-semibold text-black dark:text-white mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
+                      {{ book.title }}
+                    </h3>
+
+                    <!-- Chapter Level -->
+                    <div class="space-y-2">
+                      <div v-for="chapter in book.chapters" :key="`ch-${chapter.id}`">
+                        <div class="flex items-start gap-2 py-1">
+                          <input type="checkbox" :id="`deep-chapter-${chapter.id}`"
+                            :checked="selectedChapterIds.includes(chapter.id)"
+                            @change="toggleChapterSelection(chapter.id, chapter)"
+                            class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                          <label :for="`deep-chapter-${chapter.id}`"
+                            class="text-base text-black dark:text-white cursor-pointer flex-1">
+                            {{ chapter.title }}
                           </label>
+                        </div>
+
+                        <!-- Sub-chapter Level -->
+                        <div v-if="chapter.children && chapter.children.length > 0" class="ml-6 mt-1 space-y-1">
+                          <div v-for="child in chapter.children" :key="`chd-${child.id}`"
+                            class="flex items-start gap-2 py-1">
+                            <input type="checkbox" :id="`deep-chapter-child-${child.id}`"
+                              :checked="selectedChapterIds.includes(child.id)"
+                              @change="toggleChapterSelection(child.id, child)"
+                              class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                            <label :for="`deep-chapter-child-${child.id}`"
+                              class="text-base text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                              {{ child.title }}
+                            </label>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              
+
               <div v-if="filteredBookChapters.length === 0 && !isLoadingBookChapters" class="text-center py-8">
                 <p class="text-sm text-gray-500 dark:text-gray-400">
                   {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data bab buku' }}
                 </p>
               </div>
-              
+
               <!-- Loading More Indicator for Books - Fixed at bottom -->
               <div v-if="isLoadingBookChapters && bookChapters.length > 0" class="flex justify-center py-4">
                 <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
               </div>
-              
+
               <!-- Initial Loading for Books -->
               <div v-if="bookChapters.length === 0 && isLoadingBookChapters" class="flex justify-center py-8">
                 <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
               </div>
             </div>
 
-          <!-- Audio List -->
-          <div v-else-if="filterPayload.selectedCategory[0] === 'Audio'" class="space-y-4">
-            <!-- Audio Group Level -->
-            <div v-for="audioGroup in filteredAudioList" :key="`agroup-${audioGroup.id}`" class="space-y-3">
-              <h2 class="text-base font-bold text-primary dark:text-yellow-400 sticky top-0 bg-white dark:bg-gray-900 py-2 z-10">
-                {{ audioGroup.title }}
-              </h2>
-              
-              <!-- Audio Category Level -->
-              <div v-for="category in audioGroup.children" :key="`acat-${category.id}`" class="space-y-2 ml-2">
-                <h3 class="text-sm font-semibold text-black dark:text-white">
-                  {{ category.title }}
-                </h3>
-                
-                <!-- Audio Sub Group Level -->
-                <div v-for="subGroup in category.sub_groups" :key="`asg-${subGroup.id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 ml-2">
-                  <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
-                    <input type="checkbox" :id="`audio-group-${subGroup.id}`"
-                      :checked="isSubGroupSelected(subGroup)"
-                      @change="toggleSubGroupVideos(subGroup)"
-                      class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                    <label :for="`audio-group-${subGroup.id}`" class="font-semibold text-black dark:text-white cursor-pointer">
-                      {{ subGroup.name }}
-                    </label>
-                  </div>
-                  
-                  <!-- Audio Level -->
-                  <div class="space-y-1 ml-6">
-                    <div v-for="audio in subGroup.audios" :key="`av-${audio.id}`" class="flex items-start gap-2 py-1">
-                      <input type="checkbox" :id="`audio-${audio.id}`"
-                        :checked="selectedVideoIds.includes(audio.id)"
-                        @change="toggleAudioSelection(audio.id)"
-                        class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                      <label :for="`audio-${audio.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
-                        {{ audio.title }}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div v-if="filteredAudioList.length === 0 && !isLoadingAudioList" class="text-center py-8">
-              <p class="text-sm text-gray-500 dark:text-gray-400">
-                {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data audio' }}
-              </p>
-            </div>
-            
-            <!-- Loading More Indicator for Audio -->
-            <div v-if="isLoadingAudioList && audioList.length > 0" class="flex justify-center py-4">
-              <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
-            </div>
-            
-            <!-- Initial Loading for Audio -->
-            <div v-if="audioList.length === 0 && isLoadingAudioList" class="flex justify-center py-8">
-              <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
-            </div>
-          </div>
+            <!-- Audio List -->
+            <div v-else-if="filterPayload.selectedCategory[0] === 'Audio'" class="space-y-4">
+              <!-- Audio Group Level (Accordion) -->
+              <div v-for="audioGroup in filteredAudioList" :key="`agroup-${audioGroup.id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                <!-- Accordion Header -->
+                <button @click="toggleAccordion(`audio-group-${audioGroup.id}`)" 
+                  class="w-full flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                  <h2 class="text-base font-bold text-black dark:text-white">
+                    {{ audioGroup.title }}
+                  </h2>
+                  <Icon :name="expandedAccordions.has(`audio-group-${audioGroup.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                    class="w-5 h-5 text-black dark:text-white" />
+                </button>
 
-          <!-- Video List -->
-          <div v-else-if="filterPayload.selectedCategory[0] === 'Video'" class="space-y-4">
-            <!-- Video Group Level -->
-            <div v-for="videoGroup in filteredVideoList" :key="`vgroup-${videoGroup.id}`" class="space-y-3">
-              <h2 class="text-base font-bold text-primary dark:text-yellow-400 sticky top-0 bg-white dark:bg-gray-900 py-2 z-10">
-                {{ videoGroup.title }}
-              </h2>
-              
-              <!-- Year Group Level -->
-              <div v-for="yearGroup in videoGroup.children" :key="`vyear-${yearGroup.id}`" class="space-y-2 ml-2">
-                <h3 class="text-sm font-semibold text-black dark:text-white">
-                  {{ yearGroup.title }}
-                </h3>
-                
-                <!-- Video Category Level -->
-                <div v-for="category in yearGroup.video_categories" :key="`vcat-${category.id}`" class="space-y-2 ml-2">
-                  <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {{ category.title }}
-                  </h4>
-                  
-                  <!-- Video Child Level -->
-                  <div v-for="child in category.children" :key="`vchild-${child.id}`" class="space-y-2 ml-2">
-                    <h5 class="text-xs font-medium text-gray-600 dark:text-gray-400">
-                      {{ child.title }}
-                    </h5>
-                    
-                    <!-- Video Sub Group Level -->
-                    <div v-for="subGroup in child.sub_groups" :key="`vsg-${subGroup.id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 ml-2">
+                <!-- Accordion Content -->
+                <div v-if="expandedAccordions.has(`audio-group-${audioGroup.id}`)" class="p-3 space-y-3">
+                  <!-- Audio Category Level -->
+                  <div v-for="category in audioGroup.children" :key="`acat-${category.id}`" class="space-y-2">
+                    <h3 class="text-base font-semibold text-black dark:text-white">
+                      {{ category.title }}
+                    </h3>
+
+                    <!-- Audio Sub Group Level -->
+                    <div v-for="subGroup in category.sub_groups" :key="`asg-${subGroup.id}`"
+                      class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 ml-2">
                       <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
-                        <input type="checkbox" :id="`video-group-${subGroup.id}`"
-                          :checked="isSubGroupSelected(subGroup)"
+                        <input type="checkbox" :id="`audio-group-${subGroup.id}`" :checked="isSubGroupSelected(subGroup)"
                           @change="toggleSubGroupVideos(subGroup)"
                           class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                        <label :for="`video-group-${subGroup.id}`" class="font-semibold text-black dark:text-white cursor-pointer">
+                        <label :for="`audio-group-${subGroup.id}`"
+                          class="font-semibold text-black dark:text-white cursor-pointer">
                           {{ subGroup.name }}
                         </label>
                       </div>
-                      
-                      <!-- Video Level -->
+
+                      <!-- Audio Level -->
                       <div class="space-y-1 ml-6">
-                        <div v-for="video in subGroup.videos" :key="`vv-${video.id}`" class="flex items-start gap-2 py-1">
-                          <input type="checkbox" :id="`video-${video.id}`"
-                            :checked="selectedVideoIds.includes(video.id)"
-                            @change="toggleVideoSelection(video.id)"
+                        <div v-for="audio in subGroup.audios" :key="`av-${audio.id}`" class="flex items-start gap-2 py-1">
+                          <input type="checkbox" :id="`audio-${audio.id}`" :checked="selectedVideoIds.includes(audio.id)"
+                            @change="toggleAudioSelection(audio.id)"
                             class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                          <label :for="`video-${video.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
-                            {{ video.title }}
+                          <label :for="`audio-${audio.id}`"
+                            class="text-base text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                            {{ audio.title }}
                           </label>
                         </div>
                       </div>
@@ -2006,236 +2060,362 @@ function navigateToDetail(item: SearchItem) {
                   </div>
                 </div>
               </div>
-            </div>
-            
-            <div v-if="filteredVideoList.length === 0 && !isLoadingVideoList" class="text-center py-8">
-              <p class="text-sm text-gray-500 dark:text-gray-400">
-                {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data video' }}
-              </p>
-            </div>
-            
-            <!-- Loading More Indicator for Video -->
-            <div v-if="isLoadingVideoList && videoList.length > 0" class="flex justify-center py-4">
-              <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
-            </div>
-            
-            <!-- Initial Loading for Video -->
-            <div v-if="videoList.length === 0 && isLoadingVideoList" class="flex justify-center py-8">
-              <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
-            </div>
-          </div>
 
-          <!-- Topic1 List -->
-          <div v-else-if="filterPayload.selectedCategory[0] === 'topik1'" class="space-y-4">
-            <!-- Topic1 Group Level -->
-            <div v-for="topic1Group in filteredTopic1List" :key="`t1group-${topic1Group.topic_id}`" class="space-y-3">
-              <h2 class="text-base font-bold text-primary dark:text-yellow-400 sticky top-0 bg-white dark:bg-gray-900 py-2 z-10">
-                {{ topic1Group.topic_title }}
-              </h2>
-              
-              <!-- Topic1 Category Level -->
-              <div v-for="category in topic1Group.categories" :key="`t1cat-${category.id}`" class="space-y-2 ml-2">
-                <div class="flex items-start gap-2 py-1">
-                  <input type="checkbox" :id="`topic1-category-${category.id}`"
-                    :checked="selectedTopic1CategoryIds.includes(category.id)"
-                    @change="toggleTopic1CategorySelection(category.id, category)"
-                    class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                  <label :for="`topic1-category-${category.id}`" class="text-sm font-semibold text-black dark:text-white cursor-pointer flex-1">
-                    {{ category.title }}
-                  </label>
-                </div>
-                
-                <!-- Topic1 Children Level -->
-                <div v-if="category.children && category.children.length > 0" class="ml-6 mt-1 space-y-1">
-                  <div v-for="child in category.children" :key="`t1child-${child.id}`" class="flex items-start gap-2 py-1">
-                    <input type="checkbox" :id="`topic1-child-${child.id}`"
-                      :checked="selectedTopic1CategoryIds.includes(child.id)"
-                      @change="toggleTopic1CategorySelection(child.id, { id: child.id, title: child.title })"
-                      class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                    <label :for="`topic1-child-${child.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
-                      {{ child.title }}
-                    </label>
+              <div v-if="filteredAudioList.length === 0 && !isLoadingAudioList" class="text-center py-8">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                  {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data audio' }}
+                </p>
+              </div>
+
+              <!-- Loading More Indicator for Audio -->
+              <div v-if="isLoadingAudioList && audioList.length > 0" class="flex justify-center py-4">
+                <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
+              </div>
+
+              <!-- Initial Loading for Audio -->
+              <div v-if="audioList.length === 0 && isLoadingAudioList" class="flex justify-center py-8">
+                <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
+              </div>
+            </div>
+
+            <!-- Video List -->
+            <div v-else-if="filterPayload.selectedCategory[0] === 'Video'" class="space-y-4">
+              <!-- Video Group Level (Accordion) -->
+              <div v-for="videoGroup in filteredVideoList" :key="`vgroup-${videoGroup.id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                <!-- Accordion Header -->
+                <button @click="toggleAccordion(`video-group-${videoGroup.id}`)" 
+                  class="w-full flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                  <h2 class="text-base font-bold text-black dark:text-white">
+                    {{ videoGroup.title }}
+                  </h2>
+                  <Icon :name="expandedAccordions.has(`video-group-${videoGroup.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                    class="w-5 h-5 text-black dark:text-white" />
+                </button>
+
+                <!-- Accordion Content -->
+                <div v-if="expandedAccordions.has(`video-group-${videoGroup.id}`)" class="p-3 space-y-3">
+
+                <!-- Year Group Level -->
+                <div v-for="yearGroup in videoGroup.children" :key="`vyear-${yearGroup.id}`" class="space-y-2 ml-2">
+                  <h3 class="text-base font-semibold text-black dark:text-white">
+                    {{ yearGroup.title }}
+                  </h3>
+
+                  <!-- Video Category Level -->
+                  <div v-for="category in yearGroup.video_categories" :key="`vcat-${category.id}`"
+                    class="space-y-2 ml-2">
+                    <h4 class="text-base font-medium text-gray-700 dark:text-gray-300">
+                      {{ category.title }}
+                    </h4>
+
+                    <!-- Video Child Level -->
+                    <div v-for="child in category.children" :key="`vchild-${child.id}`" class="space-y-2 ml-2">
+                      <h5 class="text-xs font-medium text-gray-600 dark:text-gray-400">
+                        {{ child.title }}
+                      </h5>
+
+                      <!-- Video Sub Group Level -->
+                      <div v-for="subGroup in child.sub_groups" :key="`vsg-${subGroup.id}`"
+                        class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 ml-2">
+                        <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
+                          <input type="checkbox" :id="`video-group-${subGroup.id}`"
+                            :checked="isSubGroupSelected(subGroup)" @change="toggleSubGroupVideos(subGroup)"
+                            class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                          <label :for="`video-group-${subGroup.id}`"
+                            class="font-semibold text-black dark:text-white cursor-pointer">
+                            {{ subGroup.name }}
+                          </label>
+                        </div>
+
+                        <!-- Video Level -->
+                        <div class="space-y-1 ml-6">
+                          <div v-for="video in subGroup.videos" :key="`vv-${video.id}`"
+                            class="flex items-start gap-2 py-1">
+                            <input type="checkbox" :id="`video-${video.id}`"
+                              :checked="selectedVideoIds.includes(video.id)" @change="toggleVideoSelection(video.id)"
+                              class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                            <label :for="`video-${video.id}`"
+                              class="text-base text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                              {{ video.title }}
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            
-            <div v-if="filteredTopic1List.length === 0 && !isLoadingTopic1List" class="text-center py-8">
-              <p class="text-sm text-gray-500 dark:text-gray-400">
-                {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data ensiklopedia' }}
-              </p>
-            </div>
-            
-            <!-- Loading More Indicator for Topic1 -->
-            <div v-if="isLoadingTopic1List && topic1List.length > 0" class="flex justify-center py-4">
-              <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
-            </div>
-            
-            <!-- Initial Loading for Topic1 -->
-            <div v-if="topic1List.length === 0 && isLoadingTopic1List" class="flex justify-center py-8">
-              <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
-            </div>
-          </div>
-
-          <!-- Topic2 List -->
-          <div v-else-if="filterPayload.selectedCategory[0] === 'topik2'" class="space-y-4">
-            <!-- Topic2 Group Level -->
-            <div v-for="topic2Group in filteredTopic2List" :key="`t2group-${topic2Group.id}`" class="space-y-3">
-              <h2 class="text-base font-bold text-primary dark:text-yellow-400 sticky top-0 bg-white dark:bg-gray-900 py-2 z-10">
-                {{ topic2Group.title }}
-              </h2>
-              
-              <!-- Topic2 Topic Level -->
-              <div v-for="topic in topic2Group.topics" :key="`t2topic-${topic.id}`" class="space-y-2 ml-2">
-                <h3 class="text-sm font-semibold text-black dark:text-white">
-                  {{ topic.title }}
-                </h3>
-                
-                <!-- Recursive Chapter Component -->
-                <div class="ml-2">
-                  <template v-for="chapter in topic.chapters" :key="`t2ch-${chapter.id}`">
-                    <div class="space-y-1">
-                      <div class="flex items-start gap-2 py-1">
-                        <input type="checkbox" :id="`topic2-chapter-${chapter.id}`"
-                          :checked="selectedTopic2ChapterIds.includes(chapter.id)"
-                          @change="toggleTopic2ChapterSelection(chapter.id, chapter)"
-                          class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                        <label :for="`topic2-chapter-${chapter.id}`" class="text-sm text-black dark:text-white cursor-pointer flex-1">
-                          {{ chapter.title }}
-                        </label>
-                      </div>
-                      
-                      <!-- Recursive Children -->
-                      <div v-if="chapter.children && chapter.children.length > 0" class="ml-6">
-                        <template v-for="child in chapter.children" :key="`t2chd-${child.id}`">
-                          <div class="space-y-1">
-                            <div class="flex items-start gap-2 py-1">
-                              <input type="checkbox" :id="`topic2-child-${child.id}`"
-                                :checked="selectedTopic2ChapterIds.includes(child.id)"
-                                @change="toggleTopic2ChapterSelection(child.id, child)"
-                                class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                              <label :for="`topic2-child-${child.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
-                                {{ child.title }}
-                              </label>
-                            </div>
-                            
-                            <!-- Third Level Children -->
-                            <div v-if="child.children && child.children.length > 0" class="ml-6">
-                              <div v-for="grandchild in child.children" :key="`t2gch-${grandchild.id}`" class="flex items-start gap-2 py-1">
-                                <input type="checkbox" :id="`topic2-grandchild-${grandchild.id}`"
-                                  :checked="selectedTopic2ChapterIds.includes(grandchild.id)"
-                                  @change="toggleTopic2ChapterSelection(grandchild.id, grandchild)"
-                                  class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                                <label :for="`topic2-grandchild-${grandchild.id}`" class="text-sm text-gray-500 dark:text-gray-500 cursor-pointer flex-1">
-                                  {{ grandchild.title }}
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                        </template>
-                      </div>
-                    </div>
-                  </template>
                 </div>
               </div>
-            </div>
-            
-            <div v-if="filteredTopic2List.length === 0 && !isLoadingTopic2List" class="text-center py-8">
-              <p class="text-sm text-gray-500 dark:text-gray-400">
-                {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data topik' }}
-              </p>
-            </div>
-            
-            <!-- Loading More Indicator for Topic2 -->
-            <div v-if="isLoadingTopic2List && topic2List.length > 0" class="flex justify-center py-4">
-              <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
-            </div>
-            
-            <!-- Initial Loading for Topic2 -->
-            <div v-if="topic2List.length === 0 && isLoadingTopic2List" class="flex justify-center py-8">
-              <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
-            </div>
-          </div>
 
-          <!-- Topic3 List -->
-          <div v-else-if="filterPayload.selectedCategory[0] === 'topik3'" class="space-y-4">
-            <!-- Topic3 Group Level -->
-            <div v-for="topic3Group in filteredTopic3List" :key="`t3group-${topic3Group.id}`" class="space-y-3">
-              <h2 class="text-base font-bold text-primary dark:text-yellow-400 sticky top-0 bg-white dark:bg-gray-900 py-2 z-10">
-                {{ topic3Group.title }}
-              </h2>
-              
-              <!-- Topic3 Topic Level -->
-              <div v-for="topic in topic3Group.topics" :key="`t3topic-${topic.id}`" class="space-y-2 ml-2">
-                <h3 class="text-sm font-semibold text-black dark:text-white">
-                  {{ topic.title }}
-                </h3>
-                
-                <!-- Recursive Chapter Component -->
-                <div class="ml-2">
-                  <template v-for="chapter in topic.chapters" :key="`t3ch-${chapter.id}`">
-                    <div class="space-y-1">
-                      <div class="flex items-start gap-2 py-1">
-                        <input type="checkbox" :id="`topic3-chapter-${chapter.id}`"
-                          :checked="selectedTopic3ChapterIds.includes(chapter.id)"
-                          @change="toggleTopic3ChapterSelection(chapter.id, chapter)"
-                          class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                        <label :for="`topic3-chapter-${chapter.id}`" class="text-sm text-black dark:text-white cursor-pointer flex-1">
-                          {{ chapter.title }}
-                        </label>
-                      </div>
-                      
-                      <!-- Recursive Children -->
-                      <div v-if="chapter.children && chapter.children.length > 0" class="ml-6">
-                        <template v-for="child in chapter.children" :key="`t3chd-${child.id}`">
-                          <div class="space-y-1">
-                            <div class="flex items-start gap-2 py-1">
-                              <input type="checkbox" :id="`topic3-child-${child.id}`"
-                                :checked="selectedTopic3ChapterIds.includes(child.id)"
-                                @change="toggleTopic3ChapterSelection(child.id, child)"
-                                class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                              <label :for="`topic3-child-${child.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
-                                {{ child.title }}
-                              </label>
-                            </div>
-                            
-                            <!-- Third Level Children -->
-                            <div v-if="child.children && child.children.length > 0" class="ml-6">
-                              <div v-for="grandchild in child.children" :key="`t3gch-${grandchild.id}`" class="flex items-start gap-2 py-1">
-                                <input type="checkbox" :id="`topic3-grandchild-${grandchild.id}`"
-                                  :checked="selectedTopic3ChapterIds.includes(grandchild.id)"
-                                  @change="toggleTopic3ChapterSelection(grandchild.id, grandchild)"
-                                  class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                                <label :for="`topic3-grandchild-${grandchild.id}`" class="text-sm text-gray-500 dark:text-gray-500 cursor-pointer flex-1">
-                                  {{ grandchild.title }}
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                        </template>
-                      </div>
-                    </div>
-                  </template>
-                </div>
+              <div v-if="filteredVideoList.length === 0 && !isLoadingVideoList" class="text-center py-8">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                  {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data video' }}
+                </p>
+              </div>
+
+              <!-- Loading More Indicator for Video -->
+              <div v-if="isLoadingVideoList && videoList.length > 0" class="flex justify-center py-4">
+                <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
+              </div>
+
+              <!-- Initial Loading for Video -->
+              <div v-if="videoList.length === 0 && isLoadingVideoList" class="flex justify-center py-8">
+                <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
               </div>
             </div>
-            
-            <div v-if="filteredTopic3List.length === 0 && !isLoadingTopic3List" class="text-center py-8">
-              <p class="text-sm text-gray-500 dark:text-gray-400">
-                {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data kumpulan tanya jawab' }}
-              </p>
+
+            <!-- Topic1 List -->
+            <div v-else-if="filterPayload.selectedCategory[0] === 'topik1'" class="space-y-4">
+              <!-- Topic1 Group Level (Accordion) -->
+              <div v-for="topic1Group in filteredTopic1List" :key="`t1group-${topic1Group.topic_id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                <!-- Accordion Header -->
+                <button @click="toggleAccordion(`topic1-group-${topic1Group.topic_id}`)" 
+                  class="w-full flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                  <h2 class="text-base font-bold text-black dark:text-white">
+                    {{ topic1Group.topic_title }}
+                  </h2>
+                  <Icon :name="expandedAccordions.has(`topic1-group-${topic1Group.topic_id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                    class="w-5 h-5 text-black dark:text-white" />
+                </button>
+
+                <!-- Accordion Content -->
+                <div v-if="expandedAccordions.has(`topic1-group-${topic1Group.topic_id}`)" class="p-3 space-y-3">
+
+                <!-- Topic1 Category Level -->
+                <div v-for="category in topic1Group.categories" :key="`t1cat-${category.id}`" class="space-y-2 ml-2">
+                  <div class="flex items-start gap-2 py-1">
+                    <input type="checkbox" :id="`topic1-category-${category.id}`"
+                      :checked="selectedTopic1CategoryIds.includes(category.id)"
+                      @change="toggleTopic1CategorySelection(category.id, category)"
+                      class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                    <label :for="`topic1-category-${category.id}`"
+                      class="text-base font-semibold text-black dark:text-white cursor-pointer flex-1">
+                      {{ category.title }}
+                    </label>
+                  </div>
+
+                  <!-- Topic1 Children Level -->
+                  <div v-if="category.children && category.children.length > 0" class="ml-6 mt-1 space-y-1">
+                    <div v-for="child in category.children" :key="`t1child-${child.id}`"
+                      class="flex items-start gap-2 py-1">
+                      <input type="checkbox" :id="`topic1-child-${child.id}`"
+                        :checked="selectedTopic1CategoryIds.includes(child.id)"
+                        @change="toggleTopic1CategorySelection(child.id, { id: child.id, title: child.title })"
+                        class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                      <label :for="`topic1-child-${child.id}`"
+                        class="text-base text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                        {{ child.title }}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </div>
+
+              <div v-if="filteredTopic1List.length === 0 && !isLoadingTopic1List" class="text-center py-8">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                  {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data ensiklopedia' }}
+                </p>
+              </div>
+
+              <!-- Loading More Indicator for Topic1 -->
+              <div v-if="isLoadingTopic1List && topic1List.length > 0" class="flex justify-center py-4">
+                <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
+              </div>
+
+              <!-- Initial Loading for Topic1 -->
+              <div v-if="topic1List.length === 0 && isLoadingTopic1List" class="flex justify-center py-8">
+                <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
+              </div>
             </div>
-            
-            <!-- Loading More Indicator for Topic3 -->
-            <div v-if="isLoadingTopic3List && topic3List.length > 0" class="flex justify-center py-4">
-              <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
+
+            <!-- Topic2 List -->
+            <div v-else-if="filterPayload.selectedCategory[0] === 'topik2'" class="space-y-4">
+              <!-- Topic2 Group Level (Accordion) -->
+              <div v-for="topic2Group in filteredTopic2List" :key="`t2group-${topic2Group.id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                <!-- Accordion Header -->
+                <button @click="toggleAccordion(`topic2-group-${topic2Group.id}`)" 
+                  class="w-full flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                  <h2 class="text-base font-bold text-black dark:text-white">
+                    {{ topic2Group.title }}
+                  </h2>
+                  <Icon :name="expandedAccordions.has(`topic2-group-${topic2Group.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                    class="w-5 h-5 text-black dark:text-white" />
+                </button>
+
+                <!-- Accordion Content -->
+                <div v-if="expandedAccordions.has(`topic2-group-${topic2Group.id}`)" class="p-3 space-y-3">
+
+                <!-- Topic2 Topic Level -->
+                <div v-for="topic in topic2Group.topics" :key="`t2topic-${topic.id}`" class="space-y-2 ml-2">
+                  <h3 class="text-base font-semibold text-black dark:text-white">
+                    {{ topic.title }}
+                  </h3>
+
+                  <!-- Recursive Chapter Component -->
+                  <div class="ml-2">
+                    <template v-for="chapter in topic.chapters" :key="`t2ch-${chapter.id}`">
+                      <div class="space-y-1">
+                        <div class="flex items-start gap-2 py-1">
+                          <input type="checkbox" :id="`topic2-chapter-${chapter.id}`"
+                            :checked="selectedTopic2ChapterIds.includes(chapter.id)"
+                            @change="toggleTopic2ChapterSelection(chapter.id, chapter)"
+                            class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                          <label :for="`topic2-chapter-${chapter.id}`"
+                            class="text-base text-black dark:text-white cursor-pointer flex-1">
+                            {{ chapter.title }}
+                          </label>
+                        </div>
+
+                        <!-- Recursive Children -->
+                        <div v-if="chapter.children && chapter.children.length > 0" class="ml-6">
+                          <template v-for="child in chapter.children" :key="`t2chd-${child.id}`">
+                            <div class="space-y-1">
+                              <div class="flex items-start gap-2 py-1">
+                                <input type="checkbox" :id="`topic2-child-${child.id}`"
+                                  :checked="selectedTopic2ChapterIds.includes(child.id)"
+                                  @change="toggleTopic2ChapterSelection(child.id, child)"
+                                  class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                <label :for="`topic2-child-${child.id}`"
+                                  class="text-base text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                                  {{ child.title }}
+                                </label>
+                              </div>
+
+                              <!-- Third Level Children -->
+                              <div v-if="child.children && child.children.length > 0" class="ml-6">
+                                <div v-for="grandchild in child.children" :key="`t2gch-${grandchild.id}`"
+                                  class="flex items-start gap-2 py-1">
+                                  <input type="checkbox" :id="`topic2-grandchild-${grandchild.id}`"
+                                    :checked="selectedTopic2ChapterIds.includes(grandchild.id)"
+                                    @change="toggleTopic2ChapterSelection(grandchild.id, grandchild)"
+                                    class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                  <label :for="`topic2-grandchild-${grandchild.id}`"
+                                    class="text-base text-gray-500 dark:text-gray-500 cursor-pointer flex-1">
+                                    {{ grandchild.title }}
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </template>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+                </div>
+              </div>
+
+              <div v-if="filteredTopic2List.length === 0 && !isLoadingTopic2List" class="text-center py-8">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                  {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data topik' }}
+                </p>
+              </div>
+
+              <!-- Loading More Indicator for Topic2 -->
+              <div v-if="isLoadingTopic2List && topic2List.length > 0" class="flex justify-center py-4">
+                <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
+              </div>
+
+              <!-- Initial Loading for Topic2 -->
+              <div v-if="topic2List.length === 0 && isLoadingTopic2List" class="flex justify-center py-8">
+                <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
+              </div>
             </div>
-            
-            <!-- Initial Loading for Topic3 -->
-            <div v-if="topic3List.length === 0 && isLoadingTopic3List" class="flex justify-center py-8">
-              <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
+
+            <!-- Topic3 List -->
+            <div v-else-if="filterPayload.selectedCategory[0] === 'topik3'" class="space-y-4">
+              <!-- Topic3 Group Level (Accordion) -->
+              <div v-for="topic3Group in filteredTopic3List" :key="`t3group-${topic3Group.id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                <!-- Accordion Header -->
+                <button @click="toggleAccordion(`topic3-group-${topic3Group.id}`)" 
+                  class="w-full flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                  <h2 class="text-base font-bold text-black dark:text-white">
+                    {{ topic3Group.title }}
+                  </h2>
+                  <Icon :name="expandedAccordions.has(`topic3-group-${topic3Group.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                    class="w-5 h-5 text-black dark:text-white" />
+                </button>
+
+                <!-- Accordion Content -->
+                <div v-if="expandedAccordions.has(`topic3-group-${topic3Group.id}`)" class="p-3 space-y-3">
+
+                <!-- Topic3 Topic Level -->
+                <div v-for="topic in topic3Group.topics" :key="`t3topic-${topic.id}`" class="space-y-2 ml-2">
+                  <h3 class="text-base font-semibold text-black dark:text-white">
+                    {{ topic.title }}
+                  </h3>
+
+                  <!-- Recursive Chapter Component -->
+                  <div class="ml-2">
+                    <template v-for="chapter in topic.chapters" :key="`t3ch-${chapter.id}`">
+                      <div class="space-y-1">
+                        <div class="flex items-start gap-2 py-1">
+                          <input type="checkbox" :id="`topic3-chapter-${chapter.id}`"
+                            :checked="selectedTopic3ChapterIds.includes(chapter.id)"
+                            @change="toggleTopic3ChapterSelection(chapter.id, chapter)"
+                            class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                          <label :for="`topic3-chapter-${chapter.id}`"
+                            class="text-base text-black dark:text-white cursor-pointer flex-1">
+                            {{ chapter.title }}
+                          </label>
+                        </div>
+
+                        <!-- Recursive Children -->
+                        <div v-if="chapter.children && chapter.children.length > 0" class="ml-6">
+                          <template v-for="child in chapter.children" :key="`t3chd-${child.id}`">
+                            <div class="space-y-1">
+                              <div class="flex items-start gap-2 py-1">
+                                <input type="checkbox" :id="`topic3-child-${child.id}`"
+                                  :checked="selectedTopic3ChapterIds.includes(child.id)"
+                                  @change="toggleTopic3ChapterSelection(child.id, child)"
+                                  class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                <label :for="`topic3-child-${child.id}`"
+                                  class="text-base text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                                  {{ child.title }}
+                                </label>
+                              </div>
+
+                              <!-- Third Level Children -->
+                              <div v-if="child.children && child.children.length > 0" class="ml-6">
+                                <div v-for="grandchild in child.children" :key="`t3gch-${grandchild.id}`"
+                                  class="flex items-start gap-2 py-1">
+                                  <input type="checkbox" :id="`topic3-grandchild-${grandchild.id}`"
+                                    :checked="selectedTopic3ChapterIds.includes(grandchild.id)"
+                                    @change="toggleTopic3ChapterSelection(grandchild.id, grandchild)"
+                                    class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                  <label :for="`topic3-grandchild-${grandchild.id}`"
+                                    class="text-base text-gray-500 dark:text-gray-500 cursor-pointer flex-1">
+                                    {{ grandchild.title }}
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </template>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+                </div>
+              </div>
+
+              <div v-if="filteredTopic3List.length === 0 && !isLoadingTopic3List" class="text-center py-8">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                  {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data kumpulan tanya jawab' }}
+                </p>
+              </div>
+
+              <!-- Loading More Indicator for Topic3 -->
+              <div v-if="isLoadingTopic3List && topic3List.length > 0" class="flex justify-center py-4">
+                <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
+              </div>
+
+              <!-- Initial Loading for Topic3 -->
+              <div v-if="topic3List.length === 0 && isLoadingTopic3List" class="flex justify-center py-8">
+                <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
+              </div>
             </div>
-          </div>
           </div>
         </div>
       </template>
