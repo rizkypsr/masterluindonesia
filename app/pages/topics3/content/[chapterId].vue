@@ -41,7 +41,7 @@
       </div>
 
       <!-- Category Chips -->
-      <div v-else-if="categories.length > 0" class="px-4">
+      <div v-else-if="hasCategories && categories.length > 0" class="px-4">
         <div class="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
           <button v-for="category in categories" :key="category.id" @click="selectCategory(category.id)"
             class="shrink-0 px-4 py-2 rounded-full text-lg font-medium transition-colors" :class="selectedCategoryId === category.id
@@ -57,6 +57,50 @@
             <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
           </div>
 
+          <div v-for="item in filteredContents" :key="item.id" class="rounded-xl overflow-hidden"
+            :class="expandedItems.has(item.id) ? 'bg-[#c09637] dark:bg-yellow-600' : 'bg-white dark:bg-gray-800'"
+            :style="{ fontSize: fontSize + 'px' }">
+            <!-- Card Header -->
+            <div class="p-3 cursor-pointer" @click="toggleExpand(item.id)">
+              <div class="flex items-start justify-between gap-3">
+                <div class="flex-1">
+                  <div class="font-bold"
+                    :class="expandedItems.has(item.id) ? 'text-black' : 'text-black dark:text-white'"
+                    :style="{ fontSize: fontSize + 'px' }"
+                    v-html="getContentPreview(item.content)">
+                  </div>
+                </div>
+                <button class="p-2 shrink-0">
+                  <Icon :name="expandedItems.has(item.id) ? 'mdi:chevron-up' : 'mdi:chevron-down'" class="w-6 h-6"
+                    :class="expandedItems.has(item.id) ? 'text-black' : 'text-black dark:text-white'" />
+                </button>
+              </div>
+            </div>
+
+            <!-- Expandable Content -->
+            <div v-if="expandedItems.has(item.id)" class="mx-4 mb-4 p-4 bg-white dark:bg-gray-800 rounded-lg">
+              <div class="text-black dark:text-white leading-relaxed" v-html="item.content"></div>
+              <div class="flex items-center gap-4 pt-3 mt-3 border-t border-gray-200 dark:border-gray-600">
+                <button @click.stop="copyContent(item)"
+                  class="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:font-bold">
+                  <Icon name="mdi:content-copy" class="w-4 h-4" />
+                  <span>Salin</span>
+                </button>
+                <button @click.stop="speakContent(item)"
+                  class="flex items-center gap-1 hover:font-bold"
+                  :class="speakingItemId === item.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
+                  <Icon :name="speakingItemId === item.id ? 'mdi:stop' : 'mdi:account-voice'" class="w-4 h-4" />
+                  <span>{{ speakingItemId === item.id ? 'Stop' : 'Voice' }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content List without Categories -->
+      <div v-else-if="!hasCategories && filteredContents.length > 0" class="px-4">
+        <div class="space-y-4 pb-20">
           <div v-for="item in filteredContents" :key="item.id" class="rounded-xl overflow-hidden"
             :class="expandedItems.has(item.id) ? 'bg-[#c09637] dark:bg-yellow-600' : 'bg-white dark:bg-gray-800'"
             :style="{ fontSize: fontSize + 'px' }">
@@ -122,6 +166,8 @@ interface Content {
   id: number
   content: string
   content_wa: string
+  topics3_chapters_id?: number
+  page?: number
 }
 
 interface Category {
@@ -137,7 +183,7 @@ interface ContentResponse {
     chapter_id: number
     chapter_title: string
     video_category_id: number | null
-    contents: Category[]
+    contents: Category[] | Content[] // Can be either array of categories or direct array of contents
   }
 }
 
@@ -157,6 +203,7 @@ const speakingItemId = ref<number | null>(null)
 const isSpeaking = ref(false)
 const hasVideo = ref(false)
 const videoCategoryId = ref<number | null>(null)
+const hasCategories = ref(true) // Track if response has categories
 
 // FAB Menu State
 const showFabMenu = ref(false)
@@ -175,7 +222,13 @@ const scrollToTop = () => {
 }
 
 // Categories
-const categories = computed(() => contents.value || [])
+const categories = computed(() => {
+  if (!hasCategories.value) {
+    // If no categories, return empty array (we'll show content directly)
+    return []
+  }
+  return contents.value || []
+})
 
 // Selected category state
 const selectedCategoryId = ref<number | null>(null)
@@ -199,6 +252,10 @@ watch(categories, (cats) => {
 
 // Get contents for selected category
 const selectedCategoryContents = computed(() => {
+  if (!hasCategories.value) {
+    // If no categories, return contents directly
+    return contents.value as unknown as Content[]
+  }
   const category = categories.value.find(c => c.id === selectedCategoryId.value)
   return category?.contents || []
 })
@@ -344,7 +401,27 @@ onMounted(async () => {
     const response = await $fetch<ContentResponse>(
       `${config.public.apiBaseUrl}/topics3/contents/${chapterId.value}`
     )
-    contents.value = response.data.contents || []
+    
+    // Check if contents is an array of categories or direct array of content items
+    if (response.data.contents && response.data.contents.length > 0) {
+      const firstItem = response.data.contents[0]
+      
+      // Check if first item has 'name' property (Category) or 'content' property (Content)
+      if ('name' in firstItem && 'contents' in firstItem) {
+        // Response has categories
+        hasCategories.value = true
+        contents.value = response.data.contents as Category[]
+      } else {
+        // Response is direct array of contents (no categories)
+        hasCategories.value = false
+        contents.value = response.data.contents as unknown as Category[]
+      }
+    } else {
+      // Empty response
+      hasCategories.value = true
+      contents.value = []
+    }
+    
     videoCategoryId.value = response.data.video_category_id
     hasVideo.value = response.data.video_category_id !== null
   } catch (error) {

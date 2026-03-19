@@ -34,6 +34,9 @@ interface FilterPayload {
   listHideKeyword: string[]
   chapter_ids?: number[]
   video_ids?: number[]
+  topic1_category_ids?: number[]
+  topic2_chapter_ids?: number[]
+  topic3_chapter_ids?: number[]
 }
 
 interface BookChapter {
@@ -108,6 +111,59 @@ interface VideoGroup {
   children: VideoYearGroup[]
 }
 
+interface Topic1Child {
+  id: number
+  title: string
+}
+
+interface Topic1Category {
+  id: number
+  title: string
+  children?: Topic1Child[]
+}
+
+interface Topic1Group {
+  topic_id: number
+  topic_title: string
+  categories: Topic1Category[]
+}
+
+interface Topic2Chapter {
+  id: number
+  title: string
+  children?: Topic2Chapter[]
+}
+
+interface Topic2Topic {
+  id: number
+  title: string
+  chapters: Topic2Chapter[]
+}
+
+interface Topic2Group {
+  id: number
+  title: string
+  topics: Topic2Topic[]
+}
+
+interface Topic3Chapter {
+  id: number
+  title: string
+  children?: Topic3Chapter[]
+}
+
+interface Topic3Topic {
+  id: number
+  title: string
+  chapters: Topic3Chapter[]
+}
+
+interface Topic3Group {
+  id: number
+  title: string
+  topics: Topic3Topic[]
+}
+
 // Persist search state across navigation using useState
 const searchQuery = useState('search-query', () => '')
 const currentPage = useState('search-page', () => 1)
@@ -149,6 +205,27 @@ const videoList = ref<VideoGroup[]>([])
 const isLoadingVideoList = ref(false)
 const videoListPage = ref(1)
 const videoListHasMore = ref(true)
+
+// Deep search state for topic1
+const topic1List = ref<Topic1Group[]>([])
+const selectedTopic1CategoryIds = ref<number[]>([])
+const isLoadingTopic1List = ref(false)
+const topic1ListPage = ref(1)
+const topic1ListHasMore = ref(true)
+
+// Deep search state for topic2
+const topic2List = ref<Topic2Group[]>([])
+const selectedTopic2ChapterIds = ref<number[]>([])
+const isLoadingTopic2List = ref(false)
+const topic2ListPage = ref(1)
+const topic2ListHasMore = ref(true)
+
+// Deep search state for topic3
+const topic3List = ref<Topic3Group[]>([])
+const selectedTopic3ChapterIds = ref<number[]>([])
+const isLoadingTopic3List = ref(false)
+const topic3ListPage = ref(1)
+const topic3ListHasMore = ref(true)
 
 // Deep search filter
 const deepSearchQuery = ref('')
@@ -287,6 +364,180 @@ const filteredAudioList = computed(() => {
   }).filter(group => group !== null) as AudioGroup[]
 })
 
+const filteredTopic3List = computed(() => {
+  if (!deepSearchQuery.value.trim()) return topic3List.value
+  
+  const query = deepSearchQuery.value.toLowerCase()
+  
+  // Recursive function to filter chapters
+  function filterChapters(chapters: Topic3Chapter[]): Topic3Chapter[] {
+    return chapters.map(chapter => {
+      const chapterMatches = chapter.title.toLowerCase().includes(query)
+      
+      if (chapterMatches) {
+        return chapter
+      }
+      
+      if (chapter.children) {
+        const filteredChildren = filterChapters(chapter.children)
+        if (filteredChildren.length > 0) {
+          return {
+            ...chapter,
+            children: filteredChildren
+          }
+        }
+      }
+      
+      return null
+    }).filter(chapter => chapter !== null) as Topic3Chapter[]
+  }
+  
+  return topic3List.value.map(topic3Group => {
+    const groupMatches = topic3Group.title.toLowerCase().includes(query)
+    
+    if (groupMatches) {
+      return topic3Group
+    }
+    
+    const filteredTopics = topic3Group.topics.map(topic => {
+      const topicMatches = topic.title.toLowerCase().includes(query)
+      
+      if (topicMatches) {
+        return topic
+      }
+      
+      const filteredChapters = filterChapters(topic.chapters)
+      
+      if (filteredChapters.length > 0) {
+        return {
+          ...topic,
+          chapters: filteredChapters
+        }
+      }
+      
+      return null
+    }).filter(topic => topic !== null) as Topic3Topic[]
+    
+    if (filteredTopics.length > 0) {
+      return {
+        ...topic3Group,
+        topics: filteredTopics
+      }
+    }
+    return null
+  }).filter(group => group !== null) as Topic3Group[]
+})
+
+const filteredTopic2List = computed(() => {
+  if (!deepSearchQuery.value.trim()) return topic2List.value
+  
+  const query = deepSearchQuery.value.toLowerCase()
+  
+  // Recursive function to filter chapters
+  function filterChapters(chapters: Topic2Chapter[]): Topic2Chapter[] {
+    return chapters.map(chapter => {
+      const chapterMatches = chapter.title.toLowerCase().includes(query)
+      
+      if (chapterMatches) {
+        return chapter
+      }
+      
+      if (chapter.children) {
+        const filteredChildren = filterChapters(chapter.children)
+        if (filteredChildren.length > 0) {
+          return {
+            ...chapter,
+            children: filteredChildren
+          }
+        }
+      }
+      
+      return null
+    }).filter(chapter => chapter !== null) as Topic2Chapter[]
+  }
+  
+  return topic2List.value.map(topic2Group => {
+    const groupMatches = topic2Group.title.toLowerCase().includes(query)
+    
+    if (groupMatches) {
+      return topic2Group
+    }
+    
+    const filteredTopics = topic2Group.topics.map(topic => {
+      const topicMatches = topic.title.toLowerCase().includes(query)
+      
+      if (topicMatches) {
+        return topic
+      }
+      
+      const filteredChapters = filterChapters(topic.chapters)
+      
+      if (filteredChapters.length > 0) {
+        return {
+          ...topic,
+          chapters: filteredChapters
+        }
+      }
+      
+      return null
+    }).filter(topic => topic !== null) as Topic2Topic[]
+    
+    if (filteredTopics.length > 0) {
+      return {
+        ...topic2Group,
+        topics: filteredTopics
+      }
+    }
+    return null
+  }).filter(group => group !== null) as Topic2Group[]
+})
+
+const filteredTopic1List = computed(() => {
+  if (!deepSearchQuery.value.trim()) return topic1List.value
+  
+  const query = deepSearchQuery.value.toLowerCase()
+  
+  return topic1List.value.map(topic1Group => {
+    const groupMatches = topic1Group.topic_title.toLowerCase().includes(query)
+    
+    if (groupMatches) {
+      return topic1Group
+    }
+    
+    const filteredCategories = topic1Group.categories.map(category => {
+      const categoryMatches = category.title.toLowerCase().includes(query)
+      
+      if (categoryMatches) {
+        return category
+      }
+      
+      // Filter children if they exist
+      if (category.children) {
+        const filteredChildren = category.children.filter(child => 
+          child.title.toLowerCase().includes(query)
+        )
+        
+        if (filteredChildren.length > 0) {
+          return {
+            ...category,
+            children: filteredChildren
+          }
+        }
+      }
+      
+      return null
+    }).filter(category => category !== null) as Topic1Category[]
+    
+    if (filteredCategories.length > 0) {
+      return {
+        ...topic1Group,
+        categories: filteredCategories
+      }
+    }
+    return null
+  }).filter(group => group !== null) as Topic1Group[]
+})
+
 const filteredVideoList = computed(() => {
   if (!deepSearchQuery.value.trim()) return videoList.value
   
@@ -390,6 +641,12 @@ useInfiniteScroll(
       fetchAudioList(true)
     } else if (firstCategory === 'Video' && videoListHasMore.value && !isLoadingVideoList.value) {
       fetchVideoList(true)
+    } else if (firstCategory === 'topik1' && topic1ListHasMore.value && !isLoadingTopic1List.value) {
+      fetchTopic1List(true)
+    } else if (firstCategory === 'topik2' && topic2ListHasMore.value && !isLoadingTopic2List.value) {
+      fetchTopic2List(true)
+    } else if (firstCategory === 'topik3' && topic3ListHasMore.value && !isLoadingTopic3List.value) {
+      fetchTopic3List(true)
     }
   },
   { 
@@ -406,6 +663,9 @@ useInfiniteScroll(
       if (firstCategory === 'Buku') return bookChaptersHasMore.value
       if (firstCategory === 'Audio') return audioListHasMore.value
       if (firstCategory === 'Video') return videoListHasMore.value
+      if (firstCategory === 'topik1') return topic1ListHasMore.value
+      if (firstCategory === 'topik2') return topic2ListHasMore.value
+      if (firstCategory === 'topik3') return topic3ListHasMore.value
       return false
     }
   }
@@ -498,7 +758,10 @@ function getCurrentFilters() {
     listShowKeyword: filterPayload.value.listShowKeyword,
     listHideKeyword: filterPayload.value.listHideKeyword,
     chapter_ids: filterPayload.value.chapter_ids,
-    video_ids: filterPayload.value.video_ids
+    video_ids: filterPayload.value.video_ids,
+    topic1_category_ids: filterPayload.value.topic1_category_ids,
+    topic2_chapter_ids: filterPayload.value.topic2_chapter_ids,
+    topic3_chapter_ids: filterPayload.value.topic3_chapter_ids
   }
 }
 
@@ -679,6 +942,117 @@ async function fetchAudioList(loadMore = false) {
   }
 }
 
+// Fetch topic3 list for deep search
+async function fetchTopic3List(loadMore = false) {
+  if (isLoadingTopic3List.value) return
+  if (loadMore && !topic3ListHasMore.value) return
+  
+  isLoadingTopic3List.value = true
+  try {
+    const page = topic3ListPage.value
+    const response = await $fetch<{
+      success: boolean
+      message: string
+      data: Topic3Group[]
+      pagination: {
+        current_page: number
+        per_page: number
+        total: number
+        last_page: number
+        has_more: boolean
+      }
+    }>(`${config.public.apiBaseUrl}/search/topic3/list?page=${page}&per_page=10`)
+    
+    if (response.success && response.data) {
+      if (loadMore) {
+        topic3List.value.push(...response.data)
+      } else {
+        topic3List.value = response.data
+      }
+      topic3ListPage.value = page + 1
+      topic3ListHasMore.value = response.pagination.has_more
+    }
+  } catch (error) {
+    console.error('Failed to fetch topic3 list:', error)
+  } finally {
+    isLoadingTopic3List.value = false
+  }
+}
+
+// Fetch topic1 list for deep search
+async function fetchTopic1List(loadMore = false) {
+  if (isLoadingTopic1List.value) return
+  if (loadMore && !topic1ListHasMore.value) return
+  
+  isLoadingTopic1List.value = true
+  try {
+    const page = topic1ListPage.value
+    const response = await $fetch<{
+      success: boolean
+      message: string
+      data: Topic1Group[]
+      pagination: {
+        current_page: number
+        per_page: number
+        total: number
+        last_page: number
+        has_more: boolean
+      }
+    }>(`${config.public.apiBaseUrl}/search/topic1/list?page=${page}&per_page=10`)
+    
+    if (response.success && response.data) {
+      if (loadMore) {
+        topic1List.value.push(...response.data)
+      } else {
+        topic1List.value = response.data
+      }
+      topic1ListPage.value = page + 1
+      topic1ListHasMore.value = response.pagination.has_more
+    }
+  } catch (error) {
+    console.error('Failed to fetch topic1 list:', error)
+  } finally {
+    isLoadingTopic1List.value = false
+  }
+}
+
+// Fetch topic2 list for deep search
+async function fetchTopic2List(loadMore = false) {
+  if (isLoadingTopic2List.value) return
+  if (loadMore && !topic2ListHasMore.value) return
+  
+  isLoadingTopic2List.value = true
+  try {
+    const page = topic2ListPage.value
+    const response = await $fetch<{
+      success: boolean
+      message: string
+      data: Topic2Group[]
+      pagination: {
+        current_page: number
+        per_page: number
+        total: number
+        last_page: number
+        has_more: boolean
+      }
+    }>(`${config.public.apiBaseUrl}/search/topic2/list?page=${page}&per_page=10`)
+    
+    if (response.success && response.data) {
+      if (loadMore) {
+        topic2List.value.push(...response.data)
+      } else {
+        topic2List.value = response.data
+      }
+      topic2ListPage.value = page + 1
+      topic2ListHasMore.value = response.pagination.has_more
+    }
+  } catch (error) {
+    console.error('Failed to fetch topic2 list:', error)
+  } finally {
+    isLoadingTopic2List.value = false
+  }
+}
+
 // Fetch video list for deep search
 async function fetchVideoList(loadMore = false) {
   if (isLoadingVideoList.value) return
@@ -718,6 +1092,119 @@ async function fetchVideoList(loadMore = false) {
   }
 }
 
+// Toggle topic3 chapter selection (recursive)
+function toggleTopic3ChapterSelection(chapterId: number, chapter: Topic3Chapter) {
+  const idx = selectedTopic3ChapterIds.value.indexOf(chapterId)
+  if (idx > -1) {
+    // Unselect this chapter and all its children
+    selectedTopic3ChapterIds.value.splice(idx, 1)
+    if (chapter.children) {
+      unselectAllTopic3Children(chapter.children)
+    }
+  } else {
+    // Select this chapter and all its children
+    selectedTopic3ChapterIds.value.push(chapterId)
+    if (chapter.children) {
+      selectAllTopic3Children(chapter.children)
+    }
+  }
+}
+
+// Select all topic3 children recursively
+function selectAllTopic3Children(children: Topic3Chapter[]) {
+  children.forEach(child => {
+    if (!selectedTopic3ChapterIds.value.includes(child.id)) {
+      selectedTopic3ChapterIds.value.push(child.id)
+    }
+    if (child.children) {
+      selectAllTopic3Children(child.children)
+    }
+  })
+}
+
+// Unselect all topic3 children recursively
+function unselectAllTopic3Children(children: Topic3Chapter[]) {
+  children.forEach(child => {
+    const idx = selectedTopic3ChapterIds.value.indexOf(child.id)
+    if (idx > -1) {
+      selectedTopic3ChapterIds.value.splice(idx, 1)
+    }
+    if (child.children) {
+      unselectAllTopic3Children(child.children)
+    }
+  })
+}
+
+// Toggle topic2 chapter selection (recursive)
+function toggleTopic2ChapterSelection(chapterId: number, chapter: Topic2Chapter) {
+  const idx = selectedTopic2ChapterIds.value.indexOf(chapterId)
+  if (idx > -1) {
+    // Unselect this chapter and all its children
+    selectedTopic2ChapterIds.value.splice(idx, 1)
+    if (chapter.children) {
+      unselectAllTopic2Children(chapter.children)
+    }
+  } else {
+    // Select this chapter and all its children
+    selectedTopic2ChapterIds.value.push(chapterId)
+    if (chapter.children) {
+      selectAllTopic2Children(chapter.children)
+    }
+  }
+}
+
+// Select all topic2 children recursively
+function selectAllTopic2Children(children: Topic2Chapter[]) {
+  children.forEach(child => {
+    if (!selectedTopic2ChapterIds.value.includes(child.id)) {
+      selectedTopic2ChapterIds.value.push(child.id)
+    }
+    if (child.children) {
+      selectAllTopic2Children(child.children)
+    }
+  })
+}
+
+// Unselect all topic2 children recursively
+function unselectAllTopic2Children(children: Topic2Chapter[]) {
+  children.forEach(child => {
+    const idx = selectedTopic2ChapterIds.value.indexOf(child.id)
+    if (idx > -1) {
+      selectedTopic2ChapterIds.value.splice(idx, 1)
+    }
+    if (child.children) {
+      unselectAllTopic2Children(child.children)
+    }
+  })
+}
+
+// Toggle topic1 category selection
+function toggleTopic1CategorySelection(categoryId: number, category: Topic1Category) {
+  const idx = selectedTopic1CategoryIds.value.indexOf(categoryId)
+  if (idx > -1) {
+    // Unselect this category and all its children
+    selectedTopic1CategoryIds.value.splice(idx, 1)
+    if (category.children) {
+      category.children.forEach(child => {
+        const childIdx = selectedTopic1CategoryIds.value.indexOf(child.id)
+        if (childIdx > -1) {
+          selectedTopic1CategoryIds.value.splice(childIdx, 1)
+        }
+      })
+    }
+  } else {
+    // Select this category and all its children
+    selectedTopic1CategoryIds.value.push(categoryId)
+    if (category.children) {
+      category.children.forEach(child => {
+        if (!selectedTopic1CategoryIds.value.includes(child.id)) {
+          selectedTopic1CategoryIds.value.push(child.id)
+        }
+      })
+    }
+  }
+}
+
 // Handle scroll event for infinite loading
 function handleDeepSearchScroll(event: Event) {
   const target = event.target as HTMLElement
@@ -735,6 +1222,8 @@ function handleDeepSearchScroll(event: Event) {
       fetchAudioList(true)
     } else if (firstCategory === 'Video' && videoListHasMore.value && !isLoadingVideoList.value) {
       fetchVideoList(true)
+    } else if (firstCategory === 'topik1' && topic1ListHasMore.value && !isLoadingTopic1List.value) {
+      fetchTopic1List(true)
     }
   }
 }
@@ -909,6 +1398,12 @@ function openDeepSearch() {
     fetchAudioList()
   } else if (firstCategory === 'Video' && !videoList.value.length) {
     fetchVideoList()
+  } else if (firstCategory === 'topik1' && !topic1List.value.length) {
+    fetchTopic1List()
+  } else if (firstCategory === 'topik2' && !topic2List.value.length) {
+    fetchTopic2List()
+  } else if (firstCategory === 'topik3' && !topic3List.value.length) {
+    fetchTopic3List()
   }
   
   isDeepSearchOpen.value = true
@@ -917,7 +1412,12 @@ function openDeepSearch() {
 function applyDeepSearch() {
   const firstCategory = filterPayload.value.selectedCategory[0]
   
-  // Add chapter_ids or video_ids based on category
+  console.log('applyDeepSearch called for category:', firstCategory)
+  console.log('selectedTopic1CategoryIds:', selectedTopic1CategoryIds.value)
+  console.log('selectedTopic2ChapterIds:', selectedTopic2ChapterIds.value)
+  console.log('selectedTopic3ChapterIds:', selectedTopic3ChapterIds.value)
+  
+  // Add chapter_ids, video_ids, topic1_category_ids, topic2_chapter_ids, or topic3_chapter_ids based on category
   if (firstCategory === 'Buku') {
     if (selectedChapterIds.value.length > 0) {
       filterPayload.value.chapter_ids = selectedChapterIds.value
@@ -925,6 +1425,9 @@ function applyDeepSearch() {
       delete filterPayload.value.chapter_ids
     }
     delete filterPayload.value.video_ids
+    delete filterPayload.value.topic1_category_ids
+    delete filterPayload.value.topic2_chapter_ids
+    delete filterPayload.value.topic3_chapter_ids
   } else if (firstCategory === 'Audio' || firstCategory === 'Video') {
     if (selectedVideoIds.value.length > 0) {
       filterPayload.value.video_ids = selectedVideoIds.value
@@ -932,29 +1435,73 @@ function applyDeepSearch() {
       delete filterPayload.value.video_ids
     }
     delete filterPayload.value.chapter_ids
+    delete filterPayload.value.topic1_category_ids
+    delete filterPayload.value.topic2_chapter_ids
+    delete filterPayload.value.topic3_chapter_ids
+  } else if (firstCategory === 'topik1') {
+    if (selectedTopic1CategoryIds.value.length > 0) {
+      filterPayload.value.topic1_category_ids = selectedTopic1CategoryIds.value
+    } else {
+      delete filterPayload.value.topic1_category_ids
+    }
+    delete filterPayload.value.chapter_ids
+    delete filterPayload.value.video_ids
+    delete filterPayload.value.topic2_chapter_ids
+    delete filterPayload.value.topic3_chapter_ids
+  } else if (firstCategory === 'topik2') {
+    if (selectedTopic2ChapterIds.value.length > 0) {
+      filterPayload.value.topic2_chapter_ids = selectedTopic2ChapterIds.value
+    } else {
+      delete filterPayload.value.topic2_chapter_ids
+    }
+    delete filterPayload.value.chapter_ids
+    delete filterPayload.value.video_ids
+    delete filterPayload.value.topic1_category_ids
+    delete filterPayload.value.topic3_chapter_ids
+  } else if (firstCategory === 'topik3') {
+    if (selectedTopic3ChapterIds.value.length > 0) {
+      filterPayload.value.topic3_chapter_ids = selectedTopic3ChapterIds.value
+    } else {
+      delete filterPayload.value.topic3_chapter_ids
+    }
+    delete filterPayload.value.chapter_ids
+    delete filterPayload.value.video_ids
+    delete filterPayload.value.topic1_category_ids
+    delete filterPayload.value.topic2_chapter_ids
   }
+  
+  console.log('filterPayload after update:', filterPayload.value)
   
   isDeepSearchOpen.value = false
   currentPage.value = 1
   
-  // Ensure search is triggered
-  if (searchQuery.value.trim()) {
-    hasSearched.value = true
-    fetchResults()
-  }
+  // Always refetch results
+  fetchResults()
 }
 
 function resetDeepSearch() {
   selectedChapterIds.value = []
   selectedVideoIds.value = []
+  selectedTopic1CategoryIds.value = []
+  selectedTopic2ChapterIds.value = []
+  selectedTopic3ChapterIds.value = []
   bookChaptersPage.value = 1
   bookChaptersHasMore.value = true
   audioListPage.value = 1
   audioListHasMore.value = true
   videoListPage.value = 1
   videoListHasMore.value = true
+  topic1ListPage.value = 1
+  topic1ListHasMore.value = true
+  topic2ListPage.value = 1
+  topic2ListHasMore.value = true
+  topic3ListPage.value = 1
+  topic3ListHasMore.value = true
   delete filterPayload.value.chapter_ids
   delete filterPayload.value.video_ids
+  delete filterPayload.value.topic1_category_ids
+  delete filterPayload.value.topic2_chapter_ids
+  delete filterPayload.value.topic3_chapter_ids
 }
 
 function resetFilter() {
@@ -978,6 +1525,8 @@ function loadMore() {
 
 function navigateToDetail(item: SearchItem) {
   const itemType = item.type.toLowerCase()
+  
+  console.log('navigateToDetail called:', { itemType, id: item.id, item })
 
   if (itemType === 'book' || itemType === 'buku') {
     // header_id format: "bookId#chapterId#page" for books
@@ -1003,7 +1552,7 @@ function navigateToDetail(item: SearchItem) {
       path: `/video/play/sub/${item.id}`,
       query: { title: item.title }
     })
-  } else if (itemType === 'topik1' || itemType === 'ensiklopedia') {
+  } else if (itemType === 'topik1' || itemType === 'topic1' || itemType === 'ensiklopedia') {
     // Navigate to topics (topik1) detail page
     router.push({
       path: `/topics/detail`,
@@ -1012,18 +1561,22 @@ function navigateToDetail(item: SearchItem) {
         title: item.title 
       }
     })
-  } else if (itemType === 'topik2' || itemType === 'topik') {
+  } else if (itemType === 'topic2' || itemType === 'topik2' || itemType === 'topik') {
     // Navigate to topics2 content page
+    console.log('Navigating to topics2:', `/topics2/content/${item.id}`)
     router.push({
       path: `/topics2/content/${item.id}`,
       query: { chapter: item.title }
     })
-  } else if (itemType === 'topik3' || itemType === 'kumpulan tanya jawab') {
+  } else if (itemType === 'topic3' || itemType === 'topik3' || itemType === 'kumpulan tanya jawab') {
     // Navigate to topics3 content page
+    console.log('Navigating to topics3:', `/topics3/content/${item.id}`)
     router.push({
       path: `/topics3/content/${item.id}`,
       query: { title: item.title }
     })
+  } else {
+    console.log('No matching type found for:', itemType)
   }
 }
 </script>
@@ -1234,6 +1787,12 @@ function navigateToDetail(item: SearchItem) {
                 <p v-else-if="(filterPayload.selectedCategory[0] === 'Audio' || filterPayload.selectedCategory[0] === 'Video') && selectedVideoIds.length > 0" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
                   {{ selectedVideoIds.length }} video dipilih
                 </p>
+                <p v-else-if="filterPayload.selectedCategory[0] === 'topik1' && selectedTopic1CategoryIds.length > 0" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  {{ selectedTopic1CategoryIds.length }} kategori dipilih
+                </p>
+                <p v-else-if="filterPayload.selectedCategory[0] === 'topik2' && selectedTopic2ChapterIds.length > 0" class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  {{ selectedTopic2ChapterIds.length }} bab dipilih
+                </p>
               </div>
               <div class="flex gap-2">
                 <button class="text-gray-500 dark:text-gray-400 text-sm hover:text-gray-700 dark:hover:text-gray-300" @click="resetDeepSearch">
@@ -1254,6 +1813,15 @@ function navigateToDetail(item: SearchItem) {
             </p>
             <p v-else-if="filterPayload.selectedCategory[0] === 'Video'" class="text-sm text-gray-600 dark:text-gray-400">
               Pilih video untuk pencarian yang lebih spesifik
+            </p>
+            <p v-else-if="filterPayload.selectedCategory[0] === 'topik1'" class="text-sm text-gray-600 dark:text-gray-400">
+              Pilih kategori ensiklopedia untuk pencarian yang lebih spesifik
+            </p>
+            <p v-else-if="filterPayload.selectedCategory[0] === 'topik2'" class="text-sm text-gray-600 dark:text-gray-400">
+              Pilih bab topik untuk pencarian yang lebih spesifik
+            </p>
+            <p v-else-if="filterPayload.selectedCategory[0] === 'topik3'" class="text-sm text-gray-600 dark:text-gray-400">
+              Pilih bab kumpulan tanya jawab untuk pencarian yang lebih spesifik
             </p>
 
             <!-- Search Input -->
@@ -1453,6 +2021,218 @@ function navigateToDetail(item: SearchItem) {
             
             <!-- Initial Loading for Video -->
             <div v-if="videoList.length === 0 && isLoadingVideoList" class="flex justify-center py-8">
+              <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
+            </div>
+          </div>
+
+          <!-- Topic1 List -->
+          <div v-else-if="filterPayload.selectedCategory[0] === 'topik1'" class="space-y-4">
+            <!-- Topic1 Group Level -->
+            <div v-for="topic1Group in filteredTopic1List" :key="`t1group-${topic1Group.topic_id}`" class="space-y-3">
+              <h2 class="text-base font-bold text-primary dark:text-yellow-400 sticky top-0 bg-white dark:bg-gray-900 py-2 z-10">
+                {{ topic1Group.topic_title }}
+              </h2>
+              
+              <!-- Topic1 Category Level -->
+              <div v-for="category in topic1Group.categories" :key="`t1cat-${category.id}`" class="space-y-2 ml-2">
+                <div class="flex items-start gap-2 py-1">
+                  <input type="checkbox" :id="`topic1-category-${category.id}`"
+                    :checked="selectedTopic1CategoryIds.includes(category.id)"
+                    @change="toggleTopic1CategorySelection(category.id, category)"
+                    class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                  <label :for="`topic1-category-${category.id}`" class="text-sm font-semibold text-black dark:text-white cursor-pointer flex-1">
+                    {{ category.title }}
+                  </label>
+                </div>
+                
+                <!-- Topic1 Children Level -->
+                <div v-if="category.children && category.children.length > 0" class="ml-6 mt-1 space-y-1">
+                  <div v-for="child in category.children" :key="`t1child-${child.id}`" class="flex items-start gap-2 py-1">
+                    <input type="checkbox" :id="`topic1-child-${child.id}`"
+                      :checked="selectedTopic1CategoryIds.includes(child.id)"
+                      @change="toggleTopic1CategorySelection(child.id, { id: child.id, title: child.title })"
+                      class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                    <label :for="`topic1-child-${child.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                      {{ child.title }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div v-if="filteredTopic1List.length === 0 && !isLoadingTopic1List" class="text-center py-8">
+              <p class="text-sm text-gray-500 dark:text-gray-400">
+                {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data ensiklopedia' }}
+              </p>
+            </div>
+            
+            <!-- Loading More Indicator for Topic1 -->
+            <div v-if="isLoadingTopic1List && topic1List.length > 0" class="flex justify-center py-4">
+              <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
+            </div>
+            
+            <!-- Initial Loading for Topic1 -->
+            <div v-if="topic1List.length === 0 && isLoadingTopic1List" class="flex justify-center py-8">
+              <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
+            </div>
+          </div>
+
+          <!-- Topic2 List -->
+          <div v-else-if="filterPayload.selectedCategory[0] === 'topik2'" class="space-y-4">
+            <!-- Topic2 Group Level -->
+            <div v-for="topic2Group in filteredTopic2List" :key="`t2group-${topic2Group.id}`" class="space-y-3">
+              <h2 class="text-base font-bold text-primary dark:text-yellow-400 sticky top-0 bg-white dark:bg-gray-900 py-2 z-10">
+                {{ topic2Group.title }}
+              </h2>
+              
+              <!-- Topic2 Topic Level -->
+              <div v-for="topic in topic2Group.topics" :key="`t2topic-${topic.id}`" class="space-y-2 ml-2">
+                <h3 class="text-sm font-semibold text-black dark:text-white">
+                  {{ topic.title }}
+                </h3>
+                
+                <!-- Recursive Chapter Component -->
+                <div class="ml-2">
+                  <template v-for="chapter in topic.chapters" :key="`t2ch-${chapter.id}`">
+                    <div class="space-y-1">
+                      <div class="flex items-start gap-2 py-1">
+                        <input type="checkbox" :id="`topic2-chapter-${chapter.id}`"
+                          :checked="selectedTopic2ChapterIds.includes(chapter.id)"
+                          @change="toggleTopic2ChapterSelection(chapter.id, chapter)"
+                          class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                        <label :for="`topic2-chapter-${chapter.id}`" class="text-sm text-black dark:text-white cursor-pointer flex-1">
+                          {{ chapter.title }}
+                        </label>
+                      </div>
+                      
+                      <!-- Recursive Children -->
+                      <div v-if="chapter.children && chapter.children.length > 0" class="ml-6">
+                        <template v-for="child in chapter.children" :key="`t2chd-${child.id}`">
+                          <div class="space-y-1">
+                            <div class="flex items-start gap-2 py-1">
+                              <input type="checkbox" :id="`topic2-child-${child.id}`"
+                                :checked="selectedTopic2ChapterIds.includes(child.id)"
+                                @change="toggleTopic2ChapterSelection(child.id, child)"
+                                class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                              <label :for="`topic2-child-${child.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                                {{ child.title }}
+                              </label>
+                            </div>
+                            
+                            <!-- Third Level Children -->
+                            <div v-if="child.children && child.children.length > 0" class="ml-6">
+                              <div v-for="grandchild in child.children" :key="`t2gch-${grandchild.id}`" class="flex items-start gap-2 py-1">
+                                <input type="checkbox" :id="`topic2-grandchild-${grandchild.id}`"
+                                  :checked="selectedTopic2ChapterIds.includes(grandchild.id)"
+                                  @change="toggleTopic2ChapterSelection(grandchild.id, grandchild)"
+                                  class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                <label :for="`topic2-grandchild-${grandchild.id}`" class="text-sm text-gray-500 dark:text-gray-500 cursor-pointer flex-1">
+                                  {{ grandchild.title }}
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </template>
+                      </div>
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </div>
+            
+            <div v-if="filteredTopic2List.length === 0 && !isLoadingTopic2List" class="text-center py-8">
+              <p class="text-sm text-gray-500 dark:text-gray-400">
+                {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data topik' }}
+              </p>
+            </div>
+            
+            <!-- Loading More Indicator for Topic2 -->
+            <div v-if="isLoadingTopic2List && topic2List.length > 0" class="flex justify-center py-4">
+              <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
+            </div>
+            
+            <!-- Initial Loading for Topic2 -->
+            <div v-if="topic2List.length === 0 && isLoadingTopic2List" class="flex justify-center py-8">
+              <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
+            </div>
+          </div>
+
+          <!-- Topic3 List -->
+          <div v-else-if="filterPayload.selectedCategory[0] === 'topik3'" class="space-y-4">
+            <!-- Topic3 Group Level -->
+            <div v-for="topic3Group in filteredTopic3List" :key="`t3group-${topic3Group.id}`" class="space-y-3">
+              <h2 class="text-base font-bold text-primary dark:text-yellow-400 sticky top-0 bg-white dark:bg-gray-900 py-2 z-10">
+                {{ topic3Group.title }}
+              </h2>
+              
+              <!-- Topic3 Topic Level -->
+              <div v-for="topic in topic3Group.topics" :key="`t3topic-${topic.id}`" class="space-y-2 ml-2">
+                <h3 class="text-sm font-semibold text-black dark:text-white">
+                  {{ topic.title }}
+                </h3>
+                
+                <!-- Recursive Chapter Component -->
+                <div class="ml-2">
+                  <template v-for="chapter in topic.chapters" :key="`t3ch-${chapter.id}`">
+                    <div class="space-y-1">
+                      <div class="flex items-start gap-2 py-1">
+                        <input type="checkbox" :id="`topic3-chapter-${chapter.id}`"
+                          :checked="selectedTopic3ChapterIds.includes(chapter.id)"
+                          @change="toggleTopic3ChapterSelection(chapter.id, chapter)"
+                          class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                        <label :for="`topic3-chapter-${chapter.id}`" class="text-sm text-black dark:text-white cursor-pointer flex-1">
+                          {{ chapter.title }}
+                        </label>
+                      </div>
+                      
+                      <!-- Recursive Children -->
+                      <div v-if="chapter.children && chapter.children.length > 0" class="ml-6">
+                        <template v-for="child in chapter.children" :key="`t3chd-${child.id}`">
+                          <div class="space-y-1">
+                            <div class="flex items-start gap-2 py-1">
+                              <input type="checkbox" :id="`topic3-child-${child.id}`"
+                                :checked="selectedTopic3ChapterIds.includes(child.id)"
+                                @change="toggleTopic3ChapterSelection(child.id, child)"
+                                class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                              <label :for="`topic3-child-${child.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                                {{ child.title }}
+                              </label>
+                            </div>
+                            
+                            <!-- Third Level Children -->
+                            <div v-if="child.children && child.children.length > 0" class="ml-6">
+                              <div v-for="grandchild in child.children" :key="`t3gch-${grandchild.id}`" class="flex items-start gap-2 py-1">
+                                <input type="checkbox" :id="`topic3-grandchild-${grandchild.id}`"
+                                  :checked="selectedTopic3ChapterIds.includes(grandchild.id)"
+                                  @change="toggleTopic3ChapterSelection(grandchild.id, grandchild)"
+                                  class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                <label :for="`topic3-grandchild-${grandchild.id}`" class="text-sm text-gray-500 dark:text-gray-500 cursor-pointer flex-1">
+                                  {{ grandchild.title }}
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </template>
+                      </div>
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </div>
+            
+            <div v-if="filteredTopic3List.length === 0 && !isLoadingTopic3List" class="text-center py-8">
+              <p class="text-sm text-gray-500 dark:text-gray-400">
+                {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data kumpulan tanya jawab' }}
+              </p>
+            </div>
+            
+            <!-- Loading More Indicator for Topic3 -->
+            <div v-if="isLoadingTopic3List && topic3List.length > 0" class="flex justify-center py-4">
+              <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
+            </div>
+            
+            <!-- Initial Loading for Topic3 -->
+            <div v-if="topic3List.length === 0 && isLoadingTopic3List" class="flex justify-center py-8">
               <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
             </div>
           </div>
