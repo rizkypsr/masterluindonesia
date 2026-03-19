@@ -47,7 +47,7 @@
             <div v-if="videoData.related_chapters?.length" class="bg-white dark:bg-gray-800 mt-2">
                 <button @click="showRelatedChapters = !showRelatedChapters"
                     class="w-full px-4 py-3 flex items-center justify-between">
-                    <span class="font-semibold text-black dark:text-white">RELATED CHAPTERS</span>
+                    <span class="font-semibold text-black dark:text-white">TEKS</span>
                     <Icon :name="showRelatedChapters ? 'mdi:chevron-up' : 'mdi:chevron-down'"
                         class="w-6 h-6 text-gray-600 dark:text-gray-400" />
                 </button>
