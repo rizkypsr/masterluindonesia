@@ -43,10 +43,16 @@ interface BookChapter {
   children?: BookChapter[]
 }
 
-interface BookData {
-  book_id: number
-  book_title: string
+interface Book {
+  id: number
+  title: string
   chapters: BookChapter[]
+}
+
+interface BookGroup {
+  id: number
+  title: string
+  books: Book[]
 }
 
 interface AudioVideo {
@@ -55,21 +61,51 @@ interface AudioVideo {
 }
 
 interface AudioSubGroup {
-  sub_group_id: number
-  sub_group_name: string
+  id: number
+  name: string
   audios: AudioVideo[]
 }
 
-interface AudioData {
-  sub_group_id: number
-  sub_group_name: string
-  audios: AudioVideo[]
+interface AudioCategory {
+  id: number
+  title: string
+  sub_groups: AudioSubGroup[]
 }
 
-interface VideoData {
-  sub_group_id: number
-  sub_group_name: string
+interface AudioGroup {
+  id: number
+  title: string
+  children: AudioCategory[]
+}
+
+interface VideoSubGroup {
+  id: number
+  name: string
   videos: AudioVideo[]
+}
+
+interface VideoChild {
+  id: number
+  title: string
+  sub_groups: VideoSubGroup[]
+}
+
+interface VideoCategory {
+  id: number
+  title: string
+  children: VideoChild[]
+}
+
+interface VideoYearGroup {
+  id: number
+  title: string
+  video_categories: VideoCategory[]
+}
+
+interface VideoGroup {
+  id: number
+  title: string
+  children: VideoYearGroup[]
 }
 
 // Persist search state across navigation using useState
@@ -95,21 +131,21 @@ const hideKeywordInput = ref('')
 const showKeywordInput = ref('')
 
 // Deep search state for books
-const bookChapters = ref<BookData[]>([])
+const bookChapters = ref<BookGroup[]>([])
 const selectedChapterIds = ref<number[]>([])
 const isLoadingBookChapters = ref(false)
 const bookChaptersPage = ref(1)
 const bookChaptersHasMore = ref(true)
 
 // Deep search state for audio
-const audioList = ref<AudioData[]>([])
+const audioList = ref<AudioGroup[]>([])
 const selectedVideoIds = ref<number[]>([])
 const isLoadingAudioList = ref(false)
 const audioListPage = ref(1)
 const audioListHasMore = ref(true)
 
 // Deep search state for video
-const videoList = ref<VideoData[]>([])
+const videoList = ref<VideoGroup[]>([])
 const isLoadingVideoList = ref(false)
 const videoListPage = ref(1)
 const videoListHasMore = ref(true)
@@ -125,80 +161,218 @@ const filteredBookChapters = computed(() => {
   if (!deepSearchQuery.value.trim()) return bookChapters.value
   
   const query = deepSearchQuery.value.toLowerCase()
-  return bookChapters.value.map(book => {
-    // Check if book title matches
-    const bookMatches = book.book_title.toLowerCase().includes(query)
+  
+  return bookChapters.value.map(bookGroup => {
+    // Check if book group title matches
+    const groupMatches = bookGroup.title.toLowerCase().includes(query)
     
-    // Filter chapters
-    const filteredChapters = book.chapters.filter(chapter => {
-      const chapterMatches = chapter.title.toLowerCase().includes(query)
-      const childMatches = chapter.children?.some(child => 
-        child.title.toLowerCase().includes(query)
-      )
-      return chapterMatches || childMatches
-    }).map(chapter => {
-      // If chapter matches, show all children
-      if (chapter.title.toLowerCase().includes(query)) {
-        return chapter
+    // If group matches, return entire group with all books
+    if (groupMatches) {
+      return bookGroup
+    }
+    
+    // Filter books within the group
+    const filteredBooks = bookGroup.books.map(book => {
+      const bookMatches = book.title.toLowerCase().includes(query)
+      
+      // If book matches, return entire book with all chapters
+      if (bookMatches) {
+        return book
       }
-      // Otherwise, filter children
-      return {
-        ...chapter,
-        children: chapter.children?.filter(child => 
+      
+      // Filter chapters
+      const filteredChapters = book.chapters.filter(chapter => {
+        const chapterMatches = chapter.title.toLowerCase().includes(query)
+        const childMatches = chapter.children?.some(child => 
           child.title.toLowerCase().includes(query)
         )
+        return chapterMatches || childMatches
+      }).map(chapter => {
+        // If chapter matches, show all children
+        if (chapter.title.toLowerCase().includes(query)) {
+          return chapter
+        }
+        // Otherwise, filter children
+        return {
+          ...chapter,
+          children: chapter.children?.filter(child => 
+            child.title.toLowerCase().includes(query)
+          )
+        }
+      })
+      
+      // Return book if it has matching chapters
+      if (filteredChapters.length > 0) {
+        return {
+          ...book,
+          chapters: filteredChapters
+        }
       }
-    })
+      return null
+    }).filter(book => book !== null) as Book[]
     
-    // Return book if it matches or has matching chapters
-    if (bookMatches || filteredChapters.length > 0) {
+    // Return group if it has matching books
+    if (filteredBooks.length > 0) {
       return {
-        ...book,
-        chapters: bookMatches ? book.chapters : filteredChapters
+        ...bookGroup,
+        books: filteredBooks
       }
     }
     return null
-  }).filter(book => book !== null) as BookData[]
+  }).filter(group => group !== null) as BookGroup[]
 })
 
 const filteredAudioList = computed(() => {
   if (!deepSearchQuery.value.trim()) return audioList.value
   
   const query = deepSearchQuery.value.toLowerCase()
-  return audioList.value.map(subGroup => {
-    const groupMatches = subGroup.sub_group_name.toLowerCase().includes(query)
-    const filteredAudios = subGroup.audios.filter(audio => 
-      audio.title.toLowerCase().includes(query)
-    )
+  
+  return audioList.value.map(audioGroup => {
+    // Check if audio group title matches
+    const groupMatches = audioGroup.title.toLowerCase().includes(query)
     
-    if (groupMatches || filteredAudios.length > 0) {
+    // If group matches, return entire group
+    if (groupMatches) {
+      return audioGroup
+    }
+    
+    // Filter categories within the group
+    const filteredCategories = audioGroup.children.map(category => {
+      const categoryMatches = category.title.toLowerCase().includes(query)
+      
+      // If category matches, return entire category
+      if (categoryMatches) {
+        return category
+      }
+      
+      // Filter sub groups
+      const filteredSubGroups = category.sub_groups.filter(subGroup => {
+        const subGroupMatches = subGroup.name.toLowerCase().includes(query)
+        const audioMatches = subGroup.audios.some(audio => 
+          audio.title.toLowerCase().includes(query)
+        )
+        return subGroupMatches || audioMatches
+      }).map(subGroup => {
+        // If sub group matches, show all audios
+        if (subGroup.name.toLowerCase().includes(query)) {
+          return subGroup
+        }
+        // Otherwise, filter audios
+        return {
+          ...subGroup,
+          audios: subGroup.audios.filter(audio => 
+            audio.title.toLowerCase().includes(query)
+          )
+        }
+      })
+      
+      // Return category if it has matching sub groups
+      if (filteredSubGroups.length > 0) {
+        return {
+          ...category,
+          sub_groups: filteredSubGroups
+        }
+      }
+      return null
+    }).filter(category => category !== null) as AudioCategory[]
+    
+    // Return group if it has matching categories
+    if (filteredCategories.length > 0) {
       return {
-        ...subGroup,
-        audios: groupMatches ? subGroup.audios : filteredAudios
+        ...audioGroup,
+        children: filteredCategories
       }
     }
     return null
-  }).filter(group => group !== null) as AudioData[]
+  }).filter(group => group !== null) as AudioGroup[]
 })
 
 const filteredVideoList = computed(() => {
   if (!deepSearchQuery.value.trim()) return videoList.value
   
   const query = deepSearchQuery.value.toLowerCase()
-  return videoList.value.map(subGroup => {
-    const groupMatches = subGroup.sub_group_name.toLowerCase().includes(query)
-    const filteredVideos = subGroup.videos.filter(video => 
-      video.title.toLowerCase().includes(query)
-    )
+  
+  return videoList.value.map(videoGroup => {
+    const groupMatches = videoGroup.title.toLowerCase().includes(query)
     
-    if (groupMatches || filteredVideos.length > 0) {
+    if (groupMatches) {
+      return videoGroup
+    }
+    
+    const filteredChildren = videoGroup.children.map(yearGroup => {
+      const yearMatches = yearGroup.title.toLowerCase().includes(query)
+      
+      if (yearMatches) {
+        return yearGroup
+      }
+      
+      const filteredCategories = yearGroup.video_categories.map(category => {
+        const categoryMatches = category.title.toLowerCase().includes(query)
+        
+        if (categoryMatches) {
+          return category
+        }
+        
+        const filteredCategoryChildren = category.children.map(child => {
+          const childMatches = child.title.toLowerCase().includes(query)
+          
+          if (childMatches) {
+            return child
+          }
+          
+          const filteredSubGroups = child.sub_groups.filter(subGroup => {
+            const subGroupMatches = subGroup.name.toLowerCase().includes(query)
+            const videoMatches = subGroup.videos.some(video => 
+              video.title.toLowerCase().includes(query)
+            )
+            return subGroupMatches || videoMatches
+          }).map(subGroup => {
+            if (subGroup.name.toLowerCase().includes(query)) {
+              return subGroup
+            }
+            return {
+              ...subGroup,
+              videos: subGroup.videos.filter(video => 
+                video.title.toLowerCase().includes(query)
+              )
+            }
+          })
+          
+          if (filteredSubGroups.length > 0) {
+            return {
+              ...child,
+              sub_groups: filteredSubGroups
+            }
+          }
+          return null
+        }).filter(child => child !== null) as VideoChild[]
+        
+        if (filteredCategoryChildren.length > 0) {
+          return {
+            ...category,
+            children: filteredCategoryChildren
+          }
+        }
+        return null
+      }).filter(category => category !== null) as VideoCategory[]
+      
+      if (filteredCategories.length > 0) {
+        return {
+          ...yearGroup,
+          video_categories: filteredCategories
+        }
+      }
+      return null
+    }).filter(yearGroup => yearGroup !== null) as VideoYearGroup[]
+    
+    if (filteredChildren.length > 0) {
       return {
-        ...subGroup,
-        videos: groupMatches ? subGroup.videos : filteredVideos
+        ...videoGroup,
+        children: filteredChildren
       }
     }
     return null
-  }).filter(group => group !== null) as VideoData[]
+  }).filter(group => group !== null) as VideoGroup[]
 })
 
 // Setup single infinite scroll that handles all categories
@@ -438,7 +612,7 @@ async function fetchBookChapters(loadMore = false) {
     const response = await $fetch<{
       success: boolean
       message: string
-      data: BookData[]
+      data: BookGroup[]
       pagination: {
         current_page: number
         per_page: number
@@ -477,7 +651,7 @@ async function fetchAudioList(loadMore = false) {
     const response = await $fetch<{
       success: boolean
       message: string
-      data: AudioData[]
+      data: AudioGroup[]
       pagination: {
         current_page: number
         per_page: number
@@ -516,7 +690,7 @@ async function fetchVideoList(loadMore = false) {
     const response = await $fetch<{
       success: boolean
       message: string
-      data: VideoData[]
+      data: VideoGroup[]
       pagination: {
         current_page: number
         per_page: number
@@ -594,7 +768,7 @@ function toggleVideoSelection(videoId: number) {
 }
 
 // Toggle all videos in a sub group
-function toggleSubGroupVideos(subGroup: AudioSubGroup | VideoData) {
+function toggleSubGroupVideos(subGroup: AudioSubGroup | VideoSubGroup) {
   const items = 'audios' in subGroup ? subGroup.audios : subGroup.videos
   const allSelected = items.every(item => selectedVideoIds.value.includes(item.id))
   
@@ -617,10 +791,20 @@ function toggleSubGroupVideos(subGroup: AudioSubGroup | VideoData) {
 }
 
 // Check if all videos in sub group are selected
-function isSubGroupSelected(subGroup: AudioSubGroup | VideoData): boolean {
+function isSubGroupSelected(subGroup: AudioSubGroup | VideoSubGroup): boolean {
   const items = 'audios' in subGroup ? subGroup.audios : subGroup.videos
   if (!items || items.length === 0) return false
   return items.every(item => selectedVideoIds.value.includes(item.id))
+}
+
+// Toggle audio selection
+function toggleAudioSelection(audioId: number) {
+  const idx = selectedVideoIds.value.indexOf(audioId)
+  if (idx > -1) {
+    selectedVideoIds.value.splice(idx, 1)
+  } else {
+    selectedVideoIds.value.push(audioId)
+  }
 }
 
 // Select all children recursively
@@ -1082,76 +1266,107 @@ function navigateToDetail(item: SearchItem) {
           <div ref="deepSearchScrollContainer" class="flex-1 overflow-y-auto px-4 pb-4">
             <!-- Book Chapters List -->
             <div v-if="filterPayload.selectedCategory[0] === 'Buku'" class="space-y-4">
-            <div v-for="book in filteredBookChapters" :key="`book-${book.book_id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
-              <h3 class="font-semibold text-black dark:text-white mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
-                {{ book.book_title }}
-              </h3>
-              <div class="space-y-2">
-                <div v-for="chapter in book.chapters" :key="`ch-${chapter.id}`">
-                  <div class="flex items-start gap-2 py-1">
-                    <input type="checkbox" :id="`deep-chapter-${chapter.id}`"
-                      :checked="selectedChapterIds.includes(chapter.id)"
-                      @change="toggleChapterSelection(chapter.id, chapter)"
-                      class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                    <label :for="`deep-chapter-${chapter.id}`" class="text-sm text-black dark:text-white cursor-pointer flex-1">
-                      {{ chapter.title }}
+              <!-- Book Group Level -->
+              <div v-for="bookGroup in filteredBookChapters" :key="`group-${bookGroup.id}`" class="space-y-3">
+                <h2 class="text-base font-bold text-primary dark:text-yellow-400 sticky top-0 bg-white dark:bg-gray-900 py-2 z-10">
+                  {{ bookGroup.title }}
+                </h2>
+                
+                <!-- Book Level -->
+                <div v-for="book in bookGroup.books" :key="`book-${book.id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 ml-2">
+                  <h3 class="font-semibold text-black dark:text-white mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
+                    {{ book.title }}
+                  </h3>
+                  
+                  <!-- Chapter Level -->
+                  <div class="space-y-2">
+                    <div v-for="chapter in book.chapters" :key="`ch-${chapter.id}`">
+                      <div class="flex items-start gap-2 py-1">
+                        <input type="checkbox" :id="`deep-chapter-${chapter.id}`"
+                          :checked="selectedChapterIds.includes(chapter.id)"
+                          @change="toggleChapterSelection(chapter.id, chapter)"
+                          class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                        <label :for="`deep-chapter-${chapter.id}`" class="text-sm text-black dark:text-white cursor-pointer flex-1">
+                          {{ chapter.title }}
+                        </label>
+                      </div>
+                      
+                      <!-- Sub-chapter Level -->
+                      <div v-if="chapter.children && chapter.children.length > 0" class="ml-6 mt-1 space-y-1">
+                        <div v-for="child in chapter.children" :key="`chd-${child.id}`" class="flex items-start gap-2 py-1">
+                          <input type="checkbox" :id="`deep-chapter-child-${child.id}`"
+                            :checked="selectedChapterIds.includes(child.id)"
+                            @change="toggleChapterSelection(child.id, child)"
+                            class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                          <label :for="`deep-chapter-child-${child.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                            {{ child.title }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div v-if="filteredBookChapters.length === 0 && !isLoadingBookChapters" class="text-center py-8">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                  {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data bab buku' }}
+                </p>
+              </div>
+              
+              <!-- Loading More Indicator for Books - Fixed at bottom -->
+              <div v-if="isLoadingBookChapters && bookChapters.length > 0" class="flex justify-center py-4">
+                <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
+              </div>
+              
+              <!-- Initial Loading for Books -->
+              <div v-if="bookChapters.length === 0 && isLoadingBookChapters" class="flex justify-center py-8">
+                <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
+              </div>
+            </div>
+
+          <!-- Audio List -->
+          <div v-else-if="filterPayload.selectedCategory[0] === 'Audio'" class="space-y-4">
+            <!-- Audio Group Level -->
+            <div v-for="audioGroup in filteredAudioList" :key="`agroup-${audioGroup.id}`" class="space-y-3">
+              <h2 class="text-base font-bold text-primary dark:text-yellow-400 sticky top-0 bg-white dark:bg-gray-900 py-2 z-10">
+                {{ audioGroup.title }}
+              </h2>
+              
+              <!-- Audio Category Level -->
+              <div v-for="category in audioGroup.children" :key="`acat-${category.id}`" class="space-y-2 ml-2">
+                <h3 class="text-sm font-semibold text-black dark:text-white">
+                  {{ category.title }}
+                </h3>
+                
+                <!-- Audio Sub Group Level -->
+                <div v-for="subGroup in category.sub_groups" :key="`asg-${subGroup.id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 ml-2">
+                  <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
+                    <input type="checkbox" :id="`audio-group-${subGroup.id}`"
+                      :checked="isSubGroupSelected(subGroup)"
+                      @change="toggleSubGroupVideos(subGroup)"
+                      class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                    <label :for="`audio-group-${subGroup.id}`" class="font-semibold text-black dark:text-white cursor-pointer">
+                      {{ subGroup.name }}
                     </label>
                   </div>
-                  <div v-if="chapter.children && chapter.children.length > 0" class="ml-6 mt-1 space-y-1">
-                    <div v-for="child in chapter.children" :key="`chd-${child.id}`" class="flex items-start gap-2 py-1">
-                      <input type="checkbox" :id="`deep-chapter-child-${child.id}`"
-                        :checked="selectedChapterIds.includes(child.id)"
-                        @change="toggleChapterSelection(child.id, child)"
+                  
+                  <!-- Audio Level -->
+                  <div class="space-y-1 ml-6">
+                    <div v-for="audio in subGroup.audios" :key="`av-${audio.id}`" class="flex items-start gap-2 py-1">
+                      <input type="checkbox" :id="`audio-${audio.id}`"
+                        :checked="selectedVideoIds.includes(audio.id)"
+                        @change="toggleAudioSelection(audio.id)"
                         class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                      <label :for="`deep-chapter-child-${child.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
-                        {{ child.title }}
+                      <label :for="`audio-${audio.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                        {{ audio.title }}
                       </label>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div v-if="filteredBookChapters.length === 0 && !isLoadingBookChapters" class="text-center py-8">
-              <p class="text-sm text-gray-500 dark:text-gray-400">
-                {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data bab buku' }}
-              </p>
-            </div>
             
-            <!-- Loading More Indicator for Books - Fixed at bottom -->
-            <div v-if="isLoadingBookChapters && bookChapters.length > 0" class="flex justify-center py-4">
-              <UIcon name="i-lucide-loader-circle" class="w-6 h-6 animate-spin text-primary" />
-            </div>
-            
-            <!-- Initial Loading for Books -->
-            <div v-if="bookChapters.length === 0 && isLoadingBookChapters" class="flex justify-center py-8">
-              <UIcon name="i-lucide-loader-circle" class="w-8 h-8 animate-spin text-primary" />
-            </div>
-          </div>
-
-          <!-- Audio List -->
-          <div v-else-if="filterPayload.selectedCategory[0] === 'Audio'" class="space-y-4">
-            <div v-for="subGroup in filteredAudioList" :key="`ag-${subGroup.sub_group_id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
-              <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
-                <input type="checkbox" :id="`audio-group-${subGroup.sub_group_id}`"
-                  :checked="isSubGroupSelected(subGroup)"
-                  @change="toggleSubGroupVideos(subGroup)"
-                  class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                <label :for="`audio-group-${subGroup.sub_group_id}`" class="font-semibold text-black dark:text-white cursor-pointer">
-                  {{ subGroup.sub_group_name }}
-                </label>
-              </div>
-              <div class="space-y-1 ml-6">
-                <div v-for="audio in subGroup.audios" :key="`av-${audio.id}`" class="flex items-start gap-2 py-1">
-                  <input type="checkbox" :id="`audio-video-${audio.id}`"
-                    :checked="selectedVideoIds.includes(audio.id)"
-                    @change="toggleVideoSelection(audio.id)"
-                    class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                  <label :for="`audio-video-${audio.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
-                    {{ audio.title }}
-                  </label>
-                </div>
-              </div>
-            </div>
             <div v-if="filteredAudioList.length === 0 && !isLoadingAudioList" class="text-center py-8">
               <p class="text-sm text-gray-500 dark:text-gray-400">
                 {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data audio' }}
@@ -1171,28 +1386,60 @@ function navigateToDetail(item: SearchItem) {
 
           <!-- Video List -->
           <div v-else-if="filterPayload.selectedCategory[0] === 'Video'" class="space-y-4">
-            <div v-for="subGroup in filteredVideoList" :key="`vg-${subGroup.sub_group_id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
-              <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
-                <input type="checkbox" :id="`video-group-${subGroup.sub_group_id}`"
-                  :checked="isSubGroupSelected(subGroup)"
-                  @change="toggleSubGroupVideos(subGroup)"
-                  class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                <label :for="`video-group-${subGroup.sub_group_id}`" class="font-semibold text-black dark:text-white cursor-pointer">
-                  {{ subGroup.sub_group_name }}
-                </label>
-              </div>
-              <div class="space-y-1 ml-6">
-                <div v-for="video in subGroup.videos" :key="`vv-${video.id}`" class="flex items-start gap-2 py-1">
-                  <input type="checkbox" :id="`video-video-${video.id}`"
-                    :checked="selectedVideoIds.includes(video.id)"
-                    @change="toggleVideoSelection(video.id)"
-                    class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                  <label :for="`video-video-${video.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
-                    {{ video.title }}
-                  </label>
+            <!-- Video Group Level -->
+            <div v-for="videoGroup in filteredVideoList" :key="`vgroup-${videoGroup.id}`" class="space-y-3">
+              <h2 class="text-base font-bold text-primary dark:text-yellow-400 sticky top-0 bg-white dark:bg-gray-900 py-2 z-10">
+                {{ videoGroup.title }}
+              </h2>
+              
+              <!-- Year Group Level -->
+              <div v-for="yearGroup in videoGroup.children" :key="`vyear-${yearGroup.id}`" class="space-y-2 ml-2">
+                <h3 class="text-sm font-semibold text-black dark:text-white">
+                  {{ yearGroup.title }}
+                </h3>
+                
+                <!-- Video Category Level -->
+                <div v-for="category in yearGroup.video_categories" :key="`vcat-${category.id}`" class="space-y-2 ml-2">
+                  <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {{ category.title }}
+                  </h4>
+                  
+                  <!-- Video Child Level -->
+                  <div v-for="child in category.children" :key="`vchild-${child.id}`" class="space-y-2 ml-2">
+                    <h5 class="text-xs font-medium text-gray-600 dark:text-gray-400">
+                      {{ child.title }}
+                    </h5>
+                    
+                    <!-- Video Sub Group Level -->
+                    <div v-for="subGroup in child.sub_groups" :key="`vsg-${subGroup.id}`" class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 ml-2">
+                      <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
+                        <input type="checkbox" :id="`video-group-${subGroup.id}`"
+                          :checked="isSubGroupSelected(subGroup)"
+                          @change="toggleSubGroupVideos(subGroup)"
+                          class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                        <label :for="`video-group-${subGroup.id}`" class="font-semibold text-black dark:text-white cursor-pointer">
+                          {{ subGroup.name }}
+                        </label>
+                      </div>
+                      
+                      <!-- Video Level -->
+                      <div class="space-y-1 ml-6">
+                        <div v-for="video in subGroup.videos" :key="`vv-${video.id}`" class="flex items-start gap-2 py-1">
+                          <input type="checkbox" :id="`video-${video.id}`"
+                            :checked="selectedVideoIds.includes(video.id)"
+                            @change="toggleVideoSelection(video.id)"
+                            class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                          <label :for="`video-${video.id}`" class="text-sm text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                            {{ video.title }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+            
             <div v-if="filteredVideoList.length === 0 && !isLoadingVideoList" class="text-center py-8">
               <p class="text-sm text-gray-500 dark:text-gray-400">
                 {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data video' }}
