@@ -1981,7 +1981,7 @@ function navigateToDetail(item: SearchItem) {
                               @change="toggleChapterSelection(child.id, child)"
                               class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
                             <label :for="`deep-chapter-child-${child.id}`"
-                              class="text-base text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                              class="text-base text-black dark:text-white cursor-pointer flex-1">
                               {{ child.title }}
                             </label>
                           </div>
@@ -2051,7 +2051,7 @@ function navigateToDetail(item: SearchItem) {
                             @change="toggleAudioSelection(audio.id)"
                             class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
                           <label :for="`audio-${audio.id}`"
-                            class="text-base text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                            class="text-base text-black dark:text-white cursor-pointer flex-1">
                             {{ audio.title }}
                           </label>
                         </div>
@@ -2104,7 +2104,7 @@ function navigateToDetail(item: SearchItem) {
                   <!-- Video Category Level -->
                   <div v-for="category in yearGroup.video_categories" :key="`vcat-${category.id}`"
                     class="space-y-2 ml-2">
-                    <h4 class="text-base font-medium text-gray-700 dark:text-gray-300">
+                    <h4 class="text-base font-medium text-black dark:text-white">
                       {{ category.title }}
                     </h4>
 
@@ -2135,7 +2135,7 @@ function navigateToDetail(item: SearchItem) {
                               :checked="selectedVideoIds.includes(video.id)" @change="toggleVideoSelection(video.id)"
                               class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
                             <label :for="`video-${video.id}`"
-                              class="text-base text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                              class="text-base text-black dark:text-white cursor-pointer flex-1">
                               {{ video.title }}
                             </label>
                           </div>
@@ -2203,7 +2203,7 @@ function navigateToDetail(item: SearchItem) {
                         @change="toggleTopic1CategorySelection(child.id, { id: child.id, title: child.title })"
                         class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
                       <label :for="`topic1-child-${child.id}`"
-                        class="text-base text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                        class="text-base text-black dark:text-white cursor-pointer flex-1">
                         {{ child.title }}
                       </label>
                     </div>
@@ -2277,7 +2277,7 @@ function navigateToDetail(item: SearchItem) {
                                   @change="toggleTopic2ChapterSelection(child.id, child)"
                                   class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
                                 <label :for="`topic2-child-${child.id}`"
-                                  class="text-base text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                                  class="text-base text-black dark:text-white cursor-pointer flex-1">
                                   {{ child.title }}
                                 </label>
                               </div>
@@ -2291,7 +2291,7 @@ function navigateToDetail(item: SearchItem) {
                                     @change="toggleTopic2ChapterSelection(grandchild.id, grandchild)"
                                     class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
                                   <label :for="`topic2-grandchild-${grandchild.id}`"
-                                    class="text-base text-gray-500 dark:text-gray-500 cursor-pointer flex-1">
+                                    class="text-base text-black dark:text-white cursor-pointer flex-1">
                                     {{ grandchild.title }}
                                   </label>
                                 </div>
@@ -2371,7 +2371,7 @@ function navigateToDetail(item: SearchItem) {
                                   @change="toggleTopic3ChapterSelection(child.id, child)"
                                   class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
                                 <label :for="`topic3-child-${child.id}`"
-                                  class="text-base text-gray-600 dark:text-gray-400 cursor-pointer flex-1">
+                                  class="text-base text-black dark:text-white cursor-pointer flex-1">
                                   {{ child.title }}
                                 </label>
                               </div>
@@ -2385,7 +2385,7 @@ function navigateToDetail(item: SearchItem) {
                                     @change="toggleTopic3ChapterSelection(grandchild.id, grandchild)"
                                     class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
                                   <label :for="`topic3-grandchild-${grandchild.id}`"
-                                    class="text-base text-gray-500 dark:text-gray-500 cursor-pointer flex-1">
+                                    class="text-base text-black dark:text-white cursor-pointer flex-1">
                                     {{ grandchild.title }}
                                   </label>
                                 </div>
