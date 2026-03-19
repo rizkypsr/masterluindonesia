@@ -201,41 +201,56 @@ const filteredVideoList = computed(() => {
   }).filter(group => group !== null) as VideoData[]
 })
 
-// Setup infinite scroll for books
+// Setup single infinite scroll that handles all categories
 useInfiniteScroll(
   deepSearchScrollContainer,
   () => {
+    // Only trigger if modal is open
+    if (!isDeepSearchOpen.value) return
+    
     const firstCategory = filterPayload.value.selectedCategory[0]
+    
     if (firstCategory === 'Buku' && bookChaptersHasMore.value && !isLoadingBookChapters.value) {
       fetchBookChapters(true)
-    }
-  },
-  { distance: 200, canLoadMore: () => bookChaptersHasMore.value }
-)
-
-// Setup infinite scroll for audio
-useInfiniteScroll(
-  deepSearchScrollContainer,
-  () => {
-    const firstCategory = filterPayload.value.selectedCategory[0]
-    if (firstCategory === 'Audio' && audioListHasMore.value && !isLoadingAudioList.value) {
+    } else if (firstCategory === 'Audio' && audioListHasMore.value && !isLoadingAudioList.value) {
       fetchAudioList(true)
-    }
-  },
-  { distance: 200, canLoadMore: () => audioListHasMore.value }
-)
-
-// Setup infinite scroll for video
-useInfiniteScroll(
-  deepSearchScrollContainer,
-  () => {
-    const firstCategory = filterPayload.value.selectedCategory[0]
-    if (firstCategory === 'Video' && videoListHasMore.value && !isLoadingVideoList.value) {
+    } else if (firstCategory === 'Video' && videoListHasMore.value && !isLoadingVideoList.value) {
       fetchVideoList(true)
     }
   },
-  { distance: 200, canLoadMore: () => videoListHasMore.value }
+  { 
+    distance: 200,
+    interval: 500,
+    canLoadMore: () => {
+      // Only allow loading if modal is open
+      if (!isDeepSearchOpen.value) return false
+      
+      // Don't load if there's a search query (filtered results)
+      if (deepSearchQuery.value.trim()) return false
+      
+      const firstCategory = filterPayload.value.selectedCategory[0]
+      if (firstCategory === 'Buku') return bookChaptersHasMore.value
+      if (firstCategory === 'Audio') return audioListHasMore.value
+      if (firstCategory === 'Video') return videoListHasMore.value
+      return false
+    }
+  }
 )
+
+// Reset scroll position when modal opens
+watch(isDeepSearchOpen, (isOpen) => {
+  if (isOpen) {
+    // Reset scroll position to top when modal opens
+    nextTick(() => {
+      if (deepSearchScrollContainer.value) {
+        deepSearchScrollContainer.value.scrollTop = 0
+      }
+    })
+  } else {
+    // Clear search when modal closes to prevent filtered state issues
+    deepSearchQuery.value = ''
+  }
+})
 
 const categoryOptions = [
   { label: 'Buku', value: 'Buku' },
