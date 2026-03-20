@@ -2473,15 +2473,15 @@ function navigateToDetail(item: SearchItem) {
           <!-- Header -->
           <div class="flex items-center justify-between">
             <h2 class="text-lg font-semibold text-black dark:text-white">Filter Pencarian</h2>
-            <button class="text-gray-500 dark:text-gray-400 text-sm" @click="resetFilter">Reset Filter</button>
+            <button class="text-gray-500 dark:text-gray-400 text-lg" @click="resetFilter">Reset Filter</button>
           </div>
 
           <!-- Kategori -->
           <div>
-            <h3 class="font-semibold text-black dark:text-white mb-3">Kategori</h3>
+            <h3 class="font-semibold text-black dark:text-white mb-3 text-lg">Kategori</h3>
             <div class="flex flex-wrap gap-2">
               <button v-for="cat in categoryOptions" :key="cat.value"
-                class="px-4 py-1.5 rounded-full text-sm border transition-colors" :class="filterPayload.selectedCategory.includes(cat.value)
+                class="px-4 py-1.5 rounded-full text-lg border transition-colors" :class="filterPayload.selectedCategory.includes(cat.value)
                   ? 'bg-primary border-primary text-black dark:bg-yellow-500'
                   : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-black dark:text-white'"
                 @click="toggleCategory(cat.value)">
@@ -2492,10 +2492,10 @@ function navigateToDetail(item: SearchItem) {
 
           <!-- Dynamic Filters from API -->
           <div v-for="filter in dynamicFilters" :key="filter.title">
-            <h3 class="font-semibold text-black dark:text-white mb-3">{{ filter.title }}</h3>
+            <h3 class="font-semibold text-black dark:text-white mb-3 text-lg">{{ filter.title }}</h3>
             <div class="flex flex-wrap gap-2">
               <button v-for="item in filter.keyword" :key="item"
-                class="px-4 py-1.5 rounded-full text-sm border transition-colors" :class="isFilterItemSelected(filter.title, item)
+                class="px-4 py-1.5 rounded-full text-lg border transition-colors" :class="isFilterItemSelected(filter.title, item)
                   ? 'bg-primary border-primary text-black dark:bg-yellow-500'
                   : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-black dark:text-white'"
                 @click="toggleFilterItem(filter.title, item)">
@@ -2506,9 +2506,9 @@ function navigateToDetail(item: SearchItem) {
 
           <!-- Sembunyikan kata kunci -->
           <div>
-            <h3 class="font-semibold text-black dark:text-white mb-3">Sembunyikan kata kunci</h3>
+            <h3 class="font-semibold text-black dark:text-white mb-3 text-lg">Sembunyikan kata kunci</h3>
             <div class="flex gap-2 mb-2">
-              <UInput v-model="hideKeywordInput" placeholder="Masukan kata kunci" size="md" class="flex-1"
+              <UInput v-model="hideKeywordInput" placeholder="Masukan kata kunci" size="md" class="flex-1 text-lg"
                 @keyup.enter="addHideKeyword" />
               <button @click="addHideKeyword" :disabled="!hideKeywordInput.trim()"
                 class="px-3 py-2 rounded-lg transition-colors shrink-0" :class="hideKeywordInput.trim()
@@ -2520,7 +2520,7 @@ function navigateToDetail(item: SearchItem) {
             <!-- List of hide keywords -->
             <div v-if="filterPayload.listHideKeyword.length > 0" class="flex flex-wrap gap-2">
               <div v-for="(keyword, idx) in filterPayload.listHideKeyword" :key="`hide-${idx}`"
-                class="flex items-center gap-1 px-3 py-1.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full text-sm">
+                class="flex items-center gap-1 px-3 py-1.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full text-lg">
                 <span>{{ keyword }}</span>
                 <button @click="removeHideKeyword(idx)"
                   class="hover:bg-red-200 dark:hover:bg-red-800/50 rounded-full p-0.5">
@@ -2532,9 +2532,9 @@ function navigateToDetail(item: SearchItem) {
 
           <!-- Tambahkan kata kunci -->
           <div>
-            <h3 class="font-semibold text-black dark:text-white mb-3">Tambahkan kata kunci</h3>
+            <h3 class="font-semibold text-black dark:text-white mb-3 text-lg">Tambahkan kata kunci</h3>
             <div class="flex gap-2 mb-2">
-              <UInput v-model="showKeywordInput" placeholder="Masukan kata kunci" size="md" class="flex-1"
+              <UInput v-model="showKeywordInput" placeholder="Masukan kata kunci" size="md" class="flex-1 text-lg"
                 @keyup.enter="addShowKeyword" />
               <button @click="addShowKeyword" :disabled="!showKeywordInput.trim()"
                 class="px-3 py-2 rounded-lg transition-colors shrink-0" :class="showKeywordInput.trim()
@@ -2546,7 +2546,7 @@ function navigateToDetail(item: SearchItem) {
             <!-- List of show keywords -->
             <div v-if="filterPayload.listShowKeyword.length > 0" class="flex flex-wrap gap-2">
               <div v-for="(keyword, idx) in filterPayload.listShowKeyword" :key="`show-${idx}`"
-                class="flex items-center gap-1 px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-sm">
+                class="flex items-center gap-1 px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-lg">
                 <span>{{ keyword }}</span>
                 <button @click="removeShowKeyword(idx)"
                   class="hover:bg-green-200 dark:hover:bg-green-800/50 rounded-full p-0.5">
@@ -2558,10 +2558,10 @@ function navigateToDetail(item: SearchItem) {
 
           <!-- Tahun (Static) -->
           <div>
-            <h3 class="font-semibold text-black dark:text-white mb-3">Tahun</h3>
+            <h3 class="font-semibold text-black dark:text-white mb-3 text-lg">Tahun</h3>
             <div class="flex flex-wrap gap-2">
               <button v-for="year in yearOptions" :key="year"
-                class="px-4 py-1.5 rounded-full text-sm border transition-colors" :class="filterPayload.year.includes(year)
+                class="px-4 py-1.5 rounded-full text-lg border transition-colors" :class="filterPayload.year.includes(year)
                   ? 'bg-primary border-primary text-black dark:bg-yellow-500'
                   : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-black dark:text-white'"
                 @click="toggleYear(year)">
@@ -2572,7 +2572,7 @@ function navigateToDetail(item: SearchItem) {
 
           <!-- Terapkan Button -->
           <div class="pt-4 pb-8">
-            <UButton block size="lg" class="bg-primary hover:bg-primary/90 text-black" @click="applyFilter">
+            <UButton block size="lg" class="bg-primary hover:bg-primary/90 text-black text-lg" @click="applyFilter">
               Terapkan
             </UButton>
           </div>
@@ -2668,7 +2668,7 @@ function navigateToDetail(item: SearchItem) {
                       :checked="isBookGroupExplicitlySelected(bookGroup)"
                       @click.stop="toggleBookGroupSelection(bookGroup)"
                       class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                    <h2 class="text-lg font-bold text-black dark:text-white">
+                    <h2 class="text-lg font-bold text-black dark:text-white text-left">
                       {{ bookGroup.title }}
                     </h2>
                   </div>
@@ -2828,7 +2828,7 @@ function navigateToDetail(item: SearchItem) {
                       :checked="isAudioGroupSelected(audioGroup)"
                       @click.stop="toggleAudioGroupSelection(audioGroup)"
                       class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                    <h2 class="text-lg font-bold text-black dark:text-white">
+                    <h2 class="text-lg font-bold text-black dark:text-white text-left">
                       {{ audioGroup.title }}
                     </h2>
                   </div>
@@ -2862,38 +2862,38 @@ function navigateToDetail(item: SearchItem) {
                       <!-- Audio Sub Group Level (Accordion) -->
                       <div v-for="subGroup in category.sub_groups" :key="`asg-${subGroup.id}`"
                         class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-                      <!-- Sub Group Accordion Header -->
-                      <button @click="toggleAccordion(`audio-subgroup-${subGroup.id}`)"
-                        class="w-full flex items-center justify-between p-2 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                        <div class="flex items-center gap-2">
-                          <input type="checkbox" :id="`audio-group-${subGroup.id}`" :checked="isSubGroupSelected(subGroup)"
-                            @change.stop="toggleSubGroupVideos(subGroup)"
-                            class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                          <label :for="`audio-group-${subGroup.id}`"
-                            class="font-semibold text-black dark:text-white cursor-pointer text-left">
-                            {{ subGroup.name }}
-                          </label>
-                        </div>
-                        <Icon :name="expandedAccordions.has(`audio-subgroup-${subGroup.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
-                          class="w-4 h-4 text-black dark:text-white" />
-                      </button>
-
-                      <!-- Sub Group Accordion Content -->
-                      <div v-if="expandedAccordions.has(`audio-subgroup-${subGroup.id}`)" class="p-3">
-                        <!-- Audio Level -->
-                        <div class="space-y-1 ml-6">
-                          <div v-for="audio in subGroup.audios" :key="`av-${audio.id}`" class="flex items-start gap-2 py-1">
-                            <input type="checkbox" :id="`audio-${audio.id}`" :checked="selectedVideoIds.includes(audio.id)"
-                              @change="toggleAudioSelection(audio.id)"
-                              class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                            <label :for="`audio-${audio.id}`"
-                              class="text-lg text-black dark:text-white cursor-pointer flex-1">
-                              {{ audio.title }}
+                        <!-- Sub Group Accordion Header -->
+                        <button @click="toggleAccordion(`audio-subgroup-${subGroup.id}`)"
+                          class="w-full flex items-center justify-between p-2 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                          <div class="flex items-center gap-2">
+                            <input type="checkbox" :id="`audio-group-${subGroup.id}`" :checked="isSubGroupSelected(subGroup)"
+                              @click.stop="toggleSubGroupVideos(subGroup)"
+                              class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                            <label :for="`audio-group-${subGroup.id}`"
+                              class="text-lg font-semibold text-black dark:text-white cursor-pointer text-left">
+                              {{ subGroup.name }}
                             </label>
+                          </div>
+                          <Icon :name="expandedAccordions.has(`audio-subgroup-${subGroup.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                            class="w-5 h-5 text-black dark:text-white" />
+                        </button>
+
+                        <!-- Sub Group Accordion Content -->
+                        <div v-if="expandedAccordions.has(`audio-subgroup-${subGroup.id}`)" class="p-3">
+                          <!-- Audio Level -->
+                          <div class="space-y-1 ml-6">
+                            <div v-for="audio in subGroup.audios" :key="`av-${audio.id}`" class="flex items-start gap-2 py-1">
+                              <input type="checkbox" :id="`audio-${audio.id}`" :checked="selectedVideoIds.includes(audio.id)"
+                                @change="toggleAudioSelection(audio.id)"
+                                class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                              <label :for="`audio-${audio.id}`"
+                                class="text-lg text-black dark:text-white cursor-pointer flex-1">
+                                {{ audio.title }}
+                              </label>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
                     </div>
                   </div>
                 </div>
@@ -2928,7 +2928,7 @@ function navigateToDetail(item: SearchItem) {
                       :checked="isVideoGroupSelected(videoGroup)"
                       @click.stop="toggleVideoGroupSelection(videoGroup)"
                       class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                    <h2 class="text-lg font-bold text-black dark:text-white">
+                    <h2 class="text-lg font-bold text-black dark:text-white text-left">
                       {{ videoGroup.title }}
                     </h2>
                   </div>
@@ -3076,7 +3076,7 @@ function navigateToDetail(item: SearchItem) {
                       :checked="isTopic1GroupSelected(topic1Group)"
                       @click.stop="toggleTopic1GroupSelection(topic1Group)"
                       class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                    <h2 class="text-lg font-bold text-black dark:text-white">
+                    <h2 class="text-lg font-bold text-black dark:text-white text-left">
                       {{ topic1Group.topic_title }}
                     </h2>
                   </div>
@@ -3157,7 +3157,7 @@ function navigateToDetail(item: SearchItem) {
                       :checked="isTopic2GroupSelected(topic2Group)"
                       @click.stop="toggleTopic2GroupSelection(topic2Group)"
                       class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                    <h2 class="text-lg font-bold text-black dark:text-white">
+                    <h2 class="text-lg font-bold text-black dark:text-white text-left">
                       {{ topic2Group.title }}
                     </h2>
                   </div>
@@ -3323,7 +3323,7 @@ function navigateToDetail(item: SearchItem) {
                       :checked="isTopic3GroupSelected(topic3Group)"
                       @click.stop="toggleTopic3GroupSelection(topic3Group)"
                       class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                    <h2 class="text-lg font-bold text-black dark:text-white">
+                    <h2 class="text-lg font-bold text-black dark:text-white text-left">
                       {{ topic3Group.title }}
                     </h2>
                   </div>
