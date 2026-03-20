@@ -188,6 +188,8 @@ const config = useRuntimeConfig()
 const expandedItems = ref<Set<string>>(new Set())
 const hideKeywordInput = ref('')
 const showKeywordInput = ref('')
+const speakingItemId = ref<string | null>(null)
+const isSpeaking = ref(false)
 
 // Deep search state for books
 const bookChapters = ref<BookGroup[]>([])
@@ -2257,8 +2259,10 @@ function navigateToDetail(item: SearchItem) {
       }
     })
   } else if (itemType === 'video') {
+    // Use header_id for video navigation
+    const videoId = item.header_id || item.id
     router.push({
-      path: `/video/play/sub/${item.id}`,
+      path: `/video/play/sub/${videoId}`,
       query: { title: item.title }
     })
   } else if (itemType === 'topik1' || itemType === 'topic1' || itemType === 'ensiklopedia') {
@@ -2287,6 +2291,51 @@ function navigateToDetail(item: SearchItem) {
   } else {
     console.log('No matching type found for:', itemType)
   }
+}
+
+function speakContent(item: SearchItem) {
+  if (typeof window === 'undefined' || !window.speechSynthesis) {
+    console.error('Speech synthesis not supported')
+    return
+  }
+
+  const itemKey = getItemKey(item)
+
+  // If already speaking this item, stop it
+  if (isSpeaking.value && speakingItemId.value === itemKey) {
+    window.speechSynthesis.cancel()
+    isSpeaking.value = false
+    speakingItemId.value = null
+    return
+  }
+
+  // Cancel any ongoing speech
+  window.speechSynthesis.cancel()
+
+  const text = stripHtml(item.full_detail)
+  const utterance = new SpeechSynthesisUtterance(text)
+
+  // Set Indonesian language
+  utterance.lang = 'id-ID'
+  utterance.rate = 1
+  utterance.pitch = 1
+
+  utterance.onstart = () => {
+    isSpeaking.value = true
+    speakingItemId.value = itemKey
+  }
+
+  utterance.onend = () => {
+    isSpeaking.value = false
+    speakingItemId.value = null
+  }
+
+  utterance.onerror = () => {
+    isSpeaking.value = false
+    speakingItemId.value = null
+  }
+
+  window.speechSynthesis.speak(utterance)
 }
 </script>
 
@@ -2360,7 +2409,9 @@ function navigateToDetail(item: SearchItem) {
                     <span v-if="item.sub_group_name && item.timestamp_formatted" class="text-xs">•</span>
                     <span v-if="item.timestamp_formatted">{{ item.timestamp_formatted }}</span>
                   </div>
-                  <p :class="expandedItems.has(getItemKey(item)) ? 'text-black' : 'text-black dark:text-gray-300'"
+                  <!-- Detail text (hidden for video type) -->
+                  <p v-if="item.type.toLowerCase() !== 'video'" 
+                    :class="expandedItems.has(getItemKey(item)) ? 'text-black' : 'text-black dark:text-gray-300'"
                     class="mt-1 line-clamp-6">{{ item.detail }}</p>
                 </div>
                 <button @click.stop="navigateToDetail(item)" class="p-2">
@@ -2394,6 +2445,13 @@ function navigateToDetail(item: SearchItem) {
                   class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300 hover:font-bold">
                   <Icon name="mdi:content-copy" class="w-4 h-4" />
                   <span>Salin</span>
+                </button>
+                <button @click.stop="speakContent(item)"
+                  class="flex items-center gap-1 text-sm hover:font-bold"
+                  :class="speakingItemId === getItemKey(item) ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
+                  <Icon :name="speakingItemId === getItemKey(item) ? 'mdi:stop' : 'mdi:account-voice'"
+                    class="w-4 h-4" />
+                  <span>{{ speakingItemId === getItemKey(item) ? 'Stop' : 'Voice' }}</span>
                 </button>
               </div>
             </div>
