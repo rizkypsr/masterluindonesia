@@ -1125,6 +1125,130 @@ function toggleTopic3ChapterSelection(chapterId: number, chapter: Topic3Chapter)
   }
 }
 
+// Check if topic3 chapter is selected (including all children)
+function isTopic3ChapterSelected(chapter: Topic3Chapter): boolean {
+  const allIds: number[] = [chapter.id]
+  
+  function collectIds(ch: Topic3Chapter) {
+    if (ch.children) {
+      ch.children.forEach(child => {
+        allIds.push(child.id)
+        collectIds(child)
+      })
+    }
+  }
+  collectIds(chapter)
+  
+  if (allIds.length === 0) return false
+  return allIds.every(id => selectedTopic3ChapterIds.value.includes(id))
+}
+
+// Toggle topic3 topic selection
+function toggleTopic3TopicSelection(topic: Topic3Topic) {
+  const allChapterIds: number[] = []
+  
+  function collectChapterIds(chapters: Topic3Chapter[]) {
+    chapters.forEach(chapter => {
+      allChapterIds.push(chapter.id)
+      if (chapter.children) {
+        collectChapterIds(chapter.children)
+      }
+    })
+  }
+  collectChapterIds(topic.chapters)
+  
+  const allSelected = allChapterIds.every(id => selectedTopic3ChapterIds.value.includes(id))
+  
+  if (allSelected) {
+    allChapterIds.forEach(id => {
+      const idx = selectedTopic3ChapterIds.value.indexOf(id)
+      if (idx > -1) {
+        selectedTopic3ChapterIds.value.splice(idx, 1)
+      }
+    })
+  } else {
+    allChapterIds.forEach(id => {
+      if (!selectedTopic3ChapterIds.value.includes(id)) {
+        selectedTopic3ChapterIds.value.push(id)
+      }
+    })
+  }
+}
+
+// Check if topic3 topic is selected
+function isTopic3TopicSelected(topic: Topic3Topic): boolean {
+  const allChapterIds: number[] = []
+  
+  function collectChapterIds(chapters: Topic3Chapter[]) {
+    chapters.forEach(chapter => {
+      allChapterIds.push(chapter.id)
+      if (chapter.children) {
+        collectChapterIds(chapter.children)
+      }
+    })
+  }
+  collectChapterIds(topic.chapters)
+  
+  if (allChapterIds.length === 0) return false
+  return allChapterIds.every(id => selectedTopic3ChapterIds.value.includes(id))
+}
+
+// Toggle topic3 group selection
+function toggleTopic3GroupSelection(topic3Group: Topic3Group) {
+  const allChapterIds: number[] = []
+  
+  function collectChapterIds(chapters: Topic3Chapter[]) {
+    chapters.forEach(chapter => {
+      allChapterIds.push(chapter.id)
+      if (chapter.children) {
+        collectChapterIds(chapter.children)
+      }
+    })
+  }
+  
+  topic3Group.topics.forEach(topic => {
+    collectChapterIds(topic.chapters)
+  })
+  
+  const allSelected = allChapterIds.every(id => selectedTopic3ChapterIds.value.includes(id))
+  
+  if (allSelected) {
+    allChapterIds.forEach(id => {
+      const idx = selectedTopic3ChapterIds.value.indexOf(id)
+      if (idx > -1) {
+        selectedTopic3ChapterIds.value.splice(idx, 1)
+      }
+    })
+  } else {
+    allChapterIds.forEach(id => {
+      if (!selectedTopic3ChapterIds.value.includes(id)) {
+        selectedTopic3ChapterIds.value.push(id)
+      }
+    })
+  }
+}
+
+// Check if topic3 group is selected
+function isTopic3GroupSelected(topic3Group: Topic3Group): boolean {
+  const allChapterIds: number[] = []
+  
+  function collectChapterIds(chapters: Topic3Chapter[]) {
+    chapters.forEach(chapter => {
+      allChapterIds.push(chapter.id)
+      if (chapter.children) {
+        collectChapterIds(chapter.children)
+      }
+    })
+  }
+  
+  topic3Group.topics.forEach(topic => {
+    collectChapterIds(topic.chapters)
+  })
+  
+  if (allChapterIds.length === 0) return false
+  return allChapterIds.every(id => selectedTopic3ChapterIds.value.includes(id))
+}
+
 // Select all topic3 children recursively
 function selectAllTopic3Children(children: Topic3Chapter[]) {
   children.forEach(child => {
@@ -1166,6 +1290,130 @@ function toggleTopic2ChapterSelection(chapterId: number, chapter: Topic2Chapter)
       selectAllTopic2Children(chapter.children)
     }
   }
+}
+
+// Check if topic2 chapter is selected (including all children)
+function isTopic2ChapterSelected(chapter: Topic2Chapter): boolean {
+  const allIds: number[] = [chapter.id]
+  
+  function collectIds(ch: Topic2Chapter) {
+    if (ch.children) {
+      ch.children.forEach(child => {
+        allIds.push(child.id)
+        collectIds(child)
+      })
+    }
+  }
+  collectIds(chapter)
+  
+  if (allIds.length === 0) return false
+  return allIds.every(id => selectedTopic2ChapterIds.value.includes(id))
+}
+
+// Toggle topic2 topic selection
+function toggleTopic2TopicSelection(topic: Topic2Topic) {
+  const allChapterIds: number[] = []
+  
+  function collectChapterIds(chapters: Topic2Chapter[]) {
+    chapters.forEach(chapter => {
+      allChapterIds.push(chapter.id)
+      if (chapter.children) {
+        collectChapterIds(chapter.children)
+      }
+    })
+  }
+  collectChapterIds(topic.chapters)
+  
+  const allSelected = allChapterIds.every(id => selectedTopic2ChapterIds.value.includes(id))
+  
+  if (allSelected) {
+    allChapterIds.forEach(id => {
+      const idx = selectedTopic2ChapterIds.value.indexOf(id)
+      if (idx > -1) {
+        selectedTopic2ChapterIds.value.splice(idx, 1)
+      }
+    })
+  } else {
+    allChapterIds.forEach(id => {
+      if (!selectedTopic2ChapterIds.value.includes(id)) {
+        selectedTopic2ChapterIds.value.push(id)
+      }
+    })
+  }
+}
+
+// Check if topic2 topic is selected
+function isTopic2TopicSelected(topic: Topic2Topic): boolean {
+  const allChapterIds: number[] = []
+  
+  function collectChapterIds(chapters: Topic2Chapter[]) {
+    chapters.forEach(chapter => {
+      allChapterIds.push(chapter.id)
+      if (chapter.children) {
+        collectChapterIds(chapter.children)
+      }
+    })
+  }
+  collectChapterIds(topic.chapters)
+  
+  if (allChapterIds.length === 0) return false
+  return allChapterIds.every(id => selectedTopic2ChapterIds.value.includes(id))
+}
+
+// Toggle topic2 group selection
+function toggleTopic2GroupSelection(topic2Group: Topic2Group) {
+  const allChapterIds: number[] = []
+  
+  function collectChapterIds(chapters: Topic2Chapter[]) {
+    chapters.forEach(chapter => {
+      allChapterIds.push(chapter.id)
+      if (chapter.children) {
+        collectChapterIds(chapter.children)
+      }
+    })
+  }
+  
+  topic2Group.topics.forEach(topic => {
+    collectChapterIds(topic.chapters)
+  })
+  
+  const allSelected = allChapterIds.every(id => selectedTopic2ChapterIds.value.includes(id))
+  
+  if (allSelected) {
+    allChapterIds.forEach(id => {
+      const idx = selectedTopic2ChapterIds.value.indexOf(id)
+      if (idx > -1) {
+        selectedTopic2ChapterIds.value.splice(idx, 1)
+      }
+    })
+  } else {
+    allChapterIds.forEach(id => {
+      if (!selectedTopic2ChapterIds.value.includes(id)) {
+        selectedTopic2ChapterIds.value.push(id)
+      }
+    })
+  }
+}
+
+// Check if topic2 group is selected
+function isTopic2GroupSelected(topic2Group: Topic2Group): boolean {
+  const allChapterIds: number[] = []
+  
+  function collectChapterIds(chapters: Topic2Chapter[]) {
+    chapters.forEach(chapter => {
+      allChapterIds.push(chapter.id)
+      if (chapter.children) {
+        collectChapterIds(chapter.children)
+      }
+    })
+  }
+  
+  topic2Group.topics.forEach(topic => {
+    collectChapterIds(topic.chapters)
+  })
+  
+  if (allChapterIds.length === 0) return false
+  return allChapterIds.every(id => selectedTopic2ChapterIds.value.includes(id))
 }
 
 // Select all topic2 children recursively
@@ -1220,6 +1468,64 @@ function toggleTopic1CategorySelection(categoryId: number, category: Topic1Categ
   }
 }
 
+// Check if topic1 category is selected
+function isTopic1CategorySelected(category: Topic1Category): boolean {
+  const allIds: number[] = [category.id]
+  if (category.children) {
+    category.children.forEach(child => allIds.push(child.id))
+  }
+  if (allIds.length === 0) return false
+  return allIds.every(id => selectedTopic1CategoryIds.value.includes(id))
+}
+
+// Toggle topic1 group selection
+function toggleTopic1GroupSelection(topic1Group: Topic1Group) {
+  const allCategoryIds: number[] = []
+  
+  topic1Group.categories.forEach(category => {
+    allCategoryIds.push(category.id)
+    if (category.children) {
+      category.children.forEach(child => {
+        allCategoryIds.push(child.id)
+      })
+    }
+  })
+  
+  const allSelected = allCategoryIds.every(id => selectedTopic1CategoryIds.value.includes(id))
+  
+  if (allSelected) {
+    allCategoryIds.forEach(id => {
+      const idx = selectedTopic1CategoryIds.value.indexOf(id)
+      if (idx > -1) {
+        selectedTopic1CategoryIds.value.splice(idx, 1)
+      }
+    })
+  } else {
+    allCategoryIds.forEach(id => {
+      if (!selectedTopic1CategoryIds.value.includes(id)) {
+        selectedTopic1CategoryIds.value.push(id)
+      }
+    })
+  }
+}
+
+// Check if topic1 group is selected
+function isTopic1GroupSelected(topic1Group: Topic1Group): boolean {
+  const allCategoryIds: number[] = []
+  
+  topic1Group.categories.forEach(category => {
+    allCategoryIds.push(category.id)
+    if (category.children) {
+      category.children.forEach(child => {
+        allCategoryIds.push(child.id)
+      })
+    }
+  })
+  
+  if (allCategoryIds.length === 0) return false
+  return allCategoryIds.every(id => selectedTopic1CategoryIds.value.includes(id))
+}
+
 // Handle scroll event for infinite loading
 function handleDeepSearchScroll(event: Event) {
   const target = event.target as HTMLElement
@@ -1261,6 +1567,22 @@ function toggleChapterSelection(chapterId: number, chapter: BookChapter) {
   }
 }
 
+// Check if book chapter is selected (including all children)
+function isBookChapterSelected(chapter: BookChapter): boolean {
+  // Check if this chapter itself is selected
+  if (!selectedChapterIds.value.includes(chapter.id)) {
+    return false
+  }
+  
+  // If it has children, check if all children are selected
+  if (chapter.children && chapter.children.length > 0) {
+    return chapter.children.every(child => isBookChapterSelected(child))
+  }
+  
+  // No children, just check if this chapter is selected
+  return true
+}
+
 // Toggle video selection for audio
 function toggleVideoSelection(videoId: number) {
   const idx = selectedVideoIds.value.indexOf(videoId)
@@ -1269,6 +1591,402 @@ function toggleVideoSelection(videoId: number) {
   } else {
     selectedVideoIds.value.push(videoId)
   }
+}
+
+// Toggle all videos in a video group (top level)
+function toggleVideoGroupSelection(videoGroup: VideoGroup) {
+  const allVideoIds: number[] = []
+  
+  // Collect all video IDs from this group
+  videoGroup.children.forEach(yearGroup => {
+    yearGroup.video_categories.forEach(category => {
+      category.children.forEach(child => {
+        child.sub_groups.forEach(subGroup => {
+          subGroup.videos.forEach(video => {
+            allVideoIds.push(video.id)
+          })
+        })
+      })
+    })
+  })
+  
+  // Check if all are selected
+  const allSelected = allVideoIds.every(id => selectedVideoIds.value.includes(id))
+  
+  if (allSelected) {
+    // Unselect all
+    allVideoIds.forEach(id => {
+      const idx = selectedVideoIds.value.indexOf(id)
+      if (idx > -1) {
+        selectedVideoIds.value.splice(idx, 1)
+      }
+    })
+  } else {
+    // Select all
+    allVideoIds.forEach(id => {
+      if (!selectedVideoIds.value.includes(id)) {
+        selectedVideoIds.value.push(id)
+      }
+    })
+  }
+}
+
+// Check if all videos in a video group are selected
+function isVideoGroupSelected(videoGroup: VideoGroup): boolean {
+  const allVideoIds: number[] = []
+  
+  videoGroup.children.forEach(yearGroup => {
+    yearGroup.video_categories.forEach(category => {
+      category.children.forEach(child => {
+        child.sub_groups.forEach(subGroup => {
+          subGroup.videos.forEach(video => {
+            allVideoIds.push(video.id)
+          })
+        })
+      })
+    })
+  })
+  
+  if (allVideoIds.length === 0) return false
+  return allVideoIds.every(id => selectedVideoIds.value.includes(id))
+}
+
+// Toggle all videos in a year group
+function toggleYearGroupSelection(yearGroup: VideoYearGroup) {
+  const allVideoIds: number[] = []
+  
+  yearGroup.video_categories.forEach(category => {
+    category.children.forEach(child => {
+      child.sub_groups.forEach(subGroup => {
+        subGroup.videos.forEach(video => {
+          allVideoIds.push(video.id)
+        })
+      })
+    })
+  })
+  
+  const allSelected = allVideoIds.every(id => selectedVideoIds.value.includes(id))
+  
+  if (allSelected) {
+    allVideoIds.forEach(id => {
+      const idx = selectedVideoIds.value.indexOf(id)
+      if (idx > -1) {
+        selectedVideoIds.value.splice(idx, 1)
+      }
+    })
+  } else {
+    allVideoIds.forEach(id => {
+      if (!selectedVideoIds.value.includes(id)) {
+        selectedVideoIds.value.push(id)
+      }
+    })
+  }
+}
+
+// Check if all videos in a year group are selected
+function isYearGroupSelected(yearGroup: VideoYearGroup): boolean {
+  const allVideoIds: number[] = []
+  
+  yearGroup.video_categories.forEach(category => {
+    category.children.forEach(child => {
+      child.sub_groups.forEach(subGroup => {
+        subGroup.videos.forEach(video => {
+          allVideoIds.push(video.id)
+        })
+      })
+    })
+  })
+  
+  if (allVideoIds.length === 0) return false
+  return allVideoIds.every(id => selectedVideoIds.value.includes(id))
+}
+
+// Toggle all videos in a video category
+function toggleVideoCategorySelection(category: VideoCategory) {
+  const allVideoIds: number[] = []
+  
+  category.children.forEach(child => {
+    child.sub_groups.forEach(subGroup => {
+      subGroup.videos.forEach(video => {
+        allVideoIds.push(video.id)
+      })
+    })
+  })
+  
+  const allSelected = allVideoIds.every(id => selectedVideoIds.value.includes(id))
+  
+  if (allSelected) {
+    allVideoIds.forEach(id => {
+      const idx = selectedVideoIds.value.indexOf(id)
+      if (idx > -1) {
+        selectedVideoIds.value.splice(idx, 1)
+      }
+    })
+  } else {
+    allVideoIds.forEach(id => {
+      if (!selectedVideoIds.value.includes(id)) {
+        selectedVideoIds.value.push(id)
+      }
+    })
+  }
+}
+
+// Check if all videos in a video category are selected
+function isVideoCategorySelected(category: VideoCategory): boolean {
+  const allVideoIds: number[] = []
+  
+  category.children.forEach(child => {
+    child.sub_groups.forEach(subGroup => {
+      subGroup.videos.forEach(video => {
+        allVideoIds.push(video.id)
+      })
+    })
+  })
+  
+  if (allVideoIds.length === 0) return false
+  return allVideoIds.every(id => selectedVideoIds.value.includes(id))
+}
+
+// Toggle all videos in a video child
+function toggleVideoChildSelection(child: VideoChild) {
+  const allVideoIds: number[] = []
+  
+  child.sub_groups.forEach(subGroup => {
+    subGroup.videos.forEach(video => {
+      allVideoIds.push(video.id)
+    })
+  })
+  
+  const allSelected = allVideoIds.every(id => selectedVideoIds.value.includes(id))
+  
+  if (allSelected) {
+    allVideoIds.forEach(id => {
+      const idx = selectedVideoIds.value.indexOf(id)
+      if (idx > -1) {
+        selectedVideoIds.value.splice(idx, 1)
+      }
+    })
+  } else {
+    allVideoIds.forEach(id => {
+      if (!selectedVideoIds.value.includes(id)) {
+        selectedVideoIds.value.push(id)
+      }
+    })
+  }
+}
+
+// Check if all videos in a video child are selected
+function isVideoChildSelected(child: VideoChild): boolean {
+  const allVideoIds: number[] = []
+  
+  child.sub_groups.forEach(subGroup => {
+    subGroup.videos.forEach(video => {
+      allVideoIds.push(video.id)
+    })
+  })
+  
+  if (allVideoIds.length === 0) return false
+  return allVideoIds.every(id => selectedVideoIds.value.includes(id))
+}
+
+// Toggle all chapters in a book group (only selects chapters, not the group itself)
+function toggleBookGroupSelection(bookGroup: BookGroup) {
+  const allChapterIds: number[] = []
+  
+  function collectChapterIds(chapters: BookChapter[]) {
+    chapters.forEach(chapter => {
+      allChapterIds.push(chapter.id)
+      if (chapter.children) {
+        collectChapterIds(chapter.children)
+      }
+    })
+  }
+  
+  bookGroup.books.forEach(book => {
+    collectChapterIds(book.chapters)
+  })
+  
+  const allSelected = allChapterIds.length > 0 && allChapterIds.every(id => selectedChapterIds.value.includes(id))
+  
+  if (allSelected) {
+    // Unselect all chapters
+    allChapterIds.forEach(id => {
+      const idx = selectedChapterIds.value.indexOf(id)
+      if (idx > -1) {
+        selectedChapterIds.value.splice(idx, 1)
+      }
+    })
+  } else {
+    // Select all chapters
+    allChapterIds.forEach(id => {
+      if (!selectedChapterIds.value.includes(id)) {
+        selectedChapterIds.value.push(id)
+      }
+    })
+  }
+}
+
+// Check if all chapters in a book group are selected
+function isBookGroupExplicitlySelected(bookGroup: BookGroup): boolean {
+  const allChapterIds: number[] = []
+  
+  function collectChapterIds(chapters: BookChapter[]) {
+    chapters.forEach(chapter => {
+      allChapterIds.push(chapter.id)
+      if (chapter.children) {
+        collectChapterIds(chapter.children)
+      }
+    })
+  }
+  
+  bookGroup.books.forEach(book => {
+    collectChapterIds(book.chapters)
+  })
+  
+  if (allChapterIds.length === 0) return false
+  return allChapterIds.every(id => selectedChapterIds.value.includes(id))
+}
+
+// Toggle all chapters in a book (only selects chapters, not the book itself)
+function toggleBookSelection(book: Book) {
+  const allChapterIds: number[] = []
+  
+  function collectChapterIds(chapters: BookChapter[]) {
+    chapters.forEach(chapter => {
+      allChapterIds.push(chapter.id)
+      if (chapter.children) {
+        collectChapterIds(chapter.children)
+      }
+    })
+  }
+  
+  collectChapterIds(book.chapters)
+  
+  const allSelected = allChapterIds.length > 0 && allChapterIds.every(id => selectedChapterIds.value.includes(id))
+  
+  if (allSelected) {
+    // Unselect all chapters
+    allChapterIds.forEach(id => {
+      const idx = selectedChapterIds.value.indexOf(id)
+      if (idx > -1) {
+        selectedChapterIds.value.splice(idx, 1)
+      }
+    })
+  } else {
+    // Select all chapters
+    allChapterIds.forEach(id => {
+      if (!selectedChapterIds.value.includes(id)) {
+        selectedChapterIds.value.push(id)
+      }
+    })
+  }
+}
+
+// Check if all chapters in a book are selected
+function isBookExplicitlySelected(book: Book): boolean {
+  const allChapterIds: number[] = []
+  
+  function collectChapterIds(chapters: BookChapter[]) {
+    chapters.forEach(chapter => {
+      allChapterIds.push(chapter.id)
+      if (chapter.children) {
+        collectChapterIds(chapter.children)
+      }
+    })
+  }
+  
+  collectChapterIds(book.chapters)
+  
+  if (allChapterIds.length === 0) return false
+  return allChapterIds.every(id => selectedChapterIds.value.includes(id))
+}
+
+// Toggle all audios in an audio group
+function toggleAudioGroupSelection(audioGroup: AudioGroup) {
+  const allAudioIds: number[] = []
+  
+  audioGroup.children.forEach(category => {
+    category.sub_groups.forEach(subGroup => {
+      subGroup.audios.forEach(audio => {
+        allAudioIds.push(audio.id)
+      })
+    })
+  })
+  
+  const allSelected = allAudioIds.every(id => selectedVideoIds.value.includes(id))
+  
+  if (allSelected) {
+    allAudioIds.forEach(id => {
+      const idx = selectedVideoIds.value.indexOf(id)
+      if (idx > -1) {
+        selectedVideoIds.value.splice(idx, 1)
+      }
+    })
+  } else {
+    allAudioIds.forEach(id => {
+      if (!selectedVideoIds.value.includes(id)) {
+        selectedVideoIds.value.push(id)
+      }
+    })
+  }
+}
+
+// Check if all audios in an audio group are selected
+function isAudioGroupSelected(audioGroup: AudioGroup): boolean {
+  const allAudioIds: number[] = []
+  
+  audioGroup.children.forEach(category => {
+    category.sub_groups.forEach(subGroup => {
+      subGroup.audios.forEach(audio => {
+        allAudioIds.push(audio.id)
+      })
+    })
+  })
+  
+  if (allAudioIds.length === 0) return false
+  return allAudioIds.every(id => selectedVideoIds.value.includes(id))
+}
+
+// Toggle all audios in an audio category
+function toggleAudioCategorySelection(category: AudioCategory) {
+  const allAudioIds: number[] = []
+  
+  category.sub_groups.forEach(subGroup => {
+    subGroup.audios.forEach(audio => {
+      allAudioIds.push(audio.id)
+    })
+  })
+  
+  const allSelected = allAudioIds.every(id => selectedVideoIds.value.includes(id))
+  
+  if (allSelected) {
+    allAudioIds.forEach(id => {
+      const idx = selectedVideoIds.value.indexOf(id)
+      if (idx > -1) {
+        selectedVideoIds.value.splice(idx, 1)
+      }
+    })
+  } else {
+    allAudioIds.forEach(id => {
+      if (!selectedVideoIds.value.includes(id)) {
+        selectedVideoIds.value.push(id)
+      }
+    })
+  }
+}
+
+// Check if all audios in an audio category are selected
+function isAudioCategorySelected(category: AudioCategory): boolean {
+  const allAudioIds: number[] = []
+  
+  category.sub_groups.forEach(subGroup => {
+    subGroup.audios.forEach(audio => {
+      allAudioIds.push(audio.id)
+    })
+  })
+  
+  if (allAudioIds.length === 0) return false
+  return allAudioIds.every(id => selectedVideoIds.value.includes(id))
 }
 
 // Toggle all videos in a sub group
@@ -1698,7 +2416,7 @@ function navigateToDetail(item: SearchItem) {
                     class="mt-1 line-clamp-6">{{ item.detail }}</p>
                 </div>
                 <button @click.stop="navigateToDetail(item)" class="p-2">
-                  <Icon name="mdi:arrow-right" class="w-6 h-6 text-primary dark:text-yellow-400 shrink-0" />
+                  <Icon name="mdi:arrow-right" class="w-6 h-6 text-black dark:text-white shrink-0" />
                 </button>
               </div>
             </div>
@@ -1741,7 +2459,7 @@ function navigateToDetail(item: SearchItem) {
 
         <!-- Load More -->
         <div v-if="results.length > 0" class="mt-6 pb-6">
-          <UButton block variant="outline" :loading="isLoading" @click="loadMore">
+          <UButton block variant="outline" class="border-black! text-black! dark:border-white! dark:text-white!" :loading="isLoading" @click="loadMore">
             Muat Lebih Banyak
           </UButton>
         </div>
@@ -1871,57 +2589,61 @@ function navigateToDetail(item: SearchItem) {
             <!-- Header with Apply Button -->
             <div class="flex items-center justify-between pb-3 border-b border-gray-200 dark:border-gray-700">
               <div>
-                <h2 class="text-lg font-semibold text-black dark:text-white">{{ selectedCategoryLabel || 'Pencarian Mendalam' }}</h2>
+                <h2 class="text-xl font-semibold text-black dark:text-white">{{ selectedCategoryLabel || 'Pencarian Mendalam' }}</h2>
                 <p v-if="filterPayload.selectedCategory[0] === 'Buku' && selectedChapterIds.length > 0"
-                  class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  class="text-lg text-gray-600 dark:text-gray-400 mt-1">
                   {{ selectedChapterIds.length }} bab dipilih
                 </p>
                 <p v-else-if="(filterPayload.selectedCategory[0] === 'Audio' || filterPayload.selectedCategory[0] === 'Video') && selectedVideoIds.length > 0"
-                  class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  class="text-lg text-gray-600 dark:text-gray-400 mt-1">
                   {{ selectedVideoIds.length }} video dipilih
                 </p>
                 <p v-else-if="filterPayload.selectedCategory[0] === 'topik1' && selectedTopic1CategoryIds.length > 0"
-                  class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  class="text-lg text-gray-600 dark:text-gray-400 mt-1">
                   {{ selectedTopic1CategoryIds.length }} kategori dipilih
                 </p>
                 <p v-else-if="filterPayload.selectedCategory[0] === 'topik2' && selectedTopic2ChapterIds.length > 0"
-                  class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  class="text-lg text-gray-600 dark:text-gray-400 mt-1">
                   {{ selectedTopic2ChapterIds.length }} bab dipilih
+                </p>
+                <p v-else-if="filterPayload.selectedCategory[0] === 'topik3' && selectedTopic3ChapterIds.length > 0"
+                  class="text-lg text-gray-600 dark:text-gray-400 mt-1">
+                  {{ selectedTopic3ChapterIds.length }} bab dipilih
                 </p>
               </div>
               <div class="flex gap-2">
-                <button class="text-gray-500 dark:text-gray-400 text-sm hover:text-gray-700 dark:hover:text-gray-300"
+                <button class="text-gray-500 dark:text-gray-400 text-lg hover:text-gray-700 dark:hover:text-gray-300"
                   @click="resetDeepSearch">
                   Reset
                 </button>
-                <UButton size="md" class="bg-primary hover:bg-primary/90 text-black" @click="applyDeepSearch">
+                <UButton size="md" class="bg-primary hover:bg-primary/90 text-black text-lg" @click="applyDeepSearch">
                   Terapkan
                 </UButton>
               </div>
             </div>
 
             <!-- Description -->
-            <p v-if="filterPayload.selectedCategory[0] === 'Buku'" class="text-sm text-gray-600 dark:text-gray-400">
+            <p v-if="filterPayload.selectedCategory[0] === 'Buku'" class="text-lg text-gray-600 dark:text-gray-400">
               Pilih bab buku untuk pencarian yang lebih spesifik dalam konten buku
             </p>
             <p v-else-if="filterPayload.selectedCategory[0] === 'Audio'"
-              class="text-sm text-gray-600 dark:text-gray-400">
+              class="text-lg text-gray-600 dark:text-gray-400">
               Pilih audio untuk pencarian yang lebih spesifik
             </p>
             <p v-else-if="filterPayload.selectedCategory[0] === 'Video'"
-              class="text-sm text-gray-600 dark:text-gray-400">
+              class="text-lg text-gray-600 dark:text-gray-400">
               Pilih video untuk pencarian yang lebih spesifik
             </p>
             <p v-else-if="filterPayload.selectedCategory[0] === 'topik1'"
-              class="text-sm text-gray-600 dark:text-gray-400">
+              class="text-lg text-gray-600 dark:text-gray-400">
               Pilih kategori ensiklopedia untuk pencarian yang lebih spesifik
             </p>
             <p v-else-if="filterPayload.selectedCategory[0] === 'topik2'"
-              class="text-sm text-gray-600 dark:text-gray-400">
+              class="text-lg text-gray-600 dark:text-gray-400">
               Pilih bab topik untuk pencarian yang lebih spesifik
             </p>
             <p v-else-if="filterPayload.selectedCategory[0] === 'topik3'"
-              class="text-sm text-gray-600 dark:text-gray-400">
+              class="text-lg text-gray-600 dark:text-gray-400">
               Pilih bab kumpulan tanya jawab untuk pencarian yang lebih spesifik
             </p>
 
@@ -1941,51 +2663,136 @@ function navigateToDetail(item: SearchItem) {
                 <!-- Accordion Header -->
                 <button @click="toggleAccordion(`book-group-${bookGroup.id}`)" 
                   class="w-full flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                  <h2 class="text-base font-bold text-black dark:text-white">
-                    {{ bookGroup.title }}
-                  </h2>
+                  <div class="flex items-center gap-2">
+                    <input type="checkbox" :id="`book-group-checkbox-${bookGroup.id}`"
+                      :checked="isBookGroupExplicitlySelected(bookGroup)"
+                      @click.stop="toggleBookGroupSelection(bookGroup)"
+                      class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                    <h2 class="text-lg font-bold text-black dark:text-white">
+                      {{ bookGroup.title }}
+                    </h2>
+                  </div>
                   <Icon :name="expandedAccordions.has(`book-group-${bookGroup.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
                     class="w-5 h-5 text-black dark:text-white" />
                 </button>
 
                 <!-- Accordion Content -->
                 <div v-if="expandedAccordions.has(`book-group-${bookGroup.id}`)" class="p-3 space-y-3">
-                  <!-- Book Level -->
+                  <!-- Book Level (Accordion) -->
                   <div v-for="book in bookGroup.books" :key="`book-${book.id}`"
-                    class="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
-                    <h3
-                      class="font-semibold text-black dark:text-white mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
-                      {{ book.title }}
-                    </h3>
+                    class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                    <!-- Book Accordion Header -->
+                    <button @click="toggleAccordion(`book-${book.id}`)"
+                      class="w-full flex items-center justify-between p-3 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                      <div class="flex items-center gap-2">
+                        <input type="checkbox" :id="`book-checkbox-${book.id}`"
+                          :checked="isBookExplicitlySelected(book)"
+                          @click.stop="toggleBookSelection(book)"
+                          class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                        <h3 class="font-semibold text-black dark:text-white text-left">
+                          {{ book.title }}
+                        </h3>
+                      </div>
+                      <Icon :name="expandedAccordions.has(`book-${book.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                        class="w-5 h-5 text-black dark:text-white" />
+                    </button>
 
-                    <!-- Chapter Level -->
-                    <div class="space-y-2">
-                      <div v-for="chapter in book.chapters" :key="`ch-${chapter.id}`">
-                        <div class="flex items-start gap-2 py-1">
-                          <input type="checkbox" :id="`deep-chapter-${chapter.id}`"
-                            :checked="selectedChapterIds.includes(chapter.id)"
-                            @change="toggleChapterSelection(chapter.id, chapter)"
-                            class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                          <label :for="`deep-chapter-${chapter.id}`"
-                            class="text-base text-black dark:text-white cursor-pointer flex-1">
-                            {{ chapter.title }}
-                          </label>
-                        </div>
+                    <!-- Book Accordion Content -->
+                    <div v-if="expandedAccordions.has(`book-${book.id}`)" class="p-3">
+                      <!-- Chapter Level -->
+                      <div class="space-y-2">
+                        <template v-for="chapter in book.chapters" :key="`ch-${chapter.id}`">
+                          <!-- Chapter with children (Accordion) -->
+                          <div v-if="chapter.children && chapter.children.length > 0"
+                            class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                            <!-- Chapter Accordion Header -->
+                            <button @click="toggleAccordion(`chapter-${chapter.id}`)"
+                              class="w-full flex items-center justify-between p-2 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                              <div class="flex items-center gap-2">
+                                <input type="checkbox" :id="`deep-chapter-${chapter.id}`"
+                                  :checked="selectedChapterIds.includes(chapter.id)"
+                                  @click.stop="toggleChapterSelection(chapter.id, chapter)"
+                                  class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                <label :for="`deep-chapter-${chapter.id}`"
+                                  class="text-lg text-black dark:text-white cursor-pointer text-left flex-1">
+                                  {{ chapter.title }}
+                                </label>
+                              </div>
+                              <Icon :name="expandedAccordions.has(`chapter-${chapter.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                                class="w-4 h-4 text-black dark:text-white" />
+                            </button>
 
-                        <!-- Sub-chapter Level -->
-                        <div v-if="chapter.children && chapter.children.length > 0" class="ml-6 mt-1 space-y-1">
-                          <div v-for="child in chapter.children" :key="`chd-${child.id}`"
-                            class="flex items-start gap-2 py-1">
-                            <input type="checkbox" :id="`deep-chapter-child-${child.id}`"
-                              :checked="selectedChapterIds.includes(child.id)"
-                              @change="toggleChapterSelection(child.id, child)"
-                              class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                            <label :for="`deep-chapter-child-${child.id}`"
-                              class="text-base text-black dark:text-white cursor-pointer flex-1">
-                              {{ child.title }}
+                            <!-- Chapter Accordion Content -->
+                            <div v-if="expandedAccordions.has(`chapter-${chapter.id}`)" class="p-3">
+                              <div class="ml-6 space-y-2">
+                                <!-- Level 2 Children -->
+                                <template v-for="child in chapter.children" :key="`chd-${child.id}`">
+                                  <!-- Child with children (Accordion) -->
+                                  <div v-if="child.children && child.children.length > 0"
+                                    class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                                    <button @click="toggleAccordion(`chapter-${child.id}`)"
+                                      class="w-full flex items-center justify-between p-2 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                      <div class="flex items-center gap-2">
+                                        <input type="checkbox" :id="`deep-chapter-${child.id}`"
+                                          :checked="selectedChapterIds.includes(child.id)"
+                                          @click.stop="toggleChapterSelection(child.id, child)"
+                                          class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                        <label :for="`deep-chapter-${child.id}`"
+                                          class="text-lg text-black dark:text-white cursor-pointer text-left flex-1">
+                                          {{ child.title }}
+                                        </label>
+                                      </div>
+                                      <Icon :name="expandedAccordions.has(`chapter-${child.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                                        class="w-4 h-4 text-black dark:text-white" />
+                                    </button>
+
+                                    <!-- Level 2 Accordion Content -->
+                                    <div v-if="expandedAccordions.has(`chapter-${child.id}`)" class="p-3">
+                                      <div class="ml-6 space-y-1">
+                                        <!-- Level 3 Children -->
+                                        <div v-for="grandchild in child.children" :key="`gch-${grandchild.id}`"
+                                          class="flex items-start gap-2 py-1">
+                                          <input type="checkbox" :id="`deep-chapter-${grandchild.id}`"
+                                            :checked="selectedChapterIds.includes(grandchild.id)"
+                                            @change="toggleChapterSelection(grandchild.id, grandchild)"
+                                            class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                          <label :for="`deep-chapter-${grandchild.id}`"
+                                            class="text-lg text-black dark:text-white cursor-pointer flex-1">
+                                            {{ grandchild.title }}
+                                          </label>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <!-- Child without children (Simple checkbox) -->
+                                  <div v-else class="flex items-start gap-2 py-1">
+                                    <input type="checkbox" :id="`deep-chapter-${child.id}`"
+                                      :checked="selectedChapterIds.includes(child.id)"
+                                      @change="toggleChapterSelection(child.id, child)"
+                                      class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                    <label :for="`deep-chapter-${child.id}`"
+                                      class="text-lg text-black dark:text-white cursor-pointer flex-1">
+                                      {{ child.title }}
+                                    </label>
+                                  </div>
+                                </template>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Chapter without children (Simple checkbox) -->
+                          <div v-else class="flex items-start gap-2 py-1">
+                            <input type="checkbox" :id="`deep-chapter-${chapter.id}`"
+                              :checked="selectedChapterIds.includes(chapter.id)"
+                              @change="toggleChapterSelection(chapter.id, chapter)"
+                              class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                            <label :for="`deep-chapter-${chapter.id}`"
+                              class="text-lg text-black dark:text-white cursor-pointer flex-1">
+                              {{ chapter.title }}
                             </label>
                           </div>
-                        </div>
+                        </template>
                       </div>
                     </div>
                   </div>
@@ -1993,7 +2800,7 @@ function navigateToDetail(item: SearchItem) {
               </div>
 
               <div v-if="filteredBookChapters.length === 0 && !isLoadingBookChapters" class="text-center py-8">
-                <p class="text-sm text-gray-500 dark:text-gray-400">
+                <p class="text-lg text-gray-500 dark:text-gray-400">
                   {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data bab buku' }}
                 </p>
               </div>
@@ -2016,53 +2823,84 @@ function navigateToDetail(item: SearchItem) {
                 <!-- Accordion Header -->
                 <button @click="toggleAccordion(`audio-group-${audioGroup.id}`)" 
                   class="w-full flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                  <h2 class="text-base font-bold text-black dark:text-white">
-                    {{ audioGroup.title }}
-                  </h2>
+                  <div class="flex items-center gap-2">
+                    <input type="checkbox" :id="`audio-group-checkbox-${audioGroup.id}`"
+                      :checked="isAudioGroupSelected(audioGroup)"
+                      @click.stop="toggleAudioGroupSelection(audioGroup)"
+                      class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                    <h2 class="text-lg font-bold text-black dark:text-white">
+                      {{ audioGroup.title }}
+                    </h2>
+                  </div>
                   <Icon :name="expandedAccordions.has(`audio-group-${audioGroup.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
                     class="w-5 h-5 text-black dark:text-white" />
                 </button>
 
                 <!-- Accordion Content -->
                 <div v-if="expandedAccordions.has(`audio-group-${audioGroup.id}`)" class="p-3 space-y-3">
-                  <!-- Audio Category Level -->
-                  <div v-for="category in audioGroup.children" :key="`acat-${category.id}`" class="space-y-2">
-                    <h3 class="text-base font-semibold text-black dark:text-white">
-                      {{ category.title }}
-                    </h3>
-
-                    <!-- Audio Sub Group Level -->
-                    <div v-for="subGroup in category.sub_groups" :key="`asg-${subGroup.id}`"
-                      class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 ml-2">
-                      <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
-                        <input type="checkbox" :id="`audio-group-${subGroup.id}`" :checked="isSubGroupSelected(subGroup)"
-                          @change="toggleSubGroupVideos(subGroup)"
+                  <!-- Audio Category Level (Accordion) -->
+                  <div v-for="category in audioGroup.children" :key="`acat-${category.id}`" 
+                    class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                    <!-- Category Accordion Header -->
+                    <button @click="toggleAccordion(`audio-cat-${category.id}`)"
+                      class="w-full flex items-center justify-between p-3 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                      <div class="flex items-center gap-2">
+                        <input type="checkbox" :id="`audio-cat-checkbox-${category.id}`"
+                          :checked="isAudioCategorySelected(category)"
+                          @click.stop="toggleAudioCategorySelection(category)"
                           class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                        <label :for="`audio-group-${subGroup.id}`"
-                          class="font-semibold text-black dark:text-white cursor-pointer">
-                          {{ subGroup.name }}
-                        </label>
+                        <h3 class="text-lg font-semibold text-black dark:text-white text-left">
+                          {{ category.title }}
+                        </h3>
                       </div>
+                      <Icon :name="expandedAccordions.has(`audio-cat-${category.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                        class="w-5 h-5 text-black dark:text-white" />
+                    </button>
 
-                      <!-- Audio Level -->
-                      <div class="space-y-1 ml-6">
-                        <div v-for="audio in subGroup.audios" :key="`av-${audio.id}`" class="flex items-start gap-2 py-1">
-                          <input type="checkbox" :id="`audio-${audio.id}`" :checked="selectedVideoIds.includes(audio.id)"
-                            @change="toggleAudioSelection(audio.id)"
-                            class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                          <label :for="`audio-${audio.id}`"
-                            class="text-base text-black dark:text-white cursor-pointer flex-1">
-                            {{ audio.title }}
+                    <!-- Category Accordion Content -->
+                    <div v-if="expandedAccordions.has(`audio-cat-${category.id}`)" class="p-3 space-y-2">
+                      <!-- Audio Sub Group Level (Accordion) -->
+                      <div v-for="subGroup in category.sub_groups" :key="`asg-${subGroup.id}`"
+                        class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                      <!-- Sub Group Accordion Header -->
+                      <button @click="toggleAccordion(`audio-subgroup-${subGroup.id}`)"
+                        class="w-full flex items-center justify-between p-2 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                        <div class="flex items-center gap-2">
+                          <input type="checkbox" :id="`audio-group-${subGroup.id}`" :checked="isSubGroupSelected(subGroup)"
+                            @change.stop="toggleSubGroupVideos(subGroup)"
+                            class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                          <label :for="`audio-group-${subGroup.id}`"
+                            class="font-semibold text-black dark:text-white cursor-pointer text-left">
+                            {{ subGroup.name }}
                           </label>
                         </div>
+                        <Icon :name="expandedAccordions.has(`audio-subgroup-${subGroup.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                          class="w-4 h-4 text-black dark:text-white" />
+                      </button>
+
+                      <!-- Sub Group Accordion Content -->
+                      <div v-if="expandedAccordions.has(`audio-subgroup-${subGroup.id}`)" class="p-3">
+                        <!-- Audio Level -->
+                        <div class="space-y-1 ml-6">
+                          <div v-for="audio in subGroup.audios" :key="`av-${audio.id}`" class="flex items-start gap-2 py-1">
+                            <input type="checkbox" :id="`audio-${audio.id}`" :checked="selectedVideoIds.includes(audio.id)"
+                              @change="toggleAudioSelection(audio.id)"
+                              class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                            <label :for="`audio-${audio.id}`"
+                              class="text-lg text-black dark:text-white cursor-pointer flex-1">
+                              {{ audio.title }}
+                            </label>
+                          </div>
+                        </div>
                       </div>
+                    </div>
                     </div>
                   </div>
                 </div>
               </div>
 
               <div v-if="filteredAudioList.length === 0 && !isLoadingAudioList" class="text-center py-8">
-                <p class="text-sm text-gray-500 dark:text-gray-400">
+                <p class="text-lg text-gray-500 dark:text-gray-400">
                   {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data audio' }}
                 </p>
               </div>
@@ -2085,9 +2923,15 @@ function navigateToDetail(item: SearchItem) {
                 <!-- Accordion Header -->
                 <button @click="toggleAccordion(`video-group-${videoGroup.id}`)" 
                   class="w-full flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                  <h2 class="text-base font-bold text-black dark:text-white">
-                    {{ videoGroup.title }}
-                  </h2>
+                  <div class="flex items-center gap-2">
+                    <input type="checkbox" :id="`video-group-checkbox-${videoGroup.id}`"
+                      :checked="isVideoGroupSelected(videoGroup)"
+                      @click.stop="toggleVideoGroupSelection(videoGroup)"
+                      class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                    <h2 class="text-lg font-bold text-black dark:text-white">
+                      {{ videoGroup.title }}
+                    </h2>
+                  </div>
                   <Icon :name="expandedAccordions.has(`video-group-${videoGroup.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
                     class="w-5 h-5 text-black dark:text-white" />
                 </button>
@@ -2095,60 +2939,116 @@ function navigateToDetail(item: SearchItem) {
                 <!-- Accordion Content -->
                 <div v-if="expandedAccordions.has(`video-group-${videoGroup.id}`)" class="p-3 space-y-3">
 
-                <!-- Year Group Level -->
-                <div v-for="yearGroup in videoGroup.children" :key="`vyear-${yearGroup.id}`" class="space-y-2 ml-2">
-                  <h3 class="text-base font-semibold text-black dark:text-white">
-                    {{ yearGroup.title }}
-                  </h3>
+                <!-- Year Group Level (Accordion) -->
+                <div v-for="yearGroup in videoGroup.children" :key="`vyear-${yearGroup.id}`" 
+                  class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                  <!-- Year Accordion Header -->
+                  <button @click="toggleAccordion(`video-year-${yearGroup.id}`)"
+                    class="w-full flex items-center justify-between p-3 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <div class="flex items-center gap-2">
+                      <input type="checkbox" :id="`video-year-checkbox-${yearGroup.id}`"
+                        :checked="isYearGroupSelected(yearGroup)"
+                        @click.stop="toggleYearGroupSelection(yearGroup)"
+                        class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                      <h3 class="text-lg font-semibold text-black dark:text-white text-left">
+                        {{ yearGroup.title }}
+                      </h3>
+                    </div>
+                    <Icon :name="expandedAccordions.has(`video-year-${yearGroup.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                      class="w-5 h-5 text-black dark:text-white" />
+                  </button>
 
-                  <!-- Video Category Level -->
-                  <div v-for="category in yearGroup.video_categories" :key="`vcat-${category.id}`"
-                    class="space-y-2 ml-2">
-                    <h4 class="text-base font-medium text-black dark:text-white">
-                      {{ category.title }}
-                    </h4>
-
-                    <!-- Video Child Level -->
-                    <div v-for="child in category.children" :key="`vchild-${child.id}`" class="space-y-2 ml-2">
-                      <h5 class="text-xs font-medium text-gray-600 dark:text-gray-400">
-                        {{ child.title }}
-                      </h5>
-
-                      <!-- Video Sub Group Level -->
-                      <div v-for="subGroup in child.sub_groups" :key="`vsg-${subGroup.id}`"
-                        class="border border-gray-200 dark:border-gray-700 rounded-lg p-3 ml-2">
-                        <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-200 dark:border-gray-700">
-                          <input type="checkbox" :id="`video-group-${subGroup.id}`"
-                            :checked="isSubGroupSelected(subGroup)" @change="toggleSubGroupVideos(subGroup)"
+                  <!-- Year Accordion Content -->
+                  <div v-if="expandedAccordions.has(`video-year-${yearGroup.id}`)" class="p-3 space-y-3">
+                    <!-- Video Category Level (Accordion) -->
+                    <div v-for="category in yearGroup.video_categories" :key="`vcat-${category.id}`"
+                      class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                      <!-- Category Accordion Header -->
+                      <button @click="toggleAccordion(`video-cat-${category.id}`)"
+                        class="w-full flex items-center justify-between p-2 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                        <div class="flex items-center gap-2">
+                          <input type="checkbox" :id="`video-cat-checkbox-${category.id}`"
+                            :checked="isVideoCategorySelected(category)"
+                            @click.stop="toggleVideoCategorySelection(category)"
                             class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                          <label :for="`video-group-${subGroup.id}`"
-                            class="font-semibold text-black dark:text-white cursor-pointer">
-                            {{ subGroup.name }}
-                          </label>
+                          <h4 class="text-lg font-medium text-black dark:text-white text-left">
+                            {{ category.title }}
+                          </h4>
                         </div>
+                        <Icon :name="expandedAccordions.has(`video-cat-${category.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                          class="w-4 h-4 text-black dark:text-white" />
+                      </button>
 
-                        <!-- Video Level -->
-                        <div class="space-y-1 ml-6">
-                          <div v-for="video in subGroup.videos" :key="`vv-${video.id}`"
-                            class="flex items-start gap-2 py-1">
-                            <input type="checkbox" :id="`video-${video.id}`"
-                              :checked="selectedVideoIds.includes(video.id)" @change="toggleVideoSelection(video.id)"
-                              class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                            <label :for="`video-${video.id}`"
-                              class="text-base text-black dark:text-white cursor-pointer flex-1">
-                              {{ video.title }}
-                            </label>
+                      <!-- Category Accordion Content -->
+                      <div v-if="expandedAccordions.has(`video-cat-${category.id}`)" class="p-3 space-y-3">
+                        <!-- Video Child Level (Accordion) -->
+                        <div v-for="child in category.children" :key="`vchild-${child.id}`" 
+                          class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                          <!-- Child Accordion Header -->
+                          <button @click="toggleAccordion(`video-child-${child.id}`)"
+                            class="w-full flex items-center justify-between p-2 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                            <div class="flex items-center gap-2">
+                              <input type="checkbox" :id="`video-child-checkbox-${child.id}`"
+                                :checked="isVideoChildSelected(child)"
+                                @click.stop="toggleVideoChildSelection(child)"
+                                class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                              <h5 class="text-lg font-medium text-black dark:text-white text-left">
+                                {{ child.title }}
+                              </h5>
+                            </div>
+                            <Icon :name="expandedAccordions.has(`video-child-${child.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                              class="w-4 h-4 text-black dark:text-white" />
+                          </button>
+
+                          <!-- Child Accordion Content -->
+                          <div v-if="expandedAccordions.has(`video-child-${child.id}`)" class="p-3 space-y-2">
+                            <!-- Video Sub Group Level (Accordion) -->
+                            <div v-for="subGroup in child.sub_groups" :key="`vsg-${subGroup.id}`"
+                              class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                              <!-- Sub Group Accordion Header -->
+                              <button @click="toggleAccordion(`video-subgroup-${subGroup.id}`)"
+                                class="w-full flex items-center justify-between p-2 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                <div class="flex items-center gap-2">
+                                  <input type="checkbox" :id="`video-group-${subGroup.id}`"
+                                    :checked="isSubGroupSelected(subGroup)" @change.stop="toggleSubGroupVideos(subGroup)"
+                                    class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                  <label :for="`video-group-${subGroup.id}`"
+                                    class="font-semibold text-black dark:text-white cursor-pointer text-left">
+                                    {{ subGroup.name }}
+                                  </label>
+                                </div>
+                                <Icon :name="expandedAccordions.has(`video-subgroup-${subGroup.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                                  class="w-4 h-4 text-black dark:text-white" />
+                              </button>
+
+                              <!-- Sub Group Accordion Content -->
+                              <div v-if="expandedAccordions.has(`video-subgroup-${subGroup.id}`)" class="p-3">
+                                <!-- Video Level -->
+                                <div class="space-y-1 ml-6">
+                                  <div v-for="video in subGroup.videos" :key="`vv-${video.id}`"
+                                    class="flex items-start gap-2 py-1">
+                                    <input type="checkbox" :id="`video-${video.id}`"
+                                      :checked="selectedVideoIds.includes(video.id)" @change="toggleVideoSelection(video.id)"
+                                      class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                    <label :for="`video-${video.id}`"
+                                      class="text-lg text-black dark:text-white cursor-pointer flex-1">
+                                      {{ video.title }}
+                                    </label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                </div>
+              </div>
               </div>
 
               <div v-if="filteredVideoList.length === 0 && !isLoadingVideoList" class="text-center py-8">
-                <p class="text-sm text-gray-500 dark:text-gray-400">
+                <p class="text-lg text-gray-500 dark:text-gray-400">
                   {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data video' }}
                 </p>
               </div>
@@ -2171,9 +3071,15 @@ function navigateToDetail(item: SearchItem) {
                 <!-- Accordion Header -->
                 <button @click="toggleAccordion(`topic1-group-${topic1Group.topic_id}`)" 
                   class="w-full flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                  <h2 class="text-base font-bold text-black dark:text-white">
-                    {{ topic1Group.topic_title }}
-                  </h2>
+                  <div class="flex items-center gap-2">
+                    <input type="checkbox" :id="`topic1-group-checkbox-${topic1Group.topic_id}`"
+                      :checked="isTopic1GroupSelected(topic1Group)"
+                      @click.stop="toggleTopic1GroupSelection(topic1Group)"
+                      class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                    <h2 class="text-lg font-bold text-black dark:text-white">
+                      {{ topic1Group.topic_title }}
+                    </h2>
+                  </div>
                   <Icon :name="expandedAccordions.has(`topic1-group-${topic1Group.topic_id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
                     class="w-5 h-5 text-black dark:text-white" />
                 </button>
@@ -2181,39 +3087,49 @@ function navigateToDetail(item: SearchItem) {
                 <!-- Accordion Content -->
                 <div v-if="expandedAccordions.has(`topic1-group-${topic1Group.topic_id}`)" class="p-3 space-y-3">
 
-                <!-- Topic1 Category Level -->
-                <div v-for="category in topic1Group.categories" :key="`t1cat-${category.id}`" class="space-y-2 ml-2">
-                  <div class="flex items-start gap-2 py-1">
-                    <input type="checkbox" :id="`topic1-category-${category.id}`"
-                      :checked="selectedTopic1CategoryIds.includes(category.id)"
-                      @change="toggleTopic1CategorySelection(category.id, category)"
-                      class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                    <label :for="`topic1-category-${category.id}`"
-                      class="text-base font-semibold text-black dark:text-white cursor-pointer flex-1">
-                      {{ category.title }}
-                    </label>
-                  </div>
+                  <!-- Topic1 Category Level (Accordion) -->
+                  <div v-for="category in topic1Group.categories" :key="`t1cat-${category.id}`" 
+                    class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                    <!-- Category Accordion Header -->
+                    <button @click="toggleAccordion(`topic1-cat-${category.id}`)"
+                      class="w-full flex items-center justify-between p-3 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                      <div class="flex items-center gap-2">
+                        <input type="checkbox" :id="`topic1-category-${category.id}`"
+                          :checked="isTopic1CategorySelected(category)"
+                          @click.stop="toggleTopic1CategorySelection(category.id, category)"
+                          class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                        <label :for="`topic1-category-${category.id}`"
+                          class="text-lg font-semibold text-black dark:text-white cursor-pointer text-left">
+                          {{ category.title }}
+                        </label>
+                      </div>
+                      <Icon :name="expandedAccordions.has(`topic1-cat-${category.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                        class="w-5 h-5 text-black dark:text-white" />
+                    </button>
 
-                  <!-- Topic1 Children Level -->
-                  <div v-if="category.children && category.children.length > 0" class="ml-6 mt-1 space-y-1">
-                    <div v-for="child in category.children" :key="`t1child-${child.id}`"
-                      class="flex items-start gap-2 py-1">
-                      <input type="checkbox" :id="`topic1-child-${child.id}`"
-                        :checked="selectedTopic1CategoryIds.includes(child.id)"
-                        @change="toggleTopic1CategorySelection(child.id, { id: child.id, title: child.title })"
-                        class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                      <label :for="`topic1-child-${child.id}`"
-                        class="text-base text-black dark:text-white cursor-pointer flex-1">
-                        {{ child.title }}
-                      </label>
+                    <!-- Category Accordion Content -->
+                    <div v-if="expandedAccordions.has(`topic1-cat-${category.id}`)" class="p-3">
+                      <!-- Topic1 Children Level -->
+                      <div v-if="category.children && category.children.length > 0" class="ml-6 space-y-1">
+                        <div v-for="child in category.children" :key="`t1child-${child.id}`"
+                          class="flex items-start gap-2 py-1">
+                          <input type="checkbox" :id="`topic1-child-${child.id}`"
+                            :checked="selectedTopic1CategoryIds.includes(child.id)"
+                            @change="toggleTopic1CategorySelection(child.id, { id: child.id, title: child.title })"
+                            class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                          <label :for="`topic1-child-${child.id}`"
+                            class="text-lg text-black dark:text-white cursor-pointer flex-1">
+                            {{ child.title }}
+                          </label>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
                 </div>
               </div>
 
               <div v-if="filteredTopic1List.length === 0 && !isLoadingTopic1List" class="text-center py-8">
-                <p class="text-sm text-gray-500 dark:text-gray-400">
+                <p class="text-lg text-gray-500 dark:text-gray-400">
                   {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data ensiklopedia' }}
                 </p>
               </div>
@@ -2236,9 +3152,15 @@ function navigateToDetail(item: SearchItem) {
                 <!-- Accordion Header -->
                 <button @click="toggleAccordion(`topic2-group-${topic2Group.id}`)" 
                   class="w-full flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                  <h2 class="text-base font-bold text-black dark:text-white">
-                    {{ topic2Group.title }}
-                  </h2>
+                  <div class="flex items-center gap-2">
+                    <input type="checkbox" :id="`topic2-group-checkbox-${topic2Group.id}`"
+                      :checked="isTopic2GroupSelected(topic2Group)"
+                      @click.stop="toggleTopic2GroupSelection(topic2Group)"
+                      class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                    <h2 class="text-lg font-bold text-black dark:text-white">
+                      {{ topic2Group.title }}
+                    </h2>
+                  </div>
                   <Icon :name="expandedAccordions.has(`topic2-group-${topic2Group.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
                     class="w-5 h-5 text-black dark:text-white" />
                 </button>
@@ -2246,68 +3168,134 @@ function navigateToDetail(item: SearchItem) {
                 <!-- Accordion Content -->
                 <div v-if="expandedAccordions.has(`topic2-group-${topic2Group.id}`)" class="p-3 space-y-3">
 
-                <!-- Topic2 Topic Level -->
-                <div v-for="topic in topic2Group.topics" :key="`t2topic-${topic.id}`" class="space-y-2 ml-2">
-                  <h3 class="text-base font-semibold text-black dark:text-white">
-                    {{ topic.title }}
-                  </h3>
+                  <!-- Topic2 Topic Level (Accordion) -->
+                  <div v-for="topic in topic2Group.topics" :key="`t2topic-${topic.id}`" 
+                    class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                    <!-- Topic Accordion Header -->
+                    <button @click="toggleAccordion(`topic2-topic-${topic.id}`)"
+                      class="w-full flex items-center justify-between p-3 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                      <div class="flex items-center gap-2">
+                        <input type="checkbox" :id="`topic2-topic-checkbox-${topic.id}`"
+                          :checked="isTopic2TopicSelected(topic)"
+                          @click.stop="toggleTopic2TopicSelection(topic)"
+                          class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                        <h3 class="text-lg font-semibold text-black dark:text-white text-left">
+                          {{ topic.title }}
+                        </h3>
+                      </div>
+                      <Icon :name="expandedAccordions.has(`topic2-topic-${topic.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                        class="w-5 h-5 text-black dark:text-white" />
+                    </button>
 
-                  <!-- Recursive Chapter Component -->
-                  <div class="ml-2">
-                    <template v-for="chapter in topic.chapters" :key="`t2ch-${chapter.id}`">
-                      <div class="space-y-1">
-                        <div class="flex items-start gap-2 py-1">
-                          <input type="checkbox" :id="`topic2-chapter-${chapter.id}`"
-                            :checked="selectedTopic2ChapterIds.includes(chapter.id)"
-                            @change="toggleTopic2ChapterSelection(chapter.id, chapter)"
-                            class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                          <label :for="`topic2-chapter-${chapter.id}`"
-                            class="text-base text-black dark:text-white cursor-pointer flex-1">
-                            {{ chapter.title }}
-                          </label>
-                        </div>
-
-                        <!-- Recursive Children -->
-                        <div v-if="chapter.children && chapter.children.length > 0" class="ml-6">
-                          <template v-for="child in chapter.children" :key="`t2chd-${child.id}`">
-                            <div class="space-y-1">
-                              <div class="flex items-start gap-2 py-1">
-                                <input type="checkbox" :id="`topic2-child-${child.id}`"
-                                  :checked="selectedTopic2ChapterIds.includes(child.id)"
-                                  @change="toggleTopic2ChapterSelection(child.id, child)"
-                                  class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                                <label :for="`topic2-child-${child.id}`"
-                                  class="text-base text-black dark:text-white cursor-pointer flex-1">
-                                  {{ child.title }}
-                                </label>
-                              </div>
-
-                              <!-- Third Level Children -->
-                              <div v-if="child.children && child.children.length > 0" class="ml-6">
-                                <div v-for="grandchild in child.children" :key="`t2gch-${grandchild.id}`"
-                                  class="flex items-start gap-2 py-1">
-                                  <input type="checkbox" :id="`topic2-grandchild-${grandchild.id}`"
-                                    :checked="selectedTopic2ChapterIds.includes(grandchild.id)"
-                                    @change="toggleTopic2ChapterSelection(grandchild.id, grandchild)"
-                                    class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                                  <label :for="`topic2-grandchild-${grandchild.id}`"
-                                    class="text-base text-black dark:text-white cursor-pointer flex-1">
-                                    {{ grandchild.title }}
+                    <!-- Topic Accordion Content -->
+                    <div v-if="expandedAccordions.has(`topic2-topic-${topic.id}`)" class="p-3">
+                      <!-- Recursive Chapter Component -->
+                      <div class="ml-2">
+                        <template v-for="chapter in topic.chapters" :key="`t2ch-${chapter.id}`">
+                          <div class="space-y-1">
+                            <!-- Chapter Level (Accordion if has children) -->
+                            <div v-if="chapter.children && chapter.children.length > 0" 
+                              class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                              <!-- Chapter Accordion Header -->
+                              <button @click="toggleAccordion(`topic2-chapter-${chapter.id}`)"
+                                class="w-full flex items-center justify-between p-2 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                <div class="flex items-center gap-2">
+                                  <input type="checkbox" :id="`topic2-chapter-${chapter.id}`"
+                                    :checked="isTopic2ChapterSelected(chapter)"
+                                    @click.stop="toggleTopic2ChapterSelection(chapter.id, chapter)"
+                                    class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                  <label :for="`topic2-chapter-${chapter.id}`"
+                                    class="text-lg text-black dark:text-white cursor-pointer text-left flex-1">
+                                    {{ chapter.title }}
                                   </label>
+                                </div>
+                                <Icon :name="expandedAccordions.has(`topic2-chapter-${chapter.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                                  class="w-4 h-4 text-black dark:text-white" />
+                              </button>
+
+                              <!-- Chapter Accordion Content -->
+                              <div v-if="expandedAccordions.has(`topic2-chapter-${chapter.id}`)" class="p-3">
+                                <!-- Recursive Children -->
+                                <div class="ml-6">
+                                  <template v-for="child in chapter.children" :key="`t2chd-${child.id}`">
+                                    <div class="space-y-1">
+                                      <!-- Child Level (Accordion if has children) -->
+                                      <div v-if="child.children && child.children.length > 0"
+                                        class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden mb-2">
+                                        <!-- Child Accordion Header -->
+                                        <button @click="toggleAccordion(`topic2-child-${child.id}`)"
+                                          class="w-full flex items-center justify-between p-2 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                          <div class="flex items-center gap-2">
+                                            <input type="checkbox" :id="`topic2-child-${child.id}`"
+                                              :checked="isTopic2ChapterSelected(child)"
+                                              @click.stop="toggleTopic2ChapterSelection(child.id, child)"
+                                              class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                            <label :for="`topic2-child-${child.id}`"
+                                              class="text-lg text-black dark:text-white cursor-pointer text-left flex-1">
+                                              {{ child.title }}
+                                            </label>
+                                          </div>
+                                          <Icon :name="expandedAccordions.has(`topic2-child-${child.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                                            class="w-4 h-4 text-black dark:text-white" />
+                                        </button>
+
+                                        <!-- Child Accordion Content -->
+                                        <div v-if="expandedAccordions.has(`topic2-child-${child.id}`)" class="p-3">
+                                          <!-- Third Level Children -->
+                                          <div class="ml-6">
+                                            <div v-for="grandchild in child.children" :key="`t2gch-${grandchild.id}`"
+                                              class="flex items-start gap-2 py-1">
+                                              <input type="checkbox" :id="`topic2-grandchild-${grandchild.id}`"
+                                                :checked="selectedTopic2ChapterIds.includes(grandchild.id)"
+                                                @change="toggleTopic2ChapterSelection(grandchild.id, grandchild)"
+                                                class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                              <label :for="`topic2-grandchild-${grandchild.id}`"
+                                                class="text-lg text-black dark:text-white cursor-pointer flex-1">
+                                                {{ grandchild.title }}
+                                              </label>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <!-- Child without children (simple checkbox) -->
+                                      <div v-else class="flex items-start gap-2 py-1">
+                                        <input type="checkbox" :id="`topic2-child-${child.id}`"
+                                          :checked="selectedTopic2ChapterIds.includes(child.id)"
+                                          @change="toggleTopic2ChapterSelection(child.id, child)"
+                                          class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                        <label :for="`topic2-child-${child.id}`"
+                                          class="text-lg text-black dark:text-white cursor-pointer flex-1">
+                                          {{ child.title }}
+                                        </label>
+                                      </div>
+                                    </div>
+                                  </template>
                                 </div>
                               </div>
                             </div>
-                          </template>
-                        </div>
+
+                            <!-- Chapter without children (simple checkbox) -->
+                            <div v-else class="flex items-start gap-2 py-1">
+                              <input type="checkbox" :id="`topic2-chapter-${chapter.id}`"
+                                :checked="selectedTopic2ChapterIds.includes(chapter.id)"
+                                @change="toggleTopic2ChapterSelection(chapter.id, chapter)"
+                                class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                              <label :for="`topic2-chapter-${chapter.id}`"
+                                class="text-lg text-black dark:text-white cursor-pointer flex-1">
+                                {{ chapter.title }}
+                              </label>
+                            </div>
+                          </div>
+                        </template>
                       </div>
-                    </template>
+                    </div>
                   </div>
-                </div>
                 </div>
               </div>
 
               <div v-if="filteredTopic2List.length === 0 && !isLoadingTopic2List" class="text-center py-8">
-                <p class="text-sm text-gray-500 dark:text-gray-400">
+                <p class="text-lg text-gray-500 dark:text-gray-400">
                   {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data topik' }}
                 </p>
               </div>
@@ -2330,9 +3318,15 @@ function navigateToDetail(item: SearchItem) {
                 <!-- Accordion Header -->
                 <button @click="toggleAccordion(`topic3-group-${topic3Group.id}`)" 
                   class="w-full flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                  <h2 class="text-base font-bold text-black dark:text-white">
-                    {{ topic3Group.title }}
-                  </h2>
+                  <div class="flex items-center gap-2">
+                    <input type="checkbox" :id="`topic3-group-checkbox-${topic3Group.id}`"
+                      :checked="isTopic3GroupSelected(topic3Group)"
+                      @click.stop="toggleTopic3GroupSelection(topic3Group)"
+                      class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                    <h2 class="text-lg font-bold text-black dark:text-white">
+                      {{ topic3Group.title }}
+                    </h2>
+                  </div>
                   <Icon :name="expandedAccordions.has(`topic3-group-${topic3Group.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
                     class="w-5 h-5 text-black dark:text-white" />
                 </button>
@@ -2340,68 +3334,134 @@ function navigateToDetail(item: SearchItem) {
                 <!-- Accordion Content -->
                 <div v-if="expandedAccordions.has(`topic3-group-${topic3Group.id}`)" class="p-3 space-y-3">
 
-                <!-- Topic3 Topic Level -->
-                <div v-for="topic in topic3Group.topics" :key="`t3topic-${topic.id}`" class="space-y-2 ml-2">
-                  <h3 class="text-base font-semibold text-black dark:text-white">
-                    {{ topic.title }}
-                  </h3>
+                  <!-- Topic3 Topic Level (Accordion) -->
+                  <div v-for="topic in topic3Group.topics" :key="`t3topic-${topic.id}`" 
+                    class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                    <!-- Topic Accordion Header -->
+                    <button @click="toggleAccordion(`topic3-topic-${topic.id}`)"
+                      class="w-full flex items-center justify-between p-3 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                      <div class="flex items-center gap-2">
+                        <input type="checkbox" :id="`topic3-topic-checkbox-${topic.id}`"
+                          :checked="isTopic3TopicSelected(topic)"
+                          @click.stop="toggleTopic3TopicSelection(topic)"
+                          class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                        <h3 class="text-lg font-semibold text-black dark:text-white text-left">
+                          {{ topic.title }}
+                        </h3>
+                      </div>
+                      <Icon :name="expandedAccordions.has(`topic3-topic-${topic.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                        class="w-5 h-5 text-black dark:text-white" />
+                    </button>
 
-                  <!-- Recursive Chapter Component -->
-                  <div class="ml-2">
-                    <template v-for="chapter in topic.chapters" :key="`t3ch-${chapter.id}`">
-                      <div class="space-y-1">
-                        <div class="flex items-start gap-2 py-1">
-                          <input type="checkbox" :id="`topic3-chapter-${chapter.id}`"
-                            :checked="selectedTopic3ChapterIds.includes(chapter.id)"
-                            @change="toggleTopic3ChapterSelection(chapter.id, chapter)"
-                            class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                          <label :for="`topic3-chapter-${chapter.id}`"
-                            class="text-base text-black dark:text-white cursor-pointer flex-1">
-                            {{ chapter.title }}
-                          </label>
-                        </div>
-
-                        <!-- Recursive Children -->
-                        <div v-if="chapter.children && chapter.children.length > 0" class="ml-6">
-                          <template v-for="child in chapter.children" :key="`t3chd-${child.id}`">
-                            <div class="space-y-1">
-                              <div class="flex items-start gap-2 py-1">
-                                <input type="checkbox" :id="`topic3-child-${child.id}`"
-                                  :checked="selectedTopic3ChapterIds.includes(child.id)"
-                                  @change="toggleTopic3ChapterSelection(child.id, child)"
-                                  class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                                <label :for="`topic3-child-${child.id}`"
-                                  class="text-base text-black dark:text-white cursor-pointer flex-1">
-                                  {{ child.title }}
-                                </label>
-                              </div>
-
-                              <!-- Third Level Children -->
-                              <div v-if="child.children && child.children.length > 0" class="ml-6">
-                                <div v-for="grandchild in child.children" :key="`t3gch-${grandchild.id}`"
-                                  class="flex items-start gap-2 py-1">
-                                  <input type="checkbox" :id="`topic3-grandchild-${grandchild.id}`"
-                                    :checked="selectedTopic3ChapterIds.includes(grandchild.id)"
-                                    @change="toggleTopic3ChapterSelection(grandchild.id, grandchild)"
-                                    class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                                  <label :for="`topic3-grandchild-${grandchild.id}`"
-                                    class="text-base text-black dark:text-white cursor-pointer flex-1">
-                                    {{ grandchild.title }}
+                    <!-- Topic Accordion Content -->
+                    <div v-if="expandedAccordions.has(`topic3-topic-${topic.id}`)" class="p-3">
+                      <!-- Recursive Chapter Component -->
+                      <div class="ml-2">
+                        <template v-for="chapter in topic.chapters" :key="`t3ch-${chapter.id}`">
+                          <div class="space-y-1">
+                            <!-- Chapter Level (Accordion if has children) -->
+                            <div v-if="chapter.children && chapter.children.length > 0" 
+                              class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+                              <!-- Chapter Accordion Header -->
+                              <button @click="toggleAccordion(`topic3-chapter-${chapter.id}`)"
+                                class="w-full flex items-center justify-between p-2 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                <div class="flex items-center gap-2">
+                                  <input type="checkbox" :id="`topic3-chapter-${chapter.id}`"
+                                    :checked="isTopic3ChapterSelected(chapter)"
+                                    @click.stop="toggleTopic3ChapterSelection(chapter.id, chapter)"
+                                    class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                  <label :for="`topic3-chapter-${chapter.id}`"
+                                    class="text-lg text-black dark:text-white cursor-pointer text-left flex-1">
+                                    {{ chapter.title }}
                                   </label>
+                                </div>
+                                <Icon :name="expandedAccordions.has(`topic3-chapter-${chapter.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                                  class="w-4 h-4 text-black dark:text-white" />
+                              </button>
+
+                              <!-- Chapter Accordion Content -->
+                              <div v-if="expandedAccordions.has(`topic3-chapter-${chapter.id}`)" class="p-3">
+                                <!-- Recursive Children -->
+                                <div class="ml-6">
+                                  <template v-for="child in chapter.children" :key="`t3chd-${child.id}`">
+                                    <div class="space-y-1">
+                                      <!-- Child Level (Accordion if has children) -->
+                                      <div v-if="child.children && child.children.length > 0"
+                                        class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden mb-2">
+                                        <!-- Child Accordion Header -->
+                                        <button @click="toggleAccordion(`topic3-child-${child.id}`)"
+                                          class="w-full flex items-center justify-between p-2 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                                          <div class="flex items-center gap-2">
+                                            <input type="checkbox" :id="`topic3-child-${child.id}`"
+                                              :checked="isTopic3ChapterSelected(child)"
+                                              @click.stop="toggleTopic3ChapterSelection(child.id, child)"
+                                              class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                            <label :for="`topic3-child-${child.id}`"
+                                              class="text-lg text-black dark:text-white cursor-pointer text-left flex-1">
+                                              {{ child.title }}
+                                            </label>
+                                          </div>
+                                          <Icon :name="expandedAccordions.has(`topic3-child-${child.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                                            class="w-4 h-4 text-black dark:text-white" />
+                                        </button>
+
+                                        <!-- Child Accordion Content -->
+                                        <div v-if="expandedAccordions.has(`topic3-child-${child.id}`)" class="p-3">
+                                          <!-- Third Level Children -->
+                                          <div class="ml-6">
+                                            <div v-for="grandchild in child.children" :key="`t3gch-${grandchild.id}`"
+                                              class="flex items-start gap-2 py-1">
+                                              <input type="checkbox" :id="`topic3-grandchild-${grandchild.id}`"
+                                                :checked="selectedTopic3ChapterIds.includes(grandchild.id)"
+                                                @change="toggleTopic3ChapterSelection(grandchild.id, grandchild)"
+                                                class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                              <label :for="`topic3-grandchild-${grandchild.id}`"
+                                                class="text-lg text-black dark:text-white cursor-pointer flex-1">
+                                                {{ grandchild.title }}
+                                              </label>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <!-- Child without children (simple checkbox) -->
+                                      <div v-else class="flex items-start gap-2 py-1">
+                                        <input type="checkbox" :id="`topic3-child-${child.id}`"
+                                          :checked="selectedTopic3ChapterIds.includes(child.id)"
+                                          @change="toggleTopic3ChapterSelection(child.id, child)"
+                                          class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                                        <label :for="`topic3-child-${child.id}`"
+                                          class="text-lg text-black dark:text-white cursor-pointer flex-1">
+                                          {{ child.title }}
+                                        </label>
+                                      </div>
+                                    </div>
+                                  </template>
                                 </div>
                               </div>
                             </div>
-                          </template>
-                        </div>
+
+                            <!-- Chapter without children (simple checkbox) -->
+                            <div v-else class="flex items-start gap-2 py-1">
+                              <input type="checkbox" :id="`topic3-chapter-${chapter.id}`"
+                                :checked="selectedTopic3ChapterIds.includes(chapter.id)"
+                                @change="toggleTopic3ChapterSelection(chapter.id, chapter)"
+                                class="mt-1 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                              <label :for="`topic3-chapter-${chapter.id}`"
+                                class="text-lg text-black dark:text-white cursor-pointer flex-1">
+                                {{ chapter.title }}
+                              </label>
+                            </div>
+                          </div>
+                        </template>
                       </div>
-                    </template>
+                    </div>
                   </div>
-                </div>
                 </div>
               </div>
 
               <div v-if="filteredTopic3List.length === 0 && !isLoadingTopic3List" class="text-center py-8">
-                <p class="text-sm text-gray-500 dark:text-gray-400">
+                <p class="text-lg text-gray-500 dark:text-gray-400">
                   {{ deepSearchQuery ? 'Tidak ada hasil yang cocok' : 'Tidak ada data kumpulan tanya jawab' }}
                 </p>
               </div>
