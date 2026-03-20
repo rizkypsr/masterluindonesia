@@ -11,6 +11,8 @@ interface SearchItem {
   timestamp: number
   type: string
   description_wa: string
+  sub_group_name?: string
+  timestamp_formatted?: string
   related_chapters?: Array<{
     type: string
     chapter_id: number
@@ -33,6 +35,7 @@ interface FilterPayload {
   listShowKeyword: string[]
   listHideKeyword: string[]
   chapter_ids?: number[]
+  audio_ids?: number[]
   video_ids?: number[]
   topic1_category_ids?: number[]
   topic2_chapter_ids?: number[]
@@ -567,44 +570,15 @@ const filteredVideoList = computed(() => {
           return category
         }
 
-        const filteredCategoryChildren = category.children.map(child => {
-          const childMatches = child.title.toLowerCase().includes(query)
+        // Filter videos directly in category.children
+        const filteredVideos = category.children.filter(video =>
+          video.title.toLowerCase().includes(query)
+        )
 
-          if (childMatches) {
-            return child
-          }
-
-          const filteredSubGroups = child.sub_groups.filter(subGroup => {
-            const subGroupMatches = subGroup.name.toLowerCase().includes(query)
-            const videoMatches = subGroup.videos.some(video =>
-              video.title.toLowerCase().includes(query)
-            )
-            return subGroupMatches || videoMatches
-          }).map(subGroup => {
-            if (subGroup.name.toLowerCase().includes(query)) {
-              return subGroup
-            }
-            return {
-              ...subGroup,
-              videos: subGroup.videos.filter(video =>
-                video.title.toLowerCase().includes(query)
-              )
-            }
-          })
-
-          if (filteredSubGroups.length > 0) {
-            return {
-              ...child,
-              sub_groups: filteredSubGroups
-            }
-          }
-          return null
-        }).filter(child => child !== null) as VideoChild[]
-
-        if (filteredCategoryChildren.length > 0) {
+        if (filteredVideos.length > 0) {
           return {
             ...category,
-            children: filteredCategoryChildren
+            children: filteredVideos
           }
         }
         return null
@@ -773,6 +747,7 @@ function getCurrentFilters() {
     listShowKeyword: filterPayload.value.listShowKeyword,
     listHideKeyword: filterPayload.value.listHideKeyword,
     chapter_ids: filterPayload.value.chapter_ids,
+    audio_ids: filterPayload.value.audio_ids,
     video_ids: filterPayload.value.video_ids,
     topic1_category_ids: filterPayload.value.topic1_category_ids,
     topic2_chapter_ids: filterPayload.value.topic2_chapter_ids,
@@ -1597,15 +1572,15 @@ function toggleVideoSelection(videoId: number) {
 function toggleVideoGroupSelection(videoGroup: VideoGroup) {
   const allVideoIds: number[] = []
   
+  if (!videoGroup.children || videoGroup.children.length === 0) return
+  
   // Collect all video IDs from this group
   videoGroup.children.forEach(yearGroup => {
+    if (!yearGroup.video_categories) return
     yearGroup.video_categories.forEach(category => {
-      category.children.forEach(child => {
-        child.sub_groups.forEach(subGroup => {
-          subGroup.videos.forEach(video => {
-            allVideoIds.push(video.id)
-          })
-        })
+      if (!category.children) return
+      category.children.forEach(video => {
+        allVideoIds.push(video.id)
       })
     })
   })
@@ -1635,14 +1610,14 @@ function toggleVideoGroupSelection(videoGroup: VideoGroup) {
 function isVideoGroupSelected(videoGroup: VideoGroup): boolean {
   const allVideoIds: number[] = []
   
+  if (!videoGroup.children || videoGroup.children.length === 0) return false
+  
   videoGroup.children.forEach(yearGroup => {
+    if (!yearGroup.video_categories) return
     yearGroup.video_categories.forEach(category => {
-      category.children.forEach(child => {
-        child.sub_groups.forEach(subGroup => {
-          subGroup.videos.forEach(video => {
-            allVideoIds.push(video.id)
-          })
-        })
+      if (!category.children) return
+      category.children.forEach(video => {
+        allVideoIds.push(video.id)
       })
     })
   })
@@ -1656,12 +1631,9 @@ function toggleYearGroupSelection(yearGroup: VideoYearGroup) {
   const allVideoIds: number[] = []
   
   yearGroup.video_categories.forEach(category => {
-    category.children.forEach(child => {
-      child.sub_groups.forEach(subGroup => {
-        subGroup.videos.forEach(video => {
-          allVideoIds.push(video.id)
-        })
-      })
+    if (!category.children) return
+    category.children.forEach(video => {
+      allVideoIds.push(video.id)
     })
   })
   
@@ -1688,12 +1660,9 @@ function isYearGroupSelected(yearGroup: VideoYearGroup): boolean {
   const allVideoIds: number[] = []
   
   yearGroup.video_categories.forEach(category => {
-    category.children.forEach(child => {
-      child.sub_groups.forEach(subGroup => {
-        subGroup.videos.forEach(video => {
-          allVideoIds.push(video.id)
-        })
-      })
+    if (!category.children) return
+    category.children.forEach(video => {
+      allVideoIds.push(video.id)
     })
   })
   
@@ -1705,12 +1674,10 @@ function isYearGroupSelected(yearGroup: VideoYearGroup): boolean {
 function toggleVideoCategorySelection(category: VideoCategory) {
   const allVideoIds: number[] = []
   
-  category.children.forEach(child => {
-    child.sub_groups.forEach(subGroup => {
-      subGroup.videos.forEach(video => {
-        allVideoIds.push(video.id)
-      })
-    })
+  if (!category.children) return
+  
+  category.children.forEach(video => {
+    allVideoIds.push(video.id)
   })
   
   const allSelected = allVideoIds.every(id => selectedVideoIds.value.includes(id))
@@ -1735,54 +1702,10 @@ function toggleVideoCategorySelection(category: VideoCategory) {
 function isVideoCategorySelected(category: VideoCategory): boolean {
   const allVideoIds: number[] = []
   
-  category.children.forEach(child => {
-    child.sub_groups.forEach(subGroup => {
-      subGroup.videos.forEach(video => {
-        allVideoIds.push(video.id)
-      })
-    })
-  })
+  if (!category.children) return false
   
-  if (allVideoIds.length === 0) return false
-  return allVideoIds.every(id => selectedVideoIds.value.includes(id))
-}
-
-// Toggle all videos in a video child
-function toggleVideoChildSelection(child: VideoChild) {
-  const allVideoIds: number[] = []
-  
-  child.sub_groups.forEach(subGroup => {
-    subGroup.videos.forEach(video => {
-      allVideoIds.push(video.id)
-    })
-  })
-  
-  const allSelected = allVideoIds.every(id => selectedVideoIds.value.includes(id))
-  
-  if (allSelected) {
-    allVideoIds.forEach(id => {
-      const idx = selectedVideoIds.value.indexOf(id)
-      if (idx > -1) {
-        selectedVideoIds.value.splice(idx, 1)
-      }
-    })
-  } else {
-    allVideoIds.forEach(id => {
-      if (!selectedVideoIds.value.includes(id)) {
-        selectedVideoIds.value.push(id)
-      }
-    })
-  }
-}
-
-// Check if all videos in a video child are selected
-function isVideoChildSelected(child: VideoChild): boolean {
-  const allVideoIds: number[] = []
-  
-  child.sub_groups.forEach(subGroup => {
-    subGroup.videos.forEach(video => {
-      allVideoIds.push(video.id)
-    })
+  category.children.forEach(video => {
+    allVideoIds.push(video.id)
   })
   
   if (allVideoIds.length === 0) return false
@@ -2193,17 +2116,30 @@ function applyDeepSearch() {
     } else {
       delete filterPayload.value.chapter_ids
     }
+    delete filterPayload.value.audio_ids
     delete filterPayload.value.video_ids
     delete filterPayload.value.topic1_category_ids
     delete filterPayload.value.topic2_chapter_ids
     delete filterPayload.value.topic3_chapter_ids
-  } else if (firstCategory === 'Audio' || firstCategory === 'Video') {
+  } else if (firstCategory === 'Audio') {
+    if (selectedVideoIds.value.length > 0) {
+      filterPayload.value.audio_ids = selectedVideoIds.value
+    } else {
+      delete filterPayload.value.audio_ids
+    }
+    delete filterPayload.value.chapter_ids
+    delete filterPayload.value.video_ids
+    delete filterPayload.value.topic1_category_ids
+    delete filterPayload.value.topic2_chapter_ids
+    delete filterPayload.value.topic3_chapter_ids
+  } else if (firstCategory === 'Video') {
     if (selectedVideoIds.value.length > 0) {
       filterPayload.value.video_ids = selectedVideoIds.value
     } else {
       delete filterPayload.value.video_ids
     }
     delete filterPayload.value.chapter_ids
+    delete filterPayload.value.audio_ids
     delete filterPayload.value.topic1_category_ids
     delete filterPayload.value.topic2_chapter_ids
     delete filterPayload.value.topic3_chapter_ids
@@ -2214,6 +2150,7 @@ function applyDeepSearch() {
       delete filterPayload.value.topic1_category_ids
     }
     delete filterPayload.value.chapter_ids
+    delete filterPayload.value.audio_ids
     delete filterPayload.value.video_ids
     delete filterPayload.value.topic2_chapter_ids
     delete filterPayload.value.topic3_chapter_ids
@@ -2224,6 +2161,7 @@ function applyDeepSearch() {
       delete filterPayload.value.topic2_chapter_ids
     }
     delete filterPayload.value.chapter_ids
+    delete filterPayload.value.audio_ids
     delete filterPayload.value.video_ids
     delete filterPayload.value.topic1_category_ids
     delete filterPayload.value.topic3_chapter_ids
@@ -2234,6 +2172,7 @@ function applyDeepSearch() {
       delete filterPayload.value.topic3_chapter_ids
     }
     delete filterPayload.value.chapter_ids
+    delete filterPayload.value.audio_ids
     delete filterPayload.value.video_ids
     delete filterPayload.value.topic1_category_ids
     delete filterPayload.value.topic2_chapter_ids
@@ -2267,6 +2206,7 @@ function resetDeepSearch() {
   topic3ListPage.value = 1
   topic3ListHasMore.value = true
   delete filterPayload.value.chapter_ids
+  delete filterPayload.value.audio_ids
   delete filterPayload.value.video_ids
   delete filterPayload.value.topic1_category_ids
   delete filterPayload.value.topic2_chapter_ids
@@ -2322,12 +2262,12 @@ function navigateToDetail(item: SearchItem) {
       query: { title: item.title }
     })
   } else if (itemType === 'topik1' || itemType === 'topic1' || itemType === 'ensiklopedia') {
-    // Navigate to topics (topik1) detail page
+    // Navigate to audio detail page with audio_id (header_id) and subtitle_id (id)
     router.push({
-      path: `/topics/detail`,
+      path: '/audio/detail',
       query: {
-        subId: item.id,
-        title: item.title
+        audio_id: item.header_id,
+        subtitle_id: item.id
       }
     })
   } else if (itemType === 'topic2' || itemType === 'topik2' || itemType === 'topik') {
@@ -2412,6 +2352,14 @@ function navigateToDetail(item: SearchItem) {
                   <h3 class="font-bold"
                     :class="expandedItems.has(getItemKey(item)) ? 'text-black' : 'text-black dark:text-white'">
                     {{ item.title }}</h3>
+                  <!-- Video metadata: sub_group_name and timestamp -->
+                  <div v-if="item.type.toLowerCase() === 'video' && (item.sub_group_name || item.timestamp_formatted)" 
+                    class="flex items-center gap-2 mt-1 text-sm"
+                    :class="expandedItems.has(getItemKey(item)) ? 'text-black/80' : 'text-gray-600 dark:text-gray-400'">
+                    <span v-if="item.sub_group_name">{{ item.sub_group_name }}</span>
+                    <span v-if="item.sub_group_name && item.timestamp_formatted" class="text-xs">•</span>
+                    <span v-if="item.timestamp_formatted">{{ item.timestamp_formatted }}</span>
+                  </div>
                   <p :class="expandedItems.has(getItemKey(item)) ? 'text-black' : 'text-black dark:text-gray-300'"
                     class="mt-1 line-clamp-6">{{ item.detail }}</p>
                 </div>
@@ -2594,7 +2542,11 @@ function navigateToDetail(item: SearchItem) {
                   class="text-lg text-gray-600 dark:text-gray-400 mt-1">
                   {{ selectedChapterIds.length }} bab dipilih
                 </p>
-                <p v-else-if="(filterPayload.selectedCategory[0] === 'Audio' || filterPayload.selectedCategory[0] === 'Video') && selectedVideoIds.length > 0"
+                <p v-else-if="filterPayload.selectedCategory[0] === 'Audio' && selectedVideoIds.length > 0"
+                  class="text-lg text-gray-600 dark:text-gray-400 mt-1">
+                  {{ selectedVideoIds.length }} audio dipilih
+                </p>
+                <p v-else-if="filterPayload.selectedCategory[0] === 'Video' && selectedVideoIds.length > 0"
                   class="text-lg text-gray-600 dark:text-gray-400 mt-1">
                   {{ selectedVideoIds.length }} video dipilih
                 </p>
@@ -2980,64 +2932,18 @@ function navigateToDetail(item: SearchItem) {
                       </button>
 
                       <!-- Category Accordion Content -->
-                      <div v-if="expandedAccordions.has(`video-cat-${category.id}`)" class="p-3 space-y-3">
-                        <!-- Video Child Level (Accordion) -->
-                        <div v-for="child in category.children" :key="`vchild-${child.id}`" 
-                          class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-                          <!-- Child Accordion Header -->
-                          <button @click="toggleAccordion(`video-child-${child.id}`)"
-                            class="w-full flex items-center justify-between p-2 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                            <div class="flex items-center gap-2">
-                              <input type="checkbox" :id="`video-child-checkbox-${child.id}`"
-                                :checked="isVideoChildSelected(child)"
-                                @click.stop="toggleVideoChildSelection(child)"
-                                class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                              <h5 class="text-lg font-medium text-black dark:text-white text-left">
-                                {{ child.title }}
-                              </h5>
-                            </div>
-                            <Icon :name="expandedAccordions.has(`video-child-${child.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
-                              class="w-4 h-4 text-black dark:text-white" />
-                          </button>
-
-                          <!-- Child Accordion Content -->
-                          <div v-if="expandedAccordions.has(`video-child-${child.id}`)" class="p-3 space-y-2">
-                            <!-- Video Sub Group Level (Accordion) -->
-                            <div v-for="subGroup in child.sub_groups" :key="`vsg-${subGroup.id}`"
-                              class="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-                              <!-- Sub Group Accordion Header -->
-                              <button @click="toggleAccordion(`video-subgroup-${subGroup.id}`)"
-                                class="w-full flex items-center justify-between p-2 bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                                <div class="flex items-center gap-2">
-                                  <input type="checkbox" :id="`video-group-${subGroup.id}`"
-                                    :checked="isSubGroupSelected(subGroup)" @change.stop="toggleSubGroupVideos(subGroup)"
-                                    class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                                  <label :for="`video-group-${subGroup.id}`"
-                                    class="font-semibold text-black dark:text-white cursor-pointer text-left">
-                                    {{ subGroup.name }}
-                                  </label>
-                                </div>
-                                <Icon :name="expandedAccordions.has(`video-subgroup-${subGroup.id}`) ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
-                                  class="w-4 h-4 text-black dark:text-white" />
-                              </button>
-
-                              <!-- Sub Group Accordion Content -->
-                              <div v-if="expandedAccordions.has(`video-subgroup-${subGroup.id}`)" class="p-3">
-                                <!-- Video Level -->
-                                <div class="space-y-1 ml-6">
-                                  <div v-for="video in subGroup.videos" :key="`vv-${video.id}`"
-                                    class="flex items-start gap-2 py-1">
-                                    <input type="checkbox" :id="`video-${video.id}`"
-                                      :checked="selectedVideoIds.includes(video.id)" @change="toggleVideoSelection(video.id)"
-                                      class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
-                                    <label :for="`video-${video.id}`"
-                                      class="text-lg text-black dark:text-white cursor-pointer flex-1">
-                                      {{ video.title }}
-                                    </label>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+                      <div v-if="expandedAccordions.has(`video-cat-${category.id}`)" class="p-3">
+                        <!-- Video Level - directly in category -->
+                        <div class="space-y-1 ml-6">
+                          <div v-for="video in category.children" :key="`vv-${video.id}`"
+                            class="flex items-start gap-2 py-1">
+                            <input type="checkbox" :id="`video-${video.id}`"
+                              :checked="selectedVideoIds.includes(video.id)" @change="toggleVideoSelection(video.id)"
+                              class="mt-0.5 w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary" />
+                            <label :for="`video-${video.id}`"
+                              class="text-lg text-black dark:text-white cursor-pointer flex-1">
+                              {{ video.title }}
+                            </label>
                           </div>
                         </div>
                       </div>
