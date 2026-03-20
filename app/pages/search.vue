@@ -191,6 +191,11 @@ const showKeywordInput = ref('')
 const speakingItemId = ref<string | null>(null)
 const isSpeaking = ref(false)
 
+// FAB Menu State
+const showFabMenu = ref(false)
+const fontSize = ref(18)
+const resultsScrollContainer = ref<HTMLElement | null>(null)
+
 // Deep search state for books
 const bookChapters = ref<BookGroup[]>([])
 const selectedChapterIds = ref<number[]>([])
@@ -2249,13 +2254,12 @@ function navigateToDetail(item: SearchItem) {
       query: { page }
     })
   } else if (itemType === 'audio') {
-    // header_id is the audio_id for audio items
-    const audioId = item.header_id || item.id
+    // header_id is the audio_id, id is the subtitle_id for audio items
     router.push({
       path: '/audio/detail',
       query: {
-        audio_id: audioId,
-        title: item.title
+        audio_id: item.header_id || item.id,
+        subtitle_id: item.id
       }
     })
   } else if (itemType === 'video') {
@@ -2337,6 +2341,20 @@ function speakContent(item: SearchItem) {
 
   window.speechSynthesis.speak(utterance)
 }
+
+const zoomIn = () => {
+  fontSize.value = Math.min(fontSize.value + 2, 24)
+}
+
+const zoomOut = () => {
+  fontSize.value = Math.max(fontSize.value - 2, 10)
+}
+
+const scrollToTop = () => {
+  if (resultsScrollContainer.value) {
+    resultsScrollContainer.value.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+}
 </script>
 
 <template>
@@ -2362,7 +2380,7 @@ function speakContent(item: SearchItem) {
     </div>
 
     <!-- Search Results View -->
-    <div v-else class="flex-1 overflow-y-auto">
+    <div v-else ref="resultsScrollContainer" class="flex-1 overflow-y-auto">
       <div class="px-4 py-4">
         <!-- Filter Buttons -->
         <div class="mb-2 flex gap-2">
@@ -2391,7 +2409,8 @@ function speakContent(item: SearchItem) {
         <!-- Results List -->
         <div v-else class="space-y-4">
           <div v-for="item in results" :key="getItemKey(item)" class="rounded-xl overflow-hidden"
-            :class="expandedItems.has(getItemKey(item)) ? 'bg-[#c09637] dark:bg-yellow-600' : 'bg-white dark:bg-gray-800'">
+            :class="expandedItems.has(getItemKey(item)) ? 'bg-[#c09637] dark:bg-yellow-600' : 'bg-white dark:bg-gray-800'"
+            :style="{ fontSize: fontSize + 'px' }">
             <!-- Card Header -->
             <div class="p-4 cursor-pointer"
               :class="expandedItems.has(getItemKey(item)) ? 'bg-[#c09637] dark:bg-yellow-600' : 'bg-white dark:bg-gray-800'"
@@ -2399,12 +2418,14 @@ function speakContent(item: SearchItem) {
               <div class="flex items-center justify-between">
                 <div class="flex-1">
                   <h3 class="font-bold"
-                    :class="expandedItems.has(getItemKey(item)) ? 'text-black' : 'text-black dark:text-white'">
+                    :class="expandedItems.has(getItemKey(item)) ? 'text-black' : 'text-black dark:text-white'"
+                    :style="{ fontSize: fontSize + 'px' }">
                     {{ item.title }}</h3>
                   <!-- Video metadata: sub_group_name and timestamp -->
                   <div v-if="item.type.toLowerCase() === 'video' && (item.sub_group_name || item.timestamp_formatted)" 
-                    class="flex items-center gap-2 mt-1 text-sm"
-                    :class="expandedItems.has(getItemKey(item)) ? 'text-black/80' : 'text-gray-600 dark:text-gray-400'">
+                    class="flex items-center gap-2 mt-1"
+                    :class="expandedItems.has(getItemKey(item)) ? 'text-black/80' : 'text-gray-600 dark:text-gray-400'"
+                    :style="{ fontSize: (fontSize - 2) + 'px' }">
                     <span v-if="item.sub_group_name">{{ item.sub_group_name }}</span>
                     <span v-if="item.sub_group_name && item.timestamp_formatted" class="text-xs">•</span>
                     <span v-if="item.timestamp_formatted">{{ item.timestamp_formatted }}</span>
@@ -2412,7 +2433,8 @@ function speakContent(item: SearchItem) {
                   <!-- Detail text (hidden for video type) -->
                   <p v-if="item.type.toLowerCase() !== 'video'" 
                     :class="expandedItems.has(getItemKey(item)) ? 'text-black' : 'text-black dark:text-gray-300'"
-                    class="mt-1 line-clamp-6">{{ item.detail }}</p>
+                    class="mt-1 line-clamp-6"
+                    :style="{ fontSize: fontSize + 'px' }">{{ item.detail }}</p>
                 </div>
                 <button @click.stop="navigateToDetail(item)" class="p-2">
                   <Icon name="mdi:arrow-right" class="w-6 h-6 text-black dark:text-white shrink-0" />
@@ -2422,7 +2444,8 @@ function speakContent(item: SearchItem) {
 
             <!-- Expandable Content (Kesaksian) -->
             <div v-if="expandedItems.has(getItemKey(item))" class="m-4 p-4 bg-white dark:bg-gray-800 rounded-lg">
-              <p class="text-black dark:text-white leading-relaxed whitespace-pre-wrap">
+              <p class="text-black dark:text-white leading-relaxed whitespace-pre-wrap"
+                :style="{ fontSize: fontSize + 'px' }">
                 {{ stripHtml(item.full_detail) }}
               </p>
 
@@ -3444,5 +3467,11 @@ function speakContent(item: SearchItem) {
         </div>
       </template>
     </UDrawer>
+
+    <!-- FAB - Fixed at bottom -->
+    <div v-if="results.length > 0" class="fixed bottom-0 left-0 right-0 max-w-md mx-auto pointer-events-none">
+      <LazyFabZoom v-model:isOpen="showFabMenu" class="absolute right-4 bottom-20 pointer-events-auto" @zoomIn="zoomIn"
+        @zoomOut="zoomOut" @scrollTop="scrollToTop" />
+    </div>
   </div>
 </template>
