@@ -15,6 +15,11 @@
           <Icon name="mdi:play" class="w-6 h-6" 
             :class="isVideoButtonEnabled ? 'text-black dark:text-white' : 'text-gray-400 dark:text-gray-600'" />
         </button>
+        <button @click="addBookmark" class="p-1">
+          <Icon :name="isTopic3Bookmarked ? 'mdi:star' : 'mdi:star-outline'" 
+                :class="isTopic3Bookmarked ? 'text-yellow-500' : 'text-black dark:text-white'"
+                class="w-6 h-6" />
+        </button>
         <button @click="shareContent" class="p-1">
           <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
         </button>
@@ -154,13 +159,21 @@
       <LazyFabZoom v-model:isOpen="showFabMenu" class="absolute right-4 bottom-4 pointer-events-auto" @zoomIn="zoomIn"
         @zoomOut="zoomOut" @scrollTop="scrollToTop" />
     </div>
+
+    <!-- Bookmark Modal - Lazy loaded -->
+    <LazyBookmarkModal />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useSmartBack } from '~/composables/useSmartBack'
+import { useBookmark } from '~/composables/useBookmark'
 
 const { goBack } = useSmartBack()
+
+// Bookmark
+const { createTopic3Bookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
+const isTopic3Bookmarked = ref(false)
 
 interface Content {
   id: number
@@ -395,7 +408,18 @@ const shareContent = async () => {
   }
 }
 
+// Add bookmark
+const addBookmark = () => {
+  createTopic3Bookmark(
+    pageTitle.value || 'Kumpulan Tanya Jawab',
+    Number(chapterId.value)
+  )
+}
+
 onMounted(async () => {
+  // Fetch bookmarks
+  await fetchBookmarksByType(6)
+  
   // Fetch content data
   try {
     const response = await $fetch<ContentResponse>(
@@ -407,7 +431,7 @@ onMounted(async () => {
       const firstItem = response.data.contents[0]
       
       // Check if first item has 'name' property (Category) or 'content' property (Content)
-      if ('name' in firstItem && 'contents' in firstItem) {
+      if (firstItem && 'name' in firstItem && 'contents' in firstItem) {
         // Response has categories
         hasCategories.value = true
         contents.value = response.data.contents as Category[]
@@ -434,6 +458,13 @@ onMounted(async () => {
     isLoading.value = false
   }
 })
+
+// Watch for bookmark status
+watch(() => pageTitle.value, (title) => {
+  if (title) {
+    isTopic3Bookmarked.value = isBookmarked(6, title)
+  }
+}, { immediate: true })
 </script>
 
 <style scoped>

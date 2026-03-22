@@ -6,7 +6,8 @@ export interface BookmarkFolder {
 }
 
 export interface VideoLink {
-  videoId: number
+  videoId: number | null
+  video_category_id: number
   lang: string
 }
 
@@ -21,14 +22,31 @@ export interface BookLink {
   page: number
 }
 
+export interface Topic2Link {
+  contentId: number
+  page: number
+}
+
+export interface Topic1Link {
+  subId: number
+  title: string
+}
+
+export interface Topic3Link {
+  contentId: number
+}
+
 export interface BookmarkPayload {
   id: number | null
-  type: number // 1=video, 2=audio, 3=book
+  type: number // 1=video, 2=audio, 3=book, 4=topic1, 5=topic2, 6=topic3
   folderId: number | null
   title: string
   videoLink: VideoLink | null
   audioLink: AudioLink | null
   bookLink: BookLink | null
+  topic1Link: Topic1Link | null
+  topic2Link: Topic2Link | null
+  topic3Link: Topic3Link | null
   recipeLink: null
 }
 
@@ -189,6 +207,9 @@ export const useBookmark = () => {
       },
       audioLink: null,
       bookLink: null,
+      topic1Link: null,
+      topic2Link: null,
+      topic3Link: null,
       recipeLink: null
     })
   }
@@ -203,6 +224,9 @@ export const useBookmark = () => {
         audio_category_id: audioCategoryId
       },
       bookLink: null,
+      topic1Link: null,
+      topic2Link: null,
+      topic3Link: null,
       recipeLink: null
     })
   }
@@ -217,6 +241,59 @@ export const useBookmark = () => {
         bookId,
         chapterId,
         page
+      },
+      topic1Link: null,
+      topic2Link: null,
+      topic3Link: null,
+      recipeLink: null
+    })
+  }
+
+  const createTopic1Bookmark = (title: string, subId: number) => {
+    openBookmarkModal({
+      type: 4,
+      title,
+      videoLink: null,
+      audioLink: null,
+      bookLink: null,
+      topic1Link: {
+        subId,
+        title
+      },
+      topic2Link: null,
+      topic3Link: null,
+      recipeLink: null
+    })
+  }
+
+  const createTopic2Bookmark = (title: string, contentId: number, page: number = 1) => {
+    openBookmarkModal({
+      type: 5,
+      title,
+      videoLink: null,
+      audioLink: null,
+      bookLink: null,
+      topic1Link: null,
+      topic2Link: {
+        contentId,
+        page
+      },
+      topic3Link: null,
+      recipeLink: null
+    })
+  }
+
+  const createTopic3Bookmark = (title: string, contentId: number) => {
+    openBookmarkModal({
+      type: 6,
+      title,
+      videoLink: null,
+      audioLink: null,
+      bookLink: null,
+      topic1Link: null,
+      topic2Link: null,
+      topic3Link: {
+        contentId
       },
       recipeLink: null
     })
@@ -237,6 +314,9 @@ export const useBookmark = () => {
     getBookmarkByTitle,
     createVideoBookmark,
     createAudioBookmark,
-    createBookBookmark
+    createBookBookmark,
+    createTopic1Bookmark,
+    createTopic2Bookmark,
+    createTopic3Bookmark
   }
 }

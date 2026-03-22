@@ -9,9 +9,16 @@
                 </button>
                 <h1 class="text-lg font-semibold text-black dark:text-white line-clamp-1">{{ pageTitle }}</h1>
             </div>
-            <button @click="shareContent" class="p-1 shrink-0">
-                <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
-            </button>
+            <div class="flex items-center gap-2 shrink-0">
+                <button @click="addBookmark" class="p-1">
+                    <Icon :name="isTopic1Bookmarked ? 'mdi:star' : 'mdi:star-outline'" 
+                          :class="isTopic1Bookmarked ? 'text-yellow-500' : 'text-black dark:text-white'"
+                          class="w-6 h-6" />
+                </button>
+                <button @click="shareContent" class="p-1">
+                    <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
+                </button>
+            </div>
         </div>
 
         <!-- Search -->
@@ -91,11 +98,15 @@
             <LazyFabZoom v-model:isOpen="showFabMenu" class="absolute right-4 bottom-4 pointer-events-auto" @zoomIn="zoomIn"
                 @zoomOut="zoomOut" @scrollTop="scrollToTop" />
         </div>
+
+        <!-- Bookmark Modal - Lazy loaded -->
+        <LazyBookmarkModal />
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useBookmark } from '~/composables/useBookmark'
 
 interface TopicContent {
     id: number
@@ -111,6 +122,10 @@ const config = useRuntimeConfig()
 
 const subId = computed(() => route.query.subId as string)
 const pageTitle = computed(() => (route.query.title as string) || 'Detail')
+
+// Bookmark
+const { createTopic1Bookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
+const isTopic1Bookmarked = ref(false)
 
 const searchQuery = ref('')
 const expandedItems = ref<Set<number>>(new Set())
@@ -136,6 +151,18 @@ const scrollToTop = () => {
 const { data: response, pending } = await useFetch<{ success: boolean; data: TopicContent[] }>(
     () => `${config.public.apiBaseUrl}/topics/content/${subId.value}`
 )
+
+// Fetch bookmarks on mount
+onMounted(async () => {
+    await fetchBookmarksByType(4)
+})
+
+// Watch for bookmark status
+watch(() => pageTitle.value, (title) => {
+    if (title) {
+        isTopic1Bookmarked.value = isBookmarked(4, title)
+    }
+}, { immediate: true })
 
 const contents = computed(() => response.value?.data || [])
 
@@ -248,5 +275,12 @@ const shareContent = async () => {
         await navigator.clipboard.writeText(`Lihat "${pageTitle.value}" di\n${window.location.href}`)
         alert('Link berhasil disalin!')
     }
+}
+
+const addBookmark = () => {
+    createTopic1Bookmark(
+        pageTitle.value || 'Ensiklopedia',
+        Number(subId.value)
+    )
 }
 </script>

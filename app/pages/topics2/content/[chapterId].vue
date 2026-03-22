@@ -8,7 +8,7 @@ const config = useRuntimeConfig()
 const chapterId = route.params.chapterId as string
 
 // Bookmark
-const { createBookBookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
+const { createTopic2Bookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
 
 // Playlist
 const { openPlaylistModal } = usePlaylist()
@@ -78,7 +78,7 @@ const chapterTitle = ref(route.query.chapter as string || 'Topik')
 // Fetch contents
 onMounted(async () => {
     // Fetch bookmarks
-    await fetchBookmarksByType(3)
+    await fetchBookmarksByType(5)
     
     try {
         const response = await $fetch<ContentResponse>(
@@ -122,7 +122,7 @@ onMounted(async () => {
 // Watch for bookmark status
 watch(() => chapterTitle.value, (title) => {
     if (title) {
-        isBookBookmarked.value = isBookmarked(3, title)
+        isBookBookmarked.value = isBookmarked(5, title)
     }
 }, { immediate: true })
 
@@ -215,9 +215,8 @@ function shareContent() {
 
 function addBookmark() {
     const actualPage = currentContent.value?.page || 1
-    createBookBookmark(
+    createTopic2Bookmark(
         chapterTitle.value || 'Topik 2',
-        0,
         Number(chapterId),
         actualPage
     )
@@ -407,7 +406,7 @@ const openVideoPage = () => {
         <div v-if="!isSearchMode" class="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <div class="flex items-center gap-3">
                 <BackButton />
-                <h1 class="text-lg font-semibold text-black dark:text-white truncate max-w-[200px]">
+                <h1 class="text-lg font-semibold text-black dark:text-white truncate max-w-50">
                     {{ chapterTitle }}
                 </h1>
             </div>
