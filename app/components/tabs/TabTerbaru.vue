@@ -107,8 +107,8 @@
     <!-- Topics3 Section -->
     <Topics3Section v-if="isTopic3MenuEnabled" :topics3-data="topics3" :key="'topics3-section'" />
 
-    <!-- Community Playlist Section - Lazy loaded with hydration on visible -->
-    <LazyCommunityPlaylistSection v-if="isCommunityMenuEnabled" hydrate-on-visible />
+    <!-- Public Bookmark Section -->
+    <PublicBookmarkSection :menu-settings="allData?.data?.menuSettings" />
   </div>
   </ClientOnly>
 </template>
@@ -231,11 +231,6 @@ const isAgendaMenuEnabled = computed(() => {
 const isTopic2MenuEnabled = computed(() => {
   const topic2Menu = allData.value?.data?.menuSettings?.find(m => m.code === 'topic2')
   return topic2Menu?.status === true
-})
-
-const isCommunityMenuEnabled = computed(() => {
-  const communityMenu = allData.value?.data?.menuSettings?.find(m => m.code === 'community')
-  return communityMenu?.status === true
 })
 
 const isTopic3MenuEnabled = computed(() => {

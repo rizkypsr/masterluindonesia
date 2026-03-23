@@ -25,26 +25,10 @@ interface BookmarkItem {
   child?: BookmarkItem[]
 }
 
-interface PublicBookmarkItem {
-  id: number
-  title: string
-  is_pinned: boolean
-  user: {
-    id: number
-    name: string
-  }
-  bookmarks: BookmarkItem[]
-}
-
 interface BookmarkResponse {
   success: boolean
   message: string
   data: BookmarkItem[]
-}
-
-interface PublicBookmarkResponse {
-  success: boolean
-  data: PublicBookmarkItem[]
 }
 
 const { isAuthenticated, getAuthHeader } = useAuth()
@@ -55,11 +39,6 @@ const bookmarks = ref<BookmarkItem[]>([])
 const userBookmarks = ref<BookmarkItem[]>([]) // Store user's original bookmarks
 const loading = ref(true)
 const expandedFolders = ref<Set<number>>(new Set())
-
-// Public bookmarks state
-const publicBookmarks = ref<PublicBookmarkItem[]>([])
-const loadingPublicBookmarks = ref(false)
-const selectedPublicBookmark = ref<number | null>(null)
 
 // Search state
 const isSearchMode = ref(false)
@@ -97,8 +76,7 @@ onMounted(async () => {
   }
   await Promise.all([
     fetchBookmarks(),
-    fetchActiveShareLink(),
-    fetchPublicBookmarks()
+    fetchActiveShareLink()
   ])
 })
 
@@ -126,22 +104,6 @@ async function fetchBookmarks(search?: string) {
     })
   } finally {
     loading.value = false
-  }
-}
-
-async function fetchPublicBookmarks() {
-  loadingPublicBookmarks.value = true
-  try {
-    const response = await $fetch<PublicBookmarkResponse>(
-      `${config.public.apiBaseUrl}/public-bookmarks`
-    )
-    if (response.success) {
-      publicBookmarks.value = response.data
-    }
-  } catch (error) {
-    console.error('Failed to fetch public bookmarks:', error)
-  } finally {
-    loadingPublicBookmarks.value = false
   }
 }
 
@@ -364,23 +326,6 @@ async function deactivateShareLink() {
     isDeletingShare.value = false
   }
 }
-
-function selectPublicBookmark(publicBookmarkId: number) {
-  if (selectedPublicBookmark.value === publicBookmarkId) {
-    // Unselect - restore user's bookmarks
-    selectedPublicBookmark.value = null
-    bookmarks.value = userBookmarks.value
-    expandedFolders.value.clear()
-  } else {
-    // Select - show public bookmarks
-    selectedPublicBookmark.value = publicBookmarkId
-    const publicBookmark = publicBookmarks.value.find(pb => pb.id === publicBookmarkId)
-    if (publicBookmark) {
-      bookmarks.value = publicBookmark.bookmarks
-      expandedFolders.value.clear()
-    }
-  }
-}
 </script>
 
 <template>
@@ -418,37 +363,6 @@ function selectPublicBookmark(publicBookmarkId: number) {
         <button v-if="searchQuery" @click="searchQuery = ''; performSearch()" class="p-1">
           <Icon name="mdi:close" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
         </button>
-      </div>
-    </div>
-
-    <!-- Public Bookmarks - Horizontal Scroll -->
-    <div v-if="!isSearchMode && publicBookmarks.length > 0" class="px-4 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
-      <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Bookmark Publik</h2>
-      <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-        <div v-for="item in publicBookmarks" :key="item.id"
-          @click="selectPublicBookmark(item.id)"
-          :class="[
-            'shrink-0 w-40 p-3 rounded-lg cursor-pointer transition-colors',
-            selectedPublicBookmark === item.id
-              ? 'bg-primary dark:bg-yellow-500 border-2 border-primary dark:border-yellow-500'
-              : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-yellow-500'
-          ]">
-          <div class="flex items-start justify-between mb-2">
-            <h3 :class="[
-              'text-lg font-medium line-clamp-2 flex-1',
-              selectedPublicBookmark === item.id ? 'text-black' : 'text-black dark:text-white'
-            ]">{{ item.title }}</h3>
-            <Icon v-if="item.is_pinned" name="mdi:pin" 
-              :class="[
-                'w-4 h-4 shrink-0 ml-1',
-                selectedPublicBookmark === item.id ? 'text-black' : 'text-primary dark:text-yellow-500'
-              ]" />
-          </div>
-          <p :class="[
-            'text-sm truncate',
-            selectedPublicBookmark === item.id ? 'text-gray-700' : 'text-gray-500 dark:text-gray-400'
-          ]">{{ item.user.name }}</p>
-        </div>
       </div>
     </div>
 
