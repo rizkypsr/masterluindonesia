@@ -14,9 +14,6 @@
                 :class="isBookBookmarked ? 'text-yellow-500' : 'text-black dark:text-white'"
                 class="w-6 h-6" />
         </button>
-        <button class="p-1" @click="addToPlaylist">
-          <Icon name="mdi:playlist-plus" class="w-6 h-6 text-black dark:text-white" />
-        </button>
         <button class="p-1" @click="shareBook">
           <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
         </button>

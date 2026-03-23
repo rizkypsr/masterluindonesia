@@ -1,115 +1,106 @@
 <template>
   <div v-if="isPublicBookmarkMenuEnabled" class="mt-6 px-4">
-    <!-- Accordion Header -->
-    <div
-      @click="isExpanded = !isExpanded"
-      class="flex items-center justify-between cursor-pointer mb-4"
-    >
+    <!-- Header with "Lihat semua" -->
+    <div class="flex items-center justify-between mb-4">
       <h2 class="text-xl font-semibold text-black dark:text-white">Bookmark Publik</h2>
-      <Icon
-        :name="isExpanded ? 'mdi:chevron-up' : 'mdi:chevron-down'"
-        class="w-6 h-6 text-black dark:text-white"
-      />
+      <NuxtLink to="/public-bookmarks" class="text-primary dark:text-yellow-400 font-medium">Lihat semua</NuxtLink>
     </div>
 
-    <!-- Accordion Content -->
-    <div v-if="isExpanded">
-      <!-- Loading State -->
-      <div v-if="loadingPublicBookmarks" class="flex justify-center py-8">
-        <Icon name="svg-spinners:ring-resize" class="w-8 h-8 text-primary dark:text-yellow-500" />
-      </div>
+    <!-- Loading State -->
+    <div v-if="loadingPublicBookmarks" class="flex justify-center py-8">
+      <Icon name="svg-spinners:ring-resize" class="w-8 h-8 text-primary dark:text-yellow-500" />
+    </div>
 
-      <!-- Public Bookmarks List -->
-      <div v-else-if="publicBookmarks.length > 0" class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-        <div
-          v-for="item in publicBookmarks"
-          :key="item.id"
-          @click="selectPublicBookmark(item.id)"
-          :class="[
-            'shrink-0 w-40 p-3 rounded-lg cursor-pointer transition-colors',
-            selectedPublicBookmark === item.id
-              ? 'bg-primary dark:bg-yellow-500 border-2 border-primary dark:border-yellow-500'
-              : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-yellow-500'
-          ]"
-        >
-          <div class="flex items-start justify-between mb-2">
-            <h3
-              :class="[
-                'text-lg font-medium line-clamp-2 flex-1',
-                selectedPublicBookmark === item.id ? 'text-black' : 'text-black dark:text-white'
-              ]"
-            >
-              {{ item.title }}
-            </h3>
-            <Icon
-              v-if="item.is_pinned"
-              name="mdi:pin"
-              :class="[
-                'w-4 h-4 shrink-0 ml-1',
-                selectedPublicBookmark === item.id ? 'text-black' : 'text-primary dark:text-yellow-500'
-              ]"
-            />
-          </div>
-          <p
+    <!-- Public Bookmarks List -->
+    <div v-else-if="publicBookmarks.length > 0" class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+      <div
+        v-for="item in publicBookmarks"
+        :key="item.id"
+        @click="selectPublicBookmark(item.id)"
+        :class="[
+          'shrink-0 w-40 p-3 rounded-lg cursor-pointer transition-colors',
+          selectedPublicBookmark === item.id
+            ? 'bg-primary dark:bg-yellow-500 border-2 border-primary dark:border-yellow-500'
+            : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-yellow-500'
+        ]"
+      >
+        <div class="flex items-start justify-between mb-2">
+          <h3
             :class="[
-              'text-sm truncate',
-              selectedPublicBookmark === item.id ? 'text-gray-700' : 'text-gray-500 dark:text-gray-400'
+              'text-lg font-medium line-clamp-2 flex-1',
+              selectedPublicBookmark === item.id ? 'text-black' : 'text-black dark:text-white'
             ]"
           >
-            {{ item.name || item.user.name }}
-          </p>
+            {{ item.title }}
+          </h3>
+          <Icon
+            v-if="item.is_pinned"
+            name="mdi:pin"
+            :class="[
+              'w-4 h-4 shrink-0 ml-1',
+              selectedPublicBookmark === item.id ? 'text-black' : 'text-primary dark:text-yellow-500'
+            ]"
+          />
         </div>
+        <p
+          :class="[
+            'text-sm truncate',
+            selectedPublicBookmark === item.id ? 'text-gray-700' : 'text-gray-500 dark:text-gray-400'
+          ]"
+        >
+          {{ item.name || item.user.name }}
+        </p>
       </div>
+    </div>
 
-      <!-- Empty State -->
-      <div v-else class="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">
-        <Icon name="mdi:bookmark-outline" class="w-12 h-12 text-gray-400 mx-auto mb-2" />
-        <p class="text-gray-500 dark:text-gray-400">Belum ada bookmark publik</p>
-      </div>
+    <!-- Empty State -->
+    <div v-else class="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">
+      <Icon name="mdi:bookmark-outline" class="w-12 h-12 text-gray-400 mx-auto mb-2" />
+      <p class="text-gray-500 dark:text-gray-400">Belum ada bookmark publik</p>
+    </div>
 
-      <!-- Selected Public Bookmark Content -->
-      <div v-if="selectedPublicBookmark && selectedBookmarks.length > 0" class="mt-4 space-y-1">
-        <template v-for="item in selectedBookmarks" :key="item.id">
-          <!-- Folder -->
-          <div v-if="item.type === 0">
-            <div
-              class="flex items-center justify-between p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
-              @click="toggleFolder(item.id)"
-            >
-              <div class="flex items-center gap-3">
-                <Icon name="mdi:folder-outline" class="w-6 h-6 shrink-0 text-[#bf9638] dark:text-yellow-400" />
-                <span class="font-medium text-lg text-black dark:text-white">{{ item.title }}</span>
-              </div>
-              <Icon
-                :name="expandedFolders.has(item.id) ? 'mdi:chevron-up' : 'mdi:chevron-down'"
-                class="w-5 h-5 text-gray-400 dark:text-gray-500"
-              />
-            </div>
-            <!-- Folder Children -->
-            <div v-if="expandedFolders.has(item.id) && item.child?.length" class="ml-6 space-y-1">
-              <div
-                v-for="child in item.child"
-                :key="child.id"
-                class="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
-                @click="navigateToItem(child)"
-              >
-                <Icon :name="getIcon(child.type)" class="w-6 h-6 shrink-0 text-[#bf9638] dark:text-yellow-400" />
-                <span class="text-lg text-black dark:text-white">{{ child.title }}</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Regular Item -->
+    <!-- Selected Public Bookmark Content -->
+    <div v-if="selectedPublicBookmark && selectedBookmarks.length > 0" class="mt-4 space-y-1">
+      <template v-for="item in selectedBookmarks" :key="item.id">
+        <!-- Folder -->
+        <div v-if="item.type === 0">
           <div
-            v-else
-            class="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 border-b border-gray-100 dark:border-gray-700"
-            @click="navigateToItem(item)"
+            class="flex items-center justify-between p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
+            @click="toggleFolder(item.id)"
           >
-            <Icon :name="getIcon(item.type)" class="w-6 h-6 shrink-0 text-[#bf9638] dark:text-yellow-400" />
-            <span class="text-lg text-black dark:text-white">{{ item.title }}</span>
+            <div class="flex items-center gap-3">
+              <Icon name="mdi:folder-outline" class="w-6 h-6 shrink-0 text-[#bf9638] dark:text-yellow-400" />
+              <span class="font-medium text-lg text-black dark:text-white">{{ item.title }}</span>
+            </div>
+            <Icon
+              :name="expandedFolders.has(item.id) ? 'mdi:chevron-up' : 'mdi:chevron-down'"
+              class="w-5 h-5 text-gray-400 dark:text-gray-500"
+            />
           </div>
-        </template>
-      </div>
+          <!-- Folder Children -->
+          <div v-if="expandedFolders.has(item.id) && item.child?.length" class="ml-6 space-y-1">
+            <div
+              v-for="child in item.child"
+              :key="child.id"
+              class="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
+              @click="navigateToItem(child)"
+            >
+              <Icon :name="getIcon(child.type)" class="w-6 h-6 shrink-0 text-[#bf9638] dark:text-yellow-400" />
+              <span class="text-lg text-black dark:text-white">{{ child.title }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Regular Item -->
+        <div
+          v-else
+          class="flex items-center gap-3 p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 border-b border-gray-100 dark:border-gray-700"
+          @click="navigateToItem(item)"
+        >
+          <Icon :name="getIcon(item.type)" class="w-6 h-6 shrink-0 text-[#bf9638] dark:text-yellow-400" />
+          <span class="text-lg text-black dark:text-white">{{ item.title }}</span>
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -170,7 +161,6 @@ const publicBookmarks = ref<PublicBookmarkItem[]>([])
 const loadingPublicBookmarks = ref(false)
 const selectedPublicBookmark = ref<number | null>(null)
 const expandedFolders = ref<Set<number>>(new Set())
-const isExpanded = ref(true) // Accordion state
 
 // Check if public bookmark menu is enabled
 const isPublicBookmarkMenuEnabled = computed(() => {
