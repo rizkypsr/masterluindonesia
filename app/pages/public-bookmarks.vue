@@ -33,27 +33,24 @@
             @click="togglePublicBookmark(publicBookmark.id)"
             class="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-750"
           >
-            <div class="flex items-center gap-3 flex-1">
-              <Icon name="mdi:account-circle" class="w-8 h-8 text-primary dark:text-yellow-400 shrink-0" />
-              <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-2">
-                  <h3 class="font-semibold text-lg text-black dark:text-white truncate">
-                    {{ publicBookmark.title }}
-                  </h3>
-                  <Icon
-                    v-if="publicBookmark.is_pinned"
-                    name="mdi:pin"
-                    class="w-4 h-4 shrink-0 text-primary dark:text-yellow-500"
-                  />
-                </div>
-                <p class="text-sm text-gray-500 dark:text-gray-400 truncate">
-                  {{ publicBookmark.name || publicBookmark.user.name }}
-                </p>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2">
+                <h3 class="font-semibold text-lg text-black dark:text-white truncate">
+                  {{ publicBookmark.title }}
+                </h3>
+                <Icon
+                  v-if="publicBookmark.is_pinned"
+                  name="mdi:pin"
+                  class="w-4 h-4 shrink-0 text-primary dark:text-yellow-500"
+                />
               </div>
+              <p class="text-sm text-gray-500 dark:text-gray-400 truncate">
+                {{ publicBookmark.name || publicBookmark.user.name }}
+              </p>
             </div>
             <Icon
               :name="expandedPublicBookmarks.has(publicBookmark.id) ? 'mdi:chevron-up' : 'mdi:chevron-down'"
-              class="w-6 h-6 text-gray-400 dark:text-gray-500 shrink-0"
+              class="w-6 h-6 text-gray-400 dark:text-gray-500 shrink-0 ml-3"
             />
           </div>
 
