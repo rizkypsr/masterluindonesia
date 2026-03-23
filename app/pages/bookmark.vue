@@ -28,13 +28,12 @@ interface BookmarkItem {
 interface PublicBookmarkItem {
   id: number
   title: string
-  type: number
-  data: any
   is_pinned: boolean
   user: {
     id: number
     name: string
   }
+  bookmarks: BookmarkItem[]
 }
 
 interface BookmarkResponse {
@@ -53,12 +52,14 @@ const config = useRuntimeConfig()
 const toast = useToast()
 
 const bookmarks = ref<BookmarkItem[]>([])
+const userBookmarks = ref<BookmarkItem[]>([]) // Store user's original bookmarks
 const loading = ref(true)
 const expandedFolders = ref<Set<number>>(new Set())
 
 // Public bookmarks state
 const publicBookmarks = ref<PublicBookmarkItem[]>([])
 const loadingPublicBookmarks = ref(false)
+const selectedPublicBookmark = ref<number | null>(null)
 
 // Search state
 const isSearchMode = ref(false)
@@ -113,6 +114,10 @@ async function fetchBookmarks(search?: string) {
     })
     if (response.success) {
       bookmarks.value = response.data
+      // Store user's original bookmarks if not in search mode
+      if (!search) {
+        userBookmarks.value = response.data
+      }
     }
   } catch (error) {
     toast.add({
@@ -360,17 +365,21 @@ async function deactivateShareLink() {
   }
 }
 
-function navigateToPublicBookmark(item: PublicBookmarkItem) {
-  // Convert public bookmark data to BookmarkItem format for consistent navigation
-  const bookmarkItem: BookmarkItem = {
-    id: item.id,
-    title: item.title,
-    type: item.type,
-    link: JSON.stringify(item.data)
+function selectPublicBookmark(publicBookmarkId: number) {
+  if (selectedPublicBookmark.value === publicBookmarkId) {
+    // Unselect - restore user's bookmarks
+    selectedPublicBookmark.value = null
+    bookmarks.value = userBookmarks.value
+    expandedFolders.value.clear()
+  } else {
+    // Select - show public bookmarks
+    selectedPublicBookmark.value = publicBookmarkId
+    const publicBookmark = publicBookmarks.value.find(pb => pb.id === publicBookmarkId)
+    if (publicBookmark) {
+      bookmarks.value = publicBookmark.bookmarks
+      expandedFolders.value.clear()
+    }
   }
-  
-  // Use the same navigation logic as regular bookmarks
-  navigateToItem(bookmarkItem)
 }
 </script>
 
@@ -417,13 +426,28 @@ function navigateToPublicBookmark(item: PublicBookmarkItem) {
       <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Bookmark Publik</h2>
       <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
         <div v-for="item in publicBookmarks" :key="item.id"
-          @click="navigateToPublicBookmark(item)"
-          class="shrink-0 w-40 p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-primary dark:hover:border-yellow-500 transition-colors">
+          @click="selectPublicBookmark(item.id)"
+          :class="[
+            'shrink-0 w-40 p-3 rounded-lg cursor-pointer transition-colors',
+            selectedPublicBookmark === item.id
+              ? 'bg-primary dark:bg-yellow-500 border-2 border-primary dark:border-yellow-500'
+              : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-yellow-500'
+          ]">
           <div class="flex items-start justify-between mb-2">
-            <h3 class="text-lg font-medium text-black dark:text-white line-clamp-2 flex-1">{{ item.title }}</h3>
-            <Icon v-if="item.is_pinned" name="mdi:pin" class="w-4 h-4 shrink-0 text-primary dark:text-yellow-500 ml-1" />
+            <h3 :class="[
+              'text-lg font-medium line-clamp-2 flex-1',
+              selectedPublicBookmark === item.id ? 'text-black' : 'text-black dark:text-white'
+            ]">{{ item.title }}</h3>
+            <Icon v-if="item.is_pinned" name="mdi:pin" 
+              :class="[
+                'w-4 h-4 shrink-0 ml-1',
+                selectedPublicBookmark === item.id ? 'text-black' : 'text-primary dark:text-yellow-500'
+              ]" />
           </div>
-          <p class="text-sm text-gray-500 dark:text-gray-400 truncate">{{ item.user.name }}</p>
+          <p :class="[
+            'text-sm truncate',
+            selectedPublicBookmark === item.id ? 'text-gray-700' : 'text-gray-500 dark:text-gray-400'
+          ]">{{ item.user.name }}</p>
         </div>
       </div>
     </div>
