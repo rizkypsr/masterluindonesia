@@ -20,15 +20,32 @@ interface BookmarkLink {
 interface BookmarkItem {
   id: number
   title: string
-  type: number // 0 = folder, 1 = video, 2 = audio, 3 = book, 4 = topic1, 5 = topic2, 6 = topic3
+  type: number // 0 = folder, 1 = video, 2 = audio, 3 = book, 4 = recipe/topic1, 5 = topic2, 6 = topic3
   link: string | null
   child?: BookmarkItem[]
+}
+
+interface PublicBookmarkItem {
+  id: number
+  title: string
+  type: number
+  data: any
+  is_pinned: boolean
+  user: {
+    id: number
+    name: string
+  }
 }
 
 interface BookmarkResponse {
   success: boolean
   message: string
   data: BookmarkItem[]
+}
+
+interface PublicBookmarkResponse {
+  success: boolean
+  data: PublicBookmarkItem[]
 }
 
 const { isAuthenticated, getAuthHeader } = useAuth()
@@ -38,6 +55,10 @@ const toast = useToast()
 const bookmarks = ref<BookmarkItem[]>([])
 const loading = ref(true)
 const expandedFolders = ref<Set<number>>(new Set())
+
+// Public bookmarks state
+const publicBookmarks = ref<PublicBookmarkItem[]>([])
+const loadingPublicBookmarks = ref(false)
 
 // Search state
 const isSearchMode = ref(false)
@@ -73,8 +94,11 @@ onMounted(async () => {
     navigateTo('/lainnya')
     return
   }
-  await fetchBookmarks()
-  await fetchActiveShareLink()
+  await Promise.all([
+    fetchBookmarks(),
+    fetchActiveShareLink(),
+    fetchPublicBookmarks()
+  ])
 })
 
 async function fetchBookmarks(search?: string) {
@@ -97,6 +121,22 @@ async function fetchBookmarks(search?: string) {
     })
   } finally {
     loading.value = false
+  }
+}
+
+async function fetchPublicBookmarks() {
+  loadingPublicBookmarks.value = true
+  try {
+    const response = await $fetch<PublicBookmarkResponse>(
+      `${config.public.apiBaseUrl}/public-bookmarks`
+    )
+    if (response.success) {
+      publicBookmarks.value = response.data
+    }
+  } catch (error) {
+    console.error('Failed to fetch public bookmarks:', error)
+  } finally {
+    loadingPublicBookmarks.value = false
   }
 }
 
@@ -319,6 +359,19 @@ async function deactivateShareLink() {
     isDeletingShare.value = false
   }
 }
+
+function navigateToPublicBookmark(item: PublicBookmarkItem) {
+  // Convert public bookmark data to BookmarkItem format for consistent navigation
+  const bookmarkItem: BookmarkItem = {
+    id: item.id,
+    title: item.title,
+    type: item.type,
+    link: JSON.stringify(item.data)
+  }
+  
+  // Use the same navigation logic as regular bookmarks
+  navigateToItem(bookmarkItem)
+}
 </script>
 
 <template>
@@ -356,6 +409,22 @@ async function deactivateShareLink() {
         <button v-if="searchQuery" @click="searchQuery = ''; performSearch()" class="p-1">
           <Icon name="mdi:close" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
         </button>
+      </div>
+    </div>
+
+    <!-- Public Bookmarks - Horizontal Scroll -->
+    <div v-if="!isSearchMode && publicBookmarks.length > 0" class="px-4 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
+      <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Bookmark Publik</h2>
+      <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+        <div v-for="item in publicBookmarks" :key="item.id"
+          @click="navigateToPublicBookmark(item)"
+          class="shrink-0 w-40 p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 cursor-pointer hover:border-primary dark:hover:border-yellow-500 transition-colors">
+          <div class="flex items-start justify-between mb-2">
+            <h3 class="text-lg font-medium text-black dark:text-white line-clamp-2 flex-1">{{ item.title }}</h3>
+            <Icon v-if="item.is_pinned" name="mdi:pin" class="w-4 h-4 shrink-0 text-primary dark:text-yellow-500 ml-1" />
+          </div>
+          <p class="text-sm text-gray-500 dark:text-gray-400 truncate">{{ item.user.name }}</p>
+        </div>
       </div>
     </div>
 
@@ -449,21 +518,10 @@ async function deactivateShareLink() {
             <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
               Buat link untuk membagikan semua bookmark Anda dengan orang lain
             </p>
-            <div class="space-y-2">
-              <UButton block class="bg-primary hover:bg-primary/90 text-black" :loading="isCreatingShare"
-                @click="createShareLink()">
-                Buat Link (Tidak Kadaluarsa)
-              </UButton>
-              <UButton block variant="outline" :loading="isCreatingShare" @click="createShareLink(7)">
-                Buat Link (7 Hari)
-              </UButton>
-              <UButton block variant="outline" :loading="isCreatingShare" @click="createShareLink(30)">
-                Buat Link (30 Hari)
-              </UButton>
-              <UButton block variant="outline" :loading="isCreatingShare" @click="createShareLink(90)">
-                Buat Link (90 Hari)
-              </UButton>
-            </div>
+            <UButton block class="bg-primary hover:bg-primary/90 text-black" :loading="isCreatingShare"
+              @click="createShareLink()">
+              Buat Link Berbagi
+            </UButton>
           </div>
 
           <div class="flex justify-end mt-6">
