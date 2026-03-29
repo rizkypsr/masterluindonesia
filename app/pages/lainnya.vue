@@ -152,12 +152,6 @@ function handleLogout() {
           <Icon name="mdi:chevron-right" class="w-9 h-9 text-black dark:text-white" />
         </NuxtLink>
 
-        <!-- Hubungi Kami -->
-        <NuxtLink to="/contact" class="flex items-center justify-between py-1">
-          <span class="font-medium text-black dark:text-white">Hubungi Kami</span>
-          <Icon name="mdi:chevron-right" class="w-9 h-9 text-black dark:text-white" />
-        </NuxtLink>
-
         <!-- Masuk / Daftar Aplikasi -->
         <button v-if="!isAuthenticated" @click="openGoogleLogin" class="flex items-center justify-between py-1 w-full"
           :disabled="isLoading">

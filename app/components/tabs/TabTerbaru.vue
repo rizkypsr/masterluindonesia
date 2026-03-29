@@ -109,6 +109,9 @@
 
     <!-- Public Bookmark Section -->
     <PublicBookmarkSection :menu-settings="allData?.data?.menuSettings" />
+
+    <!-- Contact Section -->
+    <ContactSection />
   </div>
   </ClientOnly>
 </template>
