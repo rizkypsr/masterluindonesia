@@ -73,7 +73,7 @@
 
                     <!-- Expandable Content -->
                     <div v-if="expandedItems.has(item.id)" class="mx-4 mb-4 p-4 bg-white dark:bg-gray-800 rounded-lg">
-                        <div class="text-black dark:text-white leading-relaxed" v-html="item.script"></div>
+                        <div class="text-black dark:text-white leading-relaxed topic-content" v-html="item.script"></div>
                         <div class="flex items-center gap-4 pt-3 mt-3 border-t border-gray-200 dark:border-gray-600">
                             <button @click.stop="copyContent(item)"
                                 class="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:font-bold">
@@ -284,3 +284,10 @@ const addBookmark = () => {
     )
 }
 </script>
+
+<style>
+/* Dark mode: change text color to black for highlighted text, keep background colors */
+.dark .topic-content span[style*="background-color"] {
+    color: #000000 !important;
+}
+</style>

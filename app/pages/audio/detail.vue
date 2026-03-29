@@ -566,3 +566,10 @@ input[type="range"]::-webkit-slider-thumb {
   cursor: pointer;
 }
 </style>
+
+<style>
+/* Dark mode: change text color to black for highlighted text in subtitles */
+.dark span[style*="background-color"] {
+  color: #000000 !important;
+}
+</style>
