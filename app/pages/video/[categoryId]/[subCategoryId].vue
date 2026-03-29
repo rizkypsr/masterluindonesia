@@ -5,7 +5,10 @@
       <button @click="$router.back()" class="p-1">
         <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
       </button>
-      <h1 class="text-lg font-semibold text-black dark:text-white">{{ pageTitle }}</h1>
+      <h1 class="text-lg font-semibold text-black dark:text-white flex-1">{{ pageTitle }}</h1>
+      <button @click="shareContent" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+        <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
+      </button>
     </div>
 
     <!-- Content -->
@@ -71,6 +74,7 @@ interface VideoGroup {
 
 const route = useRoute()
 const config = useRuntimeConfig()
+const toast = useToast()
 const categoryId = computed(() => route.params.categoryId)
 const subCategoryId = computed(() => route.params.subCategoryId)
 const pageTitle = computed(() => (route.query.title as string) || 'Video')
@@ -134,4 +138,35 @@ onDeactivated(() => {
     saveScrollPosition(contentContainer.value.scrollTop)
   }
 })
+
+const shareContent = () => {
+  const shareUrl = `${window.location.origin}${window.location.pathname}?title=${encodeURIComponent(pageTitle.value)}`
+  const shareTitle = pageTitle.value
+
+  if (navigator.share) {
+    navigator.share({
+      title: shareTitle,
+      text: shareTitle,
+      url: shareUrl
+    }).catch(err => {
+      // User cancelled or error - silently ignore
+      console.log('Share cancelled or failed:', err)
+    })
+  } else {
+    // Fallback: copy to clipboard
+    const shareText = `${shareTitle}\n${shareUrl}`
+    navigator.clipboard.writeText(shareText).then(() => {
+      toast.add({
+        title: 'Link disalin ke clipboard',
+        color: 'success'
+      })
+    }).catch(err => {
+      console.error('Failed to copy:', err)
+      toast.add({
+        title: 'Gagal menyalin link',
+        color: 'error'
+      })
+    })
+  }
+}
 </script>

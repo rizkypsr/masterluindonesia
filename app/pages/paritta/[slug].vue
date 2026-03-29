@@ -17,6 +17,7 @@ interface Paritta {
 }
 
 const route = useRoute()
+const toast = useToast()
 const slug = route.params.slug as string
 
 const paritta = computed(() => {
@@ -236,6 +237,39 @@ function resetZoom() {
 function togglePlayerExpanded() {
     isPlayerExpanded.value = !isPlayerExpanded.value
 }
+
+function shareContent() {
+    if (!paritta.value) return
+    
+    const shareUrl = `${window.location.origin}${window.location.pathname}`
+    const shareTitle = `${paritta.value.title} - ${paritta.value.englishTitle}`
+
+    if (navigator.share) {
+        navigator.share({
+            title: shareTitle,
+            text: shareTitle,
+            url: shareUrl
+        }).catch(err => {
+            // User cancelled or error - silently ignore
+            console.log('Share cancelled or failed:', err)
+        })
+    } else {
+        // Fallback: copy to clipboard
+        const shareText = `${shareTitle}\n${shareUrl}`
+        navigator.clipboard.writeText(shareText).then(() => {
+            toast.add({
+                title: 'Link disalin ke clipboard',
+                color: 'success'
+            })
+        }).catch(err => {
+            console.error('Failed to copy:', err)
+            toast.add({
+                title: 'Gagal menyalin link',
+                color: 'error'
+            })
+        })
+    }
+}
 </script>
 
 <template>
@@ -257,6 +291,9 @@ function togglePlayerExpanded() {
                 </button>
                 <button class="p-2" @click="resetCount">
                     <Icon name="mdi:refresh" class="w-6 h-6 text-black dark:text-white" />
+                </button>
+                <button class="p-2" @click="shareContent">
+                    <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
                 </button>
             </div>
         </div>

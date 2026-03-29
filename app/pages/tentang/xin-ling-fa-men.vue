@@ -3,8 +3,13 @@
     <!-- Header -->
     <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
       <BackButton to="/?tab=tentang" />
-      <span class="text-sm text-gray-600 dark:text-gray-400">Pengenalan profil XLFM</span>
-      <TentangMenu type="tentang-main" />
+      <span class="text-sm text-gray-600 dark:text-gray-400 flex-1 text-center">Pengenalan profil XLFM</span>
+      <div class="flex items-center gap-2">
+        <button @click="shareContent" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+          <Icon name="mdi:share-variant" class="w-5 h-5 text-gray-700 dark:text-gray-300" />
+        </button>
+        <TentangMenu type="tentang-main" />
+      </div>
     </div>
 
     <!-- Hero Image -->
@@ -71,4 +76,35 @@
 definePageMeta({
   layout: 'blank'
 })
+
+const toast = useToast()
+
+function shareContent() {
+  const shareUrl = `${window.location.origin}${window.location.pathname}`
+  const shareTitle = 'Xin Ling Fa Men - Master Lu Indonesia'
+  
+  if (navigator.share) {
+    navigator.share({
+      title: shareTitle,
+      text: shareTitle,
+      url: shareUrl
+    }).catch(err => {
+      console.log('Share cancelled or failed:', err)
+    })
+  } else {
+    const shareText = `${shareTitle}\n${shareUrl}`
+    navigator.clipboard.writeText(shareText).then(() => {
+      toast.add({
+        title: 'Link disalin ke clipboard',
+        color: 'success'
+      })
+    }).catch(err => {
+      console.error('Failed to copy:', err)
+      toast.add({
+        title: 'Gagal menyalin link',
+        color: 'error'
+      })
+    })
+  }
+}
 </script>

@@ -3,8 +3,10 @@
         <!-- Header (Fixed) -->
         <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <BackButton to="/?tab=edukasi" />
-            <span class="text-lg text-gray-600 dark:text-gray-400">Permohonan Penggantian Nama</span>
-            <div class="w-6"></div>
+            <span class="text-lg text-gray-600 dark:text-gray-400 flex-1 text-center">Permohonan Penggantian Nama</span>
+            <button @click="shareContent" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                <Icon name="mdi:share-variant" class="w-5 h-5 text-gray-700 dark:text-gray-300" />
+            </button>
         </div>
 
         <!-- Content (Scrollable) -->
@@ -125,6 +127,8 @@ definePageMeta({
     layout: 'blank'
 })
 
+const toast = useToast()
+
 // Unduh Carousel
 const unduhRef = useTemplateRef('unduhRef')
 const unduhIndex = ref(0)
@@ -155,4 +159,33 @@ const unduhItems = [
         description: 'Jika Anda tidak yakin dengan nama asli Anda, misalnya anak adopsi. Maka Anda bisa menggunakan formulir penggantian nama "正名升文 Zheng Ming Sheng Wen"'
     }
 ]
+
+function shareContent() {
+    const shareUrl = `${window.location.origin}${window.location.pathname}`
+    const shareTitle = 'Permohonan Penggantian Nama - Master Lu Indonesia'
+
+    if (navigator.share) {
+        navigator.share({
+            title: shareTitle,
+            text: shareTitle,
+            url: shareUrl
+        }).catch(err => {
+            console.log('Share cancelled or failed:', err)
+        })
+    } else {
+        const shareText = `${shareTitle}\n${shareUrl}`
+        navigator.clipboard.writeText(shareText).then(() => {
+            toast.add({
+                title: 'Link disalin ke clipboard',
+                color: 'success'
+            })
+        }).catch(err => {
+            console.error('Failed to copy:', err)
+            toast.add({
+                title: 'Gagal menyalin link',
+                color: 'error'
+            })
+        })
+    }
+}
 </script>

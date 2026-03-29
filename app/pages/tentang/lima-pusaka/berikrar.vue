@@ -3,8 +3,13 @@
     <!-- Header -->
     <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
       <BackButton to="/?tab=tentang" />
-      <span class="text-sm text-gray-600 dark:text-gray-400">2. Berikrar</span>
-      <TentangMenu type="lima-pusaka" />
+      <span class="text-sm text-gray-600 dark:text-gray-400 flex-1 text-center">2. Berikrar</span>
+      <div class="flex items-center gap-2">
+        <button @click="shareContent" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+          <Icon name="mdi:share-variant" class="w-5 h-5 text-gray-700 dark:text-gray-300" />
+        </button>
+        <TentangMenu type="lima-pusaka" />
+      </div>
     </div>
 
     <!-- Hero Image -->
@@ -165,6 +170,8 @@ definePageMeta({
   layout: 'blank'
 })
 
+const toast = useToast()
+
 // Tanpa Altar carousel
 const tanpaAltarRef = useTemplateRef('tanpaAltarRef')
 const tanpaAltarIndex = ref(0)
@@ -273,4 +280,33 @@ const denganAltarItems = [
     image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6'
   }
 ]
+
+function shareContent() {
+  const shareUrl = `${window.location.origin}${window.location.pathname}`
+  const shareTitle = 'Berikrar - Master Lu Indonesia'
+  
+  if (navigator.share) {
+    navigator.share({
+      title: shareTitle,
+      text: shareTitle,
+      url: shareUrl
+    }).catch(err => {
+      console.log('Share cancelled or failed:', err)
+    })
+  } else {
+    const shareText = `${shareTitle}\n${shareUrl}`
+    navigator.clipboard.writeText(shareText).then(() => {
+      toast.add({
+        title: 'Link disalin ke clipboard',
+        color: 'success'
+      })
+    }).catch(err => {
+      console.error('Failed to copy:', err)
+      toast.add({
+        title: 'Gagal menyalin link',
+        color: 'error'
+      })
+    })
+  }
+}
 </script>

@@ -5,7 +5,10 @@
       <button @click="goBack()" class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
         <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
       </button>
-      <h1 class="text-lg font-semibold text-black dark:text-white">{{ pageTitle }}</h1>
+      <h1 class="text-lg font-semibold text-black dark:text-white flex-1">{{ pageTitle }}</h1>
+      <button @click="shareContent" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+        <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
+      </button>
     </div>
 
     <!-- Content -->
@@ -530,10 +533,25 @@ const shareContent = () => {
       title: shareTitle,
       text: shareTitle,
       url: shareUrl
+    }).catch(err => {
+      // User cancelled or error - silently ignore
+      console.log('Share cancelled or failed:', err)
     })
   } else {
+    // Fallback: copy to clipboard
     const shareText = `${shareTitle}\n${shareUrl}`
-    navigator.clipboard.writeText(shareText)
+    navigator.clipboard.writeText(shareText).then(() => {
+      toast.add({
+        title: 'Link disalin ke clipboard',
+        color: 'success'
+      })
+    }).catch(err => {
+      console.error('Failed to copy:', err)
+      toast.add({
+        title: 'Gagal menyalin link',
+        color: 'error'
+      })
+    })
   }
 }
 </script>

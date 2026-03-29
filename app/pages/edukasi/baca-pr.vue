@@ -3,10 +3,15 @@
         <!-- Header (Fixed) -->
         <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <BackButton to="/?tab=edukasi" />
-            <span class="text-lg text-gray-600 dark:text-gray-400">Pekerjaan Rumah Setiap Hari</span>
-            <button @click="isMenuOpen = true" class="p-1">
-                <Icon name="heroicons:bars-3" class="w-5 h-5 text-gray-700 dark:text-gray-300" />
-            </button>
+            <span class="text-lg text-gray-600 dark:text-gray-400 flex-1 text-center">Pekerjaan Rumah Setiap Hari</span>
+            <div class="flex items-center gap-2">
+                <button @click="shareContent" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                    <Icon name="mdi:share-variant" class="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                </button>
+                <button @click="isMenuOpen = true" class="p-1">
+                    <Icon name="heroicons:bars-3" class="w-5 h-5 text-gray-700 dark:text-gray-300" />
+                </button>
+            </div>
         </div>
 
         <!-- Slideover Menu -->
@@ -432,6 +437,8 @@ definePageMeta({
     layout: 'blank'
 })
 
+const toast = useToast()
+
 // Menu
 const isMenuOpen = ref(false)
 const menuItems = [
@@ -595,4 +602,33 @@ const langkahKeempat2Items = [
         count: 'Sebanyak 21, 27 atau 49x'
     }
 ]
+
+function shareContent() {
+    const shareUrl = `${window.location.origin}${window.location.pathname}`
+    const shareTitle = 'Pekerjaan Rumah Setiap Hari - Master Lu Indonesia'
+
+    if (navigator.share) {
+        navigator.share({
+            title: shareTitle,
+            text: shareTitle,
+            url: shareUrl
+        }).catch(err => {
+            console.log('Share cancelled or failed:', err)
+        })
+    } else {
+        const shareText = `${shareTitle}\n${shareUrl}`
+        navigator.clipboard.writeText(shareText).then(() => {
+            toast.add({
+                title: 'Link disalin ke clipboard',
+                color: 'success'
+            })
+        }).catch(err => {
+            console.error('Failed to copy:', err)
+            toast.add({
+                title: 'Gagal menyalin link',
+                color: 'error'
+            })
+        })
+    }
+}
 </script>
