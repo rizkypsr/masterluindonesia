@@ -169,6 +169,7 @@ interface Topic3Group {
 
 // Persist search state across navigation using useState
 const searchQuery = useState('search-query', () => '')
+const searchedKeyword = useState('searched-keyword', () => '') // Store the actual searched keyword
 const currentPage = useState('search-page', () => 1)
 const hasSearched = useState('search-has-searched', () => false)
 const results = useState<SearchItem[]>('search-results', () => [])
@@ -847,6 +848,7 @@ function toggleExpand(item: SearchItem) {
 
 function handleSearch() {
   if (!searchQuery.value.trim()) return
+  searchedKeyword.value = searchQuery.value.trim() // Store the searched keyword
   currentPage.value = 1
   hasSearched.value = true
   fetchResults()
@@ -2382,6 +2384,19 @@ const scrollToTop = () => {
     <!-- Search Results View -->
     <div v-else ref="resultsScrollContainer" class="flex-1 overflow-y-auto">
       <div class="px-4 py-4">
+        <!-- Search Input in Results View -->
+        <div class="mb-4">
+          <UInput v-model="searchQuery" placeholder="Masukan kata kunci" size="xl" class="w-full"
+            @keyup.enter="handleSearch">
+            <template #trailing>
+              <UButton size="sm" class="bg-primary hover:bg-primary/90 text-black font-medium" @click="handleSearch"
+                :disabled="!searchQuery.trim()">
+                Cari
+              </UButton>
+            </template>
+          </UInput>
+        </div>
+
         <!-- Filter Buttons -->
         <div class="mb-2 flex gap-2">
           <UButton size="lg" class="bg-primary hover:bg-primary/90 text-black rounded-full font-bold"
@@ -2398,7 +2413,7 @@ const scrollToTop = () => {
 
         <!-- Kesaksian Label -->
         <p class="text-sm text-gray-400 dark:text-gray-500 mb-4 uppercase tracking-wide">
-          MENAMPILKAN "{{ searchQuery }}"
+          MENAMPILKAN "{{ searchedKeyword }}"
         </p>
 
         <!-- Loading (only show when no results yet) -->
