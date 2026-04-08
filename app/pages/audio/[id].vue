@@ -336,24 +336,17 @@ const stripHtml = (html: string) => {
   return doc.body.textContent || ''
 }
 
-// Copy subtitle to clipboard
-const toast = useToast()
+// Use composable for copy functionality
+const { copyToClipboard } = useCopySubtitle()
 
 const copySubtitle = async (sub: Subtitle) => {
-  const text = `${sub.title}\n${sub.description_wa}\n${sub.script_wa}`.replace(/\\n/g, '\n')
-  try {
-    await navigator.clipboard.writeText(text)
-    toast.add({
-      title: 'Berhasil disalin',
-      color: 'success'
-    })
-  } catch (err) {
-    console.error('Failed to copy:', err)
-    toast.add({
-      title: 'Gagal menyalin',
-      color: 'error'
-    })
-  }
+  await copyToClipboard({
+    title: sub.title,
+    description: sub.description,
+    description_wa: sub.description_wa,
+    script: sub.script,
+    script_wa: sub.script_wa
+  })
 }
 
 // Text-to-Speech State

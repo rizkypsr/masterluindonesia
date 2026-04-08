@@ -104,11 +104,10 @@ export const useSearchState = () => {
   }
 
   function getItemKey(item: SearchItem): string {
-    const itemType = item.type.toLowerCase()
-    if (itemType === 'book' || itemType === 'buku') {
-      return String(item.header_id)
-    }
-    return `${item.type}-${item.id}`
+    // Use type, header_id, id, and timestamp to ensure uniqueness across all item types
+    // header_id is especially important for books as it contains chapter info
+    // timestamp adds extra uniqueness for items that might share other identifiers
+    return `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
   }
 
   function toggleExpand(item: SearchItem) {

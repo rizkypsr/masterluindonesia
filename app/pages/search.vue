@@ -506,7 +506,6 @@ watch(isDeepSearchOpen, (isOpen) => {
             :search-keyword="searchedKeyword"
             @toggle="toggleExpand(item)"
             @navigate="navigateToDetail(item)"
-            @copy="copyFullDetail(item)"
             @speak="speakContent(item)"
             @navigate-related="navigateToRelatedChapter"
           />

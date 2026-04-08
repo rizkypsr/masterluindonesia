@@ -12,10 +12,11 @@ const props = defineProps<{
 const emit = defineEmits<{
   toggle: []
   navigate: []
-  copy: []
   speak: []
   navigateRelated: [chapter: any]
 }>()
+
+const { copyToClipboard } = useCopySubtitle()
 
 function stripHtml(html: string): string {
   return html
@@ -30,11 +31,11 @@ function stripHtml(html: string): string {
 function highlightText(text: string): string {
   if (!props.searchKeyword?.trim()) return text
   const search = props.searchKeyword.trim()
-  
+
   // Create a temporary div to parse HTML
   const tempDiv = document.createElement('div')
   tempDiv.innerHTML = text
-  
+
   // Function to highlight text in text nodes only
   const highlightTextNodes = (node: Node) => {
     if (node.nodeType === Node.TEXT_NODE) {
@@ -53,9 +54,17 @@ function highlightText(text: string): string {
       }
     }
   }
-  
+
   highlightTextNodes(tempDiv)
   return tempDiv.innerHTML
+}
+
+function handleCopy() {
+  copyToClipboard({
+    title: props.item.title,
+    description: props.item.detail,
+    full_detail: props.item.description_wa,
+  })
 }
 </script>
 
@@ -65,17 +74,15 @@ function highlightText(text: string): string {
     :style="{ fontSize: fontSize + 'px' }">
     <!-- Card Header -->
     <div class="p-4 cursor-pointer"
-      :class="isExpanded ? 'bg-[#c09637] dark:bg-yellow-600' : 'bg-white dark:bg-gray-800'"
-      @click="emit('toggle')">
+      :class="isExpanded ? 'bg-[#c09637] dark:bg-yellow-600' : 'bg-white dark:bg-gray-800'" @click="emit('toggle')">
       <div class="flex items-center justify-between">
         <div class="flex-1">
-          <h3 class="font-bold"
-            :class="isExpanded ? 'text-black' : 'text-black dark:text-white'"
+          <h3 class="font-bold" :class="isExpanded ? 'text-black' : 'text-black dark:text-white'"
             :style="{ fontSize: fontSize + 'px' }">
             {{ item.title }}
           </h3>
           <!-- Video metadata -->
-          <div v-if="item.type.toLowerCase() === 'video' && (item.sub_group_name || item.timestamp_formatted)" 
+          <div v-if="item.type.toLowerCase() === 'video' && (item.sub_group_name || item.timestamp_formatted)"
             class="flex items-center gap-2 mt-1"
             :class="isExpanded ? 'text-black/80' : 'text-gray-600 dark:text-gray-400'"
             :style="{ fontSize: (fontSize - 2) + 'px' }">
@@ -84,9 +91,8 @@ function highlightText(text: string): string {
             <span v-if="item.timestamp_formatted">{{ item.timestamp_formatted }}</span>
           </div>
           <!-- Detail text -->
-          <p v-if="item.type.toLowerCase() !== 'video'" 
-            :class="isExpanded ? 'text-black' : 'text-black dark:text-gray-300'"
-            class="mt-1 line-clamp-6"
+          <p v-if="item.type.toLowerCase() !== 'video'"
+            :class="isExpanded ? 'text-black' : 'text-black dark:text-gray-300'" class="mt-1 line-clamp-6"
             :style="{ fontSize: fontSize + 'px' }">{{ item.detail }}</p>
         </div>
         <button @click.stop="emit('navigate')" class="p-2">
@@ -98,14 +104,13 @@ function highlightText(text: string): string {
     <!-- Expandable Content -->
     <div v-if="isExpanded" class="m-4 p-4 bg-white dark:bg-gray-800 rounded-lg">
       <!-- For audio, video, and topik items: render HTML to preserve formatting with highlighting -->
-      <div v-if="['audio', 'video', 'topik1', 'topik2', 'topik3', 'topic1', 'topic2', 'topic3', 'ensiklopedia', 'kumpulan tanya jawab'].includes(item.type.toLowerCase())"
-        class="text-black dark:text-white mb-4"
-        :style="{ fontSize: fontSize + 'px' }"
+      <div
+        v-if="['audio', 'video', 'topik1', 'topik2', 'topik3', 'topic1', 'topic2', 'topic3', 'ensiklopedia', 'kumpulan tanya jawab'].includes(item.type.toLowerCase())"
+        class="text-black dark:text-white mb-4" :style="{ fontSize: fontSize + 'px' }"
         v-html="highlightText(item.full_detail)">
       </div>
       <!-- For book items: use plain text with highlighting -->
-      <div v-else class="text-black dark:text-white mb-4 whitespace-pre-wrap"
-        :style="{ fontSize: fontSize + 'px' }"
+      <div v-else class="text-black dark:text-white mb-4 whitespace-pre-wrap" :style="{ fontSize: fontSize + 'px' }"
         v-html="highlightText(stripHtml(item.full_detail))">
       </div>
 
@@ -124,13 +129,12 @@ function highlightText(text: string): string {
       </div>
 
       <div class="flex items-center gap-4 pt-3 mt-3 border-t border-gray-200 dark:border-gray-600">
-        <button @click.stop="emit('copy')"
+        <button @click.stop="handleCopy"
           class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300 hover:font-bold">
           <Icon name="mdi:content-copy" class="w-4 h-4" />
           <span>Salin</span>
         </button>
-        <button @click.stop="emit('speak')"
-          class="flex items-center gap-1 text-sm hover:font-bold"
+        <button @click.stop="emit('speak')" class="flex items-center gap-1 text-sm hover:font-bold"
           :class="isSpeaking ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
           <Icon :name="isSpeaking ? 'mdi:stop' : 'mdi:account-voice'" class="w-4 h-4" />
           <span>{{ isSpeaking ? 'Stop' : 'Voice' }}</span>
@@ -139,3 +143,11 @@ function highlightText(text: string): string {
     </div>
   </div>
 </template>
+
+<style>
+/* Override inline styles for speaker labels in dark mode - must be global to work with v-html */
+.dark span[style*="background-color: rgb(255, 255, 0)"],
+.dark span[style*="background-color: rgb(0, 255, 0)"] {
+  color: black !important;
+}
+</style>

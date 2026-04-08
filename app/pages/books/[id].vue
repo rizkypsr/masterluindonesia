@@ -27,38 +27,103 @@
       <h2 class="font-semibold text-black dark:text-white" :style="{ fontSize: (fontSize + 4) + 'px' }">{{ bookTitle }}</h2>
     </div>
 
+    <!-- Search Input -->
+    <div class="px-4 pb-4 shrink-0">
+      <UInput 
+        v-model="searchQuery" 
+        placeholder="Cari dalam buku ini..." 
+        size="lg" 
+        class="w-full"
+        @keyup.enter="handleSearch"
+      >
+        <template #trailing>
+          <UButton 
+            v-if="searchQuery.trim()" 
+            size="sm" 
+            class="bg-primary hover:bg-primary/90 text-black font-medium" 
+            @click="handleSearch"
+          >
+            Cari
+          </UButton>
+        </template>
+      </UInput>
+    </div>
+
     <!-- Content -->
     <div class="px-4 flex-1 flex flex-col overflow-hidden">
-      <!-- Empty State -->
-      <div v-if="chapters.length === 0" class="flex flex-col items-center justify-center flex-1">
-        <div class="w-32 h-32 rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center mb-4 relative">
-          <Icon name="mdi:package-variant" class="w-16 h-16 text-gray-300 dark:text-gray-600" />
-          <div class="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center">
-            <Icon name="mdi:cancel" class="w-6 h-6 text-gray-300 dark:text-gray-600" />
+      <!-- Search Results -->
+      <div v-if="hasSearched" class="flex flex-col overflow-hidden flex-1">
+        <div class="flex items-center justify-between mb-4 shrink-0">
+          <p class="text-sm text-gray-400 dark:text-gray-500 uppercase tracking-wide">
+            HASIL PENCARIAN "{{ searchedKeyword }}"
+          </p>
+          <button @click="clearSearch" class="text-sm text-primary hover:underline">
+            Kembali
+          </button>
+        </div>
+
+        <div ref="searchScrollContainer" class="overflow-y-auto flex-1 custom-scrollbar pb-4">
+          <!-- Loading -->
+          <div v-if="isSearching" class="flex justify-center py-8">
+            <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500 dark:text-gray-400" />
+          </div>
+
+          <!-- Results List -->
+          <div v-else-if="searchResults.length > 0" class="space-y-4">
+            <SearchResultCard
+              v-for="item in searchResults"
+              :key="`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
+              :item="item"
+              :is-expanded="expandedSearchItems.has(`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`)"
+              :font-size="fontSize"
+              :is-speaking="speakingItemId === `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
+              :search-keyword="searchedKeyword"
+              @toggle="toggleSearchExpand(item)"
+              @navigate="navigateToSearchResult(item)"
+              @speak="speakSearchContent(item)"
+            />
+          </div>
+
+          <!-- Empty State -->
+          <div v-else class="text-center py-8">
+            <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
           </div>
         </div>
-        <p class="text-gray-500 dark:text-gray-400 font-medium">Data tidak tersedia</p>
       </div>
 
-      <!-- Chapters List -->
+      <!-- Original Content (Chapters List) -->
       <div v-else class="flex flex-col overflow-hidden flex-1">
-        <h3 class="font-semibold text-black dark:text-white mb-4 shrink-0" :style="{ fontSize: (fontSize + 2) + 'px' }">Daftar Isi</h3>
+        <!-- Empty State -->
+        <div v-if="chapters.length === 0" class="flex flex-col items-center justify-center flex-1">
+          <div class="w-32 h-32 rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center mb-4 relative">
+            <Icon name="mdi:package-variant" class="w-16 h-16 text-gray-300 dark:text-gray-600" />
+            <div class="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center">
+              <Icon name="mdi:cancel" class="w-6 h-6 text-gray-300 dark:text-gray-600" />
+            </div>
+          </div>
+          <p class="text-gray-500 dark:text-gray-400 font-medium">Data tidak tersedia</p>
+        </div>
 
-        <div ref="scrollContainer" class="overflow-y-auto flex-1 custom-scrollbar pb-4">
-          <div v-for="chapter in chapters" :key="chapter.id" class="mb-4">
-            <!-- Chapter Title -->
-            <h4 class="font-semibold text-black dark:text-white py-2" :style="{ fontSize: fontSize + 'px' }">{{ chapter.title }}</h4>
+        <!-- Chapters List -->
+        <div v-else class="flex flex-col overflow-hidden flex-1">
+          <h3 class="font-semibold text-black dark:text-white mb-4 shrink-0" :style="{ fontSize: (fontSize + 2) + 'px' }">Daftar Isi</h3>
 
-            <!-- Sub Chapters (Recursive) -->
-            <ChapterItem 
-              v-if="chapter.sub_chapters && chapter.sub_chapters.length > 0"
-              v-for="sub in chapter.sub_chapters" 
-              :key="sub.id"
-              :chapter="sub"
-              :book-id="bookId"
-              :font-size="fontSize"
-              :level="1"
-            />
+          <div ref="scrollContainer" class="overflow-y-auto flex-1 custom-scrollbar pb-4">
+            <div v-for="chapter in chapters" :key="chapter.id" class="mb-4">
+              <!-- Chapter Title -->
+              <h4 class="font-semibold text-black dark:text-white py-2" :style="{ fontSize: fontSize + 'px' }">{{ chapter.title }}</h4>
+
+              <!-- Sub Chapters (Recursive) -->
+              <ChapterItem 
+                v-if="chapter.sub_chapters && chapter.sub_chapters.length > 0"
+                v-for="sub in chapter.sub_chapters" 
+                :key="sub.id"
+                :chapter="sub"
+                :book-id="bookId"
+                :font-size="fontSize"
+                :level="1"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -88,6 +153,7 @@
 import { ref, onMounted, onActivated, onBeforeUnmount, nextTick } from 'vue'
 import { useBookmark } from '~/composables/useBookmark'
 import { useHistory } from '~/composables/useHistory'
+import type { SearchItem } from '~/types/search'
 
 // Enable keepalive for this page
 definePageMeta({
@@ -95,6 +161,7 @@ definePageMeta({
 })
 
 const route = useRoute()
+const router = useRouter()
 const config = useRuntimeConfig()
 const { saveScrollPosition, getScrollPosition } = useScrollState()
 
@@ -102,6 +169,17 @@ const { saveScrollPosition, getScrollPosition } = useScrollState()
 const showFabMenu = ref(false)
 const fontSize = ref(16)
 const scrollContainer = ref<HTMLElement | null>(null)
+const searchScrollContainer = ref<HTMLElement | null>(null)
+
+// Search State
+const searchQuery = ref('')
+const searchedKeyword = ref('')
+const hasSearched = ref(false)
+const isSearching = ref(false)
+const searchResults = ref<SearchItem[]>([])
+const expandedSearchItems = ref<Set<string>>(new Set())
+const speakingItemId = ref<string | null>(null)
+const isSpeaking = ref(false)
 
 // Bookmark
 const { createBookBookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
@@ -208,6 +286,142 @@ const chapters = computed(() => {
   }
   return []
 })
+
+// Get all chapter IDs recursively
+const getAllChapterIds = (chapters: Chapter[]): number[] => {
+  const ids: number[] = []
+  
+  const extractIds = (items: (Chapter | SubChapter)[]) => {
+    for (const item of items) {
+      ids.push(item.id)
+      if ('sub_chapters' in item && item.sub_chapters) {
+        extractIds(item.sub_chapters)
+      }
+      if ('sub' in item && item.sub) {
+        extractIds(item.sub)
+      }
+    }
+  }
+  
+  extractIds(chapters)
+  return ids
+}
+
+// Search Functions
+const handleSearch = async () => {
+  if (!searchQuery.value.trim()) return
+  
+  searchedKeyword.value = searchQuery.value.trim()
+  hasSearched.value = true
+  isSearching.value = true
+  searchResults.value = []
+  
+  try {
+    const chapterIds = getAllChapterIds(chapters.value)
+    
+    const payload = {
+      keyword: searchedKeyword.value,
+      year: [],
+      selectedCategory: ['Buku'],
+      selectedKeyword: [],
+      listShowKeyword: [],
+      listHideKeyword: [],
+      chapter_ids: chapterIds
+    }
+    
+    const response = await $fetch<{
+      success: boolean
+      message: string
+      data: SearchItem[]
+    }>(`${config.public.apiBaseUrl}/search?page=1`, {
+      method: 'POST',
+      body: payload
+    })
+    
+    searchResults.value = response.data || []
+  } catch (error) {
+    console.error('Search failed:', error)
+  } finally {
+    isSearching.value = false
+  }
+}
+
+const clearSearch = () => {
+  searchQuery.value = ''
+  searchedKeyword.value = ''
+  hasSearched.value = false
+  searchResults.value = []
+  expandedSearchItems.value.clear()
+}
+
+const toggleSearchExpand = (item: SearchItem) => {
+  const key = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
+  if (expandedSearchItems.value.has(key)) {
+    expandedSearchItems.value.delete(key)
+  } else {
+    expandedSearchItems.value.add(key)
+  }
+  expandedSearchItems.value = new Set(expandedSearchItems.value)
+}
+
+const navigateToSearchResult = (item: SearchItem) => {
+  const itemType = item.type.toLowerCase()
+  
+  if (itemType === 'book' || itemType === 'buku') {
+    const headerId = item.header_id ? String(item.header_id) : ''
+    const parts = headerId.split('#')
+    const [, chapterId, page] = parts
+    router.push({ path: `/book/${chapterId}`, query: { page } })
+  }
+}
+
+const speakSearchContent = (item: SearchItem) => {
+  if (typeof window === 'undefined' || !window.speechSynthesis) {
+    console.error('Speech synthesis not supported')
+    return
+  }
+
+  const itemKey = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
+
+  if (isSpeaking.value && speakingItemId.value === itemKey) {
+    window.speechSynthesis.cancel()
+    isSpeaking.value = false
+    speakingItemId.value = null
+    return
+  }
+
+  window.speechSynthesis.cancel()
+
+  const text = item.full_detail
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+
+  const utterance = new SpeechSynthesisUtterance(text)
+  utterance.lang = 'id-ID'
+  utterance.rate = 1
+  utterance.pitch = 1
+
+  utterance.onstart = () => {
+    isSpeaking.value = true
+    speakingItemId.value = itemKey
+  }
+
+  utterance.onend = () => {
+    isSpeaking.value = false
+    speakingItemId.value = null
+  }
+
+  utterance.onerror = () => {
+    isSpeaking.value = false
+    speakingItemId.value = null
+  }
+
+  window.speechSynthesis.speak(utterance)
+}
 
 const shareBook = async () => {
   const shareData = {
