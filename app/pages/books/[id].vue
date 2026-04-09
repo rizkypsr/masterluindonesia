@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
+  <div class="h-screen bg-white dark:bg-gray-900 flex flex-col overflow-hidden relative">
     <!-- Header -->
     <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
       <div class="flex items-center gap-4">
@@ -20,49 +20,50 @@
       </div>
     </div>
 
-    <!-- Book Info -->
-    <div class="px-4 py-6 flex items-center gap-4 shrink-0">
-      <NuxtImg :src="bookCover" :alt="bookTitle" class="w-24 h-32 object-cover rounded-xl shrink-0" loading="lazy"
-        format="webp" width="96" height="128" />
-      <h2 class="font-semibold text-black dark:text-white" :style="{ fontSize: (fontSize + 4) + 'px' }">{{ bookTitle }}</h2>
-    </div>
+    <!-- Scrollable Content Area -->
+    <div ref="mainScrollContainer" class="flex-1 overflow-y-auto custom-scrollbar">
+      <!-- Book Info -->
+      <div class="px-4 py-6 flex items-center gap-4">
+        <NuxtImg :src="bookCover" :alt="bookTitle" class="w-24 h-32 object-cover rounded-xl shrink-0" loading="lazy"
+          format="webp" width="96" height="128" />
+        <h2 class="font-semibold text-black dark:text-white" :style="{ fontSize: (fontSize + 4) + 'px' }">{{ bookTitle }}</h2>
+      </div>
 
-    <!-- Search Input -->
-    <div class="px-4 pb-4 shrink-0">
-      <UInput 
-        v-model="searchQuery" 
-        placeholder="Cari dalam buku ini..." 
-        size="lg" 
-        class="w-full"
-        @keyup.enter="handleSearch"
-      >
-        <template #trailing>
-          <UButton 
-            v-if="searchQuery.trim()" 
-            size="sm" 
-            class="bg-primary hover:bg-primary/90 text-black font-medium" 
-            @click="handleSearch"
-          >
-            Cari
-          </UButton>
-        </template>
-      </UInput>
-    </div>
+      <!-- Search Input -->
+      <div class="px-4 pb-4">
+        <UInput 
+          v-model="searchQuery" 
+          placeholder="Cari dalam buku ini..." 
+          size="lg" 
+          class="w-full"
+          @keyup.enter="handleSearch"
+        >
+          <template #trailing>
+            <UButton 
+              v-if="searchQuery.trim()" 
+              size="sm" 
+              class="bg-primary hover:bg-primary/90 text-black font-medium" 
+              @click="handleSearch"
+            >
+              Cari
+            </UButton>
+          </template>
+        </UInput>
+      </div>
 
-    <!-- Content -->
-    <div class="px-4 flex-1 flex flex-col overflow-hidden">
-      <!-- Search Results -->
-      <div v-if="hasSearched" class="flex flex-col overflow-hidden flex-1">
-        <div class="flex items-center justify-between mb-4 shrink-0">
-          <p class="text-sm text-gray-400 dark:text-gray-500 uppercase tracking-wide">
-            HASIL PENCARIAN "{{ searchedKeyword }}"
-          </p>
-          <button @click="clearSearch" class="text-sm text-primary hover:underline">
-            Kembali
-          </button>
-        </div>
+      <!-- Content -->
+      <div class="px-4 pb-4">
+        <!-- Search Results -->
+        <div v-if="hasSearched">
+          <div class="flex items-center justify-between mb-4">
+            <p class="text-sm text-gray-400 dark:text-gray-500 uppercase tracking-wide">
+              HASIL PENCARIAN "{{ searchedKeyword }}"
+            </p>
+            <button @click="clearSearch" class="text-sm text-black dark:text-primary hover:underline">
+              Kembali
+            </button>
+          </div>
 
-        <div ref="searchScrollContainer" class="overflow-y-auto flex-1 custom-scrollbar pb-4">
           <!-- Loading -->
           <div v-if="isSearching" class="flex justify-center py-8">
             <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500 dark:text-gray-400" />
@@ -89,40 +90,40 @@
             <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
           </div>
         </div>
-      </div>
 
-      <!-- Original Content (Chapters List) -->
-      <div v-else class="flex flex-col overflow-hidden flex-1">
-        <!-- Empty State -->
-        <div v-if="chapters.length === 0" class="flex flex-col items-center justify-center flex-1">
-          <div class="w-32 h-32 rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center mb-4 relative">
-            <Icon name="mdi:package-variant" class="w-16 h-16 text-gray-300 dark:text-gray-600" />
-            <div class="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center">
-              <Icon name="mdi:cancel" class="w-6 h-6 text-gray-300 dark:text-gray-600" />
+        <!-- Original Content (Chapters List) -->
+        <div v-else>
+          <!-- Empty State -->
+          <div v-if="chapters.length === 0" class="flex flex-col items-center justify-center py-32">
+            <div class="w-32 h-32 rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center mb-4 relative">
+              <Icon name="mdi:package-variant" class="w-16 h-16 text-gray-300 dark:text-gray-600" />
+              <div class="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-white dark:bg-gray-800 flex items-center justify-center">
+                <Icon name="mdi:cancel" class="w-6 h-6 text-gray-300 dark:text-gray-600" />
+              </div>
             </div>
+            <p class="text-gray-500 dark:text-gray-400 font-medium">Data tidak tersedia</p>
           </div>
-          <p class="text-gray-500 dark:text-gray-400 font-medium">Data tidak tersedia</p>
-        </div>
 
-        <!-- Chapters List -->
-        <div v-else class="flex flex-col overflow-hidden flex-1">
-          <h3 class="font-semibold text-black dark:text-white mb-4 shrink-0" :style="{ fontSize: (fontSize + 2) + 'px' }">Daftar Isi</h3>
+          <!-- Chapters List -->
+          <div v-else>
+            <h3 class="font-semibold text-black dark:text-white mb-4" :style="{ fontSize: (fontSize + 2) + 'px' }">Daftar Isi</h3>
 
-          <div ref="scrollContainer" class="overflow-y-auto flex-1 custom-scrollbar pb-4">
-            <div v-for="chapter in chapters" :key="chapter.id" class="mb-4">
-              <!-- Chapter Title -->
-              <h4 class="font-semibold text-black dark:text-white py-2" :style="{ fontSize: fontSize + 'px' }">{{ chapter.title }}</h4>
+            <div class="pb-4">
+              <div v-for="chapter in chapters" :key="chapter.id" class="mb-4">
+                <!-- Chapter Title -->
+                <h4 class="font-semibold text-black dark:text-white py-2" :style="{ fontSize: fontSize + 'px' }">{{ chapter.title }}</h4>
 
-              <!-- Sub Chapters (Recursive) -->
-              <ChapterItem 
-                v-if="chapter.sub_chapters && chapter.sub_chapters.length > 0"
-                v-for="sub in chapter.sub_chapters" 
-                :key="sub.id"
-                :chapter="sub"
-                :book-id="bookId"
-                :font-size="fontSize"
-                :level="1"
-              />
+                <!-- Sub Chapters (Recursive) -->
+                <ChapterItem 
+                  v-if="chapter.sub_chapters && chapter.sub_chapters.length > 0"
+                  v-for="sub in chapter.sub_chapters" 
+                  :key="sub.id"
+                  :chapter="sub"
+                  :book-id="bookId"
+                  :font-size="fontSize"
+                  :level="1"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -132,13 +133,15 @@
     <!-- Bottom Section with FAB -->
     <div class="shrink-0 relative pb-[env(safe-area-inset-bottom)]">
       <!-- Floating Action Button - Lazy loaded -->
-      <LazyFabZoom 
-        v-model:isOpen="showFabMenu"
-        class="absolute right-4 bottom-4 z-10 mb-[env(safe-area-inset-bottom)]"
-        @zoomIn="zoomIn"
-        @zoomOut="zoomOut"
-        @scrollTop="scrollToTop"
-      />
+      <ClientOnly>
+        <LazyFabZoom 
+          v-model:isOpen="showFabMenu"
+          class="absolute right-4 bottom-4 z-10 mb-[env(safe-area-inset-bottom)]"
+          @zoomIn="zoomIn"
+          @zoomOut="zoomOut"
+          @scrollTop="scrollToTop"
+        />
+      </ClientOnly>
     </div>
 
     <!-- Bookmark Modal - Lazy loaded -->
@@ -167,9 +170,8 @@ const { saveScrollPosition, getScrollPosition } = useScrollState()
 
 // FAB Menu State
 const showFabMenu = ref(false)
-const fontSize = ref(16)
-const scrollContainer = ref<HTMLElement | null>(null)
-const searchScrollContainer = ref<HTMLElement | null>(null)
+const fontSize = ref(18)
+const mainScrollContainer = ref<HTMLElement | null>(null)
 
 // Search State
 const searchQuery = ref('')
@@ -199,17 +201,17 @@ const isBookBookmarked = computed(() => {
 })
 
 const restoreScroll = () => {
-  if (scrollContainer.value) {
+  if (mainScrollContainer.value) {
     const savedPosition = getScrollPosition(`book-${bookId.value}`)
     if (savedPosition > 0) {
-      scrollContainer.value.scrollTop = savedPosition
+      mainScrollContainer.value.scrollTop = savedPosition
     }
   }
 }
 
 const saveScroll = () => {
-  if (scrollContainer.value) {
-    const position = scrollContainer.value.scrollTop
+  if (mainScrollContainer.value) {
+    const position = mainScrollContainer.value.scrollTop
     saveScrollPosition(`book-${bookId.value}`, position)
   }
 }
@@ -253,7 +255,9 @@ const zoomOut = () => {
 }
 
 const scrollToTop = () => {
-  scrollContainer.value?.scrollTo({ top: 0, behavior: 'smooth' })
+  if (mainScrollContainer.value) {
+    mainScrollContainer.value.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 }
 
 interface SubChapter {

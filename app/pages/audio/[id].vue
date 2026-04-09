@@ -12,8 +12,70 @@
       </button>
     </div>
 
+    <!-- Search Input -->
+    <div class="px-4 py-4 bg-white dark:bg-gray-800 shrink-0">
+      <UInput 
+        v-model="globalSearchQuery" 
+        placeholder="Cari dalam audio ini..." 
+        size="lg" 
+        class="w-full"
+        @keyup.enter="handleGlobalSearch"
+      >
+        <template #trailing>
+          <UButton 
+            v-if="globalSearchQuery.trim()" 
+            size="sm" 
+            class="bg-primary hover:bg-primary/90 text-black font-medium" 
+            @click="handleGlobalSearch"
+          >
+            Cari
+          </UButton>
+        </template>
+      </UInput>
+    </div>
+
     <!-- Content -->
     <div class="flex-1 overflow-y-auto p-4 pb-40">
+      <!-- Search Results -->
+      <div v-if="hasGlobalSearched">
+        <div class="flex items-center justify-between mb-4">
+          <p class="text-sm text-gray-400 dark:text-gray-500 uppercase tracking-wide">
+            HASIL PENCARIAN "{{ searchedKeyword }}"
+          </p>
+          <button @click="clearGlobalSearch" class="text-sm text-black dark:text-primary hover:underline">
+            Kembali
+          </button>
+        </div>
+
+        <!-- Loading -->
+        <div v-if="isSearching" class="flex justify-center py-8">
+          <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500 dark:text-gray-400" />
+        </div>
+
+        <!-- Results List -->
+        <div v-else-if="searchResults.length > 0" class="space-y-4">
+          <SearchResultCard
+            v-for="item in searchResults"
+            :key="`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
+            :item="item"
+            :is-expanded="expandedSearchItems.has(`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`)"
+            :font-size="16"
+            :is-speaking="searchSpeakingItemId === `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
+            :search-keyword="searchedKeyword"
+            @toggle="toggleSearchExpand(item)"
+            @navigate="navigateToSearchResult(item)"
+            @speak="speakSearchContent(item)"
+          />
+        </div>
+
+        <!-- Empty State -->
+        <div v-else class="text-center py-8">
+          <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
+        </div>
+      </div>
+
+      <!-- Original Content -->
+      <div v-else>
       <!-- Loading State -->
       <div v-if="pending" class="space-y-4">
         <div class="flex gap-2 overflow-x-auto pb-2">
@@ -128,6 +190,7 @@
           </div>
         </div>
       </template>
+      </div>
     </div>
 
     <!-- Hidden Audio Element -->
@@ -216,8 +279,10 @@ import { useBookmark } from '~/composables/useBookmark'
 import { useHistory } from '~/composables/useHistory'
 import { useSmartBack } from '~/composables/useSmartBack'
 import { ref, computed, watch, onMounted } from "vue"
+import type { SearchItem } from '~/types/search'
 
 const { goBack } = useSmartBack()
+const router = useRouter()
 
 interface Subtitle {
   id: number
@@ -263,6 +328,161 @@ const { data: audioData, pending } = await useFetch<{ success: boolean; data: Au
 )
 
 const audioGroups = computed(() => audioData.value?.data?.sort((a, b) => a.order - b.order) || [])
+
+// Global search state
+const globalSearchQuery = ref('')
+const searchedKeyword = ref('')
+const hasGlobalSearched = ref(false)
+const isSearching = ref(false)
+const searchResults = ref<SearchItem[]>([])
+const expandedSearchItems = ref<Set<string>>(new Set())
+const searchSpeakingItemId = ref<string | null>(null)
+const isSearchSpeaking = ref(false)
+
+// Get all audio IDs from all groups
+const getAllAudioIds = (): number[] => {
+  const ids: number[] = []
+  for (const group of audioGroups.value) {
+    for (const audio of group.audio) {
+      ids.push(audio.id)
+    }
+  }
+  return ids
+}
+
+// Global Search Functions
+const handleGlobalSearch = async () => {
+  if (!globalSearchQuery.value.trim()) return
+  
+  searchedKeyword.value = globalSearchQuery.value.trim()
+  hasGlobalSearched.value = true
+  isSearching.value = true
+  searchResults.value = []
+  
+  try {
+    const audioIds = getAllAudioIds()
+    
+    const payload = {
+      keyword: searchedKeyword.value,
+      year: [],
+      selectedCategory: ['Audio'],
+      selectedKeyword: [],
+      listShowKeyword: [],
+      listHideKeyword: [],
+      audio_ids: audioIds
+    }
+    
+    const response = await $fetch<{
+      success: boolean
+      message: string
+      data: SearchItem[]
+    }>(`${config.public.apiBaseUrl}/search?page=1`, {
+      method: 'POST',
+      body: payload
+    })
+    
+    searchResults.value = response.data || []
+  } catch (error) {
+    console.error('Search failed:', error)
+  } finally {
+    isSearching.value = false
+  }
+}
+
+const clearGlobalSearch = () => {
+  globalSearchQuery.value = ''
+  searchedKeyword.value = ''
+  hasGlobalSearched.value = false
+  searchResults.value = []
+  expandedSearchItems.value.clear()
+}
+
+const toggleSearchExpand = (item: SearchItem) => {
+  const key = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
+  if (expandedSearchItems.value.has(key)) {
+    expandedSearchItems.value.delete(key)
+  } else {
+    expandedSearchItems.value.add(key)
+  }
+  expandedSearchItems.value = new Set(expandedSearchItems.value)
+}
+
+const navigateToSearchResult = (item: SearchItem) => {
+  const itemType = item.type.toLowerCase()
+  
+  if (itemType === 'audio') {
+    const audioId = item.header_id || ''
+    const subtitleId = item.id || ''
+    router.push({ path: '/audio/detail', query: { audio_id: audioId, subtitle_id: subtitleId } })
+  } else if (itemType === 'video') {
+    const videoId = item.header_id || ''
+    const subtitleId = item.id || ''
+    router.push({ path: '/video/detail', query: { video_id: videoId, subtitle_id: subtitleId } })
+  } else if (itemType === 'topik1' || itemType === 'topic1') {
+    const audioId = item.header_id || ''
+    const subtitleId = item.id || ''
+    router.push({ path: '/audio/detail', query: { audio_id: audioId, subtitle_id: subtitleId } })
+  } else if (itemType === 'topik2' || itemType === 'topic2') {
+    const headerId = item.header_id ? String(item.header_id) : ''
+    router.push(`/topics2/content/${headerId}`)
+  } else if (itemType === 'topik3' || itemType === 'topic3') {
+    const headerId = item.header_id ? String(item.header_id) : ''
+    router.push(`/topics3/content/${headerId}`)
+  } else if (itemType === 'book' || itemType === 'buku') {
+    const headerId = item.header_id ? String(item.header_id) : ''
+    const parts = headerId.split('#')
+    const [, chapterId, page] = parts
+    router.push({ path: `/book/${chapterId}`, query: { page } })
+  }
+}
+
+const speakSearchContent = (item: SearchItem) => {
+  if (typeof window === 'undefined' || !window.speechSynthesis) {
+    console.error('Speech synthesis not supported')
+    return
+  }
+
+  const itemKey = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
+
+  if (isSearchSpeaking.value && searchSpeakingItemId.value === itemKey) {
+    window.speechSynthesis.cancel()
+    isSearchSpeaking.value = false
+    searchSpeakingItemId.value = null
+    return
+  }
+
+  window.speechSynthesis.cancel()
+
+  const text = item.full_detail
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+
+  const utterance = new SpeechSynthesisUtterance(text)
+  utterance.lang = 'id-ID'
+  utterance.rate = 1
+  utterance.pitch = 1
+
+  utterance.onstart = () => {
+    isSearchSpeaking.value = true
+    searchSpeakingItemId.value = itemKey
+  }
+
+  utterance.onend = () => {
+    isSearchSpeaking.value = false
+    searchSpeakingItemId.value = null
+  }
+
+  utterance.onerror = () => {
+    isSearchSpeaking.value = false
+    searchSpeakingItemId.value = null
+  }
+
+  window.speechSynthesis.speak(utterance)
+}
 
 // Selected Group State - persisted across navigation
 const selectedGroupId = useState<number | null>(`audio-selected-group-${categoryId.value}`, () => null)

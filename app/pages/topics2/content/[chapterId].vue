@@ -46,7 +46,7 @@ const isLoadingContents = ref(true)
 const contentRef = ref<HTMLElement | null>(null)
 const isPageModalOpen = ref(false)
 const selectedPage = ref(1)
-const fontSize = ref(16)
+const fontSize = ref(18)
 const hasVideo = ref(false)
 const videoCategoryId = ref<number | null>(null)
 

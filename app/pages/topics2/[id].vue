@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
+  <div class="h-screen bg-white dark:bg-gray-900 flex flex-col overflow-hidden relative">
     <!-- Header -->
     <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shrink-0">
       <div class="flex items-center justify-between px-4 py-4">
@@ -43,7 +43,7 @@
           <p class="text-sm text-gray-400 dark:text-gray-500 uppercase tracking-wide">
             HASIL PENCARIAN "{{ searchedKeyword }}"
           </p>
-          <button @click="clearGlobalSearch" class="text-sm text-primary hover:underline">
+          <button @click="clearGlobalSearch" class="text-sm text-black dark:text-primary hover:underline">
             Kembali
           </button>
         </div>
@@ -60,7 +60,7 @@
             :key="`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
             :item="item"
             :is-expanded="expandedSearchItems.has(`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`)"
-            :font-size="16"
+            :font-size="fontSize"
             :is-speaking="speakingItemId === `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
             :search-keyword="searchedKeyword"
             @toggle="toggleSearchExpand(item)"
@@ -96,6 +96,17 @@
         </div>
       </div>
     </div>
+
+    <!-- Floating Action Button -->
+    <ClientOnly>
+      <LazyFabZoom 
+        v-model:isOpen="showFabMenu"
+        class="absolute right-4 bottom-4 z-10"
+        @zoomIn="zoomIn"
+        @zoomOut="zoomOut"
+        @scrollTop="scrollToTop"
+      />
+    </ClientOnly>
   </div>
 </template>
 
@@ -126,6 +137,24 @@ const searchResults = ref<SearchItem[]>([])
 const expandedSearchItems = ref<Set<string>>(new Set())
 const speakingItemId = ref<string | null>(null)
 const isSpeaking = ref(false)
+
+// FAB and font size state
+const showFabMenu = ref(false)
+const fontSize = ref(18)
+
+const zoomIn = () => {
+  fontSize.value = Math.min(fontSize.value + 2, 28)
+}
+
+const zoomOut = () => {
+  fontSize.value = Math.max(fontSize.value - 2, 12)
+}
+
+const scrollToTop = () => {
+  if (contentContainer.value) {
+    contentContainer.value.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+}
 
 const { data, status } = useAsyncData(`topics2Detail-${topicId.value}`, () =>
   $fetch<{ success: boolean; data: Topic2TreeItem[] }>(`${config.public.apiBaseUrl}/topics2/${topicId.value}`)
