@@ -59,7 +59,7 @@
             :key="`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
             :item="item"
             :is-expanded="expandedSearchItems.has(`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`)"
-            :font-size="16"
+            :font-size="fontSize"
             :is-speaking="searchSpeakingItemId === `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
             :search-keyword="searchedKeyword"
             @toggle="toggleSearchExpand(item)"
@@ -532,7 +532,10 @@ const zoomOut = () => {
 }
 
 const scrollToTop = () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+  const scrollContainer = document.querySelector('.flex-1.overflow-y-auto')
+  if (scrollContainer) {
+    scrollContainer.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 }
 
 const filteredSubtitles = computed(() => {
