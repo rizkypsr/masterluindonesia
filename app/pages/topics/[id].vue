@@ -185,8 +185,10 @@
               class="divide-y divide-gray-200 dark:divide-gray-700">
               <NuxtLink v-for="sub in category.sub_category" :key="sub.id"
                 :to="{ path: '/topics/detail', query: { subId: sub.id, title: sub.title } }"
-                class="py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 block">
-                <span class="text-lg text-black dark:text-white">{{ sub.title }}</span>
+                class="py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 block transition-colors active:scale-[0.98] transition-transform relative group">
+                <span class="text-lg text-black dark:text-white group-hover:text-primary dark:group-hover:text-yellow-400 transition-colors">{{ sub.title }}</span>
+                <!-- Ripple effect -->
+                <span class="absolute inset-0 opacity-0 group-active:opacity-100 group-active:animate-ping bg-primary/20 pointer-events-none"></span>
               </NuxtLink>
             </div>
           </div>

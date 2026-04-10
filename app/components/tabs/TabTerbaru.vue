@@ -70,7 +70,8 @@
         <UTree :items="topicsTreeItems" :get-key="(item) => String(item.id)" size="xl" expanded-icon=""
           collapsed-icon="" :ui="{ 
             linkLeadingIcon: 'hidden',
-            link: 'text-xl'
+            link: 'text-xl hover:text-primary dark:hover:text-yellow-400 transition-colors active:scale-[0.98] transition-transform relative group',
+            linkLabel: 'transition-colors'
           }" @select="handleTopicSelect" />
       </template>
 

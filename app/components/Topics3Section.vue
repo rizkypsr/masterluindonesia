@@ -15,7 +15,11 @@
 
     <template v-else-if="treeItems.length > 0">
       <UTree :items="treeItems" :get-key="(item) => String(item.id)" size="xl" expanded-icon=""
-        collapsed-icon="" :ui="{ linkLeadingIcon: 'hidden', link: 'text-xl' }" @select="handleSelect" />
+        collapsed-icon="" :ui="{ 
+          linkLeadingIcon: 'hidden', 
+          link: 'text-xl hover:text-primary dark:hover:text-yellow-400 transition-colors active:scale-[0.98] transition-transform relative group',
+          linkLabel: 'transition-colors'
+        }" @select="handleSelect" />
     </template>
 
     <div v-else class="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">
