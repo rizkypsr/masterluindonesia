@@ -38,55 +38,117 @@
               @click="showSubtitle = !showSubtitle" 
               class="w-full flex items-center justify-between px-4 py-3"
             >
-              <span class="text-sm font-medium text-black dark:text-white">Show Teks</span>
-              <Icon 
-                :name="showSubtitle ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
-                class="w-5 h-5 text-gray-600 dark:text-gray-400" 
-              />
+              <span class="text-lg font-medium text-black dark:text-white">Show Teks</span>
+              <div class="flex items-center gap-1">
+                <!-- View Mode Toggle -->
+                <button 
+                  v-if="showSubtitle"
+                  @click.stop="toggleSubtitleViewMode"
+                  class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded flex items-center justify-center"
+                  title="Toggle view mode"
+                >
+                  <Icon :name="subtitleViewMode === 'list' ? 'mdi:view-list' : 'mdi:view-sequential'" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                </button>
+                <div class="p-1 flex items-center justify-center">
+                  <Icon 
+                    :name="showSubtitle ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
+                    class="w-5 h-5 text-gray-600 dark:text-gray-400" 
+                  />
+                </div>
+              </div>
             </button>
 
             <!-- Subtitle Content -->
-            <div v-if="showSubtitle" class="px-4 pb-4">
+            <div v-if="showSubtitle" class="px-2 pb-3">
               <!-- Search Input -->
               <input 
                 v-model="subtitleSearch"
                 type="text" 
                 placeholder="Masukan kata kunci"
-                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-sm mb-4 focus:outline-none focus:border-primary bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                class="w-full px-4 py-3 rounded-lg text-lg mb-4 focus:outline-none bg-gray-50 dark:bg-gray-600 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
               />
 
-              <!-- Subtitle List -->
-              <div class="space-y-4">
+              <!-- Subtitle List - Mode A (List View) -->
+              <div v-if="subtitleViewMode === 'list'" class="space-y-4">
                 <div 
                   v-for="sub in filteredSubtitles" 
                   :key="sub.id"
-                  class="border border-gray-200 dark:border-gray-600 rounded-lg p-4"
+                  class="rounded-lg p-1 text-lg"
                   :style="{ fontSize: fontSize + 'px' }"
                 >
                   <p class="font-semibold text-black dark:text-white mb-2 cursor-pointer hover:text-primary dark:hover:text-yellow-400 flex items-center gap-2" @click="seekToTimestamp(sub.timestamp)">
                     <Icon v-if="isAudioLoading" name="mdi:loading" class="w-4 h-4 animate-spin" />
                     {{ sub.title }}
                   </p>
-                  <p class="text-gray-600 dark:text-gray-400 mb-2" v-html="sub.description"></p>
-                  <div class="text-black dark:text-white mb-4" v-html="highlightText(sub.script)"></div>
+                  <p class="text-black dark:text-gray-400 mb-2 text-md" v-html="sub.description"></p>
+                  <div class="text-black dark:text-white mb-4 text-md" v-html="highlightText(sub.script)"></div>
                   
                   <!-- Action Buttons -->
                   <div class="flex items-center gap-6 pt-3 border-t border-gray-200 dark:border-gray-600">
-                    <button @click="copySubtitle(sub)" class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
+                    <button @click="copySubtitle(sub)" class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
                       <Icon name="mdi:content-copy" class="w-4 h-4" />
                       <span>Salin</span>
                     </button>
-                    <button v-if="!subtitleId" @click="viewDetail(sub)" class="flex items-center gap-1 text-sm text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
+                    <button v-if="!subtitleId" @click="viewDetail(sub)" class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
                       <Icon name="mdi:file-document-outline" class="w-4 h-4" />
                       <span>Detail</span>
                     </button>
-                    <button @click="speakSubtitle(sub)" class="flex items-center gap-1 text-sm hover:text-primary dark:hover:text-yellow-400" :class="speakingSubtitleId === sub.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
+                    <button @click="speakSubtitle(sub)" class="flex items-center gap-1 text-lg hover:text-primary dark:hover:text-yellow-400" :class="speakingSubtitleId === sub.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
                       <Icon :name="speakingSubtitleId === sub.id ? 'mdi:stop' : 'mdi:account-voice'" class="w-4 h-4" />
                       <span>{{ speakingSubtitleId === sub.id ? 'Stop' : 'Voice' }}</span>
                     </button>
                   </div>
                 </div>
-                <p v-if="filteredSubtitles.length === 0" class="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
+                <p v-if="filteredSubtitles.length === 0" class="text-lg text-gray-500 dark:text-gray-400 text-center py-4">
+                  Tidak ada teks ditemukan
+                </p>
+              </div>
+
+              <!-- Subtitle List - Mode B (Accordion View) -->
+              <div v-else class="space-y-2">
+                <div 
+                  v-for="sub in filteredSubtitles" 
+                  :key="sub.id"
+                  class="border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden"
+                  :style="{ fontSize: fontSize + 'px' }"
+                >
+                  <!-- Accordion Header -->
+                  <button 
+                    @click="toggleAccordion(sub.id)"
+                    class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                  >
+                    <p class="font-semibold text-black dark:text-white text-left flex-1 cursor-pointer hover:text-primary dark:hover:text-yellow-400 flex items-center gap-2"
+                      @click.stop="seekToTimestamp(sub.timestamp)">
+                      <Icon v-if="isAudioLoading" name="mdi:loading" class="w-4 h-4 animate-spin" />
+                      {{ sub.title }}
+                    </p>
+                    <Icon :name="expandedSubtitles.has(sub.id) ? 'mdi:chevron-up' : 'mdi:chevron-down'"
+                      class="w-5 h-5 text-gray-600 dark:text-gray-400 shrink-0" />
+                  </button>
+
+                  <!-- Accordion Content -->
+                  <div v-if="expandedSubtitles.has(sub.id)" class="px-3 pb-3 border-t border-gray-200 dark:border-gray-600">
+                    <p class="text-black dark:text-gray-400 mb-2 text-md mt-2" v-html="sub.description"></p>
+                    <div class="text-black dark:text-white mb-4 text-md" v-html="highlightText(sub.script)"></div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex items-center gap-6 pt-3 border-t border-gray-200 dark:border-gray-600">
+                      <button @click="copySubtitle(sub)" class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
+                        <Icon name="mdi:content-copy" class="w-4 h-4" />
+                        <span>Salin</span>
+                      </button>
+                      <button v-if="!subtitleId" @click="viewDetail(sub)" class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
+                        <Icon name="mdi:file-document-outline" class="w-4 h-4" />
+                        <span>Detail</span>
+                      </button>
+                      <button @click="speakSubtitle(sub)" class="flex items-center gap-1 text-lg hover:text-primary dark:hover:text-yellow-400" :class="speakingSubtitleId === sub.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
+                        <Icon :name="speakingSubtitleId === sub.id ? 'mdi:stop' : 'mdi:account-voice'" class="w-4 h-4" />
+                        <span>{{ speakingSubtitleId === sub.id ? 'Stop' : 'Voice' }}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <p v-if="filteredSubtitles.length === 0" class="text-lg text-gray-500 dark:text-gray-400 text-center py-4">
                   Tidak ada teks ditemukan
                 </p>
               </div>
@@ -235,6 +297,21 @@ const duration = ref(0)
 // Subtitle State
 const showSubtitle = ref(false)
 const subtitleSearch = ref('')
+const subtitleViewMode = ref<'list' | 'accordion'>('list')
+const expandedSubtitles = ref<Set<number>>(new Set())
+
+const toggleSubtitleViewMode = () => {
+  subtitleViewMode.value = subtitleViewMode.value === 'list' ? 'accordion' : 'list'
+}
+
+const toggleAccordion = (subtitleId: number) => {
+  if (expandedSubtitles.value.has(subtitleId)) {
+    expandedSubtitles.value.delete(subtitleId)
+  } else {
+    expandedSubtitles.value.add(subtitleId)
+  }
+  expandedSubtitles.value = new Set(expandedSubtitles.value)
+}
 
 // FAB Menu State
 const showFabMenu = ref(false)
