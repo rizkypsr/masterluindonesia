@@ -5,7 +5,7 @@
       <div class="flex items-center justify-between mb-2">
         <h1 class="text-black dark:text-white font-semibold">Audio Dokumentasi</h1>
         <button @click="showInfoModal = true" class="p-1 hover:bg-white/20 dark:hover:bg-gray-600 rounded transition-colors">
-          <Icon name="mdi:information" class="w-6 h-6 text-black dark:text-white" />
+          <Icon name="mdi:information" class="w-6 h-6 text-black dark:text-yellow-400" />
         </button>
       </div>
       <div class="flex items-center bg-white dark:bg-gray-700 rounded-lg px-4 py-3">

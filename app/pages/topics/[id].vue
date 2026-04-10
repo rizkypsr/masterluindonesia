@@ -11,7 +11,7 @@
       </div>
       <div class="flex items-center gap-2">
         <button @click="showInfoModal = true" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
-          <Icon name="mdi:information" class="w-6 h-6 text-black dark:text-white" />
+          <Icon name="mdi:information" class="w-6 h-6 text-primary dark:text-yellow-400" />
         </button>
         <button class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded" @click="shareTopic">
           <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />

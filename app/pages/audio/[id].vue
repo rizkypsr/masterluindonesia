@@ -8,7 +8,7 @@
       </button>
       <h1 class="text-lg font-semibold text-black dark:text-white flex-1">{{ pageTitle }}</h1>
       <button @click="showAudioInfoModal = true" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
-        <Icon name="mdi:information" class="w-6 h-6 text-black dark:text-white" />
+        <Icon name="mdi:information" class="w-6 h-6 text-primary dark:text-yellow-400" />
       </button>
       <button @click="shareContent" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
         <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />

@@ -11,7 +11,7 @@
             </div>
             <div class="flex items-center gap-2 shrink-0">
                 <button @click="showInfoModal = true" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
-                    <Icon name="mdi:information" class="w-6 h-6 text-black dark:text-white" />
+                    <Icon name="mdi:information" class="w-6 h-6 text-primary dark:text-yellow-400" />
                 </button>
                 <button @click="addBookmark" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
                     <Icon :name="isTopic1Bookmarked ? 'mdi:star' : 'mdi:star-outline'" 

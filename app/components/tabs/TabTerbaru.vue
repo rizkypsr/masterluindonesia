@@ -54,7 +54,7 @@
       <div class="mb-4 flex items-center justify-between">
         <h2 class="text-xl font-semibold text-black dark:text-white">Ensiklopedia</h2>
         <button @click="showInfoModal = true" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors flex items-center justify-center">
-          <Icon name="mdi:information" class="w-6 h-6 text-black dark:text-white" />
+          <Icon name="mdi:information" class="w-6 h-6 text-primary dark:text-yellow-400" />
         </button>
       </div>
 
