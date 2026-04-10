@@ -104,27 +104,63 @@
 
             <!-- Search Input -->
             <div v-else class="flex items-center gap-3 py-3">
-              <input v-model="searchQueries[category.id]" type="text" placeholder="Cari..."
+              <input 
+                v-model="searchQueries[category.id]" 
+                type="text" 
+                placeholder="Cari dalam kategori ini..."
                 class="flex-1 text-black dark:text-white bg-transparent border-b border-gray-300 dark:border-gray-600 focus:border-primary focus:outline-none py-1"
-                autofocus />
+                @keyup.enter="handleCategorySearch(category.id)"
+                autofocus 
+              />
+              <button 
+                v-if="searchQueries[category.id]?.trim()" 
+                @click="handleCategorySearch(category.id)"
+                class="px-3 py-1 bg-primary hover:bg-primary/90 text-black text-sm font-medium rounded"
+              >
+                Cari
+              </button>
               <button @click="closeSearch(category.id)" class="p-1">
                 <Icon name="mdi:close" class="w-6 h-6 text-black dark:text-white" />
               </button>
             </div>
 
-            <!-- Sub Categories -->
-            <div v-if="getFilteredSubCategories(category).length > 0"
+            <!-- Category Search Results -->
+            <div v-if="searchModes[category.id] && (categorySearchLoading[category.id] || categorySearchResults[category.id]?.length > 0 || searchQueries[category.id]?.trim())">
+              <!-- Loading -->
+              <div v-if="categorySearchLoading[category.id]" class="flex justify-center py-8">
+                <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500 dark:text-gray-400" />
+              </div>
+
+              <!-- Results List -->
+              <div v-else-if="categorySearchResults[category.id]?.length > 0" class="space-y-4 mb-4">
+                <SearchResultCard
+                  v-for="item in categorySearchResults[category.id]"
+                  :key="`cat-${category.id}-${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
+                  :item="item"
+                  :is-expanded="expandedCategorySearchItems[category.id]?.has(`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`)"
+                  :font-size="fontSize"
+                  :is-speaking="speakingCategoryItemId[category.id] === `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
+                  :search-keyword="searchQueries[category.id]"
+                  @toggle="toggleCategorySearchExpand(category.id, item)"
+                  @navigate="navigateToSearchResult(item)"
+                  @speak="speakCategorySearchContent(category.id, item)"
+                />
+              </div>
+
+              <!-- Empty State -->
+              <div v-else-if="searchQueries[category.id]?.trim()" class="text-center py-8">
+                <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
+              </div>
+            </div>
+
+            <!-- Sub Categories (only show when not in search mode) -->
+            <div v-else-if="!searchModes[category.id] && category.sub_category.length > 0"
               class="divide-y divide-gray-200 dark:divide-gray-700">
-              <NuxtLink v-for="sub in getFilteredSubCategories(category)" :key="sub.id"
+              <NuxtLink v-for="sub in category.sub_category" :key="sub.id"
                 :to="{ path: '/topics/detail', query: { subId: sub.id, title: sub.title } }"
                 class="py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 block">
                 <span class="text-lg text-black dark:text-white">{{ sub.title }}</span>
               </NuxtLink>
-            </div>
-            
-            <!-- No results message -->
-            <div v-else-if="searchModes[category.id] && searchQueries[category.id]" class="py-4 text-center">
-              <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
             </div>
           </div>
         </div>
@@ -171,9 +207,13 @@ const topicId = computed(() => route.params.id as string)
 const topicTitle = computed(() => (route.query.title as string) || 'Topic')
 const contentContainer = ref<HTMLElement | null>(null)
 
-// Local category search state
+// Per-category search state
 const searchModes = ref<Record<number, boolean>>({})
 const searchQueries = ref<Record<number, string>>({})
+const categorySearchResults = ref<Record<number, SearchItem[]>>({})
+const categorySearchLoading = ref<Record<number, boolean>>({})
+const expandedCategorySearchItems = ref<Record<number, Set<string>>>({})
+const speakingCategoryItemId = ref<Record<number, string | null>>({})
 
 // Global search state
 const globalSearchQuery = ref('')
@@ -387,6 +427,124 @@ const speakSearchContent = (item: SearchItem) => {
   window.speechSynthesis.speak(utterance)
 }
 
+// Get category IDs for a specific category (including its sub_categories)
+const getCategoryIds = (category: TopicCategory): number[] => {
+  const ids: number[] = [category.id]
+  
+  if (category.sub_category && category.sub_category.length > 0) {
+    for (const sub of category.sub_category) {
+      ids.push(sub.id)
+    }
+  }
+  
+  return ids
+}
+
+// Per-category search functions
+const handleCategorySearch = async (categoryId: number) => {
+  const query = searchQueries.value[categoryId]
+  if (!query || !query.trim()) {
+    categorySearchResults.value[categoryId] = []
+    return
+  }
+  
+  categorySearchLoading.value[categoryId] = true
+  
+  try {
+    const category = categories.value.find(c => c.id === categoryId)
+    if (!category) return
+    
+    const categoryIds = getCategoryIds(category)
+    
+    const payload = {
+      keyword: query.trim(),
+      year: [],
+      selectedCategory: ['topik1'],
+      selectedKeyword: [],
+      listShowKeyword: [],
+      listHideKeyword: [],
+      topic1_category_ids: categoryIds
+    }
+    
+    const response = await $fetch<{
+      success: boolean
+      message: string
+      data: SearchItem[]
+    }>(`${config.public.apiBaseUrl}/search?page=1`, {
+      method: 'POST',
+      body: payload
+    })
+    
+    categorySearchResults.value[categoryId] = response.data || []
+  } catch (error) {
+    console.error('Category search failed:', error)
+    categorySearchResults.value[categoryId] = []
+  } finally {
+    categorySearchLoading.value[categoryId] = false
+  }
+}
+
+const toggleCategorySearchExpand = (categoryId: number, item: SearchItem) => {
+  if (!expandedCategorySearchItems.value[categoryId]) {
+    expandedCategorySearchItems.value[categoryId] = new Set()
+  }
+  
+  const key = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
+  const expandedSet = expandedCategorySearchItems.value[categoryId]
+  
+  if (expandedSet.has(key)) {
+    expandedSet.delete(key)
+  } else {
+    expandedSet.add(key)
+  }
+  
+  expandedCategorySearchItems.value[categoryId] = new Set(expandedSet)
+}
+
+const speakCategorySearchContent = (categoryId: number, item: SearchItem) => {
+  if (typeof window === 'undefined' || !window.speechSynthesis) {
+    console.error('Speech synthesis not supported')
+    return
+  }
+
+  const itemKey = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
+
+  if (speakingCategoryItemId.value[categoryId] === itemKey) {
+    window.speechSynthesis.cancel()
+    speakingCategoryItemId.value[categoryId] = null
+    return
+  }
+
+  window.speechSynthesis.cancel()
+
+  const text = item.full_detail
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+
+  const utterance = new SpeechSynthesisUtterance(text)
+  utterance.lang = 'id-ID'
+  utterance.rate = 1
+  utterance.pitch = 1
+
+  utterance.onstart = () => {
+    speakingCategoryItemId.value[categoryId] = itemKey
+  }
+
+  utterance.onend = () => {
+    speakingCategoryItemId.value[categoryId] = null
+  }
+
+  utterance.onerror = () => {
+    speakingCategoryItemId.value[categoryId] = null
+  }
+
+  window.speechSynthesis.speak(utterance)
+}
+
 // Filtered categories based on local search
 const getFilteredSubCategories = (category: TopicCategory) => {
   const query = searchQueries.value[category.id]
@@ -401,11 +559,21 @@ const getFilteredSubCategories = (category: TopicCategory) => {
 const openSearch = (categoryId: number) => {
   searchModes.value[categoryId] = true
   searchQueries.value[categoryId] = ''
+  categorySearchResults.value[categoryId] = []
+  if (!expandedCategorySearchItems.value[categoryId]) {
+    expandedCategorySearchItems.value[categoryId] = new Set()
+  }
 }
 
 const closeSearch = (categoryId: number) => {
   searchModes.value[categoryId] = false
   searchQueries.value[categoryId] = ''
+  categorySearchResults.value[categoryId] = []
+  if (expandedCategorySearchItems.value[categoryId]) {
+    expandedCategorySearchItems.value[categoryId].clear()
+  }
+  speakingCategoryItemId.value[categoryId] = null
+  window.speechSynthesis.cancel()
 }
 
 const shareTopic = async () => {

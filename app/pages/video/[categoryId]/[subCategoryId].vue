@@ -90,11 +90,67 @@
         <div v-else>
           <div v-for="group in videoGroups" :key="group.id"
             class="border-b border-gray-400 dark:border-gray-600 pb-2 mb-4">
-            <!-- Group Title -->
-            <h2 class="font-semibold text-black dark:text-white mb-3" :style="{ fontSize: (fontSize + 4) + 'px' }">{{ group.title }}</h2>
+            <!-- Group Title with Search -->
+            <div v-if="!subCategorySearchModes[group.id]" class="flex items-center justify-between mb-3">
+              <h2 class="font-semibold text-black dark:text-white" :style="{ fontSize: (fontSize + 4) + 'px' }">{{ group.title }}</h2>
+              <button @click="openSubCategorySearch(group.id)" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                <Icon name="mdi:magnify" class="w-6 h-6 text-black dark:text-white" />
+              </button>
+            </div>
 
-            <!-- Video Items -->
-            <div class="space-y-2">
+            <!-- Sub-category Search Input -->
+            <div v-else class="flex items-center gap-3 mb-3">
+              <input 
+                v-model="subCategorySearchQueries[group.id]" 
+                type="text" 
+                placeholder="Cari dalam kategori ini..."
+                class="flex-1 text-black dark:text-white bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:border-primary focus:outline-none"
+                @keyup.enter="handleSubCategorySearch(group.id)"
+                autofocus 
+              />
+              <button 
+                v-if="subCategorySearchQueries[group.id]?.trim()" 
+                @click="handleSubCategorySearch(group.id)"
+                class="px-3 py-2 bg-primary hover:bg-primary/90 text-black text-sm font-medium rounded"
+              >
+                Cari
+              </button>
+              <button @click="closeSubCategorySearch(group.id)" class="p-1">
+                <Icon name="mdi:close" class="w-6 h-6 text-black dark:text-white" />
+              </button>
+            </div>
+
+            <!-- Sub-category Search Results -->
+            <div v-if="subCategorySearchModes[group.id] && (subCategorySearchLoading[group.id] || subCategorySearchResults[group.id]?.length > 0 || subCategorySearchQueries[group.id]?.trim())">
+              <!-- Loading -->
+              <div v-if="subCategorySearchLoading[group.id]" class="flex justify-center py-8">
+                <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500 dark:text-gray-400" />
+              </div>
+
+              <!-- Results List -->
+              <div v-else-if="subCategorySearchResults[group.id]?.length > 0" class="space-y-4 mb-4">
+                <SearchResultCard
+                  v-for="item in subCategorySearchResults[group.id]"
+                  :key="`subcat-${group.id}-${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
+                  :item="item"
+                  :is-expanded="expandedSubCategorySearchItems[group.id]?.has(`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`)"
+                  :font-size="fontSize"
+                  :is-speaking="speakingSubCategoryItemId[group.id] === `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
+                  :search-keyword="subCategorySearchQueries[group.id]"
+                  @toggle="toggleSubCategorySearchExpand(group.id, item)"
+                  @navigate="navigateToSearchResult(item)"
+                  @speak="speakSubCategorySearchContent(group.id, item)"
+                />
+              </div>
+
+              <!-- Empty State -->
+              <div v-else-if="subCategorySearchQueries[group.id]?.trim()" class="text-center py-8">
+                <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
+              </div>
+            </div>
+
+            <!-- Video Items (only show when not in search mode) -->
+            <div v-if="!subCategorySearchModes[group.id]" class="space-y-2">
               <NuxtLink v-for="video in group.sub_category" :key="video.id"
                 :to="{ path: `/video/play/${video.id}`, query: { title: video.title } }"
                 class="block py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors">
@@ -183,6 +239,14 @@ const searchResults = ref<SearchItem[]>([])
 const expandedSearchItems = ref<Set<string>>(new Set())
 const speakingItemId = ref<string | null>(null)
 const isSpeaking = ref(false)
+
+// Per-sub-category search state
+const subCategorySearchModes = ref<Record<number, boolean>>({})
+const subCategorySearchQueries = ref<Record<number, string>>({})
+const subCategorySearchResults = ref<Record<number, SearchItem[]>>({})
+const subCategorySearchLoading = ref<Record<number, boolean>>({})
+const expandedSubCategorySearchItems = ref<Record<number, Set<string>>>({})
+const speakingSubCategoryItemId = ref<Record<number, string | null>>({})
 
 // FAB and font size state
 const showFabMenu = ref(false)
@@ -379,6 +443,152 @@ const speakSearchContent = (item: SearchItem) => {
   }
 
   window.speechSynthesis.speak(utterance)
+}
+
+// Get video IDs for a specific sub_category group
+const getSubCategoryVideoIds = (groupId: number): number[] => {
+  const ids: number[] = []
+  
+  const group = videoGroups.value.find(g => g.id === groupId)
+  if (!group) return ids
+  
+  // Check if group itself has a video
+  if (group.video?.id) {
+    ids.push(group.video.id)
+  }
+  
+  // Check all sub_category items for videos
+  if (group.sub_category && Array.isArray(group.sub_category)) {
+    for (const subCat of group.sub_category) {
+      if (subCat.video?.id) {
+        ids.push(subCat.video.id)
+      }
+    }
+  }
+  
+  return ids
+}
+
+// Per-sub-category search functions
+const handleSubCategorySearch = async (subCatId: number) => {
+  const query = subCategorySearchQueries.value[subCatId]
+  if (!query || !query.trim()) {
+    subCategorySearchResults.value[subCatId] = []
+    return
+  }
+  
+  subCategorySearchLoading.value[subCatId] = true
+  
+  try {
+    const videoIds = getSubCategoryVideoIds(subCatId)
+    
+    const payload = {
+      keyword: query.trim(),
+      year: [],
+      selectedCategory: ['Video'],
+      selectedKeyword: [],
+      listShowKeyword: [],
+      listHideKeyword: [],
+      video_ids: videoIds
+    }
+    
+    const response = await $fetch<{
+      success: boolean
+      message: string
+      data: SearchItem[]
+    }>(`${config.public.apiBaseUrl}/search?page=1`, {
+      method: 'POST',
+      body: payload
+    })
+    
+    subCategorySearchResults.value[subCatId] = response.data || []
+  } catch (error) {
+    console.error('Sub-category search failed:', error)
+    subCategorySearchResults.value[subCatId] = []
+  } finally {
+    subCategorySearchLoading.value[subCatId] = false
+  }
+}
+
+const toggleSubCategorySearchExpand = (subCatId: number, item: SearchItem) => {
+  if (!expandedSubCategorySearchItems.value[subCatId]) {
+    expandedSubCategorySearchItems.value[subCatId] = new Set()
+  }
+  
+  const key = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
+  const expandedSet = expandedSubCategorySearchItems.value[subCatId]
+  
+  if (expandedSet.has(key)) {
+    expandedSet.delete(key)
+  } else {
+    expandedSet.add(key)
+  }
+  
+  expandedSubCategorySearchItems.value[subCatId] = new Set(expandedSet)
+}
+
+const speakSubCategorySearchContent = (subCatId: number, item: SearchItem) => {
+  if (typeof window === 'undefined' || !window.speechSynthesis) {
+    console.error('Speech synthesis not supported')
+    return
+  }
+
+  const itemKey = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
+
+  if (speakingSubCategoryItemId.value[subCatId] === itemKey) {
+    window.speechSynthesis.cancel()
+    speakingSubCategoryItemId.value[subCatId] = null
+    return
+  }
+
+  window.speechSynthesis.cancel()
+
+  const text = item.full_detail
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+
+  const utterance = new SpeechSynthesisUtterance(text)
+  utterance.lang = 'id-ID'
+  utterance.rate = 1
+  utterance.pitch = 1
+
+  utterance.onstart = () => {
+    speakingSubCategoryItemId.value[subCatId] = itemKey
+  }
+
+  utterance.onend = () => {
+    speakingSubCategoryItemId.value[subCatId] = null
+  }
+
+  utterance.onerror = () => {
+    speakingSubCategoryItemId.value[subCatId] = null
+  }
+
+  window.speechSynthesis.speak(utterance)
+}
+
+const openSubCategorySearch = (subCatId: number) => {
+  subCategorySearchModes.value[subCatId] = true
+  subCategorySearchQueries.value[subCatId] = ''
+  subCategorySearchResults.value[subCatId] = []
+  if (!expandedSubCategorySearchItems.value[subCatId]) {
+    expandedSubCategorySearchItems.value[subCatId] = new Set()
+  }
+}
+
+const closeSubCategorySearch = (subCatId: number) => {
+  subCategorySearchModes.value[subCatId] = false
+  subCategorySearchQueries.value[subCatId] = ''
+  subCategorySearchResults.value[subCatId] = []
+  if (expandedSubCategorySearchItems.value[subCatId]) {
+    expandedSubCategorySearchItems.value[subCatId].clear()
+  }
+  speakingSubCategoryItemId.value[subCatId] = null
+  window.speechSynthesis.cancel()
 }
 
 // Restore scroll position on mount

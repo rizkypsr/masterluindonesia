@@ -12,70 +12,8 @@
       </button>
     </div>
 
-    <!-- Search Input -->
-    <div class="px-4 py-4 bg-white dark:bg-gray-800 shrink-0">
-      <UInput 
-        v-model="globalSearchQuery" 
-        placeholder="Cari dalam audio ini..." 
-        size="lg" 
-        class="w-full"
-        @keyup.enter="handleGlobalSearch"
-      >
-        <template #trailing>
-          <UButton 
-            v-if="globalSearchQuery.trim()" 
-            size="sm" 
-            class="bg-primary hover:bg-primary/90 text-black font-medium" 
-            @click="handleGlobalSearch"
-          >
-            Cari
-          </UButton>
-        </template>
-      </UInput>
-    </div>
-
     <!-- Content -->
     <div class="flex-1 overflow-y-auto p-4 pb-40">
-      <!-- Search Results -->
-      <div v-if="hasGlobalSearched">
-        <div class="flex items-center justify-between mb-4">
-          <p class="text-sm text-gray-400 dark:text-gray-500 uppercase tracking-wide">
-            HASIL PENCARIAN "{{ searchedKeyword }}"
-          </p>
-          <button @click="clearGlobalSearch" class="text-sm text-black dark:text-primary hover:underline">
-            Kembali
-          </button>
-        </div>
-
-        <!-- Loading -->
-        <div v-if="isSearching" class="flex justify-center py-8">
-          <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500 dark:text-gray-400" />
-        </div>
-
-        <!-- Results List -->
-        <div v-else-if="searchResults.length > 0" class="space-y-4">
-          <SearchResultCard
-            v-for="item in searchResults"
-            :key="`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
-            :item="item"
-            :is-expanded="expandedSearchItems.has(`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`)"
-            :font-size="fontSize"
-            :is-speaking="searchSpeakingItemId === `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
-            :search-keyword="searchedKeyword"
-            @toggle="toggleSearchExpand(item)"
-            @navigate="navigateToSearchResult(item)"
-            @speak="speakSearchContent(item)"
-          />
-        </div>
-
-        <!-- Empty State -->
-        <div v-else class="text-center py-8">
-          <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
-        </div>
-      </div>
-
-      <!-- Original Content -->
-      <div v-else>
       <!-- Loading State -->
       <div v-if="pending" class="space-y-4">
         <div class="flex gap-2 overflow-x-auto pb-2">
@@ -94,7 +32,7 @@
       <template v-else>
         <!-- Category Tabs -->
         <div class="flex gap-2 overflow-x-auto pb-4 scrollbar-hide">
-          <button v-for="group in audioGroups" :key="group.id" @click="selectedGroupId = group.id"
+          <button v-for="group in audioGroups" :key="group.id" @click="selectGroup(group.id)"
             class="shrink-0 px-4 py-2 rounded-full text-lg font-medium transition-colors" :class="selectedGroupId === group.id
               ? 'bg-primary text-black dark:bg-yellow-500'
               : 'bg-primary/40 text-black dark:bg-gray-700 dark:text-gray-300'">
@@ -102,95 +40,215 @@
           </button>
         </div>
 
-        <!-- Audio List for Selected Group -->
-        <div class="space-y-2">
-          <div v-for="audio in selectedGroupAudios" :key="audio.id">
-            <!-- Audio Item - Not Selected -->
-            <button v-if="currentAudio?.id !== audio.id" @click="playAudio(audio)"
-              class="w-full flex items-center gap-3 p-2 rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
-              :style="{ fontSize: fontSize + 'px' }">
-              <div
-                class="w-14 h-14 bg-gradient-to-b from-[#c9a227] to-[#8b7355] rounded-lg flex items-center justify-center shrink-0">
-                <Icon name="mdi:music-note" class="w-8 h-8 text-white" />
-              </div>
-              <div class="flex-1 text-left">
-                <p class="font-medium text-black dark:text-white line-clamp-2 text-lg">{{ audio.title.trim() }}</p>
-              </div>
-              <span class="text-gray-500 dark:text-gray-400 shrink-0">{{ audio.duration }}</span>
+        <!-- Group Search Input -->
+        <div v-if="selectedGroupId" class="mb-4">
+          <div class="flex items-center gap-3">
+            <input 
+              v-model="groupSearchQuery" 
+              type="text" 
+              placeholder="Cari dalam kategori ini..."
+              class="flex-1 text-black dark:text-white bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:border-primary focus:outline-none"
+              @keyup.enter="handleGroupSearch"
+            />
+            <button 
+              v-if="groupSearchQuery.trim()" 
+              @click="handleGroupSearch"
+              class="px-3 py-2 bg-primary hover:bg-primary/90 text-black text-sm font-medium rounded"
+            >
+              Cari
             </button>
+            <button 
+              v-if="hasGroupSearched" 
+              @click="clearGroupSearch" 
+              class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+            >
+              <Icon name="mdi:close" class="w-6 h-6 text-black dark:text-white" />
+            </button>
+          </div>
+        </div>
 
-            <!-- Audio Item - Selected (with Player & Show Teks) -->
-            <div v-else class="bg-[#c09637] dark:bg-yellow-600 rounded-2xl overflow-hidden"
-              :style="{ fontSize: fontSize + 'px' }">
-              <!-- Player Header -->
-              <div class="px-4 py-3">
-                <div class="flex items-center gap-3">
-                  <button @click="togglePlay" class="shrink-0">
-                    <Icon :name="isPlaying ? 'mdi:pause' : 'mdi:play'" class="w-6 h-6 text-black" />
-                  </button>
-                  <p class="font-medium text-black flex-1 line-clamp-1 text-lg">{{ audio.title.trim() }}</p>
-                  <span class="text-black shrink-0">{{ audio.duration }}</span>
+        <!-- Group Search Results -->
+        <div v-if="hasGroupSearched">
+          <div class="flex items-center justify-between mb-4">
+            <p class="text-sm text-gray-400 dark:text-gray-500 uppercase tracking-wide">
+              HASIL PENCARIAN "{{ groupSearchedKeyword }}"
+            </p>
+          </div>
+
+          <!-- Loading -->
+          <div v-if="isGroupSearching" class="flex justify-center py-8">
+            <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500 dark:text-gray-400" />
+          </div>
+
+          <!-- Results List -->
+          <div v-else-if="groupSearchResults.length > 0" class="space-y-4">
+            <SearchResultCard
+              v-for="item in groupSearchResults"
+              :key="`grp-search-${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
+              :item="item"
+              :is-expanded="expandedGroupSearchItems.has(`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`)"
+              :font-size="fontSize"
+              :is-speaking="groupSearchSpeakingItemId === `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
+              :search-keyword="groupSearchedKeyword"
+              @toggle="toggleGroupSearchExpand(item)"
+              @navigate="navigateToSearchResult(item)"
+              @speak="speakGroupSearchContent(item)"
+            />
+          </div>
+
+          <!-- Empty State -->
+          <div v-else class="text-center py-8">
+            <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
+          </div>
+        </div>
+
+        <!-- Audio List for Selected Group -->
+        <div v-else class="space-y-2">
+          <div v-for="audio in selectedGroupAudios" :key="audio.id">
+            <!-- Audio Item Header with Search -->
+            <div v-if="!audioSearchModes[audio.id]" class="flex items-center gap-2">
+              <!-- Audio Item - Not Selected -->
+              <button v-if="currentAudio?.id !== audio.id" @click="playAudio(audio)"
+                class="flex-1 flex items-center gap-3 p-2 rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
+                :style="{ fontSize: fontSize + 'px' }">
+                <div
+                  class="w-14 h-14 bg-gradient-to-b from-[#c9a227] to-[#8b7355] rounded-lg flex items-center justify-center shrink-0">
+                  <Icon name="mdi:music-note" class="w-8 h-8 text-white" />
                 </div>
-              </div>
+                <div class="flex-1 text-left">
+                  <p class="font-medium text-black dark:text-white line-clamp-2 text-lg">{{ audio.title.trim() }}</p>
+                </div>
+                <span class="text-gray-500 dark:text-gray-400 shrink-0">{{ audio.duration }}</span>
+              </button>
 
-              <!-- Show Teks Accordion -->
-              <div class="bg-white dark:bg-gray-800 mx-3 mb-3 rounded-xl overflow-hidden">
-                <button @click="showSubtitle = !showSubtitle"
-                  class="w-full flex items-center justify-between px-4 py-3">
-                  <span class="text-lg font-medium text-black dark:text-white">Show Teks</span>
-                  <Icon :name="showSubtitle ? 'mdi:chevron-up' : 'mdi:chevron-down'"
-                    class="w-5 h-5 text-gray-600 dark:text-gray-400" />
-                </button>
-
-                <!-- Subtitle Content -->
-                <div v-if="showSubtitle" class="px-4 pb-4">
-                  <!-- Search Input -->
-                  <input v-model="subtitleSearch" type="text" placeholder="Masukan kata kunci"
-                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-lg mb-4 focus:outline-none focus:border-primary bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500" />
-
-                  <!-- Subtitle List -->
-                  <div class="space-y-4">
-                    <div v-for="sub in filteredSubtitles" :key="sub.id"
-                      class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 text-lg"
-                      :style="{ fontSize: fontSize + 'px' }">
-                      <p class="font-semibold text-black dark:text-white mb-2 cursor-pointer hover:text-primary dark:hover:text-yellow-400"
-                        @click="seekToTimestamp(sub.timestamp)">{{ sub.title }}</p>
-                      <p class="text-black dark:text-gray-400 mb-2 text-md" v-html="sub.description"></p>
-                      <div class="text-black dark:text-white mb-4 text-md" v-html="highlightText(sub.script)"></div>
-
-                      <!-- Action Buttons -->
-                      <div class="flex items-center gap-6 pt-3 border-t border-gray-200 dark:border-gray-600">
-                        <button @click="copySubtitle(sub)"
-                          class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
-                          <Icon name="mdi:content-copy" class="w-4 h-4" />
-                          <span>Salin</span>
-                        </button>
-                        <button @click="viewDetail(sub)"
-                          class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
-                          <Icon name="mdi:file-document-outline" class="w-4 h-4" />
-                          <span>Detail</span>
-                        </button>
-                        <button @click="speakSubtitle(sub)"
-                          class="flex items-center gap-1 text-lg hover:text-primary dark:hover:text-yellow-400"
-                          :class="speakingSubtitleId === sub.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
-                          <Icon :name="speakingSubtitleId === sub.id ? 'mdi:stop' : 'mdi:account-voice'"
-                            class="w-4 h-4" />
-                          <span>{{ speakingSubtitleId === sub.id ? 'Stop' : 'Voice' }}</span>
-                        </button>
-                      </div>
-                    </div>
-                    <p v-if="filteredSubtitles.length === 0"
-                      class="text-lg text-gray-500 dark:text-gray-400 text-center py-4">
-                      Tidak ada teks ditemukan
-                    </p>
+              <!-- Audio Item - Selected (with Player & Show Teks) -->
+              <div v-else class="flex-1 bg-[#c09637] dark:bg-yellow-600 rounded-2xl overflow-hidden"
+                :style="{ fontSize: fontSize + 'px' }">
+                <!-- Player Header -->
+                <div class="px-4 py-3">
+                  <div class="flex items-center gap-3">
+                    <button @click="togglePlay" class="shrink-0">
+                      <Icon :name="isPlaying ? 'mdi:pause' : 'mdi:play'" class="w-6 h-6 text-black" />
+                    </button>
+                    <p class="font-medium text-black flex-1 line-clamp-1 text-lg">{{ audio.title.trim() }}</p>
+                    <span class="text-black shrink-0">{{ audio.duration }}</span>
                   </div>
                 </div>
+
+                <!-- Show Teks Accordion -->
+                <div class="bg-white dark:bg-gray-800 mx-3 mb-3 rounded-xl overflow-hidden">
+                  <button @click="showSubtitle = !showSubtitle"
+                    class="w-full flex items-center justify-between px-4 py-3">
+                    <span class="text-lg font-medium text-black dark:text-white">Show Teks</span>
+                    <Icon :name="showSubtitle ? 'mdi:chevron-up' : 'mdi:chevron-down'"
+                      class="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                  </button>
+
+                  <!-- Subtitle Content -->
+                  <div v-if="showSubtitle" class="px-4 pb-4">
+                    <!-- Search Input -->
+                    <input v-model="subtitleSearch" type="text" placeholder="Masukan kata kunci"
+                      class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-lg mb-4 focus:outline-none focus:border-primary bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500" />
+
+                    <!-- Subtitle List -->
+                    <div class="space-y-4">
+                      <div v-for="sub in filteredSubtitles" :key="sub.id"
+                        class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 text-lg"
+                        :style="{ fontSize: fontSize + 'px' }">
+                        <p class="font-semibold text-black dark:text-white mb-2 cursor-pointer hover:text-primary dark:hover:text-yellow-400"
+                          @click="seekToTimestamp(sub.timestamp)">{{ sub.title }}</p>
+                        <p class="text-black dark:text-gray-400 mb-2 text-md" v-html="sub.description"></p>
+                        <div class="text-black dark:text-white mb-4 text-md" v-html="highlightText(sub.script)"></div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex items-center gap-6 pt-3 border-t border-gray-200 dark:border-gray-600">
+                          <button @click="copySubtitle(sub)"
+                            class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
+                            <Icon name="mdi:content-copy" class="w-4 h-4" />
+                            <span>Salin</span>
+                          </button>
+                          <button @click="viewDetail(sub)"
+                            class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
+                            <Icon name="mdi:file-document-outline" class="w-4 h-4" />
+                            <span>Detail</span>
+                          </button>
+                          <button @click="speakSubtitle(sub)"
+                            class="flex items-center gap-1 text-lg hover:text-primary dark:hover:text-yellow-400"
+                            :class="speakingSubtitleId === sub.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
+                            <Icon :name="speakingSubtitleId === sub.id ? 'mdi:stop' : 'mdi:account-voice'"
+                              class="w-4 h-4" />
+                            <span>{{ speakingSubtitleId === sub.id ? 'Stop' : 'Voice' }}</span>
+                          </button>
+                        </div>
+                      </div>
+                      <p v-if="filteredSubtitles.length === 0"
+                        class="text-lg text-gray-500 dark:text-gray-400 text-center py-4">
+                        Tidak ada teks ditemukan
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Search Icon -->
+              <button @click="openAudioSearch(audio.id)" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                <Icon name="mdi:magnify" class="w-6 h-6 text-black dark:text-white" />
+              </button>
+            </div>
+
+            <!-- Audio Search Input -->
+            <div v-else class="flex items-center gap-3 mb-2">
+              <input 
+                v-model="audioSearchQueries[audio.id]" 
+                type="text" 
+                placeholder="Cari dalam audio ini..."
+                class="flex-1 text-black dark:text-white bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:border-primary focus:outline-none"
+                @keyup.enter="handleAudioSearch(audio.id)"
+                autofocus 
+              />
+              <button 
+                v-if="audioSearchQueries[audio.id]?.trim()" 
+                @click="handleAudioSearch(audio.id)"
+                class="px-3 py-2 bg-primary hover:bg-primary/90 text-black text-sm font-medium rounded"
+              >
+                Cari
+              </button>
+              <button @click="closeAudioSearch(audio.id)" class="p-1">
+                <Icon name="mdi:close" class="w-6 h-6 text-black dark:text-white" />
+              </button>
+            </div>
+
+            <!-- Audio Search Results -->
+            <div v-if="audioSearchModes[audio.id] && (audioSearchLoading[audio.id] || audioSearchResults[audio.id]?.length > 0 || audioSearchQueries[audio.id]?.trim())">
+              <!-- Loading -->
+              <div v-if="audioSearchLoading[audio.id]" class="flex justify-center py-8">
+                <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500 dark:text-gray-400" />
+              </div>
+
+              <!-- Results List -->
+              <div v-else-if="audioSearchResults[audio.id]?.length > 0" class="space-y-4 mb-4">
+                <SearchResultCard
+                  v-for="item in audioSearchResults[audio.id]"
+                  :key="`aud-${audio.id}-${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
+                  :item="item"
+                  :is-expanded="expandedAudioSearchItems[audio.id]?.has(`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`)"
+                  :font-size="fontSize"
+                  :is-speaking="speakingAudioItemId[audio.id] === `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
+                  :search-keyword="audioSearchQueries[audio.id]"
+                  @toggle="toggleAudioSearchExpand(audio.id, item)"
+                  @navigate="navigateToSearchResult(item)"
+                  @speak="speakAudioSearchContent(audio.id, item)"
+                />
+              </div>
+
+              <!-- Empty State -->
+              <div v-else-if="audioSearchQueries[audio.id]?.trim()" class="text-center py-8">
+                <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
               </div>
             </div>
           </div>
         </div>
       </template>
-      </div>
     </div>
 
     <!-- Hidden Audio Element -->
@@ -329,47 +387,43 @@ const { data: audioData, pending } = await useFetch<{ success: boolean; data: Au
 
 const audioGroups = computed(() => audioData.value?.data?.sort((a, b) => a.order - b.order) || [])
 
-// Global search state
-const globalSearchQuery = ref('')
-const searchedKeyword = ref('')
-const hasGlobalSearched = ref(false)
-const isSearching = ref(false)
-const searchResults = ref<SearchItem[]>([])
-const expandedSearchItems = ref<Set<string>>(new Set())
-const searchSpeakingItemId = ref<string | null>(null)
-const isSearchSpeaking = ref(false)
+// Per-audio search state
+const audioSearchModes = ref<Record<number, boolean>>({})
+const audioSearchQueries = ref<Record<number, string>>({})
+const audioSearchResults = ref<Record<number, SearchItem[]>>({})
+const audioSearchLoading = ref<Record<number, boolean>>({})
+const expandedAudioSearchItems = ref<Record<number, Set<string>>>({})
+const speakingAudioItemId = ref<Record<number, string | null>>({})
 
-// Get all audio IDs from all groups
-const getAllAudioIds = (): number[] => {
-  const ids: number[] = []
-  for (const group of audioGroups.value) {
-    for (const audio of group.audio) {
-      ids.push(audio.id)
-    }
+// Group search state (for searching all audios in selected group)
+const groupSearchQuery = ref('')
+const groupSearchedKeyword = ref('')
+const hasGroupSearched = ref(false)
+const isGroupSearching = ref(false)
+const groupSearchResults = ref<SearchItem[]>([])
+const expandedGroupSearchItems = ref<Set<string>>(new Set())
+const groupSearchSpeakingItemId = ref<string | null>(null)
+const isGroupSearchSpeaking = ref(false)
+
+// Per-audio search functions
+const handleAudioSearch = async (audioId: number) => {
+  const query = audioSearchQueries.value[audioId]
+  if (!query || !query.trim()) {
+    audioSearchResults.value[audioId] = []
+    return
   }
-  return ids
-}
-
-// Global Search Functions
-const handleGlobalSearch = async () => {
-  if (!globalSearchQuery.value.trim()) return
   
-  searchedKeyword.value = globalSearchQuery.value.trim()
-  hasGlobalSearched.value = true
-  isSearching.value = true
-  searchResults.value = []
+  audioSearchLoading.value[audioId] = true
   
   try {
-    const audioIds = getAllAudioIds()
-    
     const payload = {
-      keyword: searchedKeyword.value,
+      keyword: query.trim(),
       year: [],
       selectedCategory: ['Audio'],
       selectedKeyword: [],
       listShowKeyword: [],
       listHideKeyword: [],
-      audio_ids: audioIds
+      audio_ids: [audioId]
     }
     
     const response = await $fetch<{
@@ -381,30 +435,94 @@ const handleGlobalSearch = async () => {
       body: payload
     })
     
-    searchResults.value = response.data || []
+    audioSearchResults.value[audioId] = response.data || []
   } catch (error) {
-    console.error('Search failed:', error)
+    console.error('Audio search failed:', error)
+    audioSearchResults.value[audioId] = []
   } finally {
-    isSearching.value = false
+    audioSearchLoading.value[audioId] = false
   }
 }
 
-const clearGlobalSearch = () => {
-  globalSearchQuery.value = ''
-  searchedKeyword.value = ''
-  hasGlobalSearched.value = false
-  searchResults.value = []
-  expandedSearchItems.value.clear()
-}
-
-const toggleSearchExpand = (item: SearchItem) => {
+const toggleAudioSearchExpand = (audioId: number, item: SearchItem) => {
+  if (!expandedAudioSearchItems.value[audioId]) {
+    expandedAudioSearchItems.value[audioId] = new Set()
+  }
+  
   const key = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
-  if (expandedSearchItems.value.has(key)) {
-    expandedSearchItems.value.delete(key)
+  const expandedSet = expandedAudioSearchItems.value[audioId]
+  
+  if (expandedSet.has(key)) {
+    expandedSet.delete(key)
   } else {
-    expandedSearchItems.value.add(key)
+    expandedSet.add(key)
   }
-  expandedSearchItems.value = new Set(expandedSearchItems.value)
+  
+  expandedAudioSearchItems.value[audioId] = new Set(expandedSet)
+}
+
+const speakAudioSearchContent = (audioId: number, item: SearchItem) => {
+  if (typeof window === 'undefined' || !window.speechSynthesis) {
+    console.error('Speech synthesis not supported')
+    return
+  }
+
+  const itemKey = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
+
+  if (speakingAudioItemId.value[audioId] === itemKey) {
+    window.speechSynthesis.cancel()
+    speakingAudioItemId.value[audioId] = null
+    return
+  }
+
+  window.speechSynthesis.cancel()
+
+  const text = item.full_detail
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+
+  const utterance = new SpeechSynthesisUtterance(text)
+  utterance.lang = 'id-ID'
+  utterance.rate = 1
+  utterance.pitch = 1
+
+  utterance.onstart = () => {
+    speakingAudioItemId.value[audioId] = itemKey
+  }
+
+  utterance.onend = () => {
+    speakingAudioItemId.value[audioId] = null
+  }
+
+  utterance.onerror = () => {
+    speakingAudioItemId.value[audioId] = null
+  }
+
+  window.speechSynthesis.speak(utterance)
+}
+
+const openAudioSearch = (audioId: number) => {
+  audioSearchModes.value[audioId] = true
+  audioSearchQueries.value[audioId] = ''
+  audioSearchResults.value[audioId] = []
+  if (!expandedAudioSearchItems.value[audioId]) {
+    expandedAudioSearchItems.value[audioId] = new Set()
+  }
+}
+
+const closeAudioSearch = (audioId: number) => {
+  audioSearchModes.value[audioId] = false
+  audioSearchQueries.value[audioId] = ''
+  audioSearchResults.value[audioId] = []
+  if (expandedAudioSearchItems.value[audioId]) {
+    expandedAudioSearchItems.value[audioId].clear()
+  }
+  speakingAudioItemId.value[audioId] = null
+  window.speechSynthesis.cancel()
 }
 
 const navigateToSearchResult = (item: SearchItem) => {
@@ -436,7 +554,86 @@ const navigateToSearchResult = (item: SearchItem) => {
   }
 }
 
-const speakSearchContent = (item: SearchItem) => {
+// Selected Group State - persisted across navigation
+const selectedGroupId = useState<number | null>(`audio-selected-group-${categoryId.value}`, () => null)
+
+// Set default selected group when data loads
+watch(audioGroups, (groups) => {
+  if (groups.length > 0 && selectedGroupId.value === null) {
+    selectedGroupId.value = groups[0].id
+  }
+}, { immediate: true })
+
+// Select group and clear group search
+const selectGroup = (groupId: number) => {
+  selectedGroupId.value = groupId
+  clearGroupSearch()
+}
+
+// Group search functions
+const handleGroupSearch = async () => {
+  if (!groupSearchQuery.value.trim() || !selectedGroupId.value) return
+  
+  groupSearchedKeyword.value = groupSearchQuery.value.trim()
+  hasGroupSearched.value = true
+  isGroupSearching.value = true
+  groupSearchResults.value = []
+  
+  try {
+    const group = audioGroups.value.find(g => g.id === selectedGroupId.value)
+    if (!group) return
+    
+    const audioIds = group.audio.map(audio => audio.id)
+    
+    const payload = {
+      keyword: groupSearchedKeyword.value,
+      year: [],
+      selectedCategory: ['Audio'],
+      selectedKeyword: [],
+      listShowKeyword: [],
+      listHideKeyword: [],
+      audio_ids: audioIds
+    }
+    
+    const response = await $fetch<{
+      success: boolean
+      message: string
+      data: SearchItem[]
+    }>(`${config.public.apiBaseUrl}/search?page=1`, {
+      method: 'POST',
+      body: payload
+    })
+    
+    groupSearchResults.value = response.data || []
+  } catch (error) {
+    console.error('Group search failed:', error)
+  } finally {
+    isGroupSearching.value = false
+  }
+}
+
+const clearGroupSearch = () => {
+  groupSearchQuery.value = ''
+  groupSearchedKeyword.value = ''
+  hasGroupSearched.value = false
+  groupSearchResults.value = []
+  expandedGroupSearchItems.value.clear()
+  isGroupSearchSpeaking.value = false
+  groupSearchSpeakingItemId.value = null
+  window.speechSynthesis.cancel()
+}
+
+const toggleGroupSearchExpand = (item: SearchItem) => {
+  const key = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
+  if (expandedGroupSearchItems.value.has(key)) {
+    expandedGroupSearchItems.value.delete(key)
+  } else {
+    expandedGroupSearchItems.value.add(key)
+  }
+  expandedGroupSearchItems.value = new Set(expandedGroupSearchItems.value)
+}
+
+const speakGroupSearchContent = (item: SearchItem) => {
   if (typeof window === 'undefined' || !window.speechSynthesis) {
     console.error('Speech synthesis not supported')
     return
@@ -444,10 +641,10 @@ const speakSearchContent = (item: SearchItem) => {
 
   const itemKey = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
 
-  if (isSearchSpeaking.value && searchSpeakingItemId.value === itemKey) {
+  if (isGroupSearchSpeaking.value && groupSearchSpeakingItemId.value === itemKey) {
     window.speechSynthesis.cancel()
-    isSearchSpeaking.value = false
-    searchSpeakingItemId.value = null
+    isGroupSearchSpeaking.value = false
+    groupSearchSpeakingItemId.value = null
     return
   }
 
@@ -467,32 +664,22 @@ const speakSearchContent = (item: SearchItem) => {
   utterance.pitch = 1
 
   utterance.onstart = () => {
-    isSearchSpeaking.value = true
-    searchSpeakingItemId.value = itemKey
+    isGroupSearchSpeaking.value = true
+    groupSearchSpeakingItemId.value = itemKey
   }
 
   utterance.onend = () => {
-    isSearchSpeaking.value = false
-    searchSpeakingItemId.value = null
+    isGroupSearchSpeaking.value = false
+    groupSearchSpeakingItemId.value = null
   }
 
   utterance.onerror = () => {
-    isSearchSpeaking.value = false
-    searchSpeakingItemId.value = null
+    isGroupSearchSpeaking.value = false
+    groupSearchSpeakingItemId.value = null
   }
 
   window.speechSynthesis.speak(utterance)
 }
-
-// Selected Group State - persisted across navigation
-const selectedGroupId = useState<number | null>(`audio-selected-group-${categoryId.value}`, () => null)
-
-// Set default selected group when data loads
-watch(audioGroups, (groups) => {
-  if (groups.length > 0 && selectedGroupId.value === null) {
-    selectedGroupId.value = groups[0].id
-  }
-}, { immediate: true })
 
 const selectedGroupAudios = computed(() => {
   const group = audioGroups.value.find(g => g.id === selectedGroupId.value)

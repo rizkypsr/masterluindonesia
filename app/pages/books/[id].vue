@@ -110,19 +110,77 @@
 
             <div class="pb-4">
               <div v-for="chapter in chapters" :key="chapter.id" class="mb-4">
-                <!-- Chapter Title -->
-                <h4 class="font-semibold text-black dark:text-white py-2" :style="{ fontSize: fontSize + 'px' }">{{ chapter.title }}</h4>
+                <!-- Chapter Title with Search -->
+                <div v-if="!chapterSearchModes[chapter.id]" class="flex items-center justify-between py-2">
+                  <h4 class="font-semibold text-black dark:text-white" :style="{ fontSize: fontSize + 'px' }">{{ chapter.title }}</h4>
+                  <button @click="openChapterSearch(chapter.id)" class="p-1">
+                    <Icon name="mdi:magnify" class="w-6 h-6 text-black dark:text-white" />
+                  </button>
+                </div>
 
-                <!-- Sub Chapters (Recursive) -->
-                <ChapterItem 
-                  v-if="chapter.sub_chapters && chapter.sub_chapters.length > 0"
-                  v-for="sub in chapter.sub_chapters" 
-                  :key="sub.id"
-                  :chapter="sub"
-                  :book-id="bookId"
-                  :font-size="fontSize"
-                  :level="1"
-                />
+                <!-- Chapter Search Input -->
+                <div v-else class="flex items-center gap-3 py-2">
+                  <input 
+                    v-model="chapterSearchQueries[chapter.id]" 
+                    type="text" 
+                    placeholder="Cari dalam bab ini..."
+                    class="flex-1 text-black dark:text-white bg-transparent border-b border-gray-300 dark:border-gray-600 focus:border-primary focus:outline-none py-1"
+                    @keyup.enter="handleChapterSearch(chapter.id)"
+                    autofocus 
+                  />
+                  <button 
+                    v-if="chapterSearchQueries[chapter.id]?.trim()" 
+                    @click="handleChapterSearch(chapter.id)"
+                    class="px-3 py-1 bg-primary hover:bg-primary/90 text-black text-sm font-medium rounded"
+                  >
+                    Cari
+                  </button>
+                  <button @click="closeChapterSearch(chapter.id)" class="p-1">
+                    <Icon name="mdi:close" class="w-6 h-6 text-black dark:text-white" />
+                  </button>
+                </div>
+
+                <!-- Chapter Search Results -->
+                <div v-if="chapterSearchModes[chapter.id] && (chapterSearchLoading[chapter.id] || chapterSearchResults[chapter.id]?.length > 0 || chapterSearchQueries[chapter.id]?.trim())">
+                  <!-- Loading -->
+                  <div v-if="chapterSearchLoading[chapter.id]" class="flex justify-center py-8">
+                    <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500 dark:text-gray-400" />
+                  </div>
+
+                  <!-- Results List -->
+                  <div v-else-if="chapterSearchResults[chapter.id]?.length > 0" class="space-y-4 mb-4">
+                    <SearchResultCard
+                      v-for="item in chapterSearchResults[chapter.id]"
+                      :key="`chap-${chapter.id}-${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
+                      :item="item"
+                      :is-expanded="expandedChapterSearchItems[chapter.id]?.has(`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`)"
+                      :font-size="fontSize"
+                      :is-speaking="speakingChapterItemId[chapter.id] === `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
+                      :search-keyword="chapterSearchQueries[chapter.id]"
+                      @toggle="toggleChapterSearchExpand(chapter.id, item)"
+                      @navigate="navigateToSearchResult(item)"
+                      @speak="speakChapterSearchContent(chapter.id, item)"
+                    />
+                  </div>
+
+                  <!-- Empty State -->
+                  <div v-else-if="chapterSearchQueries[chapter.id]?.trim()" class="text-center py-8">
+                    <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
+                  </div>
+                </div>
+
+                <!-- Sub Chapters (only show when not in search mode) -->
+                <div v-else-if="!chapterSearchModes[chapter.id]">
+                  <ChapterItem 
+                    v-if="chapter.sub_chapters && chapter.sub_chapters.length > 0"
+                    v-for="sub in chapter.sub_chapters" 
+                    :key="sub.id"
+                    :chapter="sub"
+                    :book-id="bookId"
+                    :font-size="fontSize"
+                    :level="1"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -182,6 +240,14 @@ const searchResults = ref<SearchItem[]>([])
 const expandedSearchItems = ref<Set<string>>(new Set())
 const speakingItemId = ref<string | null>(null)
 const isSpeaking = ref(false)
+
+// Per-chapter search state
+const chapterSearchModes = ref<Record<number, boolean>>({})
+const chapterSearchQueries = ref<Record<number, string>>({})
+const chapterSearchResults = ref<Record<number, SearchItem[]>>({})
+const chapterSearchLoading = ref<Record<number, boolean>>({})
+const expandedChapterSearchItems = ref<Record<number, Set<string>>>({})
+const speakingChapterItemId = ref<Record<number, string | null>>({})
 
 // Bookmark
 const { createBookBookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
@@ -309,6 +375,151 @@ const getAllChapterIds = (chapters: Chapter[]): number[] => {
   
   extractIds(chapters)
   return ids
+}
+
+// Get chapter IDs for a specific chapter (including its sub_chapters)
+const getChapterIds = (chapter: Chapter): number[] => {
+  const ids: number[] = [chapter.id]
+  
+  const extractIds = (items: SubChapter[]) => {
+    for (const item of items) {
+      ids.push(item.id)
+      if (item.sub && item.sub.length > 0) {
+        extractIds(item.sub)
+      }
+    }
+  }
+  
+  if (chapter.sub_chapters && chapter.sub_chapters.length > 0) {
+    extractIds(chapter.sub_chapters)
+  }
+  
+  return ids
+}
+
+// Per-chapter search functions
+const handleChapterSearch = async (chapterId: number) => {
+  const query = chapterSearchQueries.value[chapterId]
+  if (!query || !query.trim()) {
+    chapterSearchResults.value[chapterId] = []
+    return
+  }
+  
+  chapterSearchLoading.value[chapterId] = true
+  
+  try {
+    const chapter = chapters.value.find(c => c.id === chapterId)
+    if (!chapter) return
+    
+    const chapterIds = getChapterIds(chapter)
+    
+    const payload = {
+      keyword: query.trim(),
+      year: [],
+      selectedCategory: ['Buku'],
+      selectedKeyword: [],
+      listShowKeyword: [],
+      listHideKeyword: [],
+      chapter_ids: chapterIds
+    }
+    
+    const response = await $fetch<{
+      success: boolean
+      message: string
+      data: SearchItem[]
+    }>(`${config.public.apiBaseUrl}/search?page=1`, {
+      method: 'POST',
+      body: payload
+    })
+    
+    chapterSearchResults.value[chapterId] = response.data || []
+  } catch (error) {
+    console.error('Chapter search failed:', error)
+    chapterSearchResults.value[chapterId] = []
+  } finally {
+    chapterSearchLoading.value[chapterId] = false
+  }
+}
+
+const toggleChapterSearchExpand = (chapterId: number, item: SearchItem) => {
+  if (!expandedChapterSearchItems.value[chapterId]) {
+    expandedChapterSearchItems.value[chapterId] = new Set()
+  }
+  
+  const key = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
+  const expandedSet = expandedChapterSearchItems.value[chapterId]
+  
+  if (expandedSet.has(key)) {
+    expandedSet.delete(key)
+  } else {
+    expandedSet.add(key)
+  }
+  
+  expandedChapterSearchItems.value[chapterId] = new Set(expandedSet)
+}
+
+const speakChapterSearchContent = (chapterId: number, item: SearchItem) => {
+  if (typeof window === 'undefined' || !window.speechSynthesis) {
+    console.error('Speech synthesis not supported')
+    return
+  }
+
+  const itemKey = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
+
+  if (speakingChapterItemId.value[chapterId] === itemKey) {
+    window.speechSynthesis.cancel()
+    speakingChapterItemId.value[chapterId] = null
+    return
+  }
+
+  window.speechSynthesis.cancel()
+
+  const text = item.full_detail
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+
+  const utterance = new SpeechSynthesisUtterance(text)
+  utterance.lang = 'id-ID'
+  utterance.rate = 1
+  utterance.pitch = 1
+
+  utterance.onstart = () => {
+    speakingChapterItemId.value[chapterId] = itemKey
+  }
+
+  utterance.onend = () => {
+    speakingChapterItemId.value[chapterId] = null
+  }
+
+  utterance.onerror = () => {
+    speakingChapterItemId.value[chapterId] = null
+  }
+
+  window.speechSynthesis.speak(utterance)
+}
+
+const openChapterSearch = (chapterId: number) => {
+  chapterSearchModes.value[chapterId] = true
+  chapterSearchQueries.value[chapterId] = ''
+  chapterSearchResults.value[chapterId] = []
+  if (!expandedChapterSearchItems.value[chapterId]) {
+    expandedChapterSearchItems.value[chapterId] = new Set()
+  }
+}
+
+const closeChapterSearch = (chapterId: number) => {
+  chapterSearchModes.value[chapterId] = false
+  chapterSearchQueries.value[chapterId] = ''
+  chapterSearchResults.value[chapterId] = []
+  if (expandedChapterSearchItems.value[chapterId]) {
+    expandedChapterSearchItems.value[chapterId].clear()
+  }
+  speakingChapterItemId.value[chapterId] = null
+  window.speechSynthesis.cancel()
 }
 
 // Search Functions

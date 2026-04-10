@@ -86,8 +86,33 @@
         </template>
 
         <template v-else-if="treeItems.length > 0">
-          <UTree :items="treeItems" :get-key="(item) => String(item.id)" size="xl" expanded-icon="" collapsed-icon=""
-            :ui="{ linkLeadingIcon: 'hidden', link: 'text-xl' }" @select="handleSelect" />
+          <ClientOnly>
+            <div v-for="item in treeItems" :key="item.id" class="mb-4">
+              <Topics2TreeNode 
+                :item="item"
+                :font-size="fontSize"
+                :category-search-modes="categorySearchModes"
+                :category-search-queries="categorySearchQueries"
+                :category-search-loading="categorySearchLoading"
+                :category-search-results="categorySearchResults"
+                :expanded-category-search-items="expandedCategorySearchItems"
+                :speaking-category-item-id="speakingCategoryItemId"
+                @open-search="openCategorySearch"
+                @close-search="closeCategorySearch"
+                @handle-search="handleCategorySearch"
+                @toggle-expand="toggleCategorySearchExpand"
+                @navigate="navigateToSearchResult"
+                @speak="speakCategorySearchContent"
+              />
+            </div>
+            <template #fallback>
+              <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
+                <USkeleton class="h-6 w-3/4 mb-4" />
+                <USkeleton class="h-4 w-full mb-2" />
+                <USkeleton class="h-4 w-2/3" />
+              </div>
+            </template>
+          </ClientOnly>
         </template>
 
         <div v-else class="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">
@@ -112,7 +137,6 @@
 
 <script setup lang="ts">
 import type { TreeItem } from '@nuxt/ui'
-import type { TreeItemSelectEvent } from 'reka-ui'
 import type { SearchItem } from '~/types/search'
 
 interface Topic2TreeItem {
@@ -138,6 +162,14 @@ const expandedSearchItems = ref<Set<string>>(new Set())
 const speakingItemId = ref<string | null>(null)
 const isSpeaking = ref(false)
 
+// Per-category search state
+const categorySearchModes = ref<Record<number, boolean>>({})
+const categorySearchQueries = ref<Record<number, string>>({})
+const categorySearchResults = ref<Record<number, SearchItem[]>>({})
+const categorySearchLoading = ref<Record<number, boolean>>({})
+const expandedCategorySearchItems = ref<Record<number, Set<string>>>({})
+const speakingCategoryItemId = ref<Record<number, string | null>>({})
+
 // FAB and font size state
 const showFabMenu = ref(false)
 const fontSize = ref(18)
@@ -151,8 +183,9 @@ const zoomOut = () => {
 }
 
 const scrollToTop = () => {
-  if (contentContainer.value) {
-    contentContainer.value.scrollTo({ top: 0, behavior: 'smooth' })
+  const scrollContainer = document.querySelector('.flex-1.overflow-y-auto')
+  if (scrollContainer) {
+    scrollContainer.scrollTo({ top: 0, behavior: 'smooth' })
   }
 }
 
@@ -204,6 +237,165 @@ const getAllChapterIds = (items: Topic2TreeItem[]): number[] => {
   
   extractIds(items)
   return ids
+}
+
+// Get chapter IDs for a specific category (including its children)
+const getCategoryChapterIds = (categoryId: number, items: Topic2TreeItem[]): number[] => {
+  const ids: number[] = []
+  
+  const findAndExtract = (items: Topic2TreeItem[]): boolean => {
+    for (const item of items) {
+      if (item.id === categoryId) {
+        // Found the category, extract all IDs from here
+        const extractIds = (items: Topic2TreeItem[]) => {
+          for (const child of items) {
+            ids.push(child.id)
+            if (child.children && child.children.length > 0) {
+              extractIds(child.children)
+            }
+          }
+        }
+        
+        ids.push(item.id)
+        if (item.children && item.children.length > 0) {
+          extractIds(item.children)
+        }
+        return true
+      }
+      
+      if (item.children && item.children.length > 0) {
+        if (findAndExtract(item.children)) {
+          return true
+        }
+      }
+    }
+    return false
+  }
+  
+  findAndExtract(items)
+  return ids
+}
+
+// Per-category search functions
+const handleCategorySearch = async (categoryId: number) => {
+  const query = categorySearchQueries.value[categoryId]
+  if (!query || !query.trim()) {
+    categorySearchResults.value[categoryId] = []
+    return
+  }
+  
+  categorySearchLoading.value[categoryId] = true
+  
+  try {
+    const chapterIds = getCategoryChapterIds(categoryId, data.value?.data || [])
+    
+    const payload = {
+      keyword: query.trim(),
+      year: [],
+      selectedCategory: ['topik2'],
+      selectedKeyword: [],
+      listShowKeyword: [],
+      listHideKeyword: [],
+      topic2_chapter_ids: chapterIds
+    }
+    
+    const response = await $fetch<{
+      success: boolean
+      message: string
+      data: SearchItem[]
+    }>(`${config.public.apiBaseUrl}/search?page=1`, {
+      method: 'POST',
+      body: payload
+    })
+    
+    categorySearchResults.value[categoryId] = response.data || []
+  } catch (error) {
+    console.error('Category search failed:', error)
+    categorySearchResults.value[categoryId] = []
+  } finally {
+    categorySearchLoading.value[categoryId] = false
+  }
+}
+
+const toggleCategorySearchExpand = (categoryId: number, item: SearchItem) => {
+  if (!expandedCategorySearchItems.value[categoryId]) {
+    expandedCategorySearchItems.value[categoryId] = new Set()
+  }
+  
+  const key = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
+  const expandedSet = expandedCategorySearchItems.value[categoryId]
+  
+  if (expandedSet.has(key)) {
+    expandedSet.delete(key)
+  } else {
+    expandedSet.add(key)
+  }
+  
+  expandedCategorySearchItems.value[categoryId] = new Set(expandedSet)
+}
+
+const speakCategorySearchContent = (categoryId: number, item: SearchItem) => {
+  if (typeof window === 'undefined' || !window.speechSynthesis) {
+    console.error('Speech synthesis not supported')
+    return
+  }
+
+  const itemKey = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
+
+  if (speakingCategoryItemId.value[categoryId] === itemKey) {
+    window.speechSynthesis.cancel()
+    speakingCategoryItemId.value[categoryId] = null
+    return
+  }
+
+  window.speechSynthesis.cancel()
+
+  const text = item.full_detail
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n')
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+
+  const utterance = new SpeechSynthesisUtterance(text)
+  utterance.lang = 'id-ID'
+  utterance.rate = 1
+  utterance.pitch = 1
+
+  utterance.onstart = () => {
+    speakingCategoryItemId.value[categoryId] = itemKey
+  }
+
+  utterance.onend = () => {
+    speakingCategoryItemId.value[categoryId] = null
+  }
+
+  utterance.onerror = () => {
+    speakingCategoryItemId.value[categoryId] = null
+  }
+
+  window.speechSynthesis.speak(utterance)
+}
+
+const openCategorySearch = (categoryId: number) => {
+  categorySearchModes.value[categoryId] = true
+  categorySearchQueries.value[categoryId] = ''
+  categorySearchResults.value[categoryId] = []
+  if (!expandedCategorySearchItems.value[categoryId]) {
+    expandedCategorySearchItems.value[categoryId] = new Set()
+  }
+}
+
+const closeCategorySearch = (categoryId: number) => {
+  categorySearchModes.value[categoryId] = false
+  categorySearchQueries.value[categoryId] = ''
+  categorySearchResults.value[categoryId] = []
+  if (expandedCategorySearchItems.value[categoryId]) {
+    expandedCategorySearchItems.value[categoryId].clear()
+  }
+  speakingCategoryItemId.value[categoryId] = null
+  window.speechSynthesis.cancel()
 }
 
 // Global Search Functions
@@ -338,14 +530,6 @@ const speakSearchContent = (item: SearchItem) => {
   }
 
   window.speechSynthesis.speak(utterance)
-}
-
-function handleSelect(e: TreeItemSelectEvent<TreeItem>) {
-  const item = e.detail.value
-  // Only navigate if item has no children (is a leaf node)
-  if (item?.id && !item.children?.length) {
-    router.push(`/topics2/content/${item.id}`)
-  }
 }
 
 const shareTopic = async () => {
