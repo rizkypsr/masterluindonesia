@@ -2,7 +2,12 @@
   <div class="h-full bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
     <!-- Header -->
     <div class="px-4 pt-6 pb-4 shadow-md bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-500 dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 shrink-0">
-      <h1 class="text-black dark:text-white mb-2 font-semibold">Audio Dokumentasi</h1>
+      <div class="flex items-center justify-between mb-2">
+        <h1 class="text-black dark:text-white font-semibold">Audio Dokumentasi</h1>
+        <button @click="showInfoModal = true" class="p-1 hover:bg-white/20 dark:hover:bg-gray-600 rounded transition-colors">
+          <Icon name="mdi:information" class="w-6 h-6 text-black dark:text-white" />
+        </button>
+      </div>
       <div class="flex items-center bg-white dark:bg-gray-700 rounded-lg px-4 py-3">
         <Icon name="mdi:magnify" class="w-5 h-5 text-black dark:text-gray-300 mr-2" />
         <input v-model="searchQuery" type="text" placeholder="Keyword"
@@ -55,12 +60,29 @@
         </div>
       </div>
     </div>
+
+    <!-- Information Modal -->
+    <UModal v-model:open="showInfoModal" title="Informasi Audio">
+      <template #body>
+        <div v-if="isLoadingInfo" class="flex justify-center py-8">
+          <Icon name="svg-spinners:ring-resize" class="w-8 h-8 text-primary dark:text-yellow-500" />
+        </div>
+
+        <div v-else-if="infoDescription" class="text-black dark:text-white">
+          <div class="text-base leading-relaxed" v-html="infoDescription"></div>
+        </div>
+
+        <div v-else class="text-center py-8">
+          <p class="text-gray-500 dark:text-gray-400">Tidak ada informasi tersedia</p>
+        </div>
+      </template>
+    </UModal>
   </div>
 </template>
 
 <script setup lang="ts">
 const config = useRuntimeConfig()
-import { ref, computed } from "vue"
+import { ref, computed, watch } from "vue"
 
 interface SubCategory {
   id: number
@@ -87,6 +109,46 @@ interface Category {
 
 const searchQuery = ref("")
 const expandedCategories = ref<number[]>([])
+
+// Information modal state
+const showInfoModal = ref(false)
+const infoDescription = ref('')
+const isLoadingInfo = ref(false)
+
+// Fetch information when modal opens
+const fetchInformation = async () => {
+  if (infoDescription.value) return // Already fetched
+  
+  isLoadingInfo.value = true
+  try {
+    const response = await $fetch<{
+      success: boolean
+      message: string
+      data: Array<{
+        id: number
+        description: string
+        type: string
+        created_at: string
+        updated_at: string
+      }>
+    }>(`${config.public.apiBaseUrl}/information?type=audio`)
+    
+    if (response.success && response.data.length > 0) {
+      infoDescription.value = response.data[0].description
+    }
+  } catch (error) {
+    console.error('Failed to fetch information:', error)
+  } finally {
+    isLoadingInfo.value = false
+  }
+}
+
+// Watch for modal open to fetch information
+watch(showInfoModal, (isOpen) => {
+  if (isOpen) {
+    fetchInformation()
+  }
+})
 
 const { data: categoriesData, pending } = await useFetch<{ success: boolean; data: Category[] }>(
   `${config.public.apiBaseUrl}/category?type=audio&languange=CH`

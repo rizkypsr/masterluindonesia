@@ -10,11 +10,14 @@
         <h1 class="text-lg font-semibold text-black dark:text-white">{{ topicTitle }}</h1>
       </div>
       <div class="flex items-center gap-2">
-        <button class="p-1" @click="shareTopic">
+        <button @click="showInfoModal = true" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
+          <Icon name="mdi:information" class="w-6 h-6 text-black dark:text-white" />
+        </button>
+        <button class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded" @click="shareTopic">
           <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
         </button>
         <div class="relative">
-          <button class="p-1" @click="showMenu = !showMenu">
+          <button class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded" @click="showMenu = !showMenu">
             <Icon name="mdi:dots-vertical" class="w-6 h-6 text-black dark:text-white" />
           </button>
           <!-- Dropdown Menu -->
@@ -201,11 +204,28 @@
         @scrollTop="scrollToTop"
       />
     </ClientOnly>
+
+    <!-- Information Modal -->
+    <UModal v-model:open="showInfoModal" title="Informasi Ensiklopedia">
+      <template #body>
+        <div v-if="isLoadingInfo" class="flex justify-center py-8">
+          <Icon name="svg-spinners:ring-resize" class="w-8 h-8 text-primary dark:text-yellow-500" />
+        </div>
+
+        <div v-else-if="infoDescription" class="text-black dark:text-white">
+          <div class="text-base leading-relaxed" v-html="infoDescription"></div>
+        </div>
+
+        <div v-else class="text-center py-8">
+          <p class="text-gray-500 dark:text-gray-400">Tidak ada informasi tersedia</p>
+        </div>
+      </template>
+    </UModal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onActivated, onDeactivated, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onActivated, onDeactivated, onBeforeUnmount, watch } from 'vue'
 import type { SearchItem } from '~/types/search'
 
 const route = useRoute()
@@ -254,6 +274,46 @@ const showFabMenu = ref(false)
 const fontSize = ref(18)
 const showMenu = ref(false)
 const showFindInPage = ref(false)
+
+// Information modal state
+const showInfoModal = ref(false)
+const infoDescription = ref('')
+const isLoadingInfo = ref(false)
+
+// Fetch information when modal opens
+const fetchInformation = async () => {
+  if (infoDescription.value) return // Already fetched
+  
+  isLoadingInfo.value = true
+  try {
+    const response = await $fetch<{
+      success: boolean
+      message: string
+      data: Array<{
+        id: number
+        description: string
+        type: string
+        created_at: string
+        updated_at: string
+      }>
+    }>(`${config.public.apiBaseUrl}/information?type=topik1`)
+    
+    if (response.success && response.data.length > 0) {
+      infoDescription.value = response.data[0].description
+    }
+  } catch (error) {
+    console.error('Failed to fetch information:', error)
+  } finally {
+    isLoadingInfo.value = false
+  }
+}
+
+// Watch for modal open to fetch information
+watch(showInfoModal, (isOpen) => {
+  if (isOpen) {
+    fetchInformation()
+  }
+})
 
 const openFindInPage = () => {
   showMenu.value = false

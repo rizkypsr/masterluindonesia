@@ -7,11 +7,14 @@
         <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
       </button>
       <h1 class="text-lg font-semibold text-black dark:text-white flex-1">{{ pageTitle }}</h1>
+      <button @click="showAudioInfoModal = true" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
+        <Icon name="mdi:information" class="w-6 h-6 text-black dark:text-white" />
+      </button>
       <button @click="shareContent" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
         <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
       </button>
       <div class="relative">
-        <button class="p-1" @click="showMenu = !showMenu">
+        <button class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded" @click="showMenu = !showMenu">
           <Icon name="mdi:dots-vertical" class="w-6 h-6 text-black dark:text-white" />
         </button>
         <div v-if="showMenu" class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-20">
@@ -424,6 +427,23 @@
 
     <!-- Bookmark Modal - Lazy loaded -->
     <LazyBookmarkModal />
+
+    <!-- Audio Information Modal -->
+    <UModal v-model:open="showAudioInfoModal" title="Informasi Audio">
+      <template #body>
+        <div v-if="isLoadingAudioInfo" class="flex justify-center py-8">
+          <Icon name="svg-spinners:ring-resize" class="w-8 h-8 text-primary dark:text-yellow-500" />
+        </div>
+
+        <div v-else-if="audioInfoDescription" class="text-black dark:text-white">
+          <div class="text-base leading-relaxed" v-html="audioInfoDescription"></div>
+        </div>
+
+        <div v-else class="text-center py-8">
+          <p class="text-gray-500 dark:text-gray-400">Tidak ada informasi tersedia</p>
+        </div>
+      </template>
+    </UModal>
   </div>
 </template>
 
@@ -829,6 +849,46 @@ const fontSize = ref(18) // base font size in px
 const isPlayerMinimized = ref(false)
 const showMenu = ref(false)
 const showFindInPage = ref(false)
+
+// Audio Information modal state
+const showAudioInfoModal = ref(false)
+const audioInfoDescription = ref('')
+const isLoadingAudioInfo = ref(false)
+
+// Fetch audio information when modal opens
+const fetchAudioInformation = async () => {
+  if (audioInfoDescription.value) return // Already fetched
+  
+  isLoadingAudioInfo.value = true
+  try {
+    const response = await $fetch<{
+      success: boolean
+      message: string
+      data: Array<{
+        id: number
+        description: string
+        type: string
+        created_at: string
+        updated_at: string
+      }>
+    }>(`${config.public.apiBaseUrl}/information?type=audio`)
+    
+    if (response.success && response.data.length > 0) {
+      audioInfoDescription.value = response.data[0].description
+    }
+  } catch (error) {
+    console.error('Failed to fetch audio information:', error)
+  } finally {
+    isLoadingAudioInfo.value = false
+  }
+}
+
+// Watch for modal open to fetch information
+watch(showAudioInfoModal, (isOpen) => {
+  if (isOpen) {
+    fetchAudioInformation()
+  }
+})
 
 const openFindInPage = () => {
   showMenu.value = false

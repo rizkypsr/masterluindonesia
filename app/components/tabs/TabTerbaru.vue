@@ -51,8 +51,11 @@
 
     <!-- Topics Section -->
     <div v-if="isTopicMenuEnabled" class="mt-6 px-4">
-      <div class="mb-4">
+      <div class="mb-4 flex items-center justify-between">
         <h2 class="text-xl font-semibold text-black dark:text-white">Ensiklopedia</h2>
+        <button @click="showInfoModal = true" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors flex items-center justify-center">
+          <Icon name="mdi:information" class="w-6 h-6 text-black dark:text-white" />
+        </button>
       </div>
 
       <template v-if="isLoading">
@@ -114,6 +117,23 @@
     <ContactSection />
   </div>
   </ClientOnly>
+
+  <!-- Information Modal -->
+  <UModal v-model:open="showInfoModal" title="Informasi Ensiklopedia">
+    <template #body>
+      <div v-if="isLoadingInfo" class="flex justify-center py-8">
+        <Icon name="svg-spinners:ring-resize" class="w-8 h-8 text-primary dark:text-yellow-500" />
+      </div>
+
+      <div v-else-if="infoDescription" class="text-black dark:text-white">
+        <div class="text-base leading-relaxed" v-html="infoDescription"></div>
+      </div>
+
+      <div v-else class="text-center py-8">
+        <p class="text-gray-500 dark:text-gray-400">Tidak ada informasi tersedia</p>
+      </div>
+    </template>
+  </UModal>
 </template>
 
 <script setup lang="ts">
@@ -173,6 +193,47 @@ const dateContainer = ref<HTMLElement | null>(null)
 const dateRefs = ref<HTMLElement[]>([])
 const router = useRouter()
 const contentScrollContainer = ref<HTMLElement | null>(null)
+const config = useRuntimeConfig()
+
+// Information modal state
+const showInfoModal = ref(false)
+const infoDescription = ref('')
+const isLoadingInfo = ref(false)
+
+// Fetch information when modal opens
+const fetchInformation = async () => {
+  if (infoDescription.value) return // Already fetched
+  
+  isLoadingInfo.value = true
+  try {
+    const response = await $fetch<{
+      success: boolean
+      message: string
+      data: Array<{
+        id: number
+        description: string
+        type: string
+        created_at: string
+        updated_at: string
+      }>
+    }>(`${config.public.apiBaseUrl}/information?type=topik1`)
+    
+    if (response.success && response.data.length > 0) {
+      infoDescription.value = response.data[0].description
+    }
+  } catch (error) {
+    console.error('Failed to fetch information:', error)
+  } finally {
+    isLoadingInfo.value = false
+  }
+}
+
+// Watch for modal open to fetch information
+watch(showInfoModal, (isOpen) => {
+  if (isOpen) {
+    fetchInformation()
+  }
+})
 
 // Store scroll positions for restoration using sessionStorage for persistence across navigation
 const SCROLL_KEY = 'tabTerbaru-scroll-position'
