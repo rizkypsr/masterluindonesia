@@ -106,7 +106,7 @@
         <div v-else class="space-y-2">
           <div v-for="audio in selectedGroupAudios" :key="audio.id">
             <!-- Audio Item Header with Search -->
-            <div v-if="!audioSearchModes[audio.id]" class="flex items-center gap-2">
+            <div v-if="!audioSearchModes[audio.id]" class="flex gap-2" :class="currentAudio?.id === audio.id ? 'items-start' : 'items-center'">
               <!-- Audio Item - Not Selected -->
               <button v-if="currentAudio?.id !== audio.id" @click="playAudio(audio)"
                 class="flex-1 flex items-center gap-3 p-2 rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
