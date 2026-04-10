@@ -162,7 +162,7 @@
                 </div>
 
                 <!-- Chapter Search Results -->
-                <div v-if="chapterSearchModes[chapter.id] && (chapterSearchLoading[chapter.id] || chapterSearchResults[chapter.id]?.length > 0 || chapterSearchQueries[chapter.id]?.trim())">
+                <div v-if="chapterSearchLoading[chapter.id] || chapterSearchResults[chapter.id]?.length > 0 || (chapterSearchModes[chapter.id] && chapterSearchQueries[chapter.id]?.trim() && !chapterSearchLoading[chapter.id] && chapterSearchResults[chapter.id]?.length === 0)">
                   <!-- Loading -->
                   <div v-if="chapterSearchLoading[chapter.id]" class="flex justify-center py-8">
                     <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500 dark:text-gray-400" />
@@ -185,13 +185,13 @@
                   </div>
 
                   <!-- Empty State -->
-                  <div v-else-if="chapterSearchQueries[chapter.id]?.trim()" class="text-center py-8">
+                  <div v-else class="text-center py-8">
                     <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
                   </div>
                 </div>
 
-                <!-- Sub Chapters (only show when not in search mode) -->
-                <div v-else-if="!chapterSearchModes[chapter.id]">
+                <!-- Sub Chapters (show when not searching OR when search input is empty) -->
+                <div v-if="(!chapterSearchModes[chapter.id] || !chapterSearchResults[chapter.id]?.length)">
                   <ChapterItem 
                     v-if="chapter.sub_chapters && chapter.sub_chapters.length > 0"
                     v-for="sub in chapter.sub_chapters" 
@@ -531,6 +531,14 @@ const speakChapterSearchContent = (chapterId: number, item: SearchItem) => {
 }
 
 const openChapterSearch = (chapterId: number) => {
+  // Close all other open search inputs
+  Object.keys(chapterSearchModes.value).forEach(key => {
+    const id = Number(key)
+    if (id !== chapterId && chapterSearchModes.value[id]) {
+      closeChapterSearch(id)
+    }
+  })
+  
   chapterSearchModes.value[chapterId] = true
   chapterSearchQueries.value[chapterId] = ''
   chapterSearchResults.value[chapterId] = []

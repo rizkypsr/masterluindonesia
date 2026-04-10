@@ -149,7 +149,7 @@
             </div>
 
             <!-- Category Search Results -->
-            <div v-if="searchModes[category.id] && (categorySearchLoading[category.id] || categorySearchResults[category.id]?.length > 0 || searchQueries[category.id]?.trim())">
+            <div v-if="categorySearchLoading[category.id] || categorySearchResults[category.id]?.length > 0 || (searchModes[category.id] && searchQueries[category.id]?.trim() && !categorySearchLoading[category.id] && categorySearchResults[category.id]?.length === 0)">
               <!-- Loading -->
               <div v-if="categorySearchLoading[category.id]" class="flex justify-center py-8">
                 <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500 dark:text-gray-400" />
@@ -172,13 +172,13 @@
               </div>
 
               <!-- Empty State -->
-              <div v-else-if="searchQueries[category.id]?.trim()" class="text-center py-8">
+              <div v-else class="text-center py-8">
                 <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
               </div>
             </div>
 
-            <!-- Sub Categories (only show when not in search mode) -->
-            <div v-else-if="!searchModes[category.id] && category.sub_category.length > 0"
+            <!-- Sub Categories (show when not searching OR when search input is empty) -->
+            <div v-if="(!searchModes[category.id] || !categorySearchResults[category.id]?.length) && category.sub_category.length > 0"
               class="divide-y divide-gray-200 dark:divide-gray-700">
               <NuxtLink v-for="sub in category.sub_category" :key="sub.id"
                 :to="{ path: '/topics/detail', query: { subId: sub.id, title: sub.title } }"
@@ -588,6 +588,14 @@ const getFilteredSubCategories = (category: TopicCategory) => {
 }
 
 const openSearch = (categoryId: number) => {
+  // Close all other open search inputs
+  Object.keys(searchModes.value).forEach(key => {
+    const id = Number(key)
+    if (id !== categoryId && searchModes.value[id]) {
+      closeSearch(id)
+    }
+  })
+  
   searchModes.value[categoryId] = true
   searchQueries.value[categoryId] = ''
   categorySearchResults.value[categoryId] = []

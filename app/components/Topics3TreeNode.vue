@@ -43,7 +43,7 @@
       </div>
 
       <!-- Category Search Results (only for top level) -->
-      <div v-if="level === 0 && categorySearchModes[item.id] && (categorySearchLoading[item.id] || categorySearchResults[item.id]?.length > 0 || categorySearchQueries[item.id]?.trim())"
+      <div v-if="level === 0 && (categorySearchLoading[item.id] || categorySearchResults[item.id]?.length > 0 || (categorySearchModes[item.id] && categorySearchQueries[item.id]?.trim() && !categorySearchLoading[item.id] && categorySearchResults[item.id]?.length === 0))"
         :style="{ paddingLeft: (level * 16) + 'px' }">
         <!-- Loading -->
         <div v-if="categorySearchLoading[item.id]" class="flex justify-center py-8">
@@ -67,13 +67,13 @@
         </div>
 
         <!-- Empty State -->
-        <div v-else-if="categorySearchQueries[item.id]?.trim()" class="text-center py-8">
+        <div v-else class="text-center py-8">
           <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
         </div>
       </div>
 
-      <!-- Children (only show when not in search mode) -->
-      <div v-if="!categorySearchModes[item.id] && isExpanded && item.children">
+      <!-- Children (show when not searching OR when search has no results) -->
+      <div v-if="(!categorySearchModes[item.id] || !categorySearchResults[item.id]?.length) && isExpanded && item.children">
         <Topics3TreeNode
           v-for="child in item.children"
           :key="child.id"

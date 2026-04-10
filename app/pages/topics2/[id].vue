@@ -409,6 +409,14 @@ const speakCategorySearchContent = (categoryId: number, item: SearchItem) => {
 }
 
 const openCategorySearch = (categoryId: number) => {
+  // Close all other open search inputs
+  Object.keys(categorySearchModes.value).forEach(key => {
+    const id = Number(key)
+    if (id !== categoryId && categorySearchModes.value[id]) {
+      closeCategorySearch(id)
+    }
+  })
+  
   categorySearchModes.value[categoryId] = true
   categorySearchQueries.value[categoryId] = ''
   categorySearchResults.value[categoryId] = []

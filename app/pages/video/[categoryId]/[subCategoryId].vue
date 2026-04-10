@@ -142,7 +142,7 @@
             </div>
 
             <!-- Sub-category Search Results -->
-            <div v-if="subCategorySearchModes[group.id] && (subCategorySearchLoading[group.id] || subCategorySearchResults[group.id]?.length > 0 || subCategorySearchQueries[group.id]?.trim())">
+            <div v-if="subCategorySearchLoading[group.id] || subCategorySearchResults[group.id]?.length > 0 || (subCategorySearchModes[group.id] && subCategorySearchQueries[group.id]?.trim() && !subCategorySearchLoading[group.id] && subCategorySearchResults[group.id]?.length === 0)">
               <!-- Loading -->
               <div v-if="subCategorySearchLoading[group.id]" class="flex justify-center py-8">
                 <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500 dark:text-gray-400" />
@@ -165,13 +165,13 @@
               </div>
 
               <!-- Empty State -->
-              <div v-else-if="subCategorySearchQueries[group.id]?.trim()" class="text-center py-8">
+              <div v-else class="text-center py-8">
                 <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
               </div>
             </div>
 
-            <!-- Video Items (only show when not in search mode) -->
-            <div v-if="!subCategorySearchModes[group.id]" class="space-y-2">
+            <!-- Video Items (show when not searching OR when search has no results) -->
+            <div v-if="(!subCategorySearchModes[group.id] || !subCategorySearchResults[group.id]?.length)" class="space-y-2">
               <NuxtLink v-for="video in group.sub_category" :key="video.id"
                 :to="{ path: `/video/play/${video.id}`, query: { title: video.title } }"
                 class="block py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded transition-colors">
@@ -600,6 +600,14 @@ const speakSubCategorySearchContent = (subCatId: number, item: SearchItem) => {
 }
 
 const openSubCategorySearch = (subCatId: number) => {
+  // Close all other open search inputs
+  Object.keys(subCategorySearchModes.value).forEach(key => {
+    const id = Number(key)
+    if (id !== subCatId && subCategorySearchModes.value[id]) {
+      closeSubCategorySearch(id)
+    }
+  })
+  
   subCategorySearchModes.value[subCatId] = true
   subCategorySearchQueries.value[subCatId] = ''
   subCategorySearchResults.value[subCatId] = []

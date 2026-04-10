@@ -127,7 +127,7 @@
         <div v-else class="space-y-2">
           <div v-for="audio in selectedGroupAudios" :key="audio.id">
             <!-- Audio Item Header with Search -->
-            <div v-if="!audioSearchModes[audio.id]" class="flex gap-2" :class="currentAudio?.id === audio.id ? 'items-start' : 'items-center'">
+            <div v-if="!audioSearchModes[audio.id]" class="relative" :class="currentAudio?.id === audio.id ? '' : 'flex gap-2 items-center'">
               <!-- Audio Item - Not Selected -->
               <button v-if="currentAudio?.id !== audio.id" @click="playAudio(audio)"
                 class="flex-1 flex items-center gap-3 p-2 rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -143,7 +143,7 @@
               </button>
 
               <!-- Audio Item - Selected (with Player & Show Teks) -->
-              <div v-else class="flex-1 bg-[#c09637] dark:bg-yellow-600 rounded-2xl overflow-hidden"
+              <div v-else class="bg-[#c09637] dark:bg-yellow-600 rounded-2xl overflow-hidden"
                 :style="{ fontSize: fontSize + 'px' }">
                 <!-- Player Header -->
                 <div class="px-4 py-3">
@@ -211,9 +211,21 @@
                 </div>
               </div>
 
-              <!-- Search Icon -->
-              <button @click="openAudioSearch(audio.id)" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+              <!-- Search Icon - Positioned absolutely at top center, slightly outside -->
+              <button 
+                v-if="currentAudio?.id !== audio.id"
+                @click="openAudioSearch(audio.id)" 
+                class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
+              >
                 <Icon name="mdi:magnify" class="w-6 h-6 text-black dark:text-white" />
+              </button>
+              
+              <button 
+                v-else
+                @click="openAudioSearch(audio.id)" 
+                class="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors z-10 border-2 border-[#c09637] dark:border-yellow-600"
+              >
+                <Icon name="mdi:magnify" class="w-4 h-4 text-black dark:text-white" />
               </button>
             </div>
 
@@ -240,7 +252,7 @@
             </div>
 
             <!-- Audio Search Results -->
-            <div v-if="audioSearchModes[audio.id] && (audioSearchLoading[audio.id] || audioSearchResults[audio.id]?.length > 0 || audioSearchQueries[audio.id]?.trim())">
+            <div v-if="audioSearchLoading[audio.id] || audioSearchResults[audio.id]?.length > 0 || (audioSearchModes[audio.id] && audioSearchQueries[audio.id]?.trim() && !audioSearchLoading[audio.id] && audioSearchResults[audio.id]?.length === 0)">
               <!-- Loading -->
               <div v-if="audioSearchLoading[audio.id]" class="flex justify-center py-8">
                 <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500 dark:text-gray-400" />
@@ -263,7 +275,7 @@
               </div>
 
               <!-- Empty State -->
-              <div v-else-if="audioSearchQueries[audio.id]?.trim()" class="text-center py-8">
+              <div v-else class="text-center py-8">
                 <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
               </div>
             </div>
@@ -527,6 +539,14 @@ const speakAudioSearchContent = (audioId: number, item: SearchItem) => {
 }
 
 const openAudioSearch = (audioId: number) => {
+  // Close all other open search inputs
+  Object.keys(audioSearchModes.value).forEach(key => {
+    const id = Number(key)
+    if (id !== audioId && audioSearchModes.value[id]) {
+      closeAudioSearch(id)
+    }
+  })
+  
   audioSearchModes.value[audioId] = true
   audioSearchQueries.value[audioId] = ''
   audioSearchResults.value[audioId] = []
