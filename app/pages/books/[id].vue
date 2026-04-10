@@ -17,11 +17,32 @@
         <button class="p-1" @click="shareBook">
           <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
         </button>
+        <div class="relative">
+          <button class="p-1" @click="showMenu = !showMenu">
+            <Icon name="mdi:dots-vertical" class="w-6 h-6 text-black dark:text-white" />
+          </button>
+          <div v-if="showMenu" class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-20">
+            <button
+              @click="openFindInPage"
+              class="w-full px-4 py-3 text-left text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-3 rounded-lg"
+            >
+              <Icon name="mdi:magnify" class="w-5 h-5" />
+              <span>Cari di Halaman</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
+    <!-- Find In Page Component -->
+    <FindInPage
+      :is-open="showFindInPage"
+      target-selector="#book-content"
+      @close="showFindInPage = false"
+    />
+
     <!-- Scrollable Content Area -->
-    <div ref="mainScrollContainer" class="flex-1 overflow-y-auto custom-scrollbar">
+    <div id="book-content" ref="mainScrollContainer" class="flex-1 overflow-y-auto custom-scrollbar">
       <!-- Book Info -->
       <div class="px-4 py-6 flex items-center gap-4">
         <NuxtImg :src="bookCover" :alt="bookTitle" class="w-24 h-32 object-cover rounded-xl shrink-0" loading="lazy"
@@ -229,6 +250,13 @@ const { saveScrollPosition, getScrollPosition } = useScrollState()
 // FAB Menu State
 const showFabMenu = ref(false)
 const fontSize = ref(18)
+const showMenu = ref(false)
+const showFindInPage = ref(false)
+
+const openFindInPage = () => {
+  showMenu.value = false
+  showFindInPage.value = true
+}
 const mainScrollContainer = ref<HTMLElement | null>(null)
 
 // Search State

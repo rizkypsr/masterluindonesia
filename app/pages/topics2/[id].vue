@@ -7,11 +7,34 @@
           <BackButton />
           <h1 class="text-lg font-semibold text-black dark:text-white">{{ topicTitle }}</h1>
         </div>
-        <button class="p-1" @click="shareTopic">
-          <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
-        </button>
+        <div class="flex items-center gap-2">
+          <button class="p-1" @click="shareTopic">
+            <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
+          </button>
+          <div class="relative">
+            <button class="p-1" @click="showMenu = !showMenu">
+              <Icon name="mdi:dots-vertical" class="w-6 h-6 text-black dark:text-white" />
+            </button>
+            <div v-if="showMenu" class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-20">
+              <button
+                @click="openFindInPage"
+                class="w-full px-4 py-3 text-left text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-3 rounded-lg"
+              >
+                <Icon name="mdi:magnify" class="w-5 h-5" />
+                <span>Cari di Halaman</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- Find In Page Component -->
+    <FindInPage
+      :is-open="showFindInPage"
+      target-selector="#topics2-content"
+      @close="showFindInPage = false"
+    />
 
     <!-- Search Input -->
     <div class="px-4 py-4 shrink-0">
@@ -36,7 +59,7 @@
     </div>
 
     <!-- Content -->
-    <div class="flex-1 overflow-y-auto px-4 pb-4">
+    <div id="topics2-content" class="flex-1 overflow-y-auto px-4 pb-4">
       <!-- Search Results -->
       <div v-if="hasGlobalSearched">
         <div class="flex items-center justify-between mb-4">
@@ -173,6 +196,13 @@ const speakingCategoryItemId = ref<Record<number, string | null>>({})
 // FAB and font size state
 const showFabMenu = ref(false)
 const fontSize = ref(18)
+const showMenu = ref(false)
+const showFindInPage = ref(false)
+
+const openFindInPage = () => {
+  showMenu.value = false
+  showFindInPage.value = true
+}
 
 const zoomIn = () => {
   fontSize.value = Math.min(fontSize.value + 2, 28)

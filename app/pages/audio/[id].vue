@@ -10,10 +10,31 @@
       <button @click="shareContent" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
         <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
       </button>
+      <div class="relative">
+        <button class="p-1" @click="showMenu = !showMenu">
+          <Icon name="mdi:dots-vertical" class="w-6 h-6 text-black dark:text-white" />
+        </button>
+        <div v-if="showMenu" class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-20">
+          <button
+            @click="openFindInPage"
+            class="w-full px-4 py-3 text-left text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-3 rounded-lg"
+          >
+            <Icon name="mdi:magnify" class="w-5 h-5" />
+            <span>Cari di Halaman</span>
+          </button>
+        </div>
+      </div>
     </div>
 
+    <!-- Find In Page Component -->
+    <FindInPage
+      :is-open="showFindInPage"
+      target-selector="#audio-content"
+      @close="showFindInPage = false"
+    />
+
     <!-- Content -->
-    <div class="flex-1 overflow-y-auto p-4 pb-40">
+    <div id="audio-content" class="flex-1 overflow-y-auto p-4 pb-40">
       <!-- Loading State -->
       <div v-if="pending" class="space-y-4">
         <div class="flex gap-2 overflow-x-auto pb-2">
@@ -709,6 +730,13 @@ const subtitleSearch = ref('')
 const showFabMenu = ref(false)
 const fontSize = ref(18) // base font size in px
 const isPlayerMinimized = ref(false)
+const showMenu = ref(false)
+const showFindInPage = ref(false)
+
+const openFindInPage = () => {
+  showMenu.value = false
+  showFindInPage.value = true
+}
 
 const zoomIn = () => {
   fontSize.value = Math.min(fontSize.value + 2, 24)
