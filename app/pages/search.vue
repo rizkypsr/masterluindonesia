@@ -2,6 +2,7 @@
 import type { FilterPayload, DynamicFilter } from '~/types/search'
 
 const router = useRouter()
+const route = useRoute()
 const config = useRuntimeConfig()
 
 // Use composables
@@ -77,8 +78,278 @@ async function fetchFilterOptions() {
   }
 }
 
+// Share search function
+function shareSearch() {
+  const params = new URLSearchParams()
+  
+  // Add keyword
+  if (searchQuery.value) params.append('keyword', searchQuery.value)
+  
+  // Add array parameters
+  filterPayload.value.selectedCategory.forEach(cat => params.append('selectedCategory[]', cat))
+  filterPayload.value.year.forEach(year => params.append('year[]', year.toString()))
+  filterPayload.value.selectedKeyword.forEach(kw => params.append('selectedKeyword[]', kw))
+  filterPayload.value.listShowKeyword.forEach(kw => params.append('listShowKeyword[]', kw))
+  filterPayload.value.listHideKeyword.forEach(kw => params.append('listHideKeyword[]', kw))
+  
+  // Add deep search filter IDs
+  if (filterPayload.value.chapter_ids) {
+    filterPayload.value.chapter_ids.forEach(id => params.append('chapter_ids[]', id.toString()))
+  }
+  if (filterPayload.value.audio_ids) {
+    filterPayload.value.audio_ids.forEach(id => params.append('audio_ids[]', id.toString()))
+  }
+  if (filterPayload.value.video_ids) {
+    filterPayload.value.video_ids.forEach(id => params.append('video_ids[]', id.toString()))
+  }
+  if (filterPayload.value.topic1_category_ids) {
+    filterPayload.value.topic1_category_ids.forEach(id => params.append('topic1_category_ids[]', id.toString()))
+  }
+  if (filterPayload.value.topic2_chapter_ids) {
+    filterPayload.value.topic2_chapter_ids.forEach(id => params.append('topic2_chapter_ids[]', id.toString()))
+  }
+  if (filterPayload.value.topic3_chapter_ids) {
+    filterPayload.value.topic3_chapter_ids.forEach(id => params.append('topic3_chapter_ids[]', id.toString()))
+  }
+  
+  // Add category ID filters
+  if (filterPayload.value.categoryAudioId) {
+    filterPayload.value.categoryAudioId.forEach(id => params.append('categoryAudioId[]', id.toString()))
+  }
+  if (filterPayload.value.categoryVideoId) {
+    filterPayload.value.categoryVideoId.forEach(id => params.append('categoryVideoId[]', id.toString()))
+  }
+  if (filterPayload.value.categoryBookId) {
+    filterPayload.value.categoryBookId.forEach(id => params.append('categoryBookId[]', id.toString()))
+  }
+  if (filterPayload.value.categoryTopic1Id) {
+    filterPayload.value.categoryTopic1Id.forEach(id => params.append('categoryTopic1Id[]', id.toString()))
+  }
+  if (filterPayload.value.categoryTopic2Id) {
+    filterPayload.value.categoryTopic2Id.forEach(id => params.append('categoryTopic2Id[]', id.toString()))
+  }
+  if (filterPayload.value.categoryTopic3Id) {
+    filterPayload.value.categoryTopic3Id.forEach(id => params.append('categoryTopic3Id[]', id.toString()))
+  }
+  
+  const shareUrl = `${window.location.origin}/search?${params.toString()}`
+  
+  if (navigator.share) {
+    navigator.share({
+      title: 'Hasil Pencarian',
+      url: shareUrl
+    }).catch(() => {
+      // Fallback to clipboard
+      navigator.clipboard.writeText(shareUrl)
+    })
+  } else {
+    navigator.clipboard.writeText(shareUrl)
+  }
+}
+
+// Parse URL parameters on mount
+function parseUrlParams() {
+  const query = route.query
+  
+  // Check if there are any search parameters
+  const hasParams = Object.keys(query).length > 0
+  if (!hasParams) return
+  
+  // Parse keyword
+  if (query.keyword && typeof query.keyword === 'string') {
+    searchQuery.value = query.keyword
+    searchedKeyword.value = query.keyword
+  }
+  
+  // Parse selectedCategory
+  if (query['selectedCategory[]']) {
+    const categories = Array.isArray(query['selectedCategory[]']) 
+      ? query['selectedCategory[]'] 
+      : [query['selectedCategory[]']]
+    filterPayload.value.selectedCategory = categories.filter((c): c is string => typeof c === 'string')
+  }
+  
+  // Parse year
+  if (query['year[]']) {
+    const years = Array.isArray(query['year[]']) 
+      ? query['year[]'] 
+      : [query['year[]']]
+    filterPayload.value.year = years
+      .filter((y): y is string => typeof y === 'string')
+      .map(y => parseInt(y))
+      .filter(y => !isNaN(y))
+  }
+  
+  // Parse selectedKeyword
+  if (query['selectedKeyword[]']) {
+    const keywords = Array.isArray(query['selectedKeyword[]']) 
+      ? query['selectedKeyword[]'] 
+      : [query['selectedKeyword[]']]
+    filterPayload.value.selectedKeyword = keywords.filter((k): k is string => typeof k === 'string')
+  }
+  
+  // Parse listShowKeyword
+  if (query['listShowKeyword[]']) {
+    const keywords = Array.isArray(query['listShowKeyword[]']) 
+      ? query['listShowKeyword[]'] 
+      : [query['listShowKeyword[]']]
+    filterPayload.value.listShowKeyword = keywords.filter((k): k is string => typeof k === 'string')
+  }
+  
+  // Parse listHideKeyword
+  if (query['listHideKeyword[]']) {
+    const keywords = Array.isArray(query['listHideKeyword[]']) 
+      ? query['listHideKeyword[]'] 
+      : [query['listHideKeyword[]']]
+    filterPayload.value.listHideKeyword = keywords.filter((k): k is string => typeof k === 'string')
+  }
+  
+  // Parse deep search filter IDs
+  if (query['chapter_ids[]']) {
+    const ids = Array.isArray(query['chapter_ids[]']) 
+      ? query['chapter_ids[]'] 
+      : [query['chapter_ids[]']]
+    const parsedIds = ids
+      .filter((id): id is string => typeof id === 'string')
+      .map(id => parseInt(id))
+      .filter(id => !isNaN(id))
+    filterPayload.value.chapter_ids = parsedIds
+    deepSearch.selectedChapterIds.value = parsedIds
+  }
+  
+  if (query['audio_ids[]']) {
+    const ids = Array.isArray(query['audio_ids[]']) 
+      ? query['audio_ids[]'] 
+      : [query['audio_ids[]']]
+    const parsedIds = ids
+      .filter((id): id is string => typeof id === 'string')
+      .map(id => parseInt(id))
+      .filter(id => !isNaN(id))
+    filterPayload.value.audio_ids = parsedIds
+    deepSearch.selectedVideoIds.value = parsedIds
+  }
+  
+  if (query['video_ids[]']) {
+    const ids = Array.isArray(query['video_ids[]']) 
+      ? query['video_ids[]'] 
+      : [query['video_ids[]']]
+    const parsedIds = ids
+      .filter((id): id is string => typeof id === 'string')
+      .map(id => parseInt(id))
+      .filter(id => !isNaN(id))
+    filterPayload.value.video_ids = parsedIds
+    deepSearch.selectedVideoIds.value = parsedIds
+  }
+  
+  if (query['topic1_category_ids[]']) {
+    const ids = Array.isArray(query['topic1_category_ids[]']) 
+      ? query['topic1_category_ids[]'] 
+      : [query['topic1_category_ids[]']]
+    const parsedIds = ids
+      .filter((id): id is string => typeof id === 'string')
+      .map(id => parseInt(id))
+      .filter(id => !isNaN(id))
+    filterPayload.value.topic1_category_ids = parsedIds
+    deepSearch.selectedTopic1CategoryIds.value = parsedIds
+  }
+  
+  if (query['topic2_chapter_ids[]']) {
+    const ids = Array.isArray(query['topic2_chapter_ids[]']) 
+      ? query['topic2_chapter_ids[]'] 
+      : [query['topic2_chapter_ids[]']]
+    const parsedIds = ids
+      .filter((id): id is string => typeof id === 'string')
+      .map(id => parseInt(id))
+      .filter(id => !isNaN(id))
+    filterPayload.value.topic2_chapter_ids = parsedIds
+    deepSearch.selectedTopic2ChapterIds.value = parsedIds
+  }
+  
+  if (query['topic3_chapter_ids[]']) {
+    const ids = Array.isArray(query['topic3_chapter_ids[]']) 
+      ? query['topic3_chapter_ids[]'] 
+      : [query['topic3_chapter_ids[]']]
+    const parsedIds = ids
+      .filter((id): id is string => typeof id === 'string')
+      .map(id => parseInt(id))
+      .filter(id => !isNaN(id))
+    filterPayload.value.topic3_chapter_ids = parsedIds
+    deepSearch.selectedTopic3ChapterIds.value = parsedIds
+  }
+  
+  // Parse category ID filters
+  if (query['categoryAudioId[]']) {
+    const ids = Array.isArray(query['categoryAudioId[]']) 
+      ? query['categoryAudioId[]'] 
+      : [query['categoryAudioId[]']]
+    filterPayload.value.categoryAudioId = ids
+      .filter((id): id is string => typeof id === 'string')
+      .map(id => parseInt(id))
+      .filter(id => !isNaN(id))
+  }
+  
+  if (query['categoryVideoId[]']) {
+    const ids = Array.isArray(query['categoryVideoId[]']) 
+      ? query['categoryVideoId[]'] 
+      : [query['categoryVideoId[]']]
+    filterPayload.value.categoryVideoId = ids
+      .filter((id): id is string => typeof id === 'string')
+      .map(id => parseInt(id))
+      .filter(id => !isNaN(id))
+  }
+  
+  if (query['categoryBookId[]']) {
+    const ids = Array.isArray(query['categoryBookId[]']) 
+      ? query['categoryBookId[]'] 
+      : [query['categoryBookId[]']]
+    filterPayload.value.categoryBookId = ids
+      .filter((id): id is string => typeof id === 'string')
+      .map(id => parseInt(id))
+      .filter(id => !isNaN(id))
+  }
+  
+  if (query['categoryTopic1Id[]']) {
+    const ids = Array.isArray(query['categoryTopic1Id[]']) 
+      ? query['categoryTopic1Id[]'] 
+      : [query['categoryTopic1Id[]']]
+    filterPayload.value.categoryTopic1Id = ids
+      .filter((id): id is string => typeof id === 'string')
+      .map(id => parseInt(id))
+      .filter(id => !isNaN(id))
+  }
+  
+  if (query['categoryTopic2Id[]']) {
+    const ids = Array.isArray(query['categoryTopic2Id[]']) 
+      ? query['categoryTopic2Id[]'] 
+      : [query['categoryTopic2Id[]']]
+    filterPayload.value.categoryTopic2Id = ids
+      .filter((id): id is string => typeof id === 'string')
+      .map(id => parseInt(id))
+      .filter(id => !isNaN(id))
+  }
+  
+  if (query['categoryTopic3Id[]']) {
+    const ids = Array.isArray(query['categoryTopic3Id[]']) 
+      ? query['categoryTopic3Id[]'] 
+      : [query['categoryTopic3Id[]']]
+    filterPayload.value.categoryTopic3Id = ids
+      .filter((id): id is string => typeof id === 'string')
+      .map(id => parseInt(id))
+      .filter(id => !isNaN(id))
+  }
+  
+  // If we have a keyword, trigger search
+  if (searchQuery.value) {
+    hasSearched.value = true
+    searchState.currentPage.value = 1
+    searchState.fetchResults()
+  }
+}
+
 onMounted(async () => {
   await fetchFilterOptions()
+  parseUrlParams()
+  
   if (hasSearched.value && searchQuery.value && results.value.length === 0) {
     searchState.fetchResults()
   }
@@ -435,7 +706,10 @@ watch(isDeepSearchOpen, (isOpen) => {
 <template>
   <div class="h-full bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
     <div class="flex items-center gap-4 px-4 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
-      <h1 class="text-lg font-semibold text-black dark:text-white">Pencarian</h1>
+      <h1 class="text-lg font-semibold text-black dark:text-white flex-1">Pencarian</h1>
+      <button v-if="hasSearched" @click="shareSearch" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
+        <Icon name="mdi:share-variant" class="w-6 h-6 text-primary dark:text-yellow-400" />
+      </button>
     </div>
 
     <!-- Initial Search View -->

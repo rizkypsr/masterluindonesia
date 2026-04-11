@@ -21,11 +21,16 @@
 
         <!-- Subcategories -->
         <div class="space-y-6">
-          <div v-for="sub in category.sub" :key="sub.id">
-            <!-- Subcategory Title -->
-            <h3 class="text-lg font-semibold text-black dark:text-white italic mb-3">
-              {{ sub.title }}
-            </h3>
+          <div v-for="sub in category.sub" :key="sub.id" :id="`subcategory-${sub.id}`">
+            <!-- Subcategory Title with Share Button -->
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-lg font-semibold text-black dark:text-white italic flex-1">
+                {{ sub.title }}
+              </h3>
+              <button @click="shareSubcategory(sub)" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
+                <Icon name="mdi:share-variant" class="w-5 h-5 text-black dark:text-white" />
+              </button>
+            </div>
 
             <!-- Download Items Grid -->
             <div class="grid grid-cols-3 gap-3 mb-6">
@@ -77,6 +82,7 @@
 
 <script setup lang="ts">
 const config = useRuntimeConfig()
+const route = useRoute()
 
 interface UnduhItem {
   id: number
@@ -131,6 +137,62 @@ const handleDownload = (item: UnduhItem) => {
     }
   }
 }
+
+// Share subcategory function
+function shareSubcategory(sub: SubCategory) {
+  const currentUrl = window.location.origin + window.location.pathname
+  const shareUrl = `${currentUrl}?tab=unduh&subcategoryId=${sub.id}`
+  
+  if (navigator.share) {
+    navigator.share({
+      title: sub.title,
+      url: shareUrl
+    }).catch(() => {
+      navigator.clipboard.writeText(shareUrl)
+    })
+  } else {
+    navigator.clipboard.writeText(shareUrl)
+  }
+}
+
+// Auto-scroll to subcategory on mount if subcategoryId is in URL
+onMounted(() => {
+  const subcategoryId = route.query.subcategoryId
+  if (subcategoryId) {
+    // Wait for data to be loaded and DOM to be rendered
+    const scrollToSubcategory = () => {
+      if (pending.value) {
+        // Data still loading, wait a bit
+        setTimeout(scrollToSubcategory, 100)
+        return
+      }
+      
+      nextTick(() => {
+        setTimeout(() => {
+          const element = document.getElementById(`subcategory-${subcategoryId}`)
+          if (element) {
+            // Find the scrollable parent container
+            const scrollContainer = element.closest('.overflow-y-auto')
+            if (scrollContainer) {
+              // Scroll within the container
+              const containerTop = scrollContainer.getBoundingClientRect().top
+              const elementTop = element.getBoundingClientRect().top
+              const offset = elementTop - containerTop - 16 // 16px padding
+              scrollContainer.scrollTo({ top: scrollContainer.scrollTop + offset, behavior: 'smooth' })
+            } else {
+              // Fallback to window scroll
+              const yOffset = -16
+              const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset
+              window.scrollTo({ top: y, behavior: 'smooth' })
+            }
+          }
+        }, 300) // Additional delay to ensure tab transition is complete
+      })
+    }
+    
+    scrollToSubcategory()
+  }
+})
 </script>
 
 <style scoped>

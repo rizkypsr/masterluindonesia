@@ -130,13 +130,18 @@
             <h3 class="font-semibold text-black dark:text-white mb-4" :style="{ fontSize: (fontSize + 2) + 'px' }">Daftar Isi</h3>
 
             <div class="pb-4">
-              <div v-for="chapter in chapters" :key="chapter.id" class="mb-4">
+              <div v-for="chapter in chapters" :key="chapter.id" :id="`chapter-${chapter.id}`" class="mb-4">
                 <!-- Chapter Title with Search -->
                 <div v-if="!chapterSearchModes[chapter.id]" class="flex items-center justify-between py-2">
                   <h4 class="font-semibold text-black dark:text-white" :style="{ fontSize: fontSize + 'px' }">{{ chapter.title }}</h4>
-                  <button @click="openChapterSearch(chapter.id)" class="p-1">
-                    <Icon name="mdi:magnify" class="w-6 h-6 text-black dark:text-white" />
-                  </button>
+                  <div class="flex items-center gap-2">
+                    <button @click="shareChapter(chapter)" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
+                      <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
+                    </button>
+                    <button @click="openChapterSearch(chapter.id)" class="p-1">
+                      <Icon name="mdi:magnify" class="w-6 h-6 text-black dark:text-white" />
+                    </button>
+                  </div>
                 </div>
 
                 <!-- Chapter Search Input -->
@@ -319,7 +324,23 @@ onMounted(async () => {
   // Restore scroll position
   if (import.meta.client) {
     nextTick(() => {
-      setTimeout(restoreScroll, 200)
+      const chapterId = route.query.chapterId as string
+      
+      if (chapterId) {
+        // Scroll to specific chapter
+        setTimeout(() => {
+          const chapterElement = document.getElementById(`chapter-${chapterId}`)
+          if (chapterElement && mainScrollContainer.value) {
+            const containerTop = mainScrollContainer.value.offsetTop
+            const chapterTop = chapterElement.offsetTop
+            const scrollPosition = chapterTop - containerTop - 16
+            mainScrollContainer.value.scrollTop = scrollPosition
+          }
+        }, 200)
+      } else {
+        // Normal scroll restoration
+        setTimeout(restoreScroll, 200)
+      }
     })
   }
 })
@@ -708,6 +729,28 @@ const addToPlaylist = () => {
     bookId: Number(bookId.value),
     chapterId: chapters.value[0]?.sub_chapters?.[0]?.id || 0
   })
+}
+
+const shareChapter = async (chapter: any) => {
+  const shareUrl = `${window.location.origin}${window.location.pathname}?title=${encodeURIComponent(bookTitle.value)}&chapterId=${chapter.id}`
+  
+  const shareData = {
+    title: 'Buku',
+    text: `${bookTitle.value} - ${chapter.title}`,
+    url: shareUrl
+  }
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData)
+    } catch (err) {
+      // User cancelled or error
+    }
+  } else {
+    // Fallback: copy to clipboard
+    await navigator.clipboard.writeText(`Lihat "${chapter.title}" di\n${shareUrl}`)
+    alert('Link berhasil disalin!')
+  }
 }
 </script>
 

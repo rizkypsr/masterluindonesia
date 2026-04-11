@@ -36,6 +36,12 @@ export interface FilterPayload {
   topic1_category_ids?: number[]
   topic2_chapter_ids?: number[]
   topic3_chapter_ids?: number[]
+  categoryAudioId?: number[]
+  categoryVideoId?: number[]
+  categoryBookId?: number[]
+  categoryTopic1Id?: number[]
+  categoryTopic2Id?: number[]
+  categoryTopic3Id?: number[]
 }
 
 export interface BookChapter {

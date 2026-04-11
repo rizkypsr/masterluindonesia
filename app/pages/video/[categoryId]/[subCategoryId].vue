@@ -109,14 +109,19 @@
 
         <!-- Video Groups -->
         <div v-else>
-          <div v-for="group in videoGroups" :key="group.id"
+          <div v-for="group in videoGroups" :key="group.id" :id="`group-${group.id}`"
             class="border-b border-gray-400 dark:border-gray-600 pb-2 mb-4">
             <!-- Group Title with Search -->
             <div v-if="!subCategorySearchModes[group.id]" class="flex items-center justify-between mb-3">
               <h2 class="font-semibold text-black dark:text-white" :style="{ fontSize: (fontSize + 4) + 'px' }">{{ group.title }}</h2>
-              <button @click="openSubCategorySearch(group.id)" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
-                <Icon name="mdi:magnify" class="w-6 h-6 text-black dark:text-white" />
-              </button>
+              <div class="flex items-center gap-2">
+                <button @click="shareGroup(group)" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
+                  <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
+                </button>
+                <button @click="openSubCategorySearch(group.id)" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
+                  <Icon name="mdi:magnify" class="w-6 h-6 text-black dark:text-white" />
+                </button>
+              </div>
             </div>
 
             <!-- Sub-category Search Input -->
@@ -632,9 +637,23 @@ const closeSubCategorySearch = (subCatId: number) => {
 onMounted(() => {
   if (import.meta.client && contentContainer.value) {
     setTimeout(() => {
-      const savedPosition = getStoredScrollPosition()
-      if (savedPosition > 0 && contentContainer.value) {
-        contentContainer.value.scrollTop = savedPosition
+      const groupId = route.query.groupId as string
+      
+      if (groupId) {
+        // Scroll to specific group
+        const groupElement = document.getElementById(`group-${groupId}`)
+        if (groupElement && contentContainer.value) {
+          const containerTop = contentContainer.value.offsetTop
+          const groupTop = groupElement.offsetTop
+          const scrollPosition = groupTop - containerTop - 16
+          contentContainer.value.scrollTop = scrollPosition
+        }
+      } else {
+        // Normal scroll restoration
+        const savedPosition = getStoredScrollPosition()
+        if (savedPosition > 0 && contentContainer.value) {
+          contentContainer.value.scrollTop = savedPosition
+        }
       }
     }, 100)
   }
@@ -693,6 +712,28 @@ const shareContent = () => {
         color: 'error'
       })
     })
+  }
+}
+
+const shareGroup = async (group: VideoGroup) => {
+  const shareUrl = `${window.location.origin}${window.location.pathname}?title=${encodeURIComponent(pageTitle.value)}&groupId=${group.id}`
+  
+  const shareData = {
+    title: 'Video',
+    text: `${pageTitle.value} - ${group.title}`,
+    url: shareUrl
+  }
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData)
+    } catch (err) {
+      // User cancelled or error
+    }
+  } else {
+    // Fallback: copy to clipboard
+    await navigator.clipboard.writeText(`Lihat "${group.title}" di\n${shareUrl}`)
+    alert('Link berhasil disalin!')
   }
 }
 </script>
