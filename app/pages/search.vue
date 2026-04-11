@@ -655,7 +655,7 @@ watch(isDeepSearchOpen, (isOpen) => {
     <div class="flex items-center gap-4 px-4 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
       <h1 class="text-lg font-semibold text-black dark:text-white flex-1">Pencarian</h1>
       <button v-if="hasSearched" @click="shareSearch" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
-        <Icon name="mdi:share-variant" class="w-6 h-6 text-primary dark:text-yellow-400" />
+        <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-yellow-400" />
       </button>
     </div>
 

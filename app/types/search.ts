@@ -9,6 +9,16 @@ export interface SearchItem {
   description_wa: string
   sub_group_name?: string
   timestamp_formatted?: string
+  audio?: {
+    id: number
+    audio_sub_group_id: number
+    title: string
+    url: string
+    seq: number
+    duration: string
+    translate_id: number
+    translate_ch: number
+  }
   related_chapters?: Array<{
     type: string
     chapter_id: number

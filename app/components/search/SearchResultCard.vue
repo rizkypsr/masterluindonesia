@@ -18,6 +18,10 @@ const emit = defineEmits<{
 
 const { copyToClipboard } = useCopySubtitle()
 
+// Audio playback state
+const audioPlayer = ref<HTMLAudioElement | null>(null)
+const isPlaying = ref(false)
+
 function stripHtml(html: string): string {
   return html
     .replace(/<br\s*\/?>/gi, '\n')
@@ -66,6 +70,60 @@ function handleCopy() {
     full_detail: props.item.description_wa,
   })
 }
+
+// Audio playback functions
+function playAudio() {
+  if (!props.item.audio?.url) return
+
+  if (audioPlayer.value) {
+    if (isPlaying.value) {
+      audioPlayer.value.pause()
+      isPlaying.value = false
+    } else {
+      audioPlayer.value.play()
+      isPlaying.value = true
+    }
+  } else {
+    // Create new audio player
+    audioPlayer.value = new Audio(props.item.audio.url)
+    
+    // Set timestamp if available
+    if (props.item.timestamp) {
+      audioPlayer.value.currentTime = props.item.timestamp
+    }
+    
+    audioPlayer.value.play()
+    isPlaying.value = true
+    
+    // Handle audio end
+    audioPlayer.value.onended = () => {
+      isPlaying.value = false
+    }
+    
+    // Handle audio pause
+    audioPlayer.value.onpause = () => {
+      isPlaying.value = false
+    }
+    
+    // Handle audio play
+    audioPlayer.value.onplay = () => {
+      isPlaying.value = true
+    }
+  }
+}
+
+// Cleanup audio on unmount
+onUnmounted(() => {
+  if (audioPlayer.value) {
+    audioPlayer.value.pause()
+    audioPlayer.value = null
+  }
+})
+
+// Check if item has audio
+const hasAudio = computed(() => {
+  return props.item.type.toLowerCase() === 'topic1' && props.item.audio?.url
+})
 </script>
 
 <template>
@@ -95,9 +153,17 @@ function handleCopy() {
             :class="isExpanded ? 'text-black' : 'text-black dark:text-gray-300'" class="mt-1 line-clamp-6"
             :style="{ fontSize: fontSize + 'px' }">{{ item.detail }}</p>
         </div>
-        <button @click.stop="emit('navigate')" class="p-2">
-          <Icon name="mdi:arrow-right" class="w-6 h-6 text-black dark:text-white shrink-0" />
-        </button>
+        <div class="flex items-center gap-1 shrink-0">
+          <button v-if="hasAudio" @click.stop="playAudio" 
+            class="p-2 hover:bg-black/10 dark:hover:bg-white/10 rounded-full transition-colors">
+            <Icon :name="isPlaying ? 'mdi:pause-circle' : 'mdi:play-circle'" 
+              class="w-6 h-6"
+              :class="isExpanded ? 'text-black' : 'text-primary dark:text-yellow-400'" />
+          </button>
+          <button @click.stop="emit('navigate')" class="p-2">
+            <Icon name="mdi:arrow-right" class="w-6 h-6 text-black dark:text-white shrink-0" />
+          </button>
+        </div>
       </div>
     </div>
 

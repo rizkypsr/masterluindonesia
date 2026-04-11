@@ -392,23 +392,20 @@ const handleGlobalSearch = async () => {
   try {
     const categoryIds = getAllCategoryIds(categories.value)
     
-    const payload = {
-      keyword: searchedKeyword.value,
-      year: [],
-      selectedCategory: ['topik1'],
-      selectedKeyword: [],
-      listShowKeyword: [],
-      listHideKeyword: [],
-      topic1_category_ids: categoryIds
-    }
+    // Build query parameters
+    const params = new URLSearchParams()
+    params.append('keyword', searchedKeyword.value)
+    params.append('page', '1')
+    params.append('paginate', '20')
+    params.append('selectedCategory[]', 'topik1')
+    categoryIds.forEach(id => params.append('topic1_category_ids[]', id.toString()))
     
     const response = await $fetch<{
       success: boolean
       message: string
       data: SearchItem[]
-    }>(`${config.public.apiBaseUrl}/search?page=1`, {
-      method: 'POST',
-      body: payload
+    }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
+      method: 'GET'
     })
     
     searchResults.value = response.data || []
@@ -553,23 +550,20 @@ const handleCategorySearch = async (categoryId: number) => {
     
     const categoryIds = getCategoryIds(category)
     
-    const payload = {
-      keyword: query.trim(),
-      year: [],
-      selectedCategory: ['topik1'],
-      selectedKeyword: [],
-      listShowKeyword: [],
-      listHideKeyword: [],
-      topic1_category_ids: categoryIds
-    }
+    // Build query parameters
+    const params = new URLSearchParams()
+    params.append('keyword', query.trim())
+    params.append('page', '1')
+    params.append('paginate', '20')
+    params.append('selectedCategory[]', 'topik1')
+    categoryIds.forEach(id => params.append('topic1_category_ids[]', id.toString()))
     
     const response = await $fetch<{
       success: boolean
       message: string
       data: SearchItem[]
-    }>(`${config.public.apiBaseUrl}/search?page=1`, {
-      method: 'POST',
-      body: payload
+    }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
+      method: 'GET'
     })
     
     categorySearchResults.value[categoryId] = response.data || []

@@ -462,23 +462,20 @@ const handleChapterSearch = async (chapterId: number) => {
     
     const chapterIds = getChapterIds(chapter)
     
-    const payload = {
-      keyword: query.trim(),
-      year: [],
-      selectedCategory: ['Buku'],
-      selectedKeyword: [],
-      listShowKeyword: [],
-      listHideKeyword: [],
-      chapter_ids: chapterIds
-    }
+    // Build query parameters
+    const params = new URLSearchParams()
+    params.append('keyword', query.trim())
+    params.append('page', '1')
+    params.append('paginate', '20')
+    params.append('selectedCategory[]', 'Buku')
+    chapterIds.forEach(id => params.append('chapter_ids[]', id.toString()))
     
     const response = await $fetch<{
       success: boolean
       message: string
       data: SearchItem[]
-    }>(`${config.public.apiBaseUrl}/search?page=1`, {
-      method: 'POST',
-      body: payload
+    }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
+      method: 'GET'
     })
     
     chapterSearchResults.value[chapterId] = response.data || []
@@ -591,23 +588,20 @@ const handleSearch = async () => {
   try {
     const chapterIds = getAllChapterIds(chapters.value)
     
-    const payload = {
-      keyword: searchedKeyword.value,
-      year: [],
-      selectedCategory: ['Buku'],
-      selectedKeyword: [],
-      listShowKeyword: [],
-      listHideKeyword: [],
-      chapter_ids: chapterIds
-    }
+    // Build query parameters
+    const params = new URLSearchParams()
+    params.append('keyword', searchedKeyword.value)
+    params.append('page', '1')
+    params.append('paginate', '20')
+    params.append('selectedCategory[]', 'Buku')
+    chapterIds.forEach(id => params.append('chapter_ids[]', id.toString()))
     
     const response = await $fetch<{
       success: boolean
       message: string
       data: SearchItem[]
-    }>(`${config.public.apiBaseUrl}/search?page=1`, {
-      method: 'POST',
-      body: payload
+    }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
+      method: 'GET'
     })
     
     searchResults.value = response.data || []

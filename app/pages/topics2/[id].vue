@@ -319,23 +319,20 @@ const handleCategorySearch = async (categoryId: number) => {
   try {
     const chapterIds = getCategoryChapterIds(categoryId, data.value?.data || [])
     
-    const payload = {
-      keyword: query.trim(),
-      year: [],
-      selectedCategory: ['topik2'],
-      selectedKeyword: [],
-      listShowKeyword: [],
-      listHideKeyword: [],
-      topic2_chapter_ids: chapterIds
-    }
+    // Build query parameters
+    const params = new URLSearchParams()
+    params.append('keyword', query.trim())
+    params.append('page', '1')
+    params.append('paginate', '20')
+    params.append('selectedCategory[]', 'topik2')
+    chapterIds.forEach(id => params.append('topic2_chapter_ids[]', id.toString()))
     
     const response = await $fetch<{
       success: boolean
       message: string
       data: SearchItem[]
-    }>(`${config.public.apiBaseUrl}/search?page=1`, {
-      method: 'POST',
-      body: payload
+    }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
+      method: 'GET'
     })
     
     categorySearchResults.value[categoryId] = response.data || []
@@ -448,23 +445,20 @@ const handleGlobalSearch = async () => {
   try {
     const chapterIds = getAllChapterIds(data.value?.data || [])
     
-    const payload = {
-      keyword: searchedKeyword.value,
-      year: [],
-      selectedCategory: ['topik2'],
-      selectedKeyword: [],
-      listShowKeyword: [],
-      listHideKeyword: [],
-      topic2_chapter_ids: chapterIds
-    }
+    // Build query parameters
+    const params = new URLSearchParams()
+    params.append('keyword', searchedKeyword.value)
+    params.append('page', '1')
+    params.append('paginate', '20')
+    params.append('selectedCategory[]', 'topik2')
+    chapterIds.forEach(id => params.append('topic2_chapter_ids[]', id.toString()))
     
     const response = await $fetch<{
       success: boolean
       message: string
       data: SearchItem[]
-    }>(`${config.public.apiBaseUrl}/search?page=1`, {
-      method: 'POST',
-      body: payload
+    }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
+      method: 'GET'
     })
     
     searchResults.value = response.data || []

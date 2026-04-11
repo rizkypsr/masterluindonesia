@@ -292,9 +292,6 @@ function shareContent() {
                 <button class="p-2" @click="resetCount">
                     <Icon name="mdi:refresh" class="w-6 h-6 text-black dark:text-white" />
                 </button>
-                <button class="p-2" @click="shareContent">
-                    <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
-                </button>
             </div>
         </div>
 
@@ -340,8 +337,13 @@ function shareContent() {
             </button>
 
             <div v-if="isPlayerExpanded" class="px-4 pb-4">
-                <!-- Title -->
-                <p class="font-semibold text-black dark:text-white mb-2 text-lg">{{ paritta?.title }}</p>
+                <!-- Title with Share Button -->
+                <div class="flex items-center justify-between mb-2">
+                    <p class="font-semibold text-black dark:text-white text-lg flex-1">{{ paritta?.title }}</p>
+                    <button @click="shareContent" class="p-1 hover:bg-amber-200 dark:hover:bg-amber-800 rounded transition-colors">
+                        <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
+                    </button>
+                </div>
 
                 <!-- Progress Bar -->
                 <div class="flex items-center gap-2 mb-1">
