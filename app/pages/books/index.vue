@@ -46,7 +46,8 @@
           <div class="grid grid-cols-3 gap-3">
             <NuxtLink v-for="book in category.book" :key="book.id"
               :to="{ path: `/books/${book.id}`, query: { title: book.title, cover: book.url } }" 
-              class="block group relative overflow-hidden"
+              class="block group relative overflow-hidden touch-manipulation"
+              style="-webkit-tap-highlight-color: transparent;"
               @click="saveScroll">
               <template v-if="book.url">
                 <NuxtImg :src="getImageUrl(book.url)" :alt="book.title" class="w-full aspect-3/4 object-cover rounded-xl transition-transform duration-200 active:scale-95"

@@ -15,7 +15,8 @@
     <NuxtLink 
       v-else
       :to="{ path: `/book/${chapter.id}`, query: { chapter: chapter.title } }"
-      class="block cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 active:bg-gray-100 dark:active:bg-gray-700 group relative overflow-hidden"
+      class="block cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 active:bg-gray-100 dark:active:bg-gray-700 group relative overflow-hidden touch-manipulation"
+      style="-webkit-tap-highlight-color: transparent;"
     >
       <div 
         class="py-3 border-b border-gray-400 dark:border-gray-600 transition-transform duration-200 active:scale-[0.98]"
