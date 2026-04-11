@@ -173,13 +173,11 @@
             <!-- Video Items (show when not searching OR when search has no results) -->
             <div v-if="(!subCategorySearchModes[group.id] || !subCategorySearchResults[group.id]?.length)" class="space-y-2">
               <button v-for="video in group.sub_category" :key="video.id"
+                v-ripple
                 @click="$router.push({ path: `/video/play/${video.id}`, query: { title: video.title } })"
-                class="w-full text-left block py-2 hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 rounded transition-colors active:scale-[0.98] transition-transform relative group touch-manipulation"
-                style="-webkit-tap-highlight-color: transparent;">
+                class="w-full text-left block py-2 hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 rounded transition-colors active:scale-95 relative">
                 <!-- Video Title -->
-                <span class="text-gray-700 dark:text-gray-300 group-hover:text-primary dark:group-hover:text-yellow-400 group-active:text-primary dark:group-active:text-yellow-400 transition-colors" :style="{ fontSize: fontSize + 'px' }">{{ video.title }}</span>
-                <!-- Ripple effect -->
-                <span class="absolute inset-0 rounded opacity-0 active:opacity-100 active:animate-ping bg-primary/20 pointer-events-none"></span>
+                <span class="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400 active:text-primary dark:active:text-yellow-400 transition-colors" :style="{ fontSize: fontSize + 'px' }">{{ video.title }}</span>
               </button>
             </div>
           </div>

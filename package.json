@@ -21,6 +21,7 @@
     "@vueuse/nuxt": "^14.2.1",
     "better-auth": "^1.4.12",
     "nuxt": "^4.2.2",
+    "nuxt-ripple": "^0.0.8",
     "pinia": "^3.0.4",
     "tailwindcss": "^4.1.18",
     "vue": "^3.5.26",

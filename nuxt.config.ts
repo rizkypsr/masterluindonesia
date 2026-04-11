@@ -34,7 +34,14 @@ export default defineNuxtConfig({
       '/assets/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
     },
   },
-  modules: ['@nuxt/ui', '@nuxt/icon', '@nuxt/image', '@pinia/nuxt', '@vueuse/nuxt'],
+  modules: ['@nuxt/ui', '@nuxt/icon', '@nuxt/image', '@pinia/nuxt', '@vueuse/nuxt', 'nuxt-ripple'],
+  ripple: {
+    mode: 'click',
+    color: 'rgba(255, 165, 0, 0.3)', // Orange color with transparency
+    duration: 100,
+    scale: 1,
+    overflow: false,
+  },
   image: {
     provider: 'none',
     domains: ['masterluindonesia.com', 'masterlu.buildbyriz.io', 'api.masterluindonesia.com', 'firebasestorage.googleapis.com'],
