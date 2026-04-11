@@ -41,8 +41,13 @@
 
       <!-- Categories -->
       <div class="px-4 pb-6">
-        <div v-for="category in filteredCategories" :key="category.id" class="mb-6">
-          <h2 class="text-lg font-semibold text-black dark:text-white mb-3 border-b border-gray-300 dark:border-gray-600 pb-2">{{ category.title }}</h2>
+        <div v-for="category in filteredCategories" :key="category.id" :id="`category-${category.id}`" class="mb-6">
+          <div class="flex items-center justify-between mb-3 border-b border-gray-300 dark:border-gray-600 pb-2">
+            <h2 class="text-lg font-semibold text-black dark:text-white">{{ category.title }}</h2>
+            <button @click="shareCategory(category)" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
+              <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
+            </button>
+          </div>
           <div class="grid grid-cols-3 gap-3">
             <NuxtLink v-for="book in category.book" :key="book.id"
               v-ripple
@@ -85,6 +90,7 @@ definePageMeta({
 
 const config = useRuntimeConfig()
 const route = useRoute()
+const router = useRouter()
 const searchQuery = ref('')
 const contentContainer = ref<HTMLElement | null>(null)
 const { saveScrollPosition, getScrollPosition } = useScrollState()
@@ -132,9 +138,24 @@ const filteredCategories = computed(() => {
 
 const restoreScroll = () => {
   if (contentContainer.value) {
-    const savedPosition = getScrollPosition('books')
-    if (savedPosition > 0) {
-      contentContainer.value.scrollTop = savedPosition
+    // Check if there's a categoryId in the URL
+    const categoryId = route.query.categoryId as string
+    
+    if (categoryId) {
+      // Scroll to specific category
+      const categoryElement = document.getElementById(`category-${categoryId}`)
+      if (categoryElement && contentContainer.value) {
+        const containerTop = contentContainer.value.offsetTop
+        const categoryTop = categoryElement.offsetTop
+        const scrollPosition = categoryTop - containerTop - 16
+        contentContainer.value.scrollTop = scrollPosition
+      }
+    } else {
+      // Normal scroll restoration
+      const savedPosition = getScrollPosition('books')
+      if (savedPosition > 0) {
+        contentContainer.value.scrollTop = savedPosition
+      }
     }
   }
 }
@@ -143,6 +164,28 @@ const saveScroll = () => {
   if (contentContainer.value) {
     const position = contentContainer.value.scrollTop
     saveScrollPosition('books', position)
+  }
+}
+
+const shareCategory = async (category: BookCategory) => {
+  const shareUrl = `${window.location.origin}${window.location.pathname}?categoryId=${category.id}`
+  
+  const shareData = {
+    title: 'Buku',
+    text: `Buku - ${category.title}`,
+    url: shareUrl
+  }
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData)
+    } catch (err) {
+      // User cancelled or error
+    }
+  } else {
+    // Fallback: copy to clipboard
+    await navigator.clipboard.writeText(`Lihat "${category.title}" di\n${shareUrl}`)
+    alert('Link berhasil disalin!')
   }
 }
 

@@ -39,15 +39,20 @@
 
       <!-- Categories Accordion -->
       <div v-else class="divide-y divide-gray-200 dark:divide-gray-700">
-        <div v-for="category in filteredCategories" :key="category.id" class="py-4">
-          <button @click="toggleCategory(category.id)" class="w-full flex items-center justify-between">
-            <div class="text-left">
-              <h3 class="text-base font-semibold text-black dark:text-white">{{ category.title }}</h3>
-              <p class="text-lg text-gray-500 dark:text-gray-400">{{ category.sub_category.length }} subkategori</p>
-            </div>
-            <Icon :name="expandedCategories.includes(category.id) ? 'mdi:chevron-up' : 'mdi:chevron-down'"
-              class="w-6 h-6 text-gray-400 dark:text-gray-500" />
-          </button>
+        <div v-for="category in filteredCategories" :key="category.id" :id="`category-${category.id}`" class="py-4">
+          <div class="flex items-center justify-between">
+            <button @click="toggleCategory(category.id)" class="flex-1 flex items-center justify-between">
+              <div class="text-left">
+                <h3 class="text-base font-semibold text-black dark:text-white">{{ category.title }}</h3>
+                <p class="text-lg text-gray-500 dark:text-gray-400">{{ category.sub_category.length }} subkategori</p>
+              </div>
+              <Icon :name="expandedCategories.includes(category.id) ? 'mdi:chevron-up' : 'mdi:chevron-down'"
+                class="w-6 h-6 text-gray-400 dark:text-gray-500" />
+            </button>
+            <button @click="shareCategory(category)" class="p-1 ml-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
+              <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
+            </button>
+          </div>
 
           <!-- Sub Categories -->
           <div v-if="expandedCategories.includes(category.id)" class="mt-3 pl-4 divide-y divide-gray-100 dark:divide-gray-800">
@@ -83,7 +88,9 @@
 
 <script setup lang="ts">
 const config = useRuntimeConfig()
-import { ref, computed, watch } from "vue"
+const route = useRoute()
+const router = useRouter()
+import { ref, computed, watch, onMounted } from "vue"
 
 interface SubCategory {
   id: number
@@ -174,4 +181,57 @@ const toggleCategory = (id: number) => {
     expandedCategories.value.splice(index, 1)
   }
 }
+
+const shareCategory = async (category: Category) => {
+  // Ensure category is expanded when sharing
+  if (!expandedCategories.value.includes(category.id)) {
+    expandedCategories.value.push(category.id)
+  }
+  
+  const shareUrl = `${window.location.origin}${window.location.pathname}?categoryId=${category.id}`
+  
+  const shareData = {
+    title: 'Audio Dokumentasi',
+    text: `Audio - ${category.title}`,
+    url: shareUrl
+  }
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData)
+    } catch (err) {
+      // User cancelled or error
+    }
+  } else {
+    // Fallback: copy to clipboard
+    await navigator.clipboard.writeText(`Lihat "${category.title}" di\n${shareUrl}`)
+    alert('Link berhasil disalin!')
+  }
+}
+
+// Handle categoryId from URL - expand and scroll to category
+onMounted(() => {
+  if (import.meta.client) {
+    setTimeout(() => {
+      const categoryId = route.query.categoryId as string
+      
+      if (categoryId) {
+        const id = parseInt(categoryId, 10)
+        
+        // Expand the category
+        if (!expandedCategories.value.includes(id)) {
+          expandedCategories.value.push(id)
+        }
+        
+        // Scroll to category after a short delay to ensure it's rendered
+        setTimeout(() => {
+          const categoryElement = document.getElementById(`category-${categoryId}`)
+          if (categoryElement) {
+            categoryElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        }, 100)
+      }
+    }, 100)
+  }
+})
 </script>

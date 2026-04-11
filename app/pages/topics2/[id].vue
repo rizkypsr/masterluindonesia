@@ -59,7 +59,7 @@
     </div>
 
     <!-- Content -->
-    <div id="topics2-content" class="flex-1 overflow-y-auto px-4 pb-4">
+    <div id="topics2-content" ref="contentContainer" class="flex-1 overflow-y-auto px-4 pb-4">
       <!-- Search Results -->
       <div v-if="hasGlobalSearched">
         <div class="flex items-center justify-between mb-4">
@@ -110,7 +110,7 @@
 
         <template v-else-if="treeItems.length > 0">
           <ClientOnly>
-            <div v-for="item in treeItems" :key="item.id" class="mb-4">
+            <div v-for="item in treeItems" :key="item.id" :id="`category-${item.id}`" class="mb-4">
               <Topics2TreeNode 
                 :item="item"
                 :font-size="fontSize"
@@ -198,6 +198,7 @@ const showFabMenu = ref(false)
 const fontSize = ref(18)
 const showMenu = ref(false)
 const showFindInPage = ref(false)
+const contentContainer = ref<HTMLElement | null>(null)
 
 const openFindInPage = () => {
   showMenu.value = false
@@ -213,9 +214,8 @@ const zoomOut = () => {
 }
 
 const scrollToTop = () => {
-  const scrollContainer = document.querySelector('.flex-1.overflow-y-auto')
-  if (scrollContainer) {
-    scrollContainer.scrollTo({ top: 0, behavior: 'smooth' })
+  if (contentContainer.value) {
+    contentContainer.value.scrollTo({ top: 0, behavior: 'smooth' })
   }
 }
 
@@ -589,4 +589,23 @@ const shareTopic = async () => {
     alert('Link berhasil disalin!')
   }
 }
+
+// Scroll to category if categoryId is in URL
+onMounted(() => {
+  if (import.meta.client && contentContainer.value) {
+    setTimeout(() => {
+      const categoryId = route.query.categoryId as string
+      
+      if (categoryId) {
+        const categoryElement = document.getElementById(`category-${categoryId}`)
+        if (categoryElement && contentContainer.value) {
+          const containerTop = contentContainer.value.offsetTop
+          const categoryTop = categoryElement.offsetTop
+          const scrollPosition = categoryTop - containerTop - 16
+          contentContainer.value.scrollTop = scrollPosition
+        }
+      }
+    }, 100)
+  }
+})
 </script>

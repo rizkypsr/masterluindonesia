@@ -15,9 +15,14 @@
           />
           {{ item.label }}
         </button>
-        <button v-if="level === 0" @click="$emit('open-search', item.id)" class="p-1">
-          <Icon name="mdi:magnify" class="w-6 h-6 text-black dark:text-white" />
-        </button>
+        <div v-if="level === 0" class="flex items-center gap-2">
+          <button @click="shareCategory" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
+            <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
+          </button>
+          <button @click="$emit('open-search', item.id)" class="p-1">
+            <Icon name="mdi:magnify" class="w-6 h-6 text-black dark:text-white" />
+          </button>
+        </div>
       </div>
 
       <!-- Category Search Input (only for top level) -->
@@ -142,5 +147,27 @@ const isExpanded = ref(true)
 
 const toggleExpanded = () => {
   isExpanded.value = !isExpanded.value
+}
+
+const shareCategory = async () => {
+  const shareUrl = `${window.location.origin}${window.location.pathname}?categoryId=${props.item.id}`
+  
+  const shareData = {
+    title: 'Ensiklopedia',
+    text: `Ensiklopedia - ${props.item.label}`,
+    url: shareUrl
+  }
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData)
+    } catch (err) {
+      // User cancelled or error
+    }
+  } else {
+    // Fallback: copy to clipboard
+    await navigator.clipboard.writeText(`Lihat "${props.item.label}" di\n${shareUrl}`)
+    alert('Link berhasil disalin!')
+  }
 }
 </script>
