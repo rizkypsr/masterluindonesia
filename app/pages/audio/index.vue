@@ -54,8 +54,8 @@
             <button v-for="sub in category.sub_category" :key="sub.id"
               v-ripple
               @click="$router.push({ path: `/audio/${sub.id}`, query: { title: sub.title } })"
-              class="w-full text-left block py-3 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400 active:text-primary dark:active:text-yellow-400 transition-colors active:scale-95 relative">
-              {{ sub.title }}
+              class="w-full text-left block py-3 hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 rounded transition-colors">
+              <span class="text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400 active:text-primary dark:active:text-yellow-400 transition-colors">{{ sub.title }}</span>
             </button>
           </div>
         </div>
