@@ -10,13 +10,14 @@
                 <h1 class="text-lg font-semibold text-black dark:text-white line-clamp-1">{{ pageTitle }}</h1>
             </div>
             <div class="flex items-center gap-2 shrink-0">
-                <button @click="showInfoModal = true" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
+                <button @click="showInfoModal = true"
+                    class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
                     <Icon name="mdi:information" class="w-6 h-6 text-primary dark:text-yellow-400" />
                 </button>
                 <button @click="addBookmark" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
-                    <Icon :name="isTopic1Bookmarked ? 'mdi:star' : 'mdi:star-outline'" 
-                          :class="isTopic1Bookmarked ? 'text-yellow-500' : 'text-black dark:text-white'"
-                          class="w-6 h-6" />
+                    <Icon :name="isTopic1Bookmarked ? 'mdi:star' : 'mdi:star-outline'"
+                        :class="isTopic1Bookmarked ? 'text-yellow-500' : 'text-black dark:text-white'"
+                        class="w-6 h-6" />
                 </button>
                 <button @click="shareContent" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
                     <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
@@ -29,14 +30,14 @@
             <!-- Autoplay Toggle -->
             <div class="flex items-center justify-between">
                 <span class="text-sm text-gray-700 dark:text-gray-300">Autoplay</span>
-                <button @click="autoplayEnabled = !autoplayEnabled" 
+                <button @click="autoplayEnabled = !autoplayEnabled"
                     class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
                     :class="autoplayEnabled ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'">
                     <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
                         :class="autoplayEnabled ? 'translate-x-6' : 'translate-x-1'"></span>
                 </button>
             </div>
-            
+
             <!-- Search -->
             <div class="flex items-center gap-2 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3">
                 <Icon name="mdi:magnify" class="w-5 h-5 text-gray-400" />
@@ -66,45 +67,46 @@
                     :style="{ fontSize: fontSize + 'px' }">
                     <!-- Card Header -->
                     <div class="p-3 cursor-pointer" @click="toggleExpand(item.id)">
-                        <div class="flex items-start justify-between gap-3">
-                            <div class="flex-1">
-                                <h3 class="font-bold"
-                                    :class="expandedItems.has(item.id) ? 'text-black' : 'text-black dark:text-white'"
-                                    :style="{ fontSize: fontSize + 'px' }">
-                                    {{ item.title }}
-                                </h3>
-                                <p class="mt-1"
-                                    :class="expandedItems.has(item.id) ? 'text-black' : 'text-gray-600 dark:text-gray-300'"
-                                    :style="{ fontSize: fontSize + 'px' }">
-                                    {{ item.description }}
-                                </p>
-                            </div>
+                        <div class="flex items-center justify-between gap-3">
+                            <h3 class="font-bold"
+                                :class="expandedItems.has(item.id) ? 'text-black' : 'text-black dark:text-white'"
+                                :style="{ fontSize: fontSize + 'px' }">
+                                {{ item.title }}
+                            </h3>
                             <div class="flex items-center gap-1 shrink-0">
-                                <button v-if="item.audio" @click.stop="playAudio(item)" 
-                                    class="p-2 hover:bg-black/10 dark:hover:bg-white/10 rounded-full transition-colors">
-                                    <Icon :name="playingItemId === item.id && isPlaying ? 'mdi:pause-circle' : 'mdi:play-circle'" 
+                                <button v-if="item.audio" @click.stop="playAudio(item)"
+                                    class="p-2 hover:bg-black/10 dark:hover:bg-white/10 rounded-full transition-colors flex justify-center items-center">
+                                    <Icon
+                                        :name="playingItemId === item.id && isPlaying ? 'mdi:pause-circle' : 'mdi:play-circle'"
                                         class="w-6 h-6"
                                         :class="expandedItems.has(item.id) ? 'text-black' : 'text-primary dark:text-yellow-400'" />
                                 </button>
-                                <button @click.stop="goToAudioDetail(item)" class="p-2">
+                                <button @click.stop="goToAudioDetail(item)" class="p-2 flex justify-center items-center">
                                     <Icon name="mdi:arrow-right" class="w-6 h-6"
                                         :class="expandedItems.has(item.id) ? 'text-black' : 'text-black dark:text-white'" />
                                 </button>
                             </div>
                         </div>
+                        <div>
+                            <p class="my-2"
+                                :class="expandedItems.has(item.id) ? 'text-black' : 'text-gray-600 dark:text-gray-300'"
+                                :style="{ fontSize: fontSize + 'px' }">
+                                {{ item.description }}
+                            </p>
+                        </div>
                     </div>
 
                     <!-- Expandable Content -->
                     <div v-if="expandedItems.has(item.id)" class="mx-4 mb-4 p-4 bg-white dark:bg-gray-800 rounded-lg">
-                        <div class="text-black dark:text-white leading-relaxed topic-content" v-html="item.script"></div>
+                        <div class="text-black dark:text-white leading-relaxed topic-content" v-html="item.script">
+                        </div>
                         <div class="flex items-center gap-4 pt-3 mt-3 border-t border-gray-200 dark:border-gray-600">
                             <button @click.stop="copyContent(item)"
                                 class="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:font-bold">
                                 <Icon name="mdi:content-copy" class="w-4 h-4" />
                                 <span>Salin</span>
                             </button>
-                            <button @click.stop="speakContent(item)"
-                                class="flex items-center gap-1 hover:font-bold"
+                            <button @click.stop="speakContent(item)" class="flex items-center gap-1 hover:font-bold"
                                 :class="speakingItemId === item.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
                                 <Icon :name="speakingItemId === item.id ? 'mdi:stop' : 'mdi:account-voice'"
                                     class="w-4 h-4" />
@@ -118,8 +120,8 @@
 
         <!-- FAB - Fixed at bottom -->
         <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto pointer-events-none">
-            <LazyFabZoom v-model:isOpen="showFabMenu" class="absolute right-4 bottom-4 pointer-events-auto" @zoomIn="zoomIn"
-                @zoomOut="zoomOut" @scrollTop="scrollToTop" />
+            <LazyFabZoom v-model:isOpen="showFabMenu" class="absolute right-4 bottom-4 pointer-events-auto"
+                @zoomIn="zoomIn" @zoomOut="zoomOut" @scrollTop="scrollToTop" />
         </div>
 
         <!-- Bookmark Modal - Lazy loaded -->
@@ -147,6 +149,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 import { useBookmark } from '~/composables/useBookmark'
+import { useCopySubtitle } from '~/composables/useCopySubtitle'
 
 interface Audio {
     id: number
@@ -164,7 +167,9 @@ interface TopicContent {
     audio_id: number
     title: string
     description: string
+    description_wa?: string
     script: string
+    script_wa?: string
     timestamp?: number
     audio?: Audio
 }
@@ -179,6 +184,9 @@ const pageTitle = computed(() => (route.query.title as string) || 'Detail')
 // Bookmark
 const { createTopic1Bookmark, fetchBookmarksByType, isBookmarked } = useBookmark()
 const isTopic1Bookmarked = ref(false)
+
+// Copy functionality
+const { copyToClipboard } = useCopySubtitle()
 
 const searchQuery = ref('')
 const expandedItems = ref<Set<number>>(new Set())
@@ -202,37 +210,37 @@ const isLoadingInfo = ref(false)
 
 // Fetch information when modal opens
 const fetchInformation = async () => {
-  if (infoDescription.value) return // Already fetched
-  
-  isLoadingInfo.value = true
-  try {
-    const response = await $fetch<{
-      success: boolean
-      message: string
-      data: Array<{
-        id: number
-        description: string
-        type: string
-        created_at: string
-        updated_at: string
-      }>
-    }>(`${config.public.apiBaseUrl}/information?type=topik1`)
-    
-    if (response.success && response.data.length > 0) {
-      infoDescription.value = response.data[0].description
+    if (infoDescription.value) return // Already fetched
+
+    isLoadingInfo.value = true
+    try {
+        const response = await $fetch<{
+            success: boolean
+            message: string
+            data: Array<{
+                id: number
+                description: string
+                type: string
+                created_at: string
+                updated_at: string
+            }>
+        }>(`${config.public.apiBaseUrl}/information?type=topik1`)
+
+        if (response.success && response.data.length > 0) {
+            infoDescription.value = response.data[0].description
+        }
+    } catch (error) {
+        console.error('Failed to fetch information:', error)
+    } finally {
+        isLoadingInfo.value = false
     }
-  } catch (error) {
-    console.error('Failed to fetch information:', error)
-  } finally {
-    isLoadingInfo.value = false
-  }
 }
 
 // Watch for modal open to fetch information
 watch(showInfoModal, (isOpen) => {
-  if (isOpen) {
-    fetchInformation()
-  }
+    if (isOpen) {
+        fetchInformation()
+    }
 })
 
 const zoomIn = () => {
@@ -295,12 +303,11 @@ const stripHtml = (html: string): string => {
 }
 
 const copyContent = async (item: TopicContent) => {
-    const text = `${item.title}\n${item.description}\n\n${stripHtml(item.script)}`
-    try {
-        await navigator.clipboard.writeText(text)
-    } catch (err) {
-        console.error('Failed to copy:', err)
-    }
+    await copyToClipboard({
+        title: item.title,
+        description: item.description_wa,
+        full_detail: item.script_wa
+    })
 }
 
 const speakContent = (item: TopicContent) => {
@@ -385,7 +392,7 @@ const addBookmark = () => {
 
 const playAudio = (item: TopicContent) => {
     if (!item.audio) return
-    
+
     // If already playing this audio, pause it
     if (playingItemId.value === item.id && currentAudio.value) {
         currentAudio.value.pause()
@@ -393,19 +400,19 @@ const playAudio = (item: TopicContent) => {
         playingItemId.value = null
         return
     }
-    
+
     // Stop any currently playing audio
     if (currentAudio.value) {
         currentAudio.value.pause()
         currentAudio.value = null
     }
-    
+
     // Create and play new audio
     const audio = new Audio(item.audio.url)
     currentAudio.value = audio
     playingItemId.value = item.id
     isPlaying.value = true
-    
+
     // Wait for audio to be loaded before setting currentTime
     audio.addEventListener('loadedmetadata', () => {
         // Set timestamp if available (already in seconds)
@@ -413,23 +420,23 @@ const playAudio = (item: TopicContent) => {
             audio.currentTime = item.timestamp
         }
     })
-    
+
     audio.play().catch(error => {
         console.error('Failed to play audio:', error)
         isPlaying.value = false
         playingItemId.value = null
     })
-    
+
     audio.onended = () => {
         isPlaying.value = false
         playingItemId.value = null
-        
+
         // Autoplay next audio if enabled
         if (autoplayEnabled.value) {
             playNextAudio(item)
         }
     }
-    
+
     audio.onerror = () => {
         isPlaying.value = false
         playingItemId.value = null
@@ -438,11 +445,11 @@ const playAudio = (item: TopicContent) => {
 
 const playNextAudio = (currentItem: TopicContent) => {
     const currentIndex = filteredContents.value.findIndex(item => item.id === currentItem.id)
-    
+
     // Check if there's a next item
     if (currentIndex !== -1 && currentIndex < filteredContents.value.length - 1) {
         const nextItem = filteredContents.value[currentIndex + 1]
-        
+
         // Only play if next item has audio
         if (nextItem.audio) {
             // Small delay before playing next

@@ -44,17 +44,24 @@ export const useCopySubtitle = () => {
     const script = content.script_wa || content.full_detail || (content.script ? stripHtmlForCopy(content.script) : '')
     
     // Build text with proper spacing
-    const parts = [title]
-    if (description) {
-      // Convert \n to actual newlines
-      parts.push(description.replace(/\\n/g, '\n'))
-    }
-    if (script) {
-      const formattedScript = formatScriptForCopy(script)
-      parts.push(formattedScript)
+    let text = ''
+    
+    // Add title
+    if (title) {
+      text += title
     }
     
-    const text = parts.join('\n\n')
+    // Add description with single line break after title
+    if (description) {
+      if (text) text += '\n'
+      text += description.replace(/\\n/g, '\n')
+    }
+    
+    // Add script with double line break
+    if (script) {
+      if (text) text += '\n\n'
+      text += formatScriptForCopy(script)
+    }
     
     try {
       await navigator.clipboard.writeText(text)
