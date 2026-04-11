@@ -120,13 +120,18 @@
 
         <!-- Categories List -->
         <div v-else class="pb-4">
-          <div v-for="category in categories" :key="category.id" class="mb-2">
+          <div v-for="category in categories" :key="category.id" :id="`category-${category.id}`" class="mb-2">
             <!-- Category Title with Search -->
             <div v-if="!searchModes[category.id]" class="flex items-center justify-between py-3">
               <h2 class="text-xl font-bold text-black dark:text-white">{{ category.title }}</h2>
-              <button @click="openSearch(category.id)" class="p-1">
-                <Icon name="mdi:magnify" class="w-6 h-6 text-black dark:text-white" />
-              </button>
+              <div class="flex items-center gap-2">
+                <button @click="shareCategory(category)" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
+                  <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
+                </button>
+                <button @click="openSearch(category.id)" class="p-1">
+                  <Icon name="mdi:magnify" class="w-6 h-6 text-black dark:text-white" />
+                </button>
+              </div>
             </div>
 
             <!-- Search Input -->
@@ -696,13 +701,49 @@ const shareTopic = async () => {
   }
 }
 
+const shareCategory = async (category: TopicCategory) => {
+  const shareUrl = `${window.location.origin}${window.location.pathname}?title=${encodeURIComponent(topicTitle.value)}&categoryId=${category.id}`
+  
+  const shareData = {
+    title: 'Ensiklopedia',
+    text: `${topicTitle.value} - ${category.title}`,
+    url: shareUrl
+  }
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData)
+    } catch (err) {
+      // User cancelled or error
+    }
+  } else {
+    // Fallback: copy to clipboard
+    await navigator.clipboard.writeText(`Lihat "${category.title}" di\n${shareUrl}`)
+    alert('Link berhasil disalin!')
+  }
+}
+
 // Restore scroll position on mount
 onMounted(() => {
   if (import.meta.client && contentContainer.value) {
     setTimeout(() => {
-      const savedPosition = getStoredScrollPosition()
-      if (savedPosition > 0 && contentContainer.value) {
-        contentContainer.value.scrollTop = savedPosition
+      // Check if there's a categoryId in the URL
+      const categoryId = route.query.categoryId as string
+      
+      if (categoryId) {
+        // Scroll to specific category
+        const categoryElement = document.getElementById(`category-${categoryId}`)
+        if (categoryElement && contentContainer.value) {
+          // Get the category element's position relative to the scrollable container
+          const containerTop = contentContainer.value.offsetTop
+          const categoryTop = categoryElement.offsetTop
+          // Subtract container top and add small padding (16px)
+          const scrollPosition = categoryTop - containerTop - 16
+          contentContainer.value.scrollTop = scrollPosition
+        }
+      } else {
+        // Start at top for normal navigation
+        contentContainer.value.scrollTop = 0
       }
     }, 100)
   }
@@ -711,7 +752,10 @@ onMounted(() => {
 // Save scroll position when navigating away
 onBeforeUnmount(() => {
   if (import.meta.client && contentContainer.value) {
-    saveScrollPosition(contentContainer.value.scrollTop)
+    // Only save scroll if not navigating with categoryId
+    if (!route.query.categoryId) {
+      saveScrollPosition(contentContainer.value.scrollTop)
+    }
   }
 })
 
@@ -719,9 +763,25 @@ onBeforeUnmount(() => {
 onActivated(() => {
   if (import.meta.client && contentContainer.value) {
     setTimeout(() => {
-      const savedPosition = getStoredScrollPosition()
-      if (savedPosition > 0 && contentContainer.value) {
-        contentContainer.value.scrollTop = savedPosition
+      const categoryId = route.query.categoryId as string
+      
+      if (categoryId) {
+        // Scroll to specific category
+        const categoryElement = document.getElementById(`category-${categoryId}`)
+        if (categoryElement && contentContainer.value) {
+          const containerTop = contentContainer.value.offsetTop
+          const categoryTop = categoryElement.offsetTop
+          const scrollPosition = categoryTop - containerTop - 16
+          contentContainer.value.scrollTop = scrollPosition
+        }
+      } else {
+        // Restore saved position only if coming back from navigation
+        const savedPosition = getStoredScrollPosition()
+        if (savedPosition > 0 && contentContainer.value) {
+          contentContainer.value.scrollTop = savedPosition
+        } else {
+          contentContainer.value.scrollTop = 0
+        }
       }
     }, 50)
   }

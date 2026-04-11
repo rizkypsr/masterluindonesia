@@ -165,6 +165,7 @@ interface TopicContent {
     title: string
     description: string
     script: string
+    timestamp?: number
     audio?: Audio
 }
 
@@ -404,6 +405,14 @@ const playAudio = (item: TopicContent) => {
     currentAudio.value = audio
     playingItemId.value = item.id
     isPlaying.value = true
+    
+    // Wait for audio to be loaded before setting currentTime
+    audio.addEventListener('loadedmetadata', () => {
+        // Set timestamp if available (already in seconds)
+        if (item.timestamp && item.timestamp > 0) {
+            audio.currentTime = item.timestamp
+        }
+    })
     
     audio.play().catch(error => {
         console.error('Failed to play audio:', error)
