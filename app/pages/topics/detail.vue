@@ -24,8 +24,20 @@
             </div>
         </div>
 
-        <!-- Search -->
-        <div class="px-4 py-4 shrink-0">
+        <!-- Autoplay Toggle & Search -->
+        <div class="px-4 py-4 shrink-0 space-y-3">
+            <!-- Autoplay Toggle -->
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700 dark:text-gray-300">Autoplay</span>
+                <button @click="autoplayEnabled = !autoplayEnabled" 
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors"
+                    :class="autoplayEnabled ? 'bg-primary' : 'bg-gray-300 dark:bg-gray-600'">
+                    <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                        :class="autoplayEnabled ? 'translate-x-6' : 'translate-x-1'"></span>
+                </button>
+            </div>
+            
+            <!-- Search -->
             <div class="flex items-center gap-2 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3">
                 <Icon name="mdi:magnify" class="w-5 h-5 text-gray-400" />
                 <input v-model="searchQuery" type="text" placeholder="Pencarian"
@@ -67,10 +79,18 @@
                                     {{ item.description }}
                                 </p>
                             </div>
-                            <button @click.stop="goToAudioDetail(item)" class="p-2 shrink-0">
-                                <Icon name="mdi:arrow-right" class="w-6 h-6"
-                                    :class="expandedItems.has(item.id) ? 'text-black' : 'text-black dark:text-white'" />
-                            </button>
+                            <div class="flex items-center gap-1 shrink-0">
+                                <button v-if="item.audio" @click.stop="playAudio(item)" 
+                                    class="p-2 hover:bg-black/10 dark:hover:bg-white/10 rounded-full transition-colors">
+                                    <Icon :name="playingItemId === item.id && isPlaying ? 'mdi:pause-circle' : 'mdi:play-circle'" 
+                                        class="w-6 h-6"
+                                        :class="expandedItems.has(item.id) ? 'text-black' : 'text-primary dark:text-yellow-400'" />
+                                </button>
+                                <button @click.stop="goToAudioDetail(item)" class="p-2">
+                                    <Icon name="mdi:arrow-right" class="w-6 h-6"
+                                        :class="expandedItems.has(item.id) ? 'text-black' : 'text-black dark:text-white'" />
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -128,12 +148,24 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useBookmark } from '~/composables/useBookmark'
 
+interface Audio {
+    id: number
+    audio_sub_group_id: number
+    title: string
+    url: string
+    seq: number
+    duration: string
+    translate_id: number
+    translate_ch: number
+}
+
 interface TopicContent {
     id: number
     audio_id: number
     title: string
     description: string
     script: string
+    audio?: Audio
 }
 
 const route = useRoute()
@@ -151,6 +183,12 @@ const searchQuery = ref('')
 const expandedItems = ref<Set<number>>(new Set())
 const speakingItemId = ref<number | null>(null)
 const isSpeaking = ref(false)
+
+// Audio player state
+const currentAudio = ref<HTMLAudioElement | null>(null)
+const isPlaying = ref(false)
+const playingItemId = ref<number | null>(null)
+const autoplayEnabled = ref(false)
 
 // FAB Menu State
 const showFabMenu = ref(false)
@@ -342,6 +380,68 @@ const addBookmark = () => {
         pageTitle.value || 'Ensiklopedia',
         Number(subId.value)
     )
+}
+
+const playAudio = (item: TopicContent) => {
+    if (!item.audio) return
+    
+    // If already playing this audio, pause it
+    if (playingItemId.value === item.id && currentAudio.value) {
+        currentAudio.value.pause()
+        isPlaying.value = false
+        playingItemId.value = null
+        return
+    }
+    
+    // Stop any currently playing audio
+    if (currentAudio.value) {
+        currentAudio.value.pause()
+        currentAudio.value = null
+    }
+    
+    // Create and play new audio
+    const audio = new Audio(item.audio.url)
+    currentAudio.value = audio
+    playingItemId.value = item.id
+    isPlaying.value = true
+    
+    audio.play().catch(error => {
+        console.error('Failed to play audio:', error)
+        isPlaying.value = false
+        playingItemId.value = null
+    })
+    
+    audio.onended = () => {
+        isPlaying.value = false
+        playingItemId.value = null
+        
+        // Autoplay next audio if enabled
+        if (autoplayEnabled.value) {
+            playNextAudio(item)
+        }
+    }
+    
+    audio.onerror = () => {
+        isPlaying.value = false
+        playingItemId.value = null
+    }
+}
+
+const playNextAudio = (currentItem: TopicContent) => {
+    const currentIndex = filteredContents.value.findIndex(item => item.id === currentItem.id)
+    
+    // Check if there's a next item
+    if (currentIndex !== -1 && currentIndex < filteredContents.value.length - 1) {
+        const nextItem = filteredContents.value[currentIndex + 1]
+        
+        // Only play if next item has audio
+        if (nextItem.audio) {
+            // Small delay before playing next
+            setTimeout(() => {
+                playAudio(nextItem)
+            }, 500)
+        }
+    }
 }
 </script>
 
