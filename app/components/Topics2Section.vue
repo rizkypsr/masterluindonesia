@@ -17,7 +17,7 @@
       <UTree :items="treeItems" :get-key="(item) => String(item.id)" size="xl" expanded-icon=""
         collapsed-icon="" :ui="{ 
           linkLeadingIcon: 'hidden', 
-          link: 'text-xl hover:text-primary dark:hover:text-yellow-400 transition-colors active:scale-[0.98] transition-transform relative group',
+          link: 'text-xl hover:text-primary dark:hover:text-yellow-400 active:text-primary dark:active:text-yellow-400 transition-colors active:scale-[0.98] transition-transform relative group',
           linkLabel: 'transition-colors'
         }" @select="handleSelect" />
     </template>

@@ -15,19 +15,19 @@
     <NuxtLink 
       v-else
       :to="{ path: `/book/${chapter.id}`, query: { chapter: chapter.title } }"
-      class="block cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 group relative overflow-hidden"
+      class="block cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 active:bg-gray-100 dark:active:bg-gray-700 group relative overflow-hidden"
     >
       <div 
-        class="py-3 border-b border-gray-400 dark:border-gray-600 transition-transform duration-200 group-active:scale-[0.98]"
+        class="py-3 border-b border-gray-400 dark:border-gray-600 transition-transform duration-200 active:scale-[0.98]"
         :style="{ marginLeft: (level * 16) + 'px' }"
       >
-        <span class="text-black dark:text-white group-hover:text-primary dark:group-hover:text-yellow-400 transition-colors" :style="{ fontSize: fontSize + 'px' }">
+        <span class="text-black dark:text-white active:text-primary dark:active:text-yellow-400 transition-colors" :style="{ fontSize: fontSize + 'px' }">
           {{ chapter.title }}
         </span>
       </div>
       
       <!-- Ripple effect -->
-      <span class="absolute inset-0 opacity-0 group-active:opacity-100 group-active:animate-ping bg-primary/20 pointer-events-none"></span>
+      <span class="absolute inset-0 opacity-0 active:opacity-100 active:animate-ping bg-primary/20 pointer-events-none"></span>
     </NuxtLink>
 
     <!-- Nested Sub Chapters (Recursive) -->

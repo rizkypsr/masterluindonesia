@@ -49,18 +49,18 @@
               class="block group relative overflow-hidden"
               @click="saveScroll">
               <template v-if="book.url">
-                <NuxtImg :src="getImageUrl(book.url)" :alt="book.title" class="w-full aspect-3/4 object-cover rounded-xl transition-transform duration-200 group-active:scale-95"
+                <NuxtImg :src="getImageUrl(book.url)" :alt="book.title" class="w-full aspect-3/4 object-cover rounded-xl transition-transform duration-200 active:scale-95"
                   loading="lazy" format="webp" width="200" height="267" />
               </template>
               <template v-else>
-                <div class="w-full aspect-3/4 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl flex items-center justify-center p-4 transition-transform duration-200 group-active:scale-95">
-                  <p class="text-center font-medium text-black dark:text-white group-hover:text-primary dark:group-hover:text-yellow-400 text-sm line-clamp-6 transition-colors">{{ book.title }}</p>
+                <div class="w-full aspect-3/4 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl flex items-center justify-center p-4 transition-transform duration-200 active:scale-95">
+                  <p class="text-center font-medium text-black dark:text-white active:text-primary dark:active:text-yellow-400 text-sm line-clamp-6 transition-colors">{{ book.title }}</p>
                 </div>
               </template>
-              <p class="mt-2 font-medium text-black dark:text-white group-hover:text-primary dark:group-hover:text-yellow-400 line-clamp-3 transition-colors">{{ book.title }}</p>
+              <p class="mt-2 font-medium text-black dark:text-white active:text-primary dark:active:text-yellow-400 line-clamp-3 transition-colors">{{ book.title }}</p>
               
               <!-- Ripple effect -->
-              <span class="absolute inset-0 rounded-xl opacity-0 group-active:opacity-100 group-active:animate-ping bg-primary/20 pointer-events-none"></span>
+              <span class="absolute inset-0 rounded-xl opacity-0 active:opacity-100 active:animate-ping bg-primary/20 pointer-events-none"></span>
             </NuxtLink>
           </div>
         </div>
