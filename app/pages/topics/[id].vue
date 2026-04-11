@@ -186,8 +186,8 @@
               <button v-for="sub in category.sub_category" :key="sub.id"
                 v-ripple
                 @click="$router.push({ path: '/topics/detail', query: { subId: sub.id, title: sub.title } })"
-                class="w-full text-left py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 block transition-colors group">
-                <span class="text-lg text-black dark:text-white group-hover:text-primary dark:group-hover:text-yellow-400 transition-colors">{{ sub.title }}</span>
+                class="w-full text-left py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 active:bg-gray-100 dark:active:bg-gray-700 block transition-colors group">
+                <span class="text-lg text-black dark:text-white group-hover:text-primary dark:group-hover:text-yellow-400 group-active:text-primary dark:group-active:text-yellow-400 transition-colors">{{ sub.title }}</span>
               </button>
             </div>
           </div>

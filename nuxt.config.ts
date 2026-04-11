@@ -38,7 +38,7 @@ export default defineNuxtConfig({
   ripple: {
     mode: 'click',
     color: 'rgba(255, 165, 0, 0.3)', // Orange color with transparency
-    duration: 100,
+    duration: 300,
     scale: 1,
     overflow: false,
   },

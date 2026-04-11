@@ -55,10 +55,10 @@
               </template>
               <template v-else>
                 <div class="w-full aspect-3/4 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl flex items-center justify-center p-4">
-                  <p class="text-center font-medium text-black dark:text-white text-sm line-clamp-6">{{ book.title }}</p>
+                  <p class="text-center font-medium text-black dark:text-white group-active:text-primary dark:group-active:text-yellow-400 text-sm line-clamp-6 transition-colors">{{ book.title }}</p>
                 </div>
               </template>
-              <p class="mt-2 font-medium text-black dark:text-white group-hover:text-primary dark:group-hover:text-yellow-400 line-clamp-3 transition-colors">{{ book.title }}</p>
+              <p class="mt-2 font-medium text-black dark:text-white group-hover:text-primary dark:group-hover:text-yellow-400 group-active:text-primary dark:group-active:text-yellow-400 line-clamp-3 transition-colors">{{ book.title }}</p>
             </NuxtLink>
           </div>
         </div>
