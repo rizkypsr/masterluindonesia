@@ -46,14 +46,14 @@
 
           <!-- Sub Categories -->
           <div v-if="expandedCategories.includes(category.id)" class="mt-3 pl-4 divide-y divide-gray-100 dark:divide-gray-800">
-            <NuxtLink v-for="sub in category.sub_category" :key="sub.id"
-              :to="{ path: `/video/${category.id}/${sub.id}`, query: { title: sub.title } }"
-              class="block py-3 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400 active:text-primary dark:active:text-yellow-400 transition-colors active:scale-[0.98] transition-transform relative group touch-manipulation"
+            <button v-for="sub in category.sub_category" :key="sub.id"
+              @click="$router.push({ path: `/video/${category.id}/${sub.id}`, query: { title: sub.title } })"
+              class="w-full text-left block py-3 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400 active:text-primary dark:active:text-yellow-400 transition-colors active:scale-[0.98] transition-transform relative group touch-manipulation"
               style="-webkit-tap-highlight-color: transparent;">
               {{ sub.title }}
               <!-- Ripple effect -->
               <span class="absolute inset-0 opacity-0 active:opacity-100 active:animate-ping bg-primary/20 pointer-events-none"></span>
-            </NuxtLink>
+            </button>
           </div>
         </div>
       </div>
