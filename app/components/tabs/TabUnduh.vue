@@ -68,7 +68,7 @@
                   </div>
                 </div>
                 <!-- Item Title -->
-                <p class="mt-2 text-lg text-center text-black dark:text-white line-clamp-2">
+                <p class="mt-2 text-lg text-center text-black dark:text-white line-clamp-4">
                   {{ item.title }}
                 </p>
               </div>
