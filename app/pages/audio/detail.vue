@@ -2,7 +2,8 @@
   <div class="h-full bg-gray-50 dark:bg-gray-900 flex flex-col overflow-hidden">
     <!-- Header -->
     <div class="bg-white dark:bg-gray-800 px-4 py-4 flex items-center gap-3 shadow-sm shrink-0">
-      <button @click="goBack()" class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
+      <button @click="goBack()"
+        class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
         <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
       </button>
       <h1 class="text-lg font-semibold text-black dark:text-white flex-1">{{ pageTitle }}</h1>
@@ -34,26 +35,19 @@
 
           <!-- Show Teks Accordion -->
           <div class="bg-white dark:bg-gray-800 mx-3 mb-3 rounded-xl overflow-hidden">
-            <button 
-              @click="showSubtitle = !showSubtitle" 
-              class="w-full flex items-center justify-between px-4 py-3"
-            >
+            <button @click="showSubtitle = !showSubtitle" class="w-full flex items-center justify-between px-4 py-3">
               <span class="text-lg font-medium text-black dark:text-white">Show Teks</span>
               <div class="flex items-center gap-1">
                 <!-- View Mode Toggle -->
-                <button 
-                  v-if="showSubtitle"
-                  @click.stop="toggleSubtitleViewMode"
+                <button v-if="showSubtitle" @click.stop="toggleSubtitleViewMode"
                   class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded flex items-center justify-center"
-                  title="Toggle view mode"
-                >
-                  <Icon :name="subtitleViewMode === 'list' ? 'mdi:view-list' : 'mdi:view-sequential'" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                  title="Toggle view mode">
+                  <Icon :name="subtitleViewMode === 'list' ? 'mdi:view-list' : 'mdi:view-sequential'"
+                    class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                 </button>
                 <div class="p-1 flex items-center justify-center">
-                  <Icon 
-                    :name="showSubtitle ? 'mdi:chevron-up' : 'mdi:chevron-down'" 
-                    class="w-5 h-5 text-gray-600 dark:text-gray-400" 
-                  />
+                  <Icon :name="showSubtitle ? 'mdi:chevron-up' : 'mdi:chevron-down'"
+                    class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                 </div>
               </div>
             </button>
@@ -61,62 +55,55 @@
             <!-- Subtitle Content -->
             <div v-if="showSubtitle" class="px-2 pb-3">
               <!-- Search Input -->
-              <input 
-                v-model="subtitleSearch"
-                type="text" 
-                placeholder="Masukan kata kunci"
-                class="w-full px-4 py-3 rounded-lg text-lg mb-4 focus:outline-none bg-gray-50 dark:bg-gray-600 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
-              />
+              <input v-model="subtitleSearch" type="text" placeholder="Masukan kata kunci"
+                class="w-full px-4 py-3 rounded-lg text-lg mb-4 focus:outline-none bg-gray-50 dark:bg-gray-600 text-black dark:text-white placeholder-gray-400 dark:placeholder-gray-500" />
 
               <!-- Subtitle List - Mode A (List View) -->
               <div v-if="subtitleViewMode === 'list'" class="space-y-4">
-                <div 
-                  v-for="sub in filteredSubtitles" 
-                  :key="sub.id"
-                  class="rounded-lg p-1 text-lg"
-                  :style="{ fontSize: fontSize + 'px' }"
-                >
-                  <p class="font-semibold text-black dark:text-white mb-2 cursor-pointer hover:text-primary dark:hover:text-yellow-400 flex items-center gap-2" @click="seekToTimestamp(sub.timestamp)">
+                <div v-for="sub in filteredSubtitles" :key="sub.id" class="rounded-lg p-1 text-lg"
+                  :style="{ fontSize: fontSize + 'px' }">
+                  <p class="font-semibold text-black dark:text-white mb-2 cursor-pointer hover:text-primary dark:hover:text-yellow-400 flex items-center gap-2"
+                    @click="seekToTimestamp(sub.timestamp)">
                     <Icon v-if="isAudioLoading" name="mdi:loading" class="w-4 h-4 animate-spin" />
-                    {{ sub.title }}
+                    {{ sub.order }}. {{ sub.title }}
                   </p>
                   <p class="text-black dark:text-gray-400 mb-2 text-md" v-html="sub.description"></p>
                   <div class="text-black dark:text-white mb-4 text-md" v-html="highlightText(sub.script)"></div>
-                  
+
                   <!-- Action Buttons -->
                   <div class="flex items-center gap-6 pt-3 border-t border-gray-200 dark:border-gray-600">
-                    <button @click="copySubtitle(sub)" class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
+                    <button @click="copySubtitle(sub)"
+                      class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
                       <Icon name="mdi:content-copy" class="w-4 h-4" />
                       <span>Salin</span>
                     </button>
-                    <button v-if="!subtitleId" @click="viewDetail(sub)" class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
+                    <button v-if="!subtitleId" @click="viewDetail(sub)"
+                      class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
                       <Icon name="mdi:file-document-outline" class="w-4 h-4" />
                       <span>Detail</span>
                     </button>
-                    <button @click="speakSubtitle(sub)" class="flex items-center gap-1 text-lg hover:text-primary dark:hover:text-yellow-400" :class="speakingSubtitleId === sub.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
+                    <button @click="speakSubtitle(sub)"
+                      class="flex items-center gap-1 text-lg hover:text-primary dark:hover:text-yellow-400"
+                      :class="speakingSubtitleId === sub.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
                       <Icon :name="speakingSubtitleId === sub.id ? 'mdi:stop' : 'mdi:account-voice'" class="w-4 h-4" />
                       <span>{{ speakingSubtitleId === sub.id ? 'Stop' : 'Voice' }}</span>
                     </button>
                   </div>
                 </div>
-                <p v-if="filteredSubtitles.length === 0" class="text-lg text-gray-500 dark:text-gray-400 text-center py-4">
+                <p v-if="filteredSubtitles.length === 0"
+                  class="text-lg text-gray-500 dark:text-gray-400 text-center py-4">
                   Tidak ada teks ditemukan
                 </p>
               </div>
 
               <!-- Subtitle List - Mode B (Accordion View) -->
               <div v-else class="space-y-2">
-                <div 
-                  v-for="sub in filteredSubtitles" 
-                  :key="sub.id"
+                <div v-for="sub in filteredSubtitles" :key="sub.id"
                   class="border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden"
-                  :style="{ fontSize: fontSize + 'px' }"
-                >
+                  :style="{ fontSize: fontSize + 'px' }">
                   <!-- Accordion Header -->
-                  <button 
-                    @click="toggleAccordion(sub.id)"
-                    class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                  >
+                  <button @click="toggleAccordion(sub.id)"
+                    class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                     <p class="font-semibold text-black dark:text-white text-left flex-1 cursor-pointer hover:text-primary dark:hover:text-yellow-400 flex items-center gap-2"
                       @click.stop="seekToTimestamp(sub.timestamp)">
                       <Icon v-if="isAudioLoading" name="mdi:loading" class="w-4 h-4 animate-spin" />
@@ -127,28 +114,35 @@
                   </button>
 
                   <!-- Accordion Content -->
-                  <div v-if="expandedSubtitles.has(sub.id)" class="px-3 pb-3 border-t border-gray-200 dark:border-gray-600">
+                  <div v-if="expandedSubtitles.has(sub.id)"
+                    class="px-3 pb-3 border-t border-gray-200 dark:border-gray-600">
                     <p class="text-black dark:text-gray-400 mb-2 text-md mt-2" v-html="sub.description"></p>
                     <div class="text-black dark:text-white mb-4 text-md" v-html="highlightText(sub.script)"></div>
-                    
+
                     <!-- Action Buttons -->
                     <div class="flex items-center gap-6 pt-3 border-t border-gray-200 dark:border-gray-600">
-                      <button @click="copySubtitle(sub)" class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
+                      <button @click="copySubtitle(sub)"
+                        class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
                         <Icon name="mdi:content-copy" class="w-4 h-4" />
                         <span>Salin</span>
                       </button>
-                      <button v-if="!subtitleId" @click="viewDetail(sub)" class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
+                      <button v-if="!subtitleId" @click="viewDetail(sub)"
+                        class="flex items-center gap-1 text-lg text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-yellow-400">
                         <Icon name="mdi:file-document-outline" class="w-4 h-4" />
                         <span>Detail</span>
                       </button>
-                      <button @click="speakSubtitle(sub)" class="flex items-center gap-1 text-lg hover:text-primary dark:hover:text-yellow-400" :class="speakingSubtitleId === sub.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
-                        <Icon :name="speakingSubtitleId === sub.id ? 'mdi:stop' : 'mdi:account-voice'" class="w-4 h-4" />
+                      <button @click="speakSubtitle(sub)"
+                        class="flex items-center gap-1 text-lg hover:text-primary dark:hover:text-yellow-400"
+                        :class="speakingSubtitleId === sub.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
+                        <Icon :name="speakingSubtitleId === sub.id ? 'mdi:stop' : 'mdi:account-voice'"
+                          class="w-4 h-4" />
                         <span>{{ speakingSubtitleId === sub.id ? 'Stop' : 'Voice' }}</span>
                       </button>
                     </div>
                   </div>
                 </div>
-                <p v-if="filteredSubtitles.length === 0" class="text-lg text-gray-500 dark:text-gray-400 text-center py-4">
+                <p v-if="filteredSubtitles.length === 0"
+                  class="text-lg text-gray-500 dark:text-gray-400 text-center py-4">
                   Tidak ada teks ditemukan
                 </p>
               </div>
@@ -164,16 +158,12 @@
     <!-- Bottom Section Container -->
     <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto">
       <!-- Floating Action Button (positioned above bottom drawer) - Lazy loaded -->
-      <LazyFabZoom 
-        v-model:isOpen="showFabMenu"
-        class="absolute right-0 bottom-full z-10"
-        @zoomIn="zoomIn"
-        @zoomOut="zoomOut"
-        @scrollTop="scrollToTop"
-      />
+      <LazyFabZoom v-model:isOpen="showFabMenu" class="absolute right-0 bottom-full z-10" @zoomIn="zoomIn"
+        @zoomOut="zoomOut" @scrollTop="scrollToTop" />
 
       <!-- Bottom Audio Player Drawer -->
-      <div v-if="audioData?.data" class="bg-white dark:bg-gray-800 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.3)] p-4">
+      <div v-if="audioData?.data"
+        class="bg-white dark:bg-gray-800 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.3)] p-4">
         <!-- Minimized View -->
         <template v-if="isPlayerMinimized">
           <div class="flex items-center justify-between">
@@ -190,23 +180,24 @@
         <!-- Expanded View -->
         <template v-else>
           <div class="flex items-center justify-between mb-2">
-            <p class="text-lg font-medium text-black dark:text-white flex-1 line-clamp-1">{{ audioData.data.title?.trim() }}</p>
+            <p class="text-lg font-medium text-black dark:text-white flex-1 line-clamp-1">{{
+              audioData.data.title?.trim() }}</p>
           </div>
 
           <!-- Progress Bar -->
           <div class="flex items-center gap-2 mb-3">
             <input type="range" :value="currentTime" :max="duration" @input="seek"
               class="flex-1 h-1 bg-gray-200 dark:bg-gray-600 rounded-full appearance-none cursor-pointer accent-primary" />
-            <span class="text-xs text-gray-500 dark:text-gray-400 w-20 text-right">{{ formatTime(currentTime) }}/{{ formatTime(duration) }}</span>
+            <span class="text-xs text-gray-500 dark:text-gray-400 w-20 text-right">{{ formatTime(currentTime) }}/{{
+              formatTime(duration) }}</span>
           </div>
 
           <!-- Controls -->
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
               <button class="p-1" @click="addToBookmark">
-                <Icon :name="isAudioBookmarked ? 'mdi:star' : 'mdi:star-outline'" 
-                      :class="isAudioBookmarked ? 'text-yellow-500' : 'text-gray-600 dark:text-gray-400'"
-                      class="w-6 h-6" />
+                <Icon :name="isAudioBookmarked ? 'mdi:star' : 'mdi:star-outline'"
+                  :class="isAudioBookmarked ? 'text-yellow-500' : 'text-gray-600 dark:text-gray-400'" class="w-6 h-6" />
               </button>
               <button class="p-1" @click="shareContent">
                 <Icon name="mdi:share-variant-outline" class="w-6 h-6 text-gray-600 dark:text-gray-400" />
@@ -217,7 +208,8 @@
               <button @click="skipBackward" class="p-2">
                 <Icon name="mdi:rewind" class="w-6 h-6 text-gray-700 dark:text-gray-300" />
               </button>
-              <button @click="togglePlay" class="w-12 h-12 bg-primary dark:bg-yellow-500 rounded-full flex items-center justify-center">
+              <button @click="togglePlay"
+                class="w-12 h-12 bg-primary dark:bg-yellow-500 rounded-full flex items-center justify-center">
                 <Icon :name="isPlaying ? 'mdi:pause' : 'mdi:play'" class="w-7 h-7 text-black" />
               </button>
               <button @click="skipForward" class="p-2">
@@ -254,6 +246,7 @@ interface Subtitle {
   script_wa: string
   description: string
   description_wa: string
+  order: number
 }
 
 interface AudioDetail {
@@ -388,7 +381,7 @@ const speakSubtitle = (sub: Subtitle) => {
 
   const text = stripHtml(sub.script)
   const utterance = new SpeechSynthesisUtterance(text)
-  
+
   // Set Indonesian language
   utterance.lang = 'id-ID'
   utterance.rate = 1
@@ -429,20 +422,20 @@ const pendingTimestamp = ref<number | null>(null)
 
 const seekToTimestamp = (timestamp: number) => {
   if (!audioElement.value) return
-  
+
   isAudioLoading.value = true
   pendingTimestamp.value = timestamp
-  
+
   // Set source if not set
   if (!audioElement.value.src && audioData.value?.data?.url) {
     audioElement.value.src = audioData.value.data.url
     audioElement.value.load()
   }
-  
+
   // Try to seek and play
   const trySeekAndPlay = () => {
     if (!audioElement.value || pendingTimestamp.value === null) return
-    
+
     try {
       audioElement.value.currentTime = pendingTimestamp.value
       audioElement.value.play().then(() => {
@@ -460,7 +453,7 @@ const seekToTimestamp = (timestamp: number) => {
       pendingTimestamp.value = null
     }
   }
-  
+
   // If audio is ready, seek and play immediately
   if (audioElement.value.readyState >= 2) {
     trySeekAndPlay()
@@ -478,7 +471,7 @@ const seekToTimestamp = (timestamp: number) => {
 onMounted(() => {
   if (audioData.value?.data?.url && audioElement.value) {
     audioElement.value.src = audioData.value.data.url
-    
+
     // If subtitle_id is provided, jump to that subtitle's timestamp (without auto-play)
     if (subtitleId.value && audioData.value.data.subtitle?.length) {
       const targetSubtitle = audioData.value.data.subtitle.find(
@@ -496,7 +489,7 @@ onMounted(() => {
       }
     }
   }
-  
+
   // Save to history (fire and forget)
   if (audioData.value?.data) {
     const subtitle = audioData.value.data.subtitle?.[0]
@@ -587,14 +580,14 @@ const addToBookmark = () => {
 
 const shareContent = () => {
   if (!audioData.value?.data) return
-  
+
   const title = audioData.value.data.title?.trim() || ''
   const params = new URLSearchParams()
   params.set('audio_id', String(audioId.value))
   if (subtitleId.value) {
     params.set('subtitle_id', String(subtitleId.value))
   }
-  
+
   const shareUrl = `${window.location.origin}/audio/detail?${params.toString()}`
   const shareTitle = `${pageTitle.value} - ${title}`
 

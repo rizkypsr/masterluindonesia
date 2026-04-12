@@ -7,7 +7,8 @@
         <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
       </button>
       <h1 class="text-lg font-semibold text-black dark:text-white flex-1">{{ pageTitle }}</h1>
-      <button @click="showAudioInfoModal = true" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
+      <button @click="showAudioInfoModal = true"
+        class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
         <Icon name="mdi:information" class="w-6 h-6 text-primary dark:text-yellow-400" />
       </button>
       <button @click="shareContent" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
@@ -17,11 +18,10 @@
         <button class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded" @click="showMenu = !showMenu">
           <Icon name="mdi:dots-vertical" class="w-6 h-6 text-black dark:text-white" />
         </button>
-        <div v-if="showMenu" class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-20">
-          <button
-            @click="openFindInPage"
-            class="w-full px-4 py-3 text-left text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-3 rounded-lg"
-          >
+        <div v-if="showMenu"
+          class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-20">
+          <button @click="openFindInPage"
+            class="w-full px-4 py-3 text-left text-black dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-3 rounded-lg">
             <Icon name="mdi:magnify" class="w-5 h-5" />
             <span>Cari di Halaman</span>
           </button>
@@ -30,11 +30,7 @@
     </div>
 
     <!-- Find In Page Component -->
-    <FindInPage
-      :is-open="showFindInPage"
-      target-selector="#audio-content"
-      @close="showFindInPage = false"
-    />
+    <FindInPage :is-open="showFindInPage" target-selector="#audio-content" @close="showFindInPage = false" />
 
     <!-- Content -->
     <div id="audio-content" class="flex-1 overflow-y-auto p-4 pb-40">
@@ -67,25 +63,15 @@
         <!-- Group Search Input -->
         <div v-if="selectedGroupId" class="mb-4">
           <div class="flex items-center gap-3">
-            <input 
-              v-model="groupSearchQuery" 
-              type="text" 
-              placeholder="Cari dalam kategori ini..."
+            <input v-model="groupSearchQuery" type="text" placeholder="Cari dalam kategori ini..."
               class="flex-1 text-black dark:text-white bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:border-primary focus:outline-none"
-              @keyup.enter="handleGroupSearch"
-            />
-            <button 
-              v-if="groupSearchQuery.trim()" 
-              @click="handleGroupSearch"
-              class="px-3 py-2 bg-primary hover:bg-primary/90 text-black text-sm font-medium rounded"
-            >
+              @keyup.enter="handleGroupSearch" />
+            <button v-if="groupSearchQuery.trim()" @click="handleGroupSearch"
+              class="px-3 py-2 bg-primary hover:bg-primary/90 text-black text-sm font-medium rounded">
               Cari
             </button>
-            <button 
-              v-if="hasGroupSearched" 
-              @click="clearGroupSearch" 
-              class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
-            >
+            <button v-if="hasGroupSearched" @click="clearGroupSearch"
+              class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
               <Icon name="mdi:close" class="w-6 h-6 text-black dark:text-white" />
             </button>
           </div>
@@ -106,18 +92,13 @@
 
           <!-- Results List -->
           <div v-else-if="groupSearchResults.length > 0" class="space-y-4">
-            <SearchResultCard
-              v-for="item in groupSearchResults"
-              :key="`grp-search-${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
-              :item="item"
+            <SearchResultCard v-for="item in groupSearchResults"
+              :key="`grp-search-${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`" :item="item"
               :is-expanded="expandedGroupSearchItems.has(`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`)"
               :font-size="fontSize"
               :is-speaking="groupSearchSpeakingItemId === `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
-              :search-keyword="groupSearchedKeyword"
-              @toggle="toggleGroupSearchExpand(item)"
-              @navigate="navigateToSearchResult(item)"
-              @speak="speakGroupSearchContent(item)"
-            />
+              :search-keyword="groupSearchedKeyword" @toggle="toggleGroupSearchExpand(item)"
+              @navigate="navigateToSearchResult(item)" @speak="speakGroupSearchContent(item)" />
           </div>
 
           <!-- Empty State -->
@@ -130,7 +111,8 @@
         <div v-else class="space-y-2">
           <div v-for="audio in selectedGroupAudios" :key="audio.id">
             <!-- Audio Item Header with Search -->
-            <div v-if="!audioSearchModes[audio.id]" class="relative" :class="currentAudio?.id === audio.id ? '' : 'flex gap-2 items-center'">
+            <div v-if="!audioSearchModes[audio.id]" class="relative"
+              :class="currentAudio?.id === audio.id ? '' : 'flex gap-2 items-center'">
               <!-- Audio Item - Not Selected -->
               <button v-if="currentAudio?.id !== audio.id" @click="playAudio(audio)"
                 class="flex-1 flex items-center gap-3 p-2 rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -166,13 +148,11 @@
                     <span class="text-lg font-medium text-black dark:text-white">Show Teks</span>
                     <div class="flex items-center gap-1">
                       <!-- View Mode Toggle -->
-                      <button 
-                        v-if="showSubtitle"
-                        @click.stop="toggleSubtitleViewMode"
+                      <button v-if="showSubtitle" @click.stop="toggleSubtitleViewMode"
                         class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded flex items-center justify-center"
-                        title="Toggle view mode"
-                      >
-                        <Icon :name="subtitleViewMode === 'list' ? 'mdi:view-list' : 'mdi:view-sequential'" class="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                        title="Toggle view mode">
+                        <Icon :name="subtitleViewMode === 'list' ? 'mdi:view-list' : 'mdi:view-sequential'"
+                          class="w-5 h-5 text-gray-600 dark:text-gray-400" />
                       </button>
                       <div class="p-1 flex items-center justify-center">
                         <Icon :name="showSubtitle ? 'mdi:chevron-up' : 'mdi:chevron-down'"
@@ -189,11 +169,10 @@
 
                     <!-- Subtitle List - Mode A (List View) -->
                     <div v-if="subtitleViewMode === 'list'" class="space-y-4">
-                      <div v-for="sub in filteredSubtitles" :key="sub.id"
-                        class="rounded-lg p-1 text-lg"
+                      <div v-for="sub in filteredSubtitles" :key="sub.id" class="rounded-lg p-1 text-lg"
                         :style="{ fontSize: fontSize + 'px' }">
                         <p class="font-semibold text-black dark:text-white mb-2 cursor-pointer hover:text-primary dark:hover:text-yellow-400"
-                          @click="seekToTimestamp(sub.timestamp)">{{ sub.title }}</p>
+                          @click="seekToTimestamp(sub.timestamp)">{{ sub.order }}. {{ sub.title }}</p>
                         <p class="text-black dark:text-gray-400 mb-2 text-md" v-html="sub.description"></p>
                         <div class="text-black dark:text-white mb-4 text-md" v-html="highlightText(sub.script)"></div>
 
@@ -230,10 +209,8 @@
                         class="border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden"
                         :style="{ fontSize: fontSize + 'px' }">
                         <!-- Accordion Header -->
-                        <button 
-                          @click="toggleAccordion(sub.id)"
-                          class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                        >
+                        <button @click="toggleAccordion(sub.id)"
+                          class="w-full flex items-center justify-between px-3 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                           <p class="font-semibold text-black dark:text-white text-left flex-1 cursor-pointer hover:text-primary dark:hover:text-yellow-400"
                             @click.stop="seekToTimestamp(sub.timestamp)">{{ sub.title }}</p>
                           <Icon :name="expandedSubtitles.has(sub.id) ? 'mdi:chevron-up' : 'mdi:chevron-down'"
@@ -241,7 +218,8 @@
                         </button>
 
                         <!-- Accordion Content -->
-                        <div v-if="expandedSubtitles.has(sub.id)" class="px-3 pb-3 border-t border-gray-200 dark:border-gray-600">
+                        <div v-if="expandedSubtitles.has(sub.id)"
+                          class="px-3 pb-3 border-t border-gray-200 dark:border-gray-600">
                           <p class="text-black dark:text-gray-400 mb-2 text-md mt-2" v-html="sub.description"></p>
                           <div class="text-black dark:text-white mb-4 text-md" v-html="highlightText(sub.script)"></div>
 
@@ -277,38 +255,24 @@
               </div>
 
               <!-- Search Icon - Positioned absolutely at top center, slightly outside -->
-              <button 
-                v-if="currentAudio?.id !== audio.id"
-                @click="openAudioSearch(audio.id)" 
-                class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
-              >
+              <button v-if="currentAudio?.id !== audio.id" @click="openAudioSearch(audio.id)"
+                class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">
                 <Icon name="mdi:magnify" class="w-6 h-6 text-black dark:text-white" />
               </button>
-              
-              <button 
-                v-else
-                @click="openAudioSearch(audio.id)" 
-                class="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors z-10 border-2 border-[#c09637] dark:border-yellow-600"
-              >
+
+              <button v-else @click="openAudioSearch(audio.id)"
+                class="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors z-10 border-2 border-[#c09637] dark:border-yellow-600">
                 <Icon name="mdi:magnify" class="w-4 h-4 text-black dark:text-white" />
               </button>
             </div>
 
             <!-- Audio Search Input -->
             <div v-else class="flex items-center gap-3 mb-2">
-              <input 
-                v-model="audioSearchQueries[audio.id]" 
-                type="text" 
-                placeholder="Cari dalam audio ini..."
+              <input v-model="audioSearchQueries[audio.id]" type="text" placeholder="Cari dalam audio ini..."
                 class="flex-1 text-black dark:text-white bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:border-primary focus:outline-none"
-                @keyup.enter="handleAudioSearch(audio.id)"
-                autofocus 
-              />
-              <button 
-                v-if="audioSearchQueries[audio.id]?.trim()" 
-                @click="handleAudioSearch(audio.id)"
-                class="px-3 py-2 bg-primary hover:bg-primary/90 text-black text-sm font-medium rounded"
-              >
+                @keyup.enter="handleAudioSearch(audio.id)" autofocus />
+              <button v-if="audioSearchQueries[audio.id]?.trim()" @click="handleAudioSearch(audio.id)"
+                class="px-3 py-2 bg-primary hover:bg-primary/90 text-black text-sm font-medium rounded">
                 Cari
               </button>
               <button @click="closeAudioSearch(audio.id)" class="p-1">
@@ -317,7 +281,8 @@
             </div>
 
             <!-- Audio Search Results -->
-            <div v-if="audioSearchLoading[audio.id] || audioSearchResults[audio.id]?.length > 0 || (audioSearchModes[audio.id] && audioSearchQueries[audio.id]?.trim() && !audioSearchLoading[audio.id] && audioSearchResults[audio.id]?.length === 0)">
+            <div
+              v-if="audioSearchLoading[audio.id] || audioSearchResults[audio.id]?.length > 0 || (audioSearchModes[audio.id] && audioSearchQueries[audio.id]?.trim() && !audioSearchLoading[audio.id] && audioSearchResults[audio.id]?.length === 0)">
               <!-- Loading -->
               <div v-if="audioSearchLoading[audio.id]" class="flex justify-center py-8">
                 <UIcon name="i-heroicons-arrow-path" class="w-8 h-8 animate-spin text-gray-500 dark:text-gray-400" />
@@ -325,18 +290,14 @@
 
               <!-- Results List -->
               <div v-else-if="audioSearchResults[audio.id]?.length > 0" class="space-y-4 mb-4">
-                <SearchResultCard
-                  v-for="item in audioSearchResults[audio.id]"
+                <SearchResultCard v-for="item in audioSearchResults[audio.id]"
                   :key="`aud-${audio.id}-${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
                   :item="item"
                   :is-expanded="expandedAudioSearchItems[audio.id]?.has(`${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`)"
                   :font-size="fontSize"
                   :is-speaking="speakingAudioItemId[audio.id] === `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`"
-                  :search-keyword="audioSearchQueries[audio.id]"
-                  @toggle="toggleAudioSearchExpand(audio.id, item)"
-                  @navigate="navigateToSearchResult(item)"
-                  @speak="speakAudioSearchContent(audio.id, item)"
-                />
+                  :search-keyword="audioSearchQueries[audio.id]" @toggle="toggleAudioSearchExpand(audio.id, item)"
+                  @navigate="navigateToSearchResult(item)" @speak="speakAudioSearchContent(audio.id, item)" />
               </div>
 
               <!-- Empty State -->
@@ -378,7 +339,7 @@
         <template v-else>
           <div class="flex items-center justify-between mb-2">
             <p class="text-lg font-medium text-black dark:text-white flex-1 line-clamp-1">{{ currentAudio.title.trim()
-              }}</p>
+            }}</p>
             <button @click="closePlayer" class="p-1">
               <Icon name="mdi:close" class="w-5 h-5 text-gray-500 dark:text-gray-400" />
             </button>
@@ -465,6 +426,7 @@ interface Subtitle {
   script_wa: string
   description: string
   description_wa: string
+  order: number
 }
 
 interface AudioItem {
@@ -527,9 +489,9 @@ const handleAudioSearch = async (audioId: number) => {
     audioSearchResults.value[audioId] = []
     return
   }
-  
+
   audioSearchLoading.value[audioId] = true
-  
+
   try {
     // Build query parameters
     const params = new URLSearchParams()
@@ -538,7 +500,7 @@ const handleAudioSearch = async (audioId: number) => {
     params.append('paginate', '20')
     params.append('selectedCategory[]', 'Audio')
     params.append('audio_ids[]', audioId.toString())
-    
+
     const response = await $fetch<{
       success: boolean
       message: string
@@ -546,7 +508,7 @@ const handleAudioSearch = async (audioId: number) => {
     }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
       method: 'GET'
     })
-    
+
     audioSearchResults.value[audioId] = response.data || []
   } catch (error) {
     console.error('Audio search failed:', error)
@@ -560,16 +522,16 @@ const toggleAudioSearchExpand = (audioId: number, item: SearchItem) => {
   if (!expandedAudioSearchItems.value[audioId]) {
     expandedAudioSearchItems.value[audioId] = new Set()
   }
-  
+
   const key = `${item.type}-${item.header_id}-${item.id}-${item.timestamp || ''}`
   const expandedSet = expandedAudioSearchItems.value[audioId]
-  
+
   if (expandedSet.has(key)) {
     expandedSet.delete(key)
   } else {
     expandedSet.add(key)
   }
-  
+
   expandedAudioSearchItems.value[audioId] = new Set(expandedSet)
 }
 
@@ -625,7 +587,7 @@ const openAudioSearch = (audioId: number) => {
       closeAudioSearch(id)
     }
   })
-  
+
   audioSearchModes.value[audioId] = true
   audioSearchQueries.value[audioId] = ''
   audioSearchResults.value[audioId] = []
@@ -647,7 +609,7 @@ const closeAudioSearch = (audioId: number) => {
 
 const navigateToSearchResult = (item: SearchItem) => {
   const itemType = item.type.toLowerCase()
-  
+
   if (itemType === 'audio') {
     const audioId = item.header_id || ''
     const subtitleId = item.id || ''
@@ -693,18 +655,18 @@ const selectGroup = (groupId: number) => {
 // Group search functions
 const handleGroupSearch = async () => {
   if (!groupSearchQuery.value.trim() || !selectedGroupId.value) return
-  
+
   groupSearchedKeyword.value = groupSearchQuery.value.trim()
   hasGroupSearched.value = true
   isGroupSearching.value = true
   groupSearchResults.value = []
-  
+
   try {
     const group = audioGroups.value.find(g => g.id === selectedGroupId.value)
     if (!group) return
-    
+
     const audioIds = group.audio.map(audio => audio.id)
-    
+
     // Build query parameters
     const params = new URLSearchParams()
     params.append('keyword', groupSearchedKeyword.value)
@@ -712,7 +674,7 @@ const handleGroupSearch = async () => {
     params.append('paginate', '20')
     params.append('selectedCategory[]', 'Audio')
     audioIds.forEach(id => params.append('audio_ids[]', id.toString()))
-    
+
     const response = await $fetch<{
       success: boolean
       message: string
@@ -720,7 +682,7 @@ const handleGroupSearch = async () => {
     }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
       method: 'GET'
     })
-    
+
     groupSearchResults.value = response.data || []
   } catch (error) {
     console.error('Group search failed:', error)
@@ -852,7 +814,7 @@ const isLoadingAudioInfo = ref(false)
 // Fetch audio information when modal opens
 const fetchAudioInformation = async () => {
   if (audioInfoDescription.value) return // Already fetched
-  
+
   isLoadingAudioInfo.value = true
   try {
     const response = await $fetch<{
@@ -866,7 +828,7 @@ const fetchAudioInformation = async () => {
         updated_at: string
       }>
     }>(`${config.public.apiBaseUrl}/information?type=audio`)
-    
+
     if (response.success && response.data.length > 0) {
       audioInfoDescription.value = response.data[0].description
     }
@@ -1118,7 +1080,7 @@ const addToBookmark = () => {
 
 const shareContent = () => {
   const shareUrl = `${window.location.origin}${window.location.pathname}?title=${encodeURIComponent(pageTitle.value)}`
-  
+
   let shareTitle = pageTitle.value
   if (currentAudio.value) {
     const title = currentAudio.value.title.trim()
