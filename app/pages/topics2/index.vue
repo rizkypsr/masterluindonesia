@@ -19,8 +19,10 @@
       </template>
 
       <template v-else-if="treeItems.length > 0">
-        <UTree :items="treeItems" :get-key="(item) => String(item.id)" size="xl" expanded-icon="" collapsed-icon=""
-          :ui="{ linkLeadingIcon: 'hidden' }" @select="handleSelect" />
+        <UTree :items="treeItems" :get-key="(item) => String(item.id)" size="xl" expanded-icon="" collapsed-icon="" :ui="{
+          linkLeadingIcon: 'hidden', link: 'text-xl hover:text-primary dark:hover:text-yellow-400 active:text-primary dark:active:text-yellow-400 transition-colors active:scale-[0.98] transition-transform relative group',
+          linkLabel: 'transition-colors'
+        }" @select="handleSelect" />
       </template>
 
       <div v-else class="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">
@@ -88,7 +90,7 @@ function handleSelect(e: TreeItemSelectEvent<TreeItem>) {
   const item = e.detail.value
   // Only navigate if item has no children (is a leaf node)
   if (item?.id && !item.children?.length) {
-    router.push(`/topics2/content/${item.id}`)
+    router.push(`/topics2/${item.id}`)
   }
 }
 </script>
