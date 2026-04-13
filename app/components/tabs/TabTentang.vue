@@ -117,7 +117,7 @@ const limaPusakaItems = [
   {
     id: 2,
     title: 'Berikrar',
-    description: 'Berikrar adalah memohon di dalam hati atau dengan pelan di depan Guan Shi Yin Pu Sa berwelas asih memberikati. Anda dari membiarkan Anda menyelesaikan suatu masalah, kebingungan, depresi, menguraikan bencana besar dan kecil.',
+    description: 'Berikrar adalah memohon di dalam hati atau dengan pelan di depan Guan Shi Yin Pu Sa berwelas asih memberikati Anda dari membantu Anda menyelesaikan suatu masalah, kebingungan, depresi, menguraikan bencana besar dan kecil.',
     image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage4.png?alt=media&token=949f6ff0-4895-4e81-bdde-4ab0fb843841',
     href: '/tentang/lima-pusaka/berikrar'
   },
@@ -131,14 +131,14 @@ const limaPusakaItems = [
   {
     id: 4,
     title: 'Membaca Bai Hua Fo Fa',
-    description: 'BHFF adalah ajaran Buddhis mendalam yang disajikan dari bahasa sehari-hari agar semua makhluk yang berkarma bisa membina diri di zaman akhir Dharma ini untuk memahami kebenaran akan duniawi ini dan terbebas dari alam reinkarnasi.',
+    description: 'BHFF adalah ajaran Buddhis mendalam yang disajikan dari bahasa sehari-hari agar semua makhluk yang berkarma bisa membina diri di zaman akhir Dharma ini untuk memahami kebenaran akan duniawi ini dan terbebas dari 6 alam reinkarnasi.',
     image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage6.png?alt=media&token=8c71ab9b-52c7-4785-bcbe-15f714a05c1b',
     href: '/tentang/lima-pusaka/membaca-bai-hua-fo-fa'
   },
   {
     id: 5,
     title: 'Pertobatan Agung',
-    description: 'Kehidupan manusia tidak bisa terlepas dari Pertobatan. Terlalu banyak kesalahan yang telah kita lakukan, hanya dengan bertobat setulus hati baru bisa mengharapkan karma buruk di dalam hati dan penyesalan.',
+    description: 'Kehidupan manusia tidak bisa terlepas dari Pertobatan. Terlalu banyak kesalahan yang telah kita lakukan, hanya dengan bertobat setulus hati baru bisa menghilangkan karma buruk di dalam hati dan penyesalan.',
     image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage7.png?alt=media&token=22f42218-523d-4450-9875-cba0144c16e6',
     href: '/tentang/lima-pusaka/pertobatan-agung'
   }

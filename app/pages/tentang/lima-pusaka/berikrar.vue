@@ -14,7 +14,9 @@
 
     <!-- Hero Image -->
     <div class="relative bg-gradient-to-b from-yellow-100 to-yellow-50 dark:from-gray-800 dark:to-gray-900">
-      <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage4.png?alt=media&token=949f6ff0-4895-4e81-bdde-4ab0fb843841" alt="Berikrar" class="w-full" />
+      <img
+        src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage4.png?alt=media&token=949f6ff0-4895-4e81-bdde-4ab0fb843841"
+        alt="Berikrar" class="w-full" />
     </div>
 
     <!-- Content -->
@@ -23,7 +25,7 @@
 
       <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
         Berikrar adalah memohon di dalam hati atau dengan pelan di depan Guan Shi Yin Pu Sa berwelas asih memberikati
-        Anda dan menolong Anda menyelesaikan suatu masalah, kebingungan, depresi, menguraikan bencana besar dan kecil.
+        Anda dan membantu Anda menyelesaikan suatu masalah, kebingungan, depresi, menguraikan bencana besar dan kecil.
       </p>
 
       <!-- Section 1 -->
@@ -33,7 +35,7 @@
           Dimulai dari hari ini akan bervegetarian setiap tanggal 1 dan 15 kalender lunar.
         </p>
         <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">
-          Dari detik ini tidak akan makan dewan laut lagi.
+          Dari detik ini tidak akan makan dewan laut segar.
         </p>
         <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">
           Dari detik ini tidak akan membunuh makhluk hidup.
@@ -42,10 +44,10 @@
           Berjanji akan melakukan beberapa kebaikan setiap hari.
         </p>
         <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">
-          Menjadi patung Buddha dengan emas.
+          Melapisi patung Buddha dengan emas.
         </p>
         <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
-          Dalam jangka waktu tertentu menyebarkan Ajaran Buddha Dharma pada berapa orang, membantu mereka terbebas dari
+          Dalam jangka waktu tertentu membabarkan Ajaran Buddha Dharma pada berapa orang, membantu mereka terbebas dari
           penderitaan.
         </p>
       </div>
@@ -58,7 +60,7 @@
         </p>
         <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
           Ada orang yang berikrar untuk bervegetarian setiap tanggal 1 dan 15 kalender lunar, lalu lupa, atau ada
-          halangan tertentu tidak bisa menjalankannya, boleh menggantinya sebelumnya pada Guan Shi Yin Pu Sa, bisa
+          halangan tertentu tidak bisa menjalankannya, boleh mengatakannya sebelumnya pada Guan Shi Yin Pu Sa, bisa
           bervegetarian lebih awal atau lebih telat, boleh juga saat berikrar tidak mengatakan bervegetarian setiap
           tanggal 1 dan 15 kalender lunar, tetapi mengatakan bervegetarian 2 hari setiap bulan, dengan demikian akan
           lebih fleksibel.
@@ -73,8 +75,8 @@
         </p>
         <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
           Wewujudkan janji adalah hal yang dilakukan setelah Bodhisattva atau Pu Sa mengabulkan permohonan Anda. Anda
-          harus kembali ke kuil atau tempat di mana Anda memohon, lalu mewujudkan dupa, bersembahyang sujud, berdana,
-          dan melakukan kebaikan.
+          harus kembali ke kuil atau tempat di mana Anda memohon, lalu memasang dupa, bersembah sujud, berdana,
+          dan melakukan kebajikan.
         </p>
       </div>
 
@@ -82,7 +84,7 @@
       <div class="mb-6">
         <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
           Besar dan banyaknya Anda berdana dan melakukan kebaikan tergantung dari kemampuan masing-masing, yang
-          terpenting Anda sudah berikrar dan dilakukan.
+          terpenting Anda sudah berniat dan dilakukan.
         </p>
         <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
           Jika sebelumnya Anda berikrar untuk bervegetarian atau menyebarkan Dharma kepada orang lain dan lain-lainnya,
@@ -101,7 +103,8 @@
         <div class="pr-4">
           <!-- Step indicator -->
           <div class="flex items-center justify-between mb-3">
-            <p class="text-gray-900 dark:text-white text-sm">Langkah {{ item.step }} <span class="text-gray-400 dark:text-gray-500">dari 7</span></p>
+            <p class="text-gray-900 dark:text-white text-sm">Langkah {{ item.step }} <span
+                class="text-gray-400 dark:text-gray-500">dari 7</span></p>
             <div class="flex gap-2">
               <button @click="scrollPrevTanpaAltar" class="p-1">
                 <Icon name="mdi:arrow-left" class="w-5 h-5 text-gray-400 dark:text-gray-500" />
@@ -122,7 +125,8 @@
             <!-- Content -->
             <div>
               <h3 class="font-bold text-gray-900 dark:text-white mb-2 text-xl">{{ item.title }}</h3>
-              <p v-for="(text, idx) in item.content" :key="idx" class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{ text }}</p>
+              <p v-for="(text, idx) in item.content" :key="idx" class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{
+                text }}</p>
             </div>
           </UCard>
         </div>
@@ -141,7 +145,8 @@
 
           <!-- Step indicator -->
           <div class="flex items-center justify-between mb-3">
-            <p class="text-gray-900 dark:text-white text-sm">Langkah {{ denganAltarIndex + 1 }} <span class="text-gray-400 dark:text-gray-500">dari
+            <p class="text-gray-900 dark:text-white text-sm">Langkah {{ denganAltarIndex + 1 }} <span
+                class="text-gray-400 dark:text-gray-500">dari
                 3</span></p>
             <div class="flex gap-2">
               <button @click="scrollPrevDenganAltar" class="p-1">
@@ -210,8 +215,10 @@ const tanpaAltarItems = [
     title: 'Ucapkan',
     image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
     content: [
-      'Saya XXX (Nama sendiri) di sini ingin berikrar kepada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa...',
-      'Guan Shi Yin Pu Sa Berwelas Asih, Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa...'
+      'Gan En Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Gusang Da Ling Gan Guan Shi Yin Pu Sa',
+      'Gan En Na Mo Nan Jing Pu Sa',
+      'Gan En Na Mo Tai Sui Pu Sa',
+      'Gan En Na Mo Guan Di Pu Sa, Zhou Cang Pu Sa, Guan Ping Pu Sa'
     ]
   },
   {
@@ -227,9 +234,9 @@ const tanpaAltarItems = [
     title: 'Catatan',
     image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
     content: [
-      'Boleh berikrar tidak menyusun. Bersembahyang pagi dan malam. Menyebarkan ajaran Buddha Dharma pada orang lain. Memperbanyak CD/DVD dan lainnya lagi.',
-      'Disesuaikan dengan tekad kebajikan sendiri, selamanya, dan keadaan masing-masing.',
-      'Setiap orang memiliki tingkat kesadaran yang berbeda-beda, sesuai dengan kemampuannya, jangan meminta orang lain harus berikrar tentang satu hal tertentu yang sama.'
+      'Boleh berikrar tidak membunuh. Bervegetarian Sembahyang pagi dan malam. Menyebarkan ajaran Buddha Dharma pada orang lain. Memperbanyak CD/DVD dan lainnya.',
+      'Ikrar disesuaikan dengan tekad keinginan sendiri, kemampuan, dan keadaan masing-masing.',
+      'Setiap orang memiliki tingkat kesadaran yang berbeda, maka berikrarlah sesuai dengan kemampuannya, jangan meminta semua orang harus berikrar tentang satu hal tertentu yang sama.'
     ]
   },
   {
@@ -237,7 +244,7 @@ const tanpaAltarItems = [
     title: 'Setelah Berikrar Bisa Memohon',
     image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
     content: [
-      'Seperti memperoleh tubuh yang sehat, ketenangan dalam hati, keluarga yang harmonis dan lainnya.',
+      'Seperti memperoleh tubuh yang sehat, kelancaran dalam karir, keluarga yang harmonis dan lainnya.',
       'Paling cepat bisa memohon 2-3 hal, tidak bisa hanya memohon kesehatan untuk satu keluarga, perlu mengajukan permohonan yang mendetail tentang seseorang atau suatu hal.',
       'Biasanya semakin besar tekad Anda, maka permohonannya akan semakin cepat terwujud.'
     ]
@@ -247,7 +254,10 @@ const tanpaAltarItems = [
     title: 'Ucapkan',
     image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
     content: [
-      'Guan Shi Yin Pu Sa Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa'
+      'Gan En Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa',
+      'Gan En Na Mo Nan Jing Pu Sa',
+      'Gan En Na Mo Tai Sui Pu Sa',
+      'Gan En Na Mo Guan Di Pu Sa, Zhou Cang Pu Sa, Guan Ping Pu Sa'
     ]
   },
   {
@@ -255,7 +265,7 @@ const tanpaAltarItems = [
     title: 'Menyembah 7 Kali',
     image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
     content: [
-      'Hua Po Pu Sa Da Ci Da Bei, Shou Chang Cing Jing Da Hai Zhong Pu Sa'
+
     ]
   },
   {
@@ -284,7 +294,7 @@ const denganAltarItems = [
 function shareContent() {
   const shareUrl = `${window.location.origin}${window.location.pathname}`
   const shareTitle = 'Berikrar - Master Lu Indonesia'
-  
+
   if (navigator.share) {
     navigator.share({
       title: shareTitle,

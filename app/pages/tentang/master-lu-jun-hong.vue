@@ -152,7 +152,7 @@ const penghargaanItems = [
     content: [
       '8 Juli 2012 Master Jun Hong Lu diundang ke London untuk berpartisipasi dalam "Kongres Agama Sedunia", salah satu perayaan ulang tahun ke-60 Ratu Inggris dan Keluarga Kerajaan Inggris.',
       'Master Jun Hong Lu dianugerahi "Penghargaan Perdamaian Dunia (Buddhisme)" dan gelar "Duta Besar untuk Perdamaian Dunia" tahun ini.',
-      'Ini sebagai penubuhan atas kontribusinya terhadap penyebaran kemanusiaan, budaya tradisional Tiongkok, dan agama Buddha selama beberapa dekade terakhir.',
+      'Ini sebagai pembuktian atas kontribusinya terhadap penyebaran kemanusiaan, budaya tradisional Tiongkok, dan agama Buddha selama beberapa dekade terakhir.',
       'Penghargaan tersebut diserahkan oleh Wakil Walikota London dan anggota parlemen.'
     ]
   },
@@ -162,7 +162,7 @@ const penghargaanItems = [
     image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage10.png?alt=media&token=21ddc863-7907-4da7-998c-78a878f9ce14',
     content: [
       '18 Desember 2013 – Jun Hong Lu JP menerima Penghargaan untuk Kontribusi Luar Biasa dan Advokasi Perdamaian kepada Komunitas Global di Berlin, Jerman.',
-      'Institut untuk Diplomasi Budaya mengakui dengan kontribusi yang luar biasa kepada Master Jun Hong Lu yang telah melampaui tugasnya.',
+      'Institusi untuk Diplomasi Budaya mengakui dengan kontribusi yang luar biasa kepada Master Jun Hong Lu yang telah melampaui tugasnya.',
       'Master Lu memiliki pengaruh besar pada komunitas global dan telah melayani sebagai penganjur perdamaian terkemuka.',
       'Dia telah diakui atas komitmennya dalam memberikan bimbingan spiritual dan memperkuat komunitas melalui karyanya.',
       'Usahanya dalam mempromosikan prinsip-prinsip Diplomasi Budaya sangat diapresiasi.'
@@ -173,8 +173,8 @@ const penghargaanItems = [
     title: 'Konferensi Tahunan Tentang Diplomasi Budaya 2013',
     image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage11.png?alt=media&token=3229c10a-e7c0-422b-819a-88c30c8002a2',
     content: [
-      '18 Desember 2013, Master Jun Hong Lu menghadiri Konferensi Tahunan tentang Diplomasi Budaya, "Diplomasi Budaya & Kerjasama Lintas Benua: Membangun Jembatan untuk Komunitas Global Bersatu" 17-20 Desember 2013, bersama dengan para pemimpin politik dan agama dari seluruh dunia di Berlin, Jerman.',
-      'Konferensi Tahunan tentang Diplomasi Budaya adalah acara terkemuka dunia di bidang diplomasi budaya yang diselenggarakan bersama dan disponsori oleh Institute for Cultural Diplomacy dan The IIAN Foundation.',
+      '18 Desember 2013, Master Jun Hong Lu menghadiri Konferensi Tahunan tentang Diplomasi Budaya, "Diplomasi Budaya & Kerjasama Lintas Benua: Membangun Jembatan untuk Komunitas Global Bersatu" (17-21 Desember 2013), bersama dengan para pemimpin politik dan agama dari seluruh dunia di Berlin, Jerman.',
+      'Konferensi Tahunan tentang Diplomasi Budaya adalah acara terkemuka dunia di bidang diplomasi budaya yang diselenggarakan bersama dan diselenggarakan oleh Institute for Cultural Diplomacy dan The IMAN Foundation.',
       'Hon. Simon Crean (Mantan Menteri Pembangunan Daerah Australia)',
       'Presiden Emil Constantinescu (Mantan Presiden Rumania)',
       'The Hon. Halldór Ásgrímsson (Mantan Perdana Menteri Islandia)',
@@ -190,7 +190,7 @@ const penghargaanItems = [
     content: [
       'Pada tanggal 1 April 2014, Master Jun Hong Lu, Duta Besar untuk Perdamaian Dunia dan seorang guru Buddhis yang terkenal di dunia, dianugerahi "Guest Professor" dari Universitas Siena.',
       'Profesor turut datang di bawah Program Magister Tata Kelola Global dan Diplomasi Budaya Universitas Siena, bekerja sama dengan Institute for Cultural Diplomacy (ICD).',
-      'Acara berlawan ini diadakan di Aula Hotel di Roma, Italia.'
+      'Acara berkesan ini diadakan di Aula Hotel di Roma, Italia.'
     ]
   },
   {
@@ -198,9 +198,9 @@ const penghargaanItems = [
     title: 'Duta Perdamaian Dunia - Kongres AS',
     image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage13.png?alt=media&token=1c76c681-b501-46ec-a90e-6200d8a715df',
     content: [
-      '24 Maret 2014, Master Lu diundang untuk menghadiri KTT yang diadakan PBB mengenakan global di markas besar PBB di New York. KTT ini bertujuan untuk membangun pola pikir yang bisa memberikan solusi atas pengurangan dan mediasi konflik.',
-      'Sebagai penghargaan atas dedikasi Master Lu, kepemimpinan dan kerja keras untuk promosi perdamaian, budaya dan kemanusiaan, KTT yang digelar PBB menganugerahi Master Lu dengan gelar "Duta Perdamaian Dunia".',
-      'Penghargaan tersebut diberikan oleh Bapak Tom Christofferson, mantan menteri Perancis, dan Bu Joanna, direktur eksekutif Komite Aliansi Strategis Internasional.'
+      '24 Maret 2014, Master Lu diundang untuk menghadiri KTT yang didukung PBB tentang perdamaian global markas besar PBB di New York. KTT ini bertujuan untuk memberikan peta jalan bagi budaya perdamaian sebagai pencegahan dan mediasi konflik.',
+      'Sebagai penghargaan atas dedikasi Master Lu, kepemimpinan yang luar biasa dan layanan untuk promosi pendidikan, budaya dan perdamaian, KTT yang didukung PBB menganugerahi Master Lu dengan gelar "Duta Pendidikan Perdamaian."',
+      'Penghargaan tersebut diberikan oleh Bapak Emil Constantinescu, mantan menteri Rumania, dan Bu Joanna, direktur eksekutif Komite Aliansi Strategis Internasional.'
     ]
   },
   {
@@ -210,7 +210,7 @@ const penghargaanItems = [
     content: [
       '24 Maret 2014 – Jun Hong Lu JP diundang untuk menghadiri dan berbicara pada KTT Budaya Perdamaian yang diadakan di Markas Besar PBB di New York.',
       'Sebagai pembicara kunci, Jun Hong Lu JP membawakan pidato tentang "Bagaimana Meneruskan Buddhisme dan Budaya Tradisional China Untuk Mempromosikan Perdamaian Dunia".',
-      'Ketua konferensi dan pemimpin agama dari 23 negara, penasihat dari Universitas Yale dan PBB telah menghadiri pertemuan puncak tersebut.'
+      'Politisi terkemuka dan pemimpin agama dari 23 negara, perwakilan dari Universitas Yale dan PBB telah menghadiri pertemuan puncak tersebut.'
     ]
   },
   {
@@ -218,9 +218,9 @@ const penghargaanItems = [
     title: 'Konferensi Buddhis Internasional 2015',
     image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage15.png?alt=media&token=eb7d7d50-dcf9-4ed9-8acf-09c5d87bb99b',
     content: [
-      '29-30 Mei 2015 – Master Jun Hong Lu telah menghadiri "Konferensi Buddhis Internasional 2015" pada Hari Raya Waisak PBB dengan para pemimpin agama dari seluruh dunia di Bangkok, Thailand. (Foto: Baris Pertama, Kesepuluh dari Kiri).',
+      '28-30 Mei 2015 – Master Jun Hong Lu telah menghadiri "Konferensi Buddhis Internasional 2015" pada Hari Raya Waisak PBB dengan para pemimpin agama dari seluruh dunia di Bangkok, Thailand. (Foto: Baris Pertama, Kesepuluh dari Kiri).',
       'Ia diundang oleh PBB untuk menghadiri konferensi tersebut sebagai tamu istimewa di United Nations Conference Centre, Thailand.',
-      'Master Lu bertemu dengan Donsak Phra Mahaveeranuvat/Brahmapundit, Perdana Tertinggi Thailand, dan politisi terkemuka serta "Konferensi Buddhis Internasional 2015".',
+      'Master Lu bertemu dengan Somdet Phra Maharatchamongkhalachan, Patriark Tertinggi Thailand, dan politisi terkemuka selama "Konferensi Buddhis Internasional 2015".',
       'Ribuan pemimpin politik dan agama dari 80 negara telah menghadiri konferensi 3 hari ini.'
     ]
   },
@@ -230,7 +230,7 @@ const penghargaanItems = [
     image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage16.png?alt=media&token=ee684184-086c-4186-b657-aa9d62fddda5',
     content: [
       'September 2015, Jun Hong Lu JP diundang untuk menghadiri "Forum Tingkat Tinggi PBB tentang Budaya Perdamaian" di Trusteeship Council Chamber, Markas Besar PBB di New York, bersama dengan para pemimpin dari seluruh dunia.',
-      'Forum tersebut diselenggarakan oleh Presiden Sidang Umum ke-69 Yang Mulia Bapak Sam K. Kutesa bersama sama dengan Dewan Dunia untuk Perdamaian Budaya (SWCPC).',
+      'Forum tersebut diselenggarakan oleh Presiden Sidang Umum ke-69 Yang Mulia Bapak Sam K. Kutesa bekerja sama dengan Gerakan Global untuk Perdamaian Budaya (GMCoP).',
       'Jun Hong Lu JP juga diundang untuk menghadiri dan berbicara pada KTT Budaya Perdamaian di Markas Besar PBB pada September 2015.'
     ]
   },
@@ -248,7 +248,7 @@ const penghargaanItems = [
     title: 'Festival Waisak PBB',
     image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage18.png?alt=media&token=dc829f82-ba68-43ff-a2fe-33ee5602f120',
     content: [
-      '24 Mei 2018, UNESCO mengadakan "Festival Waisak Persekutuan Bangsa-Bangsa 2018" di kantor pusatnya di Paris, Prancis. Tema tahun ini adalah "Promosi Perdamaian dan Non-Kekerasan: Cara Hidup Buddha".',
+      '24 Mei 2018, UNESCO mengadakan "Festival Waisak Perserikatan Bangsa-Bangsa 2018" di kantor pusatnya di Paris, Prancis. Tema tahun ini adalah "Promosi Perdamaian dan Non-Kekerasan: Cara Hidup Buddha".',
       'Sesi diadakan untuk mempromosikan dialog antar budaya dan antar agama untuk perdamaian yang berkelanjutan.',
       'Profesor Jun Hong Lu JP, guru spiritual terkenal dunia dan Ketua dari Yayasan Parlemen Agama Dunia dan Asosiasi Amal Buddha Media Oriental Australia, diundang untuk memberikan pidato utama.'
     ]

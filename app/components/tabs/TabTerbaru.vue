@@ -74,40 +74,38 @@
 
       <!-- Topics Section -->
       <div v-if="isTopicMenuEnabled" class="mt-6 px-4">
-        <button @click="isTopicsExpanded = !isTopicsExpanded" class="w-full mb-4 flex items-center justify-between">
-          <h2 class="text-xl font-semibold text-black dark:text-white">Ensiklopedia</h2>
+        <div class="flex items-center justify-between mb-4">
           <div class="flex items-center gap-2">
+            <h2 class="text-xl font-semibold text-black dark:text-white">Ensiklopedia</h2>
             <button @click.stop="showInfoModal = true"
               class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors flex items-center justify-center">
               <Icon name="mdi:information" class="w-6 h-6 text-primary dark:text-yellow-400" />
             </button>
-            <Icon :name="isTopicsExpanded ? 'mdi:chevron-up' : 'mdi:chevron-down'"
-              class="w-7 h-7 text-gray-600 dark:text-gray-300" />
           </div>
-        </button>
+          <NuxtLink to="/topics" class="text-primary dark:text-yellow-400 font-medium">Lihat semua</NuxtLink>
 
-        <div v-if="isTopicsExpanded">
-          <template v-if="isLoading">
-            <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
-              <USkeleton class="h-5 w-3/4 mb-2" />
-              <USkeleton class="h-4 w-full mb-2" />
-              <USkeleton class="h-4 w-2/3" />
-            </div>
-          </template>
+        </div>
 
-          <template v-else-if="topicsTreeItems.length > 0">
-            <UTree :items="topicsTreeItems" :get-key="(item) => String(item.id)" size="xl" expanded-icon=""
-              collapsed-icon="" :ui="{
-                linkLeadingIcon: 'hidden',
-                link: 'text-xl hover:text-primary dark:hover:text-yellow-400 active:text-primary dark:active:text-yellow-400 transition-colors active:scale-[0.98] transition-transform relative group',
-                linkLabel: 'transition-colors'
-              }" @select="handleTopicSelect" />
-          </template>
-
-          <div v-else class="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">
-            <Icon name="mdi:folder-outline" class="w-12 h-12 text-gray-400 mx-auto mb-2" />
-            <p class="text-gray-500 dark:text-gray-400">Belum ada topik</p>
+        <template v-if="isLoading">
+          <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
+            <USkeleton class="h-5 w-3/4 mb-2" />
+            <USkeleton class="h-4 w-full mb-2" />
+            <USkeleton class="h-4 w-2/3" />
           </div>
+        </template>
+
+        <template v-else-if="topicsTreeItems.length > 0">
+          <UTree :items="topicsTreeItems" :get-key="(item) => String(item.id)" size="xl" expanded-icon=""
+            collapsed-icon="" :ui="{
+              linkLeadingIcon: 'hidden',
+              link: 'text-xl hover:text-primary dark:hover:text-yellow-400 active:text-primary dark:active:text-yellow-400 transition-colors active:scale-[0.98] transition-transform relative group',
+              linkLabel: 'transition-colors'
+            }" @select="handleTopicSelect" />
+        </template>
+
+        <div v-else class="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">
+          <Icon name="mdi:folder-outline" class="w-12 h-12 text-gray-400 mx-auto mb-2" />
+          <p class="text-gray-500 dark:text-gray-400">Belum ada topik</p>
         </div>
       </div>
 
@@ -206,9 +204,6 @@ const config = useRuntimeConfig()
 const showInfoModal = ref(false)
 const infoDescription = ref('')
 const isLoadingInfo = ref(false)
-
-// Topics accordion state
-const isTopicsExpanded = ref(false)
 
 // Fetch information when modal opens
 const fetchInformation = async () => {

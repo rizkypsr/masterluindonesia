@@ -21,31 +21,33 @@
         <!-- Content -->
         <div class="px-4 py-6">
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Melepaskan Makhluk Hidup</h1>
-            <p class="text-gray-500 dark:text-gray-400 text-sm italic mb-6">Siapa saja yang perlu melakukan melepaskan makhluk hidup?</p>
+            <p class="text-gray-500 dark:text-gray-400 text-sm italic mb-6">Siapa saja yang perlu melakukan melepaskan
+                makhluk hidup?</p>
 
             <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
-                Umat Buddha atau pun praktisi Buddhis, orang yang pernah membunuh, siapa saja yang akan atau pernah
-                aborsi, orang-orang yang sakit yang sulit untuk sembuh, orang yang baru lahir (perlu untuk ke luar,
-                orang-orang yang perlu menolak perkembangan penyakit (seperti, kista, batu empedu, kanker, tumor,
-                penyakit jantung, penyakit kulit, penyakit keturunan, koma, sebagai ayam dan bebek, untuk keselamatan,
-                ikan-ikan, burung, dan lainnya), orang-orang yang ingin memperpanjang umur, orang-orang yang ingin
-                menambah pahala dan kebajikan, orang-orang yang ingin memperbaiki nasib, baik untuk meminta kekayaan
-                atau keberuntungan.
+                Umat Buddha atau pun praktisi Buddhis, orang-orang setengah baya dan lanjut usia, para lansia (orang
+                lanjut usia) yang sering sakit-sakitan, orang yang berbakti pada orang tua. Juga orang-orang yang
+                memiliki pekerjaan berikut: pekerja dapur, koki, dokter bedah, dokter aborsi, petugas keamanan, petugas
+                pembasmi hama, pejagal ayam atau babi, polisi reserse kriminal, dokter forensik, dokter otopsi dan
+                lain-lain, mereka harus sering melakukannya untuk menghindari bencana atau malapetaka, tentu saja akan
+                lebih baik kalau mereka bisa berganti profesi.
             </p>
 
             <!-- Section: Waktu untuk melepaskan makhluk hidup -->
             <div class="mb-6">
-                <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Waktu untuk melepaskan makhluk hidup</h2>
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Waktu untuk melepaskan makhluk hidup
+                </h2>
                 <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-                    Satu bulan sekali, atau setiap hari, atau setiap minggu, melepaskan makhluk hidup yang akan
-                    disembelih untuk dikonsumsi oleh orang lainnya, atau pada peringatan ulang tahun, orang-orang dari
-                    69 tahun ke atas tidak bisa melepaskan burung, arus sebelum dilepaskan, diberikan air suci dan
-                    membacakan paritta, mereka yang melepaskan makhluk hidup harus membaca paritta.
+                    Satu tahun empat musim boleh melakukannya, tapi bagi orang yang memohon untuk perpanjangan umur,
+                    maka sebaiknya dilakukan di hari ulang tahunnya, atau saat pergantian tahun, atau tanggal 1 dan 15
+                    kalender lunar, hari kelahiran Buddha, atau sebelum diopname di rumah sakit, sebelum operasi,
+                    divonis menderita penyakit serius, baru mengalami kecelakaan atau hari-hari lainnya yang kurang baik
+                    atau ada halangan.
                 </p>
                 <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-                    Dan sebelum melepaskan di dalam hati, yang baik akan merasakan aura yang baik, yang tidak baik akan
-                    merasakan aura yang tidak baik, hindari tempat yang gelap/seram pada malam hari. Sebelum lepas harus
-                    membacakan paritta.
+                    Dan sebaiknya dilakukan di pagi atau siang hari saat cuaca cerah, saat energi yang paling kuat akan
+                    mendapatkan hasil yang terbaik, hindari pergi pelepasan pada malam hari. Sewaktu hujan juga boleh
+                    melakukan pelepasan.
                 </p>
             </div>
 
@@ -125,8 +127,8 @@
 
             <UCard class="overflow-hidden dark:bg-gray-800 dark:border-gray-700">
                 <div class="bg-gradient-to-b from-yellow-100 to-yellow-50 dark:from-gray-700 dark:to-gray-800 mb-2">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6" alt="Ucapkan"
-                        class="w-full" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6"
+                        alt="Ucapkan" class="w-full" />
                 </div>
 
                 <div>
@@ -140,7 +142,8 @@
 
         <!-- Sepanjang Jalan Pergi Ke Tempat Pelepasan Carousel -->
         <div class="px-4 py-6">
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Sepanjang Jalan Pergi Ke Tempat Pelepasan</h2>
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Sepanjang Jalan Pergi Ke Tempat Pelepasan
+            </h2>
 
             <UCarousel ref="sepanjangJalanRef" v-slot="{ item }" :items="sepanjangJalanItems"
                 :ui="{ item: 'basis-full' }" @select="onSelectSepanjangJalan">
@@ -161,15 +164,18 @@
                     </div>
 
                     <!-- Card -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 h-80 flex flex-col">
-                        <div class="bg-gradient-to-b from-blue-100 to-blue-50 dark:from-gray-700 dark:to-gray-800 h-72 flex-shrink-0">
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 h-80 flex flex-col">
+                        <div
+                            class="bg-gradient-to-b from-blue-100 to-blue-50 dark:from-gray-700 dark:to-gray-800 h-72 flex-shrink-0">
                             <img :src="item.image" :alt="item.title" class="w-full h-full object-contain" />
                         </div>
                         <div class="p-4 flex-1 min-h-0 overflow-y-auto">
                             <h3 class="font-bold text-gray-900 dark:text-white mb-2">
                                 {{ item.title }}
                             </h3>
-                            <p v-for="(text, idx) in item.content" :key="idx" class="text-gray-700 dark:text-gray-300 text-sm mb-2">
+                            <p v-for="(text, idx) in item.content" :key="idx"
+                                class="text-gray-700 dark:text-gray-300 text-sm mb-2">
                                 {{ text }}
                             </p>
                         </div>
@@ -201,13 +207,16 @@
                     </div>
 
                     <!-- Card -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 h-80 flex flex-col">
-                        <div class="bg-gradient-to-b from-orange-100 to-orange-50 dark:from-gray-700 dark:to-gray-800 h-72 flex-shrink-0">
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 h-80 flex flex-col">
+                        <div
+                            class="bg-gradient-to-b from-orange-100 to-orange-50 dark:from-gray-700 dark:to-gray-800 h-72 flex-shrink-0">
                             <img :src="item.image" :alt="item.title" class="w-full h-full object-contain" />
                         </div>
                         <div class="p-4 flex-1 min-h-0 overflow-y-auto">
                             <h3 class="font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
-                            <p v-for="(text, idx) in item.content" :key="idx" class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{ text }}</p>
+                            <p v-for="(text, idx) in item.content" :key="idx"
+                                class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{ text }}</p>
                         </div>
                     </div>
                 </div>
@@ -237,13 +246,17 @@
                     </div>
 
                     <!-- Card -->
-                    <div class="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 h-80 flex flex-col">
-                        <div class="bg-gradient-to-b from-yellow-100 to-yellow-50 dark:from-gray-700 dark:to-gray-800 h-72 shrink-0">
+                    <div
+                        class="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 h-80 flex flex-col">
+                        <div
+                            class="bg-gradient-to-b from-yellow-100 to-yellow-50 dark:from-gray-700 dark:to-gray-800 h-72 shrink-0">
                             <img :src="item.image" :alt="item.title" class="w-full h-full object-contain" />
                         </div>
                         <div class="p-4 flex-1 min-h-0 overflow-y-auto">
-                            <h3 v-if="item.title" class="font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
-                            <p v-for="(text, idx) in item.content" :key="idx" class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{ text }}</p>
+                            <h3 v-if="item.title" class="font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}
+                            </h3>
+                            <p v-for="(text, idx) in item.content" :key="idx"
+                                class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{ text }}</p>
                         </div>
                     </div>
                 </div>
@@ -273,13 +286,16 @@
                     </div>
 
                     <!-- Card -->
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 h-80 flex flex-col">
-                        <div class="bg-gradient-to-b from-orange-100 to-orange-50 dark:from-gray-700 dark:to-gray-800 h-72 flex-shrink-0">
+                    <div
+                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 h-80 flex flex-col">
+                        <div
+                            class="bg-gradient-to-b from-orange-100 to-orange-50 dark:from-gray-700 dark:to-gray-800 h-72 flex-shrink-0">
                             <img :src="item.image" :alt="item.title" class="w-full h-full object-contain" />
                         </div>
                         <div class="p-4 flex-1 min-h-0 overflow-y-auto">
                             <h3 class="font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
-                            <p v-for="(text, idx) in item.content" :key="idx" class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{ text }}</p>
+                            <p v-for="(text, idx) in item.content" :key="idx"
+                                class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{ text }}</p>
                         </div>
                     </div>
                 </div>
@@ -293,8 +309,8 @@
 
             <UCard class="border-2 border-yellow-400 dark:border-yellow-600 dark:bg-gray-800">
                 <div class="space-y-4">
-                    <h3 class="font-bold text-gray-900 dark:text-white">XIN LING FA MEN: Tata Cara Melepaskan Makhluk Hidup – <span
-                            class="italic">Fang Sheng</span></h3>
+                    <h3 class="font-bold text-gray-900 dark:text-white">XIN LING FA MEN: Tata Cara Melepaskan Makhluk
+                        Hidup – <span class="italic">Fang Sheng</span></h3>
 
                     <p class="text-gray-700 dark:text-gray-300 text-sm">
                         Dengan melepaskan makhluk hidup atau <span class="italic">Fang Sheng</span> berarti berdana
@@ -316,7 +332,7 @@
                         paling bagus melafalkan (Da Bei Zhou), sebelum melafal sebutkan nama anda sendiri: "<span
                             class="underline">Mohon Guan Shi Yin Pu Sa yang maha welas asih memberikati saya XXX (nama
                             sendiri)
-                            terhindar dari malapetaka dan panjang umur, saya berjanji akan melakukan lebih banyak jasa
+                            terhindar dari malapetaka dan panjang umur, saya berjanji akan melakukan lebih banyak
                             kebajikan</span>.", lalu mulai melafalkan (Da Bei Zhou), semakin banyak semakin bagus.
                     </p>
 
@@ -352,7 +368,8 @@
                         <h4 class="font-bold text-gray-900 dark:text-white mb-1">3. Mengucapkan Permohonan</h4>
 
                         <div class="ml-4 mb-3">
-                            <p class="text-gray-700 dark:text-gray-300 text-sm font-semibold">1) Melepaskan makhluk hidup untuk diri
+                            <p class="text-gray-700 dark:text-gray-300 text-sm font-semibold">1) Melepaskan makhluk
+                                hidup untuk diri
                                 sendiri</p>
                             <p class="text-gray-700 dark:text-gray-300 text-sm">
                                 <span class="underline">Permohonan</span>: Guan Shi Yin Pu Sa yang maha welas asih, saya
@@ -367,7 +384,8 @@
                         </div>
 
                         <div class="ml-4">
-                            <p class="text-gray-700 dark:text-gray-300 text-sm font-semibold">2) Melepaskan makhluk hidup mewakili orang
+                            <p class="text-gray-700 dark:text-gray-300 text-sm font-semibold">2) Melepaskan makhluk
+                                hidup mewakili orang
                                 lain <span class="font-normal">(sebaiknya menggunakan uang dari orang yang
                                     diwakilkan):</span></p>
                             <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">
@@ -440,7 +458,7 @@ const sepanjangJalanItems = [
         title: 'Untuk orang lain',
         image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage29.png?alt=media&token=e0e0e0e0-e0e0-e0e0-e0e0-e0e0e0e0e0e0',
         content: [
-            '"Mohon Guan Shi Yin Pu Sa yang maha welas asih memberikati YYY (nama dia) sembuh dari penyakitnya dan panjang umur."',
+            '"Mohon Guan Shi Yin Pu Sa yang maha welas asih memberkati YYY (nama dia) terhindar dari malapetaka dan panjang umur."',
             'Lalu mulai membaca Da Bei Zhou, semakin banyak semakin bagus.'
         ]
     },
@@ -520,7 +538,7 @@ const mulaiMelepaskanItems = [
         title: 'Membaca Paritta',
         image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage37.png?alt=media&token=d0d0d0d0-d0d0-d0d0-d0d0-d0d0d0d0d0d0',
         content: [
-            'SBaca 1 kali Da Bei Zhou, 1 kali Xin Jing, 7 kali Qi Fo Mie Zui Zhen Yan',
+            'Baca 1 kali Da Bei Zhou, 1 kali Xin Jing, 7 kali Qi Fo Mie Zui Zhen Yan',
             'Bagi umat yang belum bisa membacanya, boleh terus mengucapkan nama Pu Sa: Na Mo Da Ci Da Bei Guan Shi Yin Pu Sa'
         ]
     },
@@ -629,7 +647,7 @@ const berterimaKasihItems = [
 function shareContent() {
     const shareUrl = `${window.location.origin}${window.location.pathname}`
     const shareTitle = 'Melepaskan Makhluk Hidup - Master Lu Indonesia'
-    
+
     if (navigator.share) {
         navigator.share({
             title: shareTitle,

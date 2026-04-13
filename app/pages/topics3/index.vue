@@ -1,12 +1,17 @@
 <template>
   <div class="h-full bg-gray-50 dark:bg-gray-900 flex flex-col overflow-hidden">
     <!-- Header -->
-    <div class="bg-white dark:bg-gray-800 px-4 py-4 flex items-center gap-3 shadow-sm shrink-0">
-      <button @click="goBack()"
-        class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
-        <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
+    <div class="bg-white dark:bg-gray-800 px-4 py-4 flex items-center justify-between shadow-sm shrink-0">
+      <div class="flex items-center gap-3">
+        <button @click="goBack()"
+          class="p-1 flex justify-center items-center hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer rounded">
+          <Icon name="mdi:arrow-left" class="w-6 h-6 text-black dark:text-white" />
+        </button>
+        <h1 class="text-lg font-semibold text-black dark:text-white">Kumpulan Tanya Jawab</h1>
+      </div>
+      <button @click="sharePage" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
+        <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
       </button>
-      <h1 class="text-lg font-semibold text-black dark:text-white">Topik 3</h1>
     </div>
 
     <!-- Content -->
@@ -91,6 +96,26 @@ function handleSelect(e: TreeItemSelectEvent<TreeItem>) {
   // Only navigate if item has no children (is a leaf node)
   if (item?.id && !item.children?.length) {
     router.push(`/topics3/content/${item.id}`)
+  }
+}
+
+const sharePage = async () => {
+  const shareData = {
+    title: 'Kumpulan Tanya Jawab',
+    text: 'Kumpulan Tanya Jawab',
+    url: window.location.href
+  }
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData)
+    } catch (err) {
+      // User cancelled or error
+    }
+  } else {
+    // Fallback: copy to clipboard
+    await navigator.clipboard.writeText(`Lihat "Kumpulan Tanya Jawab" di\n${window.location.href}`)
+    alert('Link berhasil disalin!')
   }
 }
 </script>

@@ -26,12 +26,8 @@
                     <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">DAFTAR MENU</h3>
 
                     <div class="space-y-4">
-                        <button 
-                            v-for="item in menuItems" 
-                            :key="item.id" 
-                            @click="scrollToSection(item.id)"
-                            class="block text-gray-900 dark:text-white text-base py-2 hover:text-yellow-600 dark:hover:text-yellow-400 text-left w-full"
-                        >
+                        <button v-for="item in menuItems" :key="item.id" @click="scrollToSection(item.id)"
+                            class="block text-gray-900 dark:text-white text-base py-2 hover:text-yellow-600 dark:hover:text-yellow-400 text-left w-full">
                             {{ item.title }}
                         </button>
                     </div>
@@ -46,8 +42,8 @@
 
             <!-- Hero Image -->
             <div class="mb-6">
-                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Fimage_1.png?alt=media&token=6f17ea10-22f2-4ec0-949b-4dc7b1f90eeb" alt="Baca PR"
-                    class="w-full h-96 object-cover rounded-lg" />
+                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Fimage_1.png?alt=media&token=6f17ea10-22f2-4ec0-949b-4dc7b1f90eeb"
+                    alt="Baca PR" class="w-full h-96 object-cover rounded-lg" />
             </div>
 
             <!-- Section: Mengapa membaca paritta -->
@@ -130,13 +126,16 @@
             </div>
 
             <!-- Section 3: Manfaat Membaca Paritta -->
-            <div id="manfaat" class="bg-gradient-to-br from-[#f5eada] to-[#f6f2ef] dark:from-gray-800 dark:to-gray-900 -mx-4 px-4 py-6 mb-6">
-                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6 text-center">Manfaat Membaca Paritta</h2>
+            <div id="manfaat"
+                class="bg-gradient-to-br from-[#f5eada] to-[#f6f2ef] dark:from-gray-800 dark:to-gray-900 -mx-4 px-4 py-6 mb-6">
+                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-6 text-center">Manfaat Membaca
+                    Paritta</h2>
 
                 <!-- Da Bei Zhou -->
                 <div class="mb-4">
                     <h3 class="font-bold text-gray-900 dark:text-white mb-2">Da Bei Zhou</h3>
-                    <div class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
+                    <div
+                        class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
                         <p class="font-semibold text-[#353026] dark:text-gray-200">
                             Mewujudkan segala permohonan, dan juga mengobati segala macam penyakit, dilindungi oleh para
                             Naga Langit dan Dewa Pelindung Dharma.
@@ -147,7 +146,8 @@
                 <!-- Xin Jing -->
                 <div class="mb-4">
                     <h3 class="font-bold text-gray-900 dark:text-white mb-2">Xin Jing</h3>
-                    <div class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
+                    <div
+                        class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
                         <p class="font-semibold text-[#353026] dark:text-gray-200">
                             Anak kecil yang tidak menurut, orang dewasa yang tidak percaya Ajaran Buddha Dharma, orang
                             tua terlalu keras kepala, perasaan tidak stabil, kurang pintar atau tidak terbuka
@@ -159,7 +159,8 @@
                 <!-- Li Fo Da Chan Hui Wen -->
                 <div class="mb-4">
                     <h3 class="font-bold text-gray-900 dark:text-white mb-2">Li Fo Da Chan Hui Wen</h3>
-                    <div class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
+                    <div
+                        class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
                         <p class="font-semibold text-[#353026] dark:text-gray-200 mb-1">
                             Untuk bertobat atau menyesali semua karma buruk yang pernah dilakukan
                         </p>
@@ -183,7 +184,8 @@
                 <!-- Wang Sheng Zhou -->
                 <div class="mb-4">
                     <h3 class="font-bold text-gray-900 dark:text-white mb-2">Wang Sheng Zhou</h3>
-                    <div class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
+                    <div
+                        class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
                         <p class="font-semibold text-[#353026] dark:text-gray-200 mb-1">
                             Wang Sheng Zhou Memohon berkat dari Guan Shi Yin Pu Sa, agar bisa mendapatkan kebahagiaan
                             dan kedamaian duniawi Bisa mendapatkan kebahagiaan dan kedamaian di surga, Mendoakan arwah
@@ -196,7 +198,8 @@
                 <!-- Jie Jie Zhou -->
                 <div class="mb-4">
                     <h3 class="font-bold text-gray-900 dark:text-white mb-2">Jie Jie Zhou</h3>
-                    <div class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
+                    <div
+                        class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
                         <p class="font-semibold text-[#353026] dark:text-gray-200 mb-1">
                             Jie Jie Zhou Kesalahpahaman antara pasangan Ketidakharmonisan suami istri Ketidakakuran
                             orang tua dan anak Pertikaian dengan rekan kerja Hubungan buruk bos dengan karyawan Utang
@@ -207,12 +210,13 @@
                 <!-- Zhan Ti Shen Zhou -->
                 <div class="mb-4">
                     <h3 class="font-bold text-gray-900 dark:text-white mb-2">Zhan Ti Shen Zhou</h3>
-                    <div class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
+                    <div
+                        class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
                         <p class="font-semibold text-[#353026] dark:text-gray-200 mb-2">
                             Keberhasilan dalam pekerjaan, Pernikahan yang harmonis, Hasil akademis yang bagus.
                         </p>
                         <p class="font-semibold text-[#353026] dark:text-gray-200">
-                            angat membantu bagi anak muda yang sedang mencari pekerjaan, mencari jodoh, sekolah dan
+                            sangat membantu bagi anak muda yang sedang mencari pekerjaan, mencari jodoh, sekolah dan
                             karir, namun harus dilakukan untuk memohon sesuatu hal yang sesuai dengan aturan dan hukum
                             serta masih dalam batas kewajaran.
                         </p>
@@ -222,7 +226,8 @@
                 <!-- Xiao Zai Ji Xiang Shen Zhou -->
                 <div class="mb-4">
                     <h3 class="font-bold text-gray-900 dark:text-white mb-2">Xiao Zai Ji Xiang Shen Zhou</h3>
-                    <div class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
+                    <div
+                        class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
                         <p class="font-semibold text-[#353026] dark:text-gray-200 mb-2">
                             Xiao Zai Ji Xiang Shen Zhou Terbebas dari sengketa hukum Kerugian harta benda Perkelahian,
                             denda, sakit mendadak Terhindar dari bencana yang akan datang Bermimpi buruk, dan lain-lain.
@@ -234,19 +239,18 @@
                 <!-- Hal Yang Perlu Diperhatikan -->
                 <div class="mb-4">
                     <h3 class="font-bold text-gray-900 dark:text-white mb-6">Hal Yang Perlu Diperhatikan</h3>
-                    <ol class="text-[#353026] dark:text-gray-300 font-semibold list-decimal list-outside space-y-2 px-4">
-                        <li>Boleh kali membaca paritta bila kamu membaca judul paritanya</li>
+                    <ol
+                        class="text-[#353026] dark:text-gray-300 font-semibold list-decimal list-outside space-y-2 px-4">
+                        <li>Setiap kali membaca paritta harus membaca judul paritanya</li>
                         <li>Waktu Membaca paritta dari jam 5 pagi sampai jam 12 malam</li>
                         <li>Saat membaca paritta lalu terhenti karena ada gangguan, sebelumnya ulang paritta dari
                             awal</li>
                         <li>Xin Jing dan Wang Sheng Zhou boleh dibaca di pagi atau siang tapi hingga jam 10 malam
                             walaupun cuaca mendung</li>
                         <li>Setelah jam 10 malam, hindari membaca Xin Jing, Li Fo Da Chan Hui Wen, dan Wang Sheng
-                            Zhou, membaca dan lanjut dengan paritta lain</li>
-                        <li>Sebelum jam pagi membaca boleh paritta tersebut saat cuaca bisa, membaca dan lanjut
-                            dengan paritta lain</li>
-                        <li>Jika kondisi mau membaca Xin Jing dan Wang Sheng Zhou, maka usahakan membaca Da Bei Zhou
-                            sebanyak 7x atau lebih sebelumnya dan jangan sampai 5 sore</li>
+                            Zhou</li>
+                        <li>Sebaiknya jangan membaca ketiga paritta tersebut saat cuaca buruk, mendung dan langit sangat gelap, hujan badai, atau banyak petir</li>
+                        <li>Jika kondisi fisik lemah atau meraasa tidak nyaman saat membaca Xin Jing dan Wang Sheng Zhou, maka usahakan untuk membacanya di pagi atau siang hari</li>
                         <li>Sebaiknya jangan membaca paritta apapun dari jam 2 sampai jam 5 pagi</li>
                     </ol>
                 </div>
@@ -281,7 +285,8 @@
                     </button>
                 </div>
 
-                <UCarousel ref="langkahKeduaRef" v-slot="{ item }" :items="langkahKeduaItems" :ui="{ item: 'basis-full' }" @select="onSelectLangkahKedua">
+                <UCarousel ref="langkahKeduaRef" v-slot="{ item }" :items="langkahKeduaItems"
+                    :ui="{ item: 'basis-full' }" @select="onSelectLangkahKedua">
                     <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                         <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
@@ -300,7 +305,9 @@
                         alt="Langkah Ketiga" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Ucapkan</h3>
-                        <p class="text-gray-700 dark:text-gray-300">"Terima kasih Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa"</p>
+                        <p class="text-gray-700 dark:text-gray-300">"Terima kasih Na Mo Da Ci Da Bei Jiu Ku Jiu Nan
+                            Guang Da
+                            Ling Gan Guan Shi Yin Pu Sa Mo He Sa"</p>
                     </div>
                 </UCard>
             </div>
@@ -320,7 +327,8 @@
                     </button>
                 </div>
 
-                <UCarousel ref="langkahKeempatRef" v-slot="{ item }" :items="langkahKeempatItems" :ui="{ item: 'basis-full' }" @select="onSelectLangkahKeempat">
+                <UCarousel ref="langkahKeempatRef" v-slot="{ item }" :items="langkahKeempatItems"
+                    :ui="{ item: 'basis-full' }" @select="onSelectLangkahKeempat">
                     <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                         <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
@@ -347,7 +355,8 @@
                     </button>
                 </div>
 
-                <UCarousel ref="langkahKeempat2Ref" v-slot="{ item }" :items="langkahKeempat2Items" :ui="{ item: 'basis-full' }" @select="onSelectLangkahKeempat2">
+                <UCarousel ref="langkahKeempat2Ref" v-slot="{ item }" :items="langkahKeempat2Items"
+                    :ui="{ item: 'basis-full' }" @select="onSelectLangkahKeempat2">
                     <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                         <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
                         <div class="px-2">
@@ -368,7 +377,8 @@
                         alt="Bu Que Zhen Yan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Bu Que Zhen Yan</h3>
-                        <p class="text-gray-700 dark:text-gray-300">sebanyak 3x atau 7x setelah selesai membaca PR harian</p>
+                        <p class="text-gray-700 dark:text-gray-300">sebanyak 3x atau 7x setelah selesai membaca PR
+                            harian</p>
                     </div>
                 </UCard>
             </div>
@@ -397,7 +407,10 @@
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Setelah selesai</h3>
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Ucapkan</h3>
-                        <p class="text-gray-700 dark:text-gray-300">"Terima kasih Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa telah memberkati dan melindungi saya XXX (nama sendiri)."</p>
+                        <p class="text-gray-700 dark:text-gray-300">"Terima kasih Na Mo Da Ci Da Bei Jiu Ku Jiu Nan
+                            Guang Da
+                            Ling Gan Guan Shi Yin Pu Sa Mo He Sa telah memberkati dan melindungi saya XXX (nama
+                            sendiri)."</p>
                     </div>
                 </UCard>
             </div>
@@ -407,14 +420,10 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Video Tutorial</h2>
 
                 <div class="aspect-video rounded-lg overflow-hidden">
-                    <iframe 
-                        src="https://www.youtube.com/embed/YO9nN8nkF5E" 
-                        title="Video Tutorial Baca PR"
-                        class="w-full h-full"
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen
-                    ></iframe>
+                    <iframe src="https://www.youtube.com/embed/YO9nN8nkF5E" title="Video Tutorial Baca PR"
+                        class="w-full h-full" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
                 </div>
             </div>
 

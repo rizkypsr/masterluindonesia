@@ -34,11 +34,11 @@
       </p>
 
       <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
-        Master Jun Hong Lu melalui siaran radio dan internet bersedia setiur tenaga untuk menyebarkan aliran Xin Ling Fa Men.
+        Master Jun Hong Lu melalui siaran radio dan internet berusaha sekuat tenaga untuk menyebarkan aliran Xin Ling Fa Men.
       </p>
 
       <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
-        Selama tiga puluh tahun ini Beliau tidak pernah berhenti bekerja keras untuk menolong orang-orang yang mengharapkan lindungan apsara.
+        Selama tiga puluh tahun ini Beliau tidak pernah berhenti bekerja keras untuk menolong orang-orang tanpa mengharapkan imbalan apapun.
       </p>
 
       <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
@@ -46,15 +46,15 @@
       </p>
 
       <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
-        Di abad 21 ini, juga atas seruang bjakasananya yang ciemat menerbitkan dan menyebarkan tekad dari Guan Shi Yin Pu Sa untuk menyelamatkan semua makhluk, Beliau adalah pendiri stasiun radio 2OR Australia Radio Oriental (Dong Fang Tai) di Sydney, Australia – Master Jun Hong Lu.
+        Di abad 21 ini, juga atas seorang bijaksanawan yang dikenal memenuhi dan menjalankan tekad dari Guan Shi Yin Pu Sa untuk menyelamatkan semua makhluk, Beliau adalah pendiri stasiun radio 2OR Australia Radio Oriental (Dong Fang Tai) di Sydney, Australia – Master Jun Hong Lu.
       </p>
 
       <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
-        Master Jun Hong Lu memiliki kemampuan supranatural, dengan berdasarkan tahun lahir, shio, dan jenis kelamin seseorang, tidak dibutuh oleh ruang dan waktu.
+        Master Jun Hong Lu memiliki kemampuan supranatural, dengan berdasarkan tahun lahir, shio dan jenis kelamin seseorang, tidak dibatasi oleh ruang dan waktu.
       </p>
 
       <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
-        Beliau bisa melihat trean pasangan, benda di alam maya, berbicara, dan sebagainya, dan juga bisa mengungkap orang tersebut pada keadaan yang sebenarnya dan yang sekarang, saja apakah orang tersebut itu dibebankan oleh ekluhat yang dikerjamasa, dan sebagainya.
+        Beliau bisa melihat totem seseorang: berada di alam mana, bentuknya, warnanya, dan dan juga bisa mengetahui orang tersebut pada kehidupan yang sebelumnya dan yang sekarang, apa saja karma yang telah diperbuatnya dan akibat yang diterimanya, dan sebagainya.
       </p>
 
       <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
@@ -62,11 +62,11 @@
       </p>
 
       <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
-        Maka jangan melakukan segala kesalahan dan perilakunya melakukan segala kebajikan, dan dari itu lalu membuat orang-orang percaya akan Ajaran Budha Dharma, bersedia membaca paritta, membina diri dan pikiran dalam Dharma.
+        Maka jangan melakukan segala kejahatan dan pentingnya melakukan segala kebajikan, dan dari hal ini membuat orang-orang percaya akan Ajaran Buddha Dharma, bersedia membaca paritta, membina diri dan pikiran dalam Dharma.
       </p>
 
       <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
-        Dengan demikian mereka bisa mengubah nasibnya sendiri, sehingga bisa membuat masyarakat kita menjadi lebih baik, menciptakan rung kehidupan manusia, sebagai dasar yang kuat untuk menolong umat manusia agar terbebas dari enam alam reinkarnasi.
+        Dengan demikian mereka bisa mengubah nasibnya sendiri, sehingga bisa membuat masyarakat kita menjadi lebih baik, membersihkan ruang kehidupan manusia, sebagai dasar yang kuat untuk menolong umat manusia agar terbebas dari enam alam reinkarnasi.
       </p>
     </div>
   </div>

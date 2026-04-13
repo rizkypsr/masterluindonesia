@@ -62,7 +62,7 @@
           Bodhisattva bisa memberikan sinar perlindungan bagi si pembaca paritta.
         </p>
         <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
-          Membaca paritta bisa mengundang sinar Buddha memberikan Aura baik yang senantiasa mengelilingi dan melincungi kita.
+          Membaca paritta bisa mengubah sinar Buddha menjadi Aura baik yang senantiasa mengelilingi dan melincungi kita.
         </p>
 
         <h3 class="font-semibold text-gray-900 dark:text-white mb-2">3. Dijauhkan Dari Segala Permasalahan</h3>
@@ -70,7 +70,7 @@
           Alam manusia memang adalah alam yang penuh masalah.
         </p>
         <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-          Rutin membaca paritta (Terutama Da Bei Zhou dan Xin Jing setiap hari), bisa menumbuhkan kebijaksanaan, keharmonisan, mengembangkan welas asih, toleransi, kekuatan, menguraikan permasalahan dan mengetahui permohonan.
+          Rutin membaca paritta (Terutama Da Bei Zhou dan Xin Jing setiap hari), bisa menumbuhkan kebijaksanaan, keharmonisan, mengembangkan welas asih, toleransi, kekuatan, menguraikan permasalahan dan mengabulkan permohonan.
         </p>
       </div>
 

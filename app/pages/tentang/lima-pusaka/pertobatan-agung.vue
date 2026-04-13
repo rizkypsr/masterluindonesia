@@ -14,120 +14,139 @@
 
     <!-- Hero Image -->
     <div class="relative bg-linear-to-b from-yellow-100 to-yellow-50 dark:from-gray-800 dark:to-gray-900">
-      <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage7.png?alt=media&token=22f42218-523d-4450-9875-cba0144c16e6" alt="Pertobatan Agung"
-        class="w-full" />
+      <img
+        src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage7.png?alt=media&token=22f42218-523d-4450-9875-cba0144c16e6"
+        alt="Pertobatan Agung" class="w-full" />
     </div>
 
     <!-- Content -->
     <div class="px-4 py-6">
       <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Pertobatan Agung</h1>
 
-      <p class="text-gray-500 dark:text-gray-400 text-sm italic mb-4">Pertobatan Agung</p>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-2">Pertobatan Agung</p>
 
       <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
-        Kehidupan manusia tidak bisa terlepas dari Pertobatan. Terlalu banyak kesalahan yang telah kita lakukan, 
-        hanya dengan bertobat setulus hati baru bisa mengharapkan karma buruk di dalam hati dan penyesalan.
+        Kehidupan manusia tidak bisa terlepas dari Pertobatan.
       </p>
 
       <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
-        Kesalahan yang tidak ada akan menjadi ada, kesalahan yang ada akan menjadi besar, 
-        kesalahan yang besar akan menjadi tidak bisa diampuni.
+        Terlalu banyak kesalahan yang telah kita lakukan,
+        hanya dengan bertobat setulus hati baru bisa menghilangkan karma buruk di dalam hati dan penyesalan.
       </p>
 
       <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
-        Untuk pertama melakukan "kesalahan" besar, 
-        kesalahannya itu sebenarnya sudah ada di dalam hati, 
-        hanya saja belum ada kesempatan untuk melakukannya.
+        Kesalahan yang kita lakukan entah dengan sadar atau tidak, semua itu tetap berarti telah melakukan kesahalan.
       </p>
 
-      <!-- Section: Pertobatan Agung -->
-      <div class="mb-6">
-        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Pertobatan Agung</h2>
-        
-        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-          Membaca Li Fo Da Chan Hui Wen atau Pertobatan Agung adalah salah satu cara untuk menghapus karma buruk.
-        </p>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Meski dosa yang kamu lakukan tidak kamu sadari, tapi tetap akan mendapatkan balasannya.
+      </p>
 
-        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-          Pertobatan Agung adalah paritta yang sangat sakral, ini bisa membantu kita menghapus karma buruk yang telah kita lakukan di kehidupan ini maupun kehidupan sebelumnya.
-        </p>
-      </div>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Entah pernah melakukan kesalahan besar atau kecil dalam perbuatan ataupun pikirkan, semua itu akan tersimpan di
+        dalam tingkat kesadaran ke delapanmu dan mengotori sifat dasarmu yang baik.
+      </p>
 
-      <!-- Section: Manfaat -->
-      <div class="mb-6">
-        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Manfaat Pertobatan Agung</h2>
-        
-        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-          Hanya dengan pertobatan baru ada harapan, ini bisa membantu kita menghapus karma buruk dan mendapatkan berkah.
-        </p>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Membaca Li Fo Da Chan Hui Wen itu berarti sedang memohon kepada Pu Sa untuk memberkatimu mengikis karma buruk
+        yang pernah kamu lakukan agar bibit karma buruk ini tidak berkembang menjadi dosa.
+      </p>
 
-        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-          Dengan bertobat, kita bisa Chao Du arwah-arwah yang telah kita sakiti di kehidupan ini maupun kehidupan sebelumnya.
-        </p>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Perlakuan burukmu terhadap orang lain mungkin tidak bisa membuat dia melupakannya
+      </p>
 
-        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-          Semarang jika ada pihak yang merasa bersalah, 
-          maka harus segera bertobat dan memohon ampun kepada Guan Shi Yin Pu Sa.
-        </p>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Hanya dengan bertobat setulus hati, dia bisa merasakan betapa besarnya penyesalanmu terhadapnya.
+      </p>
 
-        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-          Setelah bertobat, harus berjanji tidak akan mengulangi kesalahan yang sama lagi.
-        </p>
-      </div>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Dengan pertobatan, Anda bisa mendapatkan kedamaian hati dan kesehatan mental.
+      </p>
 
-      <!-- Section: Cara Membaca -->
-      <div class="bg-yellow-50 dark:bg-gray-800 rounded-lg p-4 mb-6">
-        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Cara Membaca Pertobatan Agung</h2>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Jadi, Li Fo Da Chan Hui Wen adalah sebuah pusaka Dharma untuk menyelesaikan rasa sakit hati dirimu dan
+        menghilangkan rasa sakit hati orang lain terhadapmu.
+      </p>
 
-        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-          Oleh karena itu, Bodhisattva mengajarkan kita untuk membaca Li Fo Da Chan Hui Wen, 
-          untuk menghapus karma buruk yang telah kita lakukan.
-        </p>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Seseorang yang tidak bersedia bertobat, maka dia tidak bisa mengubah kekotoran batinnya.
+      </p>
 
-        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-          Bersihkan dulu hati dan badan yang bersih, 
-          kemudian ucapkan salam dan memohon ampun kepada Guan Shi Yin Pu Sa.
-        </p>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Ini seperti seseorang yang tidak bersedia mandi dan tubuhnya tidak akan pernah bersih. Hanya orang yang memahami
+        untuk mandi, baru bisa membersihkan tubuhnya.
+      </p>
 
-        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-          Jika ingin melakukan Li Fo Da Chan Hui Wen, 
-          harus dengan hati yang tulus dan ikhlas.
-        </p>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Bertobat adalah untuk memandikan jiwa yang kotor.
+      </p>
 
-        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-          Mulai membaca Li Fo Da Chan Hui Wen dengan khusyuk, 
-          membaca dengan pelan dan jelas.
-        </p>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Oleh karena itu, belajarnya untuk bisa bertobat karena bisa membuatmu terbebaskan dan melepaskannya.
+      </p>
 
-        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-          Pertobatan ini bisa dilakukan setiap hari atau pada saat tertentu, 
-          seperti pada tanggal 1 dan 15 kalender lunar.
-        </p>
-      </div>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Bertobat atas kesalahan yang pernah dilakukan itu seperti sebuah baju yang telah dicuci bersih dan dikenakan
+        lagi.
+      </p>
 
-      <!-- Section: Catatan -->
-      <div class="mb-6">
-        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-3">Catatan Penting</h2>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Jika baju kotor yang telah melewati reinkarnasi puluhan tahun ini semakin usang, kotor, dan robek, bagaimana
+        kamu bisa mengenakannya?
+      </p>
 
-        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-          Pertobatan bukan hanya sekedar membaca, 
-          tetapi harus dengan hati yang tulus dan berjanji tidak akan mengulangi kesalahan yang sama.
-        </p>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Jika inign mencuci pakaian ini hingga bersih, maka kamu perlu melakukan pertobatan besar untuk mengubah dirimu
+        menjadi pribadi yang lebih baik lagi.
+      </p>
 
-        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-          Sangat penting untuk tidak hanya membaca saja, 
-          tetapi juga harus mengubah perilaku dan sikap kita.
-        </p>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Hidup menderita itu berarti sedang mengikis karma. Bertobat itu bisa lebih mengikis karma.
+      </p>
 
-        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-          Setelah membaca Li Fo Da Chan Hui Wen, 
-          harus terus memperbaiki diri dan melakukan kebaikan.
-        </p>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Terkadang, bertobat malah bisa lebih cepat mengikis karma daripada hidup menderita
+      </p>
 
-        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
-          Dengan demikian, karma buruk akan terhapus dan kita akan mendapatkan berkah dari Guan Shi Yin Pu Sa.
-        </p>
-      </div>
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Hidup menderita untuk mengikis karma adalah semacam hukuman agar kamu menyadari untuk tidak boleh melakukan hal
+        ini, dan pertobatan yntuk macam ini sangatlah terbatas.
+      </p>
+
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Pertobatan yang sebenarnya adalah keluar dari dalam lubuk hati dan kamu benar-benar menyadari bahwa kamu telah
+        melakukan kesalahan dalam hubungan
+      </p>
+
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Kamu perlu melakukan pertobatan atas segala tindakan, ucapan, dan pikiran.
+      </p>
+
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Sangat penting untuk bisa sering bertobat di zaman akhir Dharma ini.
+      </p>
+
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Di zaman akhir Dharma ini, Shifu sangat berharap para umat XLFM bisa menggunakan 5 Pusaka Dharma mulai dari
+        sekarang untuk lebih cepat engikis karma dan jangan sampai karma buruk mengikuti kita.
+      </p>
+
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Shifu memelopori untuk Bertobat, berharap para umat juga bisa bertobat
+      </p>
+
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Hanya dengan sering bertobat, karma buruk akan terkikis dan keberuntungan menghampiri kita.
+      </p>
+
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Ini adalah Pusaka Dharma ke 5 XLFM yang terbaru
+      </p>
+
+      <p class="text-gray-700 dark:text-gray-300 text-sm mb-6">
+        Berikrar, melepaskan makhluk hidup, membaca Bai Hua Fo Fa, membaca paritta dan pertobatan agung.
+      </p>
     </div>
   </div>
 </template>
@@ -142,7 +161,7 @@ const toast = useToast()
 function shareContent() {
   const shareUrl = `${window.location.origin}${window.location.pathname}`
   const shareTitle = 'Pertobatan Agung - Master Lu Indonesia'
-  
+
   if (navigator.share) {
     navigator.share({
       title: shareTitle,

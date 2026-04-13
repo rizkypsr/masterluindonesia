@@ -1,15 +1,20 @@
 <template>
-  <div class="min-h-screen bg-white dark:bg-gray-900">
+  <div class="h-full bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
     <!-- Header -->
-    <div class="sticky top-0 z-10 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-      <div class="flex items-center gap-4 px-4 py-4">
-        <BackButton />
-        <h1 class="text-lg font-semibold text-black dark:text-white">Topik 2</h1>
+    <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shrink-0">
+      <div class="flex items-center justify-between px-4 py-4">
+        <div class="flex items-center gap-4">
+          <BackButton />
+          <h1 class="text-lg font-semibold text-black dark:text-white">Topik 2</h1>
+        </div>
+        <button @click="sharePage" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-colors">
+          <Icon name="mdi:share-variant" class="w-6 h-6 text-black dark:text-white" />
+        </button>
       </div>
     </div>
 
     <!-- Content -->
-    <div class="p-4">
+    <div class="flex-1 overflow-y-auto p-4">
       <template v-if="isLoading">
         <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
           <USkeleton class="h-5 w-3/4 mb-2" />
@@ -91,6 +96,26 @@ function handleSelect(e: TreeItemSelectEvent<TreeItem>) {
   // Only navigate if item has no children (is a leaf node)
   if (item?.id && !item.children?.length) {
     router.push(`/topics2/${item.id}`)
+  }
+}
+
+const sharePage = async () => {
+  const shareData = {
+    title: 'Topik 2',
+    text: 'Topik 2',
+    url: window.location.href
+  }
+
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData)
+    } catch (err) {
+      // User cancelled or error
+    }
+  } else {
+    // Fallback: copy to clipboard
+    await navigator.clipboard.writeText(`Lihat "Topik 2" di\n${window.location.href}`)
+    alert('Link berhasil disalin!')
   }
 }
 </script>
