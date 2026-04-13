@@ -9,119 +9,120 @@
       <Icon name="svg-spinners:ring-resize" class="w-12 h-12 text-primary dark:text-yellow-500" />
     </div>
     <div v-else class="py-6">
-    <!-- Carousel -->
-    <UCarousel v-if="media.length > 0" :items="media" :ui="{ item: 'basis-[80%]' }" :autoplay="{ delay: 3000 }"
-      loop class="overflow-hidden">
-      <template #default="slotProps">
-        <NuxtImg v-if="slotProps?.item" :src="getImageUrl(slotProps.item.url)" :alt="slotProps.item.name"
-          class="w-full h-40 object-cover rounded-xl" loading="eager" fetchpriority="high" 
-          width="600" height="160" />
-      </template>
-    </UCarousel>
+      <!-- Carousel -->
+      <UCarousel v-if="media.length > 0" :items="media" :ui="{ item: 'basis-[80%]' }" :autoplay="{ delay: 3000 }" loop
+        class="overflow-hidden">
+        <template #default="slotProps">
+          <NuxtImg v-if="slotProps?.item" :src="getImageUrl(slotProps.item.url)" :alt="slotProps.item.name"
+            class="w-full h-40 object-cover rounded-xl" loading="eager" fetchpriority="high" width="600" height="160" />
+        </template>
+      </UCarousel>
 
-    <!-- Agenda Section -->
-    <div v-if="isAgendaMenuEnabled" class="mt-4 px-4">
-      <h2 class="text-lg font-semibold text-black dark:text-white mb-4">Agenda Hari Ini</h2>
-
-      <!-- Date Selector -->
-      <div ref="dateContainer" class="flex gap-2 overflow-x-scroll scrollbar-hide pb-2 px-[calc(50%-28px)]"
-        style="scroll-snap-type: x proximity;" @scroll="onDateScroll">
-        <button v-for="(date, index) in dateRange" :key="date.full" :ref="el => (dateRefs[index] = el as HTMLElement)"
-          @click="selectDate(date.full, index)"
-          class="flex flex-col items-center justify-center min-w-14 py-2 px-3 rounded-lg transition-colors shrink-0"
-          style="scroll-snap-align: center;"
-          :class="selectedDate === date.full ? 'bg-primary dark:bg-yellow-500 text-black font-bold' : 'bg-secondary/50 dark:bg-gray-700 text-gray-700 dark:text-gray-300'">
-          <span class="text-lg font-semibold">{{ date.day }}</span>
-          <span class="text-xs">{{ date.month }}</span>
-        </button>
-      </div>
-
-      <!-- Agenda Card -->
-      <div class="mt-3 border-3 border-secondary rounded-xl p-2 shadow-xl">
-        <div class="rounded-xl px-4 py-8 text-center"
-          style="background: linear-gradient(to bottom, #fdd746 0%, #d79204 100%);">
-          <h3 class="text-xl font-semibold text-black">{{ formattedSelectedDate }}</h3>
-          <div class="flex items-center justify-center gap-2 mt-2 text-black/80">
-            <Icon name="mdi:moon-waning-crescent" class="w-5 h-5" />
-            <span>{{ agendaData?.title || '-' }}</span>
-          </div>
+      <!-- Books Section -->
+      <div class="mt-6 px-4">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-semibold text-black dark:text-white">Koleksi Buku</h2>
+          <NuxtLink to="/books" class="text-primary dark:text-yellow-400 font-medium">Lihat semua</NuxtLink>
+        </div>
+        <div class="flex gap-3 pb-3 overflow-x-auto custom-scrollbar">
+          <NuxtLink v-for="book in books" :key="book.id"
+            :to="{ path: `/books/${book.id}`, query: { title: book.title, cover: book.url } }" class="shrink-0 w-28">
+            <template v-if="book.url">
+              <NuxtImg :src="getImageUrl(book.url)" :alt="book.title" class="w-28 h-40 object-cover rounded-xl"
+                loading="lazy" width="112" height="160" />
+            </template>
+            <template v-else>
+              <div
+                class="w-28 h-40 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl flex items-center justify-center p-2">
+                <p class="text-center font-medium text-black dark:text-white text-sm line-clamp-6">{{ book.title }}</p>
+              </div>
+            </template>
+            <p class="mt-2 text-lg font-medium text-black dark:text-white line-clamp-2">{{ book.title }}</p>
+          </NuxtLink>
         </div>
       </div>
-    </div>
 
-    <!-- Topics Section -->
-    <div v-if="isTopicMenuEnabled" class="mt-6 px-4">
-      <button @click="isTopicsExpanded = !isTopicsExpanded" class="w-full mb-4 flex items-center justify-between">
-        <h2 class="text-xl font-semibold text-black dark:text-white">Ensiklopedia</h2>
-        <div class="flex items-center gap-2">
-          <button @click.stop="showInfoModal = true" class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors flex items-center justify-center">
-            <Icon name="mdi:information" class="w-6 h-6 text-primary dark:text-yellow-400" />
+      <!-- Agenda Section -->
+      <div v-if="isAgendaMenuEnabled" class="mt-4 px-4">
+        <h2 class="text-lg font-semibold text-black dark:text-white mb-4">Agenda Hari Ini</h2>
+
+        <!-- Date Selector -->
+        <div ref="dateContainer" class="flex gap-2 overflow-x-scroll scrollbar-hide pb-2 px-[calc(50%-28px)]"
+          style="scroll-snap-type: x proximity;" @scroll="onDateScroll">
+          <button v-for="(date, index) in dateRange" :key="date.full" :ref="el => (dateRefs[index] = el as HTMLElement)"
+            @click="selectDate(date.full, index)"
+            class="flex flex-col items-center justify-center min-w-14 py-2 px-3 rounded-lg transition-colors shrink-0"
+            style="scroll-snap-align: center;"
+            :class="selectedDate === date.full ? 'bg-primary dark:bg-yellow-500 text-black font-bold' : 'bg-secondary/50 dark:bg-gray-700 text-gray-700 dark:text-gray-300'">
+            <span class="text-lg font-semibold">{{ date.day }}</span>
+            <span class="text-xs">{{ date.month }}</span>
           </button>
-          <Icon :name="isTopicsExpanded ? 'mdi:chevron-up' : 'mdi:chevron-down'" class="w-7 h-7 text-gray-600 dark:text-gray-300" />
         </div>
-      </button>
 
-      <div v-if="isTopicsExpanded">
-        <template v-if="isLoading">
-          <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
-            <USkeleton class="h-5 w-3/4 mb-2" />
-            <USkeleton class="h-4 w-full mb-2" />
-            <USkeleton class="h-4 w-2/3" />
+        <!-- Agenda Card -->
+        <div class="mt-3 border-3 border-secondary rounded-xl p-2 shadow-xl">
+          <div class="rounded-xl px-4 py-8 text-center"
+            style="background: linear-gradient(to bottom, #fdd746 0%, #d79204 100%);">
+            <h3 class="text-xl font-semibold text-black">{{ formattedSelectedDate }}</h3>
+            <div class="flex items-center justify-center gap-2 mt-2 text-black/80">
+              <Icon name="mdi:moon-waning-crescent" class="w-5 h-5" />
+              <span>{{ agendaData?.title || '-' }}</span>
+            </div>
           </div>
-        </template>
-
-        <template v-else-if="topicsTreeItems.length > 0">
-          <UTree :items="topicsTreeItems" :get-key="(item) => String(item.id)" size="xl" expanded-icon=""
-            collapsed-icon="" :ui="{ 
-              linkLeadingIcon: 'hidden',
-              link: 'text-xl hover:text-primary dark:hover:text-yellow-400 active:text-primary dark:active:text-yellow-400 transition-colors active:scale-[0.98] transition-transform relative group',
-              linkLabel: 'transition-colors'
-            }" @select="handleTopicSelect" />
-        </template>
-
-        <div v-else class="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">
-          <Icon name="mdi:folder-outline" class="w-12 h-12 text-gray-400 mx-auto mb-2" />
-          <p class="text-gray-500 dark:text-gray-400">Belum ada topik</p>
         </div>
       </div>
-    </div>
 
-    <!-- Books Section -->
-    <div class="mt-6 px-4">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-semibold text-black dark:text-white">Koleksi Buku</h2>
-        <NuxtLink to="/books" class="text-primary dark:text-yellow-400 font-medium">Lihat semua</NuxtLink>
-      </div>
-      <div class="flex gap-3 pb-3 overflow-x-auto custom-scrollbar">
-        <NuxtLink v-for="book in books" :key="book.id"
-          :to="{ path: `/books/${book.id}`, query: { title: book.title, cover: book.url } }" class="shrink-0 w-28">
-          <template v-if="book.url">
-            <NuxtImg :src="getImageUrl(book.url)" :alt="book.title" class="w-28 h-40 object-cover rounded-xl" loading="lazy"
-              width="112" height="160" />
-          </template>
-          <template v-else>
-            <div
-              class="w-28 h-40 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-xl flex items-center justify-center p-2">
-              <p class="text-center font-medium text-black dark:text-white text-sm line-clamp-6">{{ book.title }}</p>
+      <!-- Topics Section -->
+      <div v-if="isTopicMenuEnabled" class="mt-6 px-4">
+        <button @click="isTopicsExpanded = !isTopicsExpanded" class="w-full mb-4 flex items-center justify-between">
+          <h2 class="text-xl font-semibold text-black dark:text-white">Ensiklopedia</h2>
+          <div class="flex items-center gap-2">
+            <button @click.stop="showInfoModal = true"
+              class="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors flex items-center justify-center">
+              <Icon name="mdi:information" class="w-6 h-6 text-primary dark:text-yellow-400" />
+            </button>
+            <Icon :name="isTopicsExpanded ? 'mdi:chevron-up' : 'mdi:chevron-down'"
+              class="w-7 h-7 text-gray-600 dark:text-gray-300" />
+          </div>
+        </button>
+
+        <div v-if="isTopicsExpanded">
+          <template v-if="isLoading">
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-md">
+              <USkeleton class="h-5 w-3/4 mb-2" />
+              <USkeleton class="h-4 w-full mb-2" />
+              <USkeleton class="h-4 w-2/3" />
             </div>
           </template>
-          <p class="mt-2 text-lg font-medium text-black dark:text-white line-clamp-2">{{ book.title }}</p>
-        </NuxtLink>
+
+          <template v-else-if="topicsTreeItems.length > 0">
+            <UTree :items="topicsTreeItems" :get-key="(item) => String(item.id)" size="xl" expanded-icon=""
+              collapsed-icon="" :ui="{
+                linkLeadingIcon: 'hidden',
+                link: 'text-xl hover:text-primary dark:hover:text-yellow-400 active:text-primary dark:active:text-yellow-400 transition-colors active:scale-[0.98] transition-transform relative group',
+                linkLabel: 'transition-colors'
+              }" @select="handleTopicSelect" />
+          </template>
+
+          <div v-else class="bg-white dark:bg-gray-800 rounded-xl p-8 text-center">
+            <Icon name="mdi:folder-outline" class="w-12 h-12 text-gray-400 mx-auto mb-2" />
+            <p class="text-gray-500 dark:text-gray-400">Belum ada topik</p>
+          </div>
+        </div>
       </div>
+
+      <!-- Topics2 Section -->
+      <Topics2Section v-if="isTopic2MenuEnabled" :topics2-data="topics2" :key="'topics2-section'" />
+
+      <!-- Topics3 Section -->
+      <Topics3Section v-if="isTopic3MenuEnabled" :topics3-data="topics3" :key="'topics3-section'" />
+
+      <!-- Public Bookmark Section -->
+      <PublicBookmarkSection :menu-settings="allData?.data?.menuSettings" />
+
+      <!-- Contact Section -->
+      <ContactSection />
     </div>
-
-    <!-- Topics2 Section -->
-    <Topics2Section v-if="isTopic2MenuEnabled" :topics2-data="topics2" :key="'topics2-section'" />
-
-    <!-- Topics3 Section -->
-    <Topics3Section v-if="isTopic3MenuEnabled" :topics3-data="topics3" :key="'topics3-section'" />
-
-    <!-- Public Bookmark Section -->
-    <PublicBookmarkSection :menu-settings="allData?.data?.menuSettings" />
-
-    <!-- Contact Section -->
-    <ContactSection />
-  </div>
   </ClientOnly>
 
   <!-- Information Modal -->
@@ -212,7 +213,7 @@ const isTopicsExpanded = ref(false)
 // Fetch information when modal opens
 const fetchInformation = async () => {
   if (infoDescription.value) return // Already fetched
-  
+
   isLoadingInfo.value = true
   try {
     const response = await $fetch<{
@@ -226,7 +227,7 @@ const fetchInformation = async () => {
         updated_at: string
       }>
     }>(`${config.public.apiBaseUrl}/information?type=topik1`)
-    
+
     if (response.success && response.data.length > 0) {
       infoDescription.value = response.data[0].description
     }
@@ -267,7 +268,7 @@ const saveScrollPosition = (main: number, dateScroll: number) => {
 
 // Single optimized API call with server-side caching
 const { data: allData, status } = useAsyncData('tabTerbaruData', async () => {
-  return $fetch<{ 
+  return $fetch<{
     success: boolean
     data: {
       media: MediaItem[]
@@ -422,7 +423,7 @@ onMounted(() => {
       const container = props.scrollContainer || document.querySelector('.flex-1.overflow-y-auto') as HTMLElement
       if (container) {
         contentScrollContainer.value = container
-        
+
         // Restore scroll position after a short delay
         setTimeout(() => {
           const stored = getStoredScrollPosition()
@@ -482,7 +483,7 @@ onActivated(() => {
     nextTick(() => {
       const container = props.scrollContainer || contentScrollContainer.value
       const stored = getStoredScrollPosition()
-      
+
       // Restore scroll positions
       if (container && stored.main > 0) {
         container.scrollTop = stored.main

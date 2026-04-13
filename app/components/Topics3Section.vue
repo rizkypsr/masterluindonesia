@@ -1,7 +1,7 @@
 <template>
   <div class="mt-6 px-4">
     <div class="flex items-center justify-between mb-4">
-      <h2 class="text-xl font-semibold text-black dark:text-white">Topik 3</h2>
+      <h2 class="text-xl font-semibold text-black dark:text-white">Kumpulan Tanya Jawab</h2>
       <NuxtLink to="/topics3" class="text-primary dark:text-yellow-400 font-medium">Lihat semua</NuxtLink>
     </div>
 
