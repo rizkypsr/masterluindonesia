@@ -44,8 +44,8 @@
 
             <!-- Hero Image -->
             <div class="mb-8">
-                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fxfz-2.png?alt=media&token=882e2ea1-1778-4d65-8a18-b71fb8deea82" alt="Xiao Fang Zi"
-                    class="w-full object-contain rounded-lg" />
+                <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fxfz-2.png?alt=media&token=882e2ea1-1778-4d65-8a18-b71fb8deea82" alt="Xiao Fang Zi"
+                    class="w-full object-contain rounded-lg" loading="eager" format="webp" />
             </div>
 
             <!-- Section 1: Apa itu Xiao Fang Zi -->
@@ -67,8 +67,8 @@
                 <div class="relative dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 min-h-150">
                     <!-- Xiao Fang Zi Paper - Left -->
                     <div class="absolute left-4 top-8 w-40">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fxfz_full.png?alt=media&token=a3ecb219-8552-4f51-acc0-9c4688c48a93"
-                            alt="Xiao Fang Zi" class="w-full object-contain drop-shadow-lg" />
+                        <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fxfz_full.png?alt=media&token=a3ecb219-8552-4f51-acc0-9c4688c48a93"
+                            alt="Xiao Fang Zi" class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
                         <button @click="showPerlengkapanDetail('xfz')"
                             class="absolute -bottom-2 right-4 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -77,8 +77,8 @@
 
                     <!-- Counter - Right Top -->
                     <div class="absolute right-8 top-4 w-20">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fcounter.png?alt=media&token=b5437729-203e-4107-a12a-b06cd45a9c1f" alt="Counter"
-                            class="w-full object-contain drop-shadow-lg" />
+                        <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fcounter.png?alt=media&token=b5437729-203e-4107-a12a-b06cd45a9c1f" alt="Counter"
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
                         <button @click="showPerlengkapanDetail('counter')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -87,8 +87,8 @@
 
                     <!-- Kain Merah - Right Middle -->
                     <div class="absolute right-6 top-36 w-24">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fkain.png?alt=media&token=77715de1-05ab-4e7a-ab7e-90e8df7461bf" alt="Kain Merah"
-                            class="w-full object-contain drop-shadow-lg" />
+                        <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fkain.png?alt=media&token=77715de1-05ab-4e7a-ab7e-90e8df7461bf" alt="Kain Merah"
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
                         <button @click="showPerlengkapanDetail('kain')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -97,8 +97,8 @@
 
                     <!-- Pena Merah - Left Middle -->
                     <div class="absolute left-4 top-72 w-28">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fpen_full.png?alt=media&token=2bf2ef24-256a-4921-a2a1-223b7237394e" alt="Pena Merah"
-                            class="w-full object-contain drop-shadow-lg" />
+                        <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fpen_full.png?alt=media&token=2bf2ef24-256a-4921-a2a1-223b7237394e" alt="Pena Merah"
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
                         <button @click="showPerlengkapanDetail('pena-merah')"
                             class="absolute top-10 left-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -107,8 +107,8 @@
 
                     <!-- Pena Hitam - Right Middle -->
                     <div class="absolute right-8 top-64 w-24">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fblack_pen.png?alt=media&token=596786cf-9bd4-4ad2-af2f-52e5093a82a9" alt="Pena Hitam"
-                            class="w-full object-contain drop-shadow-lg" />
+                        <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fblack_pen.png?alt=media&token=596786cf-9bd4-4ad2-af2f-52e5093a82a9" alt="Pena Hitam"
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
                         <button @click="showPerlengkapanDetail('pena-hitam')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -117,8 +117,8 @@
 
                     <!-- Amplop - Left Bottom -->
                     <div class="absolute left-8 top-96 w-28">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Famplop.png?alt=media&token=c1698c89-0335-483b-ae36-28825a315908" alt="Amplop"
-                            class="w-full object-contain drop-shadow-lg" />
+                        <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Famplop.png?alt=media&token=c1698c89-0335-483b-ae36-28825a315908" alt="Amplop"
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
                         <button @click="showPerlengkapanDetail('amplop')"
                             class="absolute -bottom-2 left-4 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -127,8 +127,8 @@
 
                     <!-- Buku - Right Bottom -->
                     <div class="absolute right-4 bottom-8 w-28">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fbook.png?alt=media&token=c0b11515-be28-4df3-8f11-0edd6bc21222" alt="Buku Paritta"
-                            class="w-full object-contain drop-shadow-lg" />
+                        <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fbook.png?alt=media&token=c0b11515-be28-4df3-8f11-0edd6bc21222" alt="Buku Paritta"
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
                         <button @click="showPerlengkapanDetail('buku')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -148,8 +148,8 @@
                                 <Icon name="heroicons:x-mark" class="w-6 h-6 text-gray-500" />
                             </button>
                         </div>
-                        <img :src="selectedPerlengkapan?.image" :alt="selectedPerlengkapan?.title"
-                            class="w-32 h-32 object-contain mx-auto mb-4" />
+                        <NuxtImg :src="selectedPerlengkapan?.image" :alt="selectedPerlengkapan?.title"
+                            class="w-32 h-32 object-contain mx-auto mb-4" loading="lazy" format="webp" />
                         <p class="text-gray-700 dark:text-gray-300 text-center">{{ selectedPerlengkapan?.description }}
                         </p>
                     </div>
@@ -172,8 +172,8 @@
             <div id="bagian-bacaan" class="mb-8">
                 <h2 class="text-3xl font-bold dark:text-white mb-4">Bagian Bacaan di Xiao Fang Zi</h2>
 
-                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fbagian_baca_xfz.png?alt=media&token=35da47a8-2795-428c-9f93-47ec8faa9db4"
-                    alt="Bagian Bacaan" class="w-full object-contain rounded-lg mb-4" />
+                <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fbagian_baca_xfz.png?alt=media&token=35da47a8-2795-428c-9f93-47ec8faa9db4"
+                    alt="Bagian Bacaan" class="w-full object-contain rounded-lg mb-4" loading="lazy" format="webp" />
                 <div class="px-2 space-y-2">
                     <div class="flex items-start gap-2">
                         <span class="font-bold text-gray-900 dark:text-white">Da Bei Zhou:</span>
@@ -235,8 +235,8 @@
                 <h2 class="text-3xl font-bold dark:text-white mb-6">Komponen di Xiao Fang Zi</h2>
 
                 <div class="relative">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fxfz_full.png?alt=media&token=a3ecb219-8552-4f51-acc0-9c4688c48a93"
-                        alt="Komponen Xiao Fang Zi" class="w-full object-contain" />
+                    <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fxfz_full.png?alt=media&token=a3ecb219-8552-4f51-acc0-9c4688c48a93"
+                        alt="Komponen Xiao Fang Zi" class="w-full object-contain" loading="lazy" format="webp" />
 
                     <!-- Button: Jing Zeng (敬贈) - Right top -->
                     <button @click="showKomponenDetail('jing-zeng')"
@@ -371,7 +371,7 @@
                     item: 'basis-full'
                 }" indicators class="w-full">
                     <template #default="{ item }">
-                        <img :src="item.src" :alt="item.alt" class="w-full object-contain rounded-lg" />
+                        <NuxtImg :src="item.src" :alt="item.alt" class="w-full object-contain rounded-lg" loading="lazy" format="webp" />
                     </template>
                 </UCarousel>
 
@@ -416,9 +416,9 @@
                 <UCard v-if="langkahMengisiItems[currentLangkahIndex]"
                     class="border-0 shadow-xl bg-white dark:from-gray-800 dark:to-gray-900 rounded-2xl overflow-hidden">
                     <div class="p-4">
-                        <img :src="langkahMengisiItems[currentLangkahIndex]!.image"
+                        <NuxtImg :src="langkahMengisiItems[currentLangkahIndex]!.image"
                             :alt="langkahMengisiItems[currentLangkahIndex]!.title"
-                            class="w-full h-64 object-contain mb-4" />
+                            class="w-full h-64 object-contain mb-4" format="webp" />
                     </div>
                     <div class="px-4 pb-6">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -458,9 +458,9 @@
                 <UCard v-if="langkahMembacaItems[currentMembacaIndex]"
                     class="border-0 shadow-xl bg-linear-to-b from-gray-100 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl overflow-hidden">
                     <div class="p-4">
-                        <img :src="langkahMembacaItems[currentMembacaIndex]!.image"
+                        <NuxtImg :src="langkahMembacaItems[currentMembacaIndex]!.image"
                             :alt="langkahMembacaItems[currentMembacaIndex]!.title"
-                            class="w-full h-64 object-contain mb-4" />
+                            class="w-full h-64 object-contain mb-4" format="webp" />
                     </div>
                     <div class="px-4 pb-6">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -499,9 +499,9 @@
                 <UCard v-if="langkahTitikItems[currentTitikIndex]"
                     class="border-0 shadow-xl bg-linear-to-b from-gray-100 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl overflow-hidden">
                     <div class="p-4">
-                        <img :src="langkahTitikItems[currentTitikIndex]!.image"
+                        <NuxtImg :src="langkahTitikItems[currentTitikIndex]!.image"
                             :alt="langkahTitikItems[currentTitikIndex]!.title"
-                            class="w-full h-64 object-contain mb-4" />
+                            class="w-full h-64 object-contain mb-4" format="webp" />
                     </div>
                     <div class="px-4 pb-6">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -544,9 +544,9 @@
                 <UCard v-if="langkahSalahItems[currentSalahIndex]"
                     class="border-0 shadow-xl bg-white dark:from-gray-800 dark:to-gray-900 rounded-2xl overflow-hidden">
                     <div class="p-4">
-                        <img :src="langkahSalahItems[currentSalahIndex]!.image"
+                        <NuxtImg :src="langkahSalahItems[currentSalahIndex]!.image"
                             :alt="langkahSalahItems[currentSalahIndex]!.title"
-                            class="w-full h-64 object-contain mb-4" />
+                            class="w-full h-64 object-contain mb-4" format="webp" />
                     </div>
                     <div class="px-4 pb-6">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -566,8 +566,8 @@
                 <div class="relative dark:from-gray-800 dark:to-gray-900 rounded-xl p-6 min-h-175">
                     <!-- Piring - Left Top -->
                     <div class="absolute left-8 top-8 w-28">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_piring.png?alt=media&token=3c78b3f5-afb8-4b35-95c2-3f7e7ae7c0cd" alt="Piring"
-                            class="w-full object-contain drop-shadow-lg" />
+                        <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_piring.png?alt=media&token=3c78b3f5-afb8-4b35-95c2-3f7e7ae7c0cd" alt="Piring"
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
                         <button @click="showBakarDetail('piring')"
                             class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -576,8 +576,8 @@
 
                     <!-- Penjepit - Right Top -->
                     <div class="absolute right-12 top-12 w-24">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_pinset.png?alt=media&token=fbf15b5e-4cf5-4756-9bda-64375a398971" alt="Penjepit"
-                            class="w-full object-contain drop-shadow-lg" />
+                        <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_pinset.png?alt=media&token=fbf15b5e-4cf5-4756-9bda-64375a398971" alt="Penjepit"
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
                         <button @click="showBakarDetail('pinset')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -586,8 +586,8 @@
 
                     <!-- Tisu - Right -->
                     <div class="absolute right-8 top-36 w-28">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_tissue.png?alt=media&token=e5d569e0-24db-45d0-bebe-a99486f8dd2f" alt="Tisu"
-                            class="w-full object-contain drop-shadow-lg" />
+                        <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_tissue.png?alt=media&token=e5d569e0-24db-45d0-bebe-a99486f8dd2f" alt="Tisu"
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
                         <button @click="showBakarDetail('tisu')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -596,8 +596,8 @@
 
                     <!-- Kain Merah - Left -->
                     <div class="absolute left-4 top-52 w-28">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_kain_merah_tools.png?alt=media&token=9280343a-2744-4116-bb37-5adcb378d9a0"
-                            alt="Kain Merah" class="w-full object-contain drop-shadow-lg" />
+                        <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_kain_merah_tools.png?alt=media&token=9280343a-2744-4116-bb37-5adcb378d9a0"
+                            alt="Kain Merah" class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
                         <button @click="showBakarDetail('kain-bakar')"
                             class="absolute -bottom-2 right-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -606,8 +606,8 @@
 
                     <!-- Amplop Putih - Right Middle -->
                     <div class="absolute right-8 top-72 w-24">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_amplop_putih.png?alt=media&token=bc772baf-7821-4d24-bdaa-c57bdb02deef"
-                            alt="Amplop Putih" class="w-full object-contain drop-shadow-lg" />
+                        <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_amplop_putih.png?alt=media&token=bc772baf-7821-4d24-bdaa-c57bdb02deef"
+                            alt="Amplop Putih" class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
                         <button @click="showBakarDetail('amplop-putih')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -616,8 +616,8 @@
 
                     <!-- Korek Api - Center -->
                     <div class="absolute right-8 top-96 w-32">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_korek.png?alt=media&token=aa964d7f-86e3-454d-862e-84810c506b90" alt="Korek Api"
-                            class="w-full object-contain drop-shadow-lg" />
+                        <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_korek.png?alt=media&token=aa964d7f-86e3-454d-862e-84810c506b90" alt="Korek Api"
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
                         <button @click="showBakarDetail('korek')"
                             class="absolute -bottom-2 right-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -626,8 +626,8 @@
 
                     <!-- Meja Kecil - Bottom -->
                     <div class="absolute left-4 bottom-32 w-36">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_meja_kayu.png?alt=media&token=919243c2-0ba4-4c3c-8ca9-c9ab174802b7"
-                            alt="Meja Kecil" class="w-full object-contain drop-shadow-lg" />
+                        <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_meja_kayu.png?alt=media&token=919243c2-0ba4-4c3c-8ca9-c9ab174802b7"
+                            alt="Meja Kecil" class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
                         <button @click="showBakarDetail('meja')"
                             class="absolute -bottom-3 right-4 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -646,8 +646,8 @@
                                 <Icon name="heroicons:x-mark" class="w-6 h-6 text-gray-500" />
                             </button>
                         </div>
-                        <img :src="selectedBakar?.image" :alt="selectedBakar?.title"
-                            class="w-32 h-32 object-contain mx-auto mb-4" />
+                        <NuxtImg :src="selectedBakar?.image" :alt="selectedBakar?.title"
+                            class="w-32 h-32 object-contain mx-auto mb-4" loading="lazy" format="webp" />
                         <p class="text-gray-700 dark:text-gray-300 text-center">{{ selectedBakar?.description }}</p>
                     </div>
                 </template>
@@ -721,7 +721,7 @@
                 <UAccordion :items="contohXfzItems" :ui="{ label: 'text-xl' }">
                     <template #body="{ item }">
                         <div class="py-4">
-                            <img :src="item.image" :alt="item.label" class="w-full object-contain rounded-lg" />
+                            <NuxtImg :src="item.image" :alt="item.label" class="w-full object-contain rounded-lg" loading="lazy" format="webp" />
                         </div>
                     </template>
                 </UAccordion>
@@ -755,9 +755,9 @@
                 <UCard v-if="langkahTanpaAltarItems[currentTanpaAltarIndex]"
                     class="border-0 shadow-xl bg-linear-to-b from-gray-100 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl overflow-hidden">
                     <div class="p-4">
-                        <img :src="langkahTanpaAltarItems[currentTanpaAltarIndex]!.image"
+                        <NuxtImg :src="langkahTanpaAltarItems[currentTanpaAltarIndex]!.image"
                             :alt="langkahTanpaAltarItems[currentTanpaAltarIndex]!.title"
-                            class="w-full h-64 object-contain mb-4" />
+                            class="w-full h-64 object-contain mb-4" format="webp" />
                     </div>
                     <div class="px-4 pb-6">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -798,9 +798,9 @@
                 <UCard v-if="langkahAltarKecilItems[currentAltarKecilIndex]"
                     class="border-0 shadow-xl bg-linear-to-b from-gray-100 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl overflow-hidden">
                     <div class="p-4">
-                        <img :src="langkahAltarKecilItems[currentAltarKecilIndex]!.image"
+                        <NuxtImg :src="langkahAltarKecilItems[currentAltarKecilIndex]!.image"
                             :alt="langkahAltarKecilItems[currentAltarKecilIndex]!.title"
-                            class="w-full h-64 object-contain mb-4" />
+                            class="w-full h-64 object-contain mb-4" format="webp" />
                     </div>
                     <div class="px-4 pb-6">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -841,9 +841,9 @@
                 <UCard v-if="langkahAltarBesarItems[currentAltarBesarIndex]"
                     class="border-0 shadow-xl bg-linear-to-b from-gray-100 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl overflow-hidden">
                     <div class="p-4">
-                        <img :src="langkahAltarBesarItems[currentAltarBesarIndex]!.image"
+                        <NuxtImg :src="langkahAltarBesarItems[currentAltarBesarIndex]!.image"
                             :alt="langkahAltarBesarItems[currentAltarBesarIndex]!.title"
-                            class="w-full h-64 object-contain mb-4" />
+                            class="w-full h-64 object-contain mb-4" format="webp" />
                     </div>
                     <div class="px-4 pb-6">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -911,9 +911,9 @@
                 <UCard v-if="langkahSetelahBakarItems[currentSetelahBakarIndex]"
                     class="border-0 shadow-xl bg-linear-to-b from-gray-100 to-white dark:from-gray-800 dark:to-gray-900 rounded-2xl overflow-hidden">
                     <div class="p-4">
-                        <img :src="langkahSetelahBakarItems[currentSetelahBakarIndex]!.image"
+                        <NuxtImg :src="langkahSetelahBakarItems[currentSetelahBakarIndex]!.image"
                             :alt="langkahSetelahBakarItems[currentSetelahBakarIndex]!.description"
-                            class="w-full h-64 object-contain mb-4" />
+                            class="w-full h-64 object-contain mb-4" format="webp" />
                     </div>
                     <div class="px-4 pb-6">
                         <p class="text-gray-900 dark:text-white mb-2">
@@ -947,7 +947,7 @@
                     <template #body="{ item }">
                         <div class="py-4 px-4 bg-[#e8d5b0] dark:bg-yellow-900/30 rounded-lg">
                             <div class="text-gray-800 dark:text-gray-200 faq- text-lg" v-html="item.content"></div>
-                            <img v-if="item.image" :src="item.image" :alt="item.label" class="w-full object-contain rounded-lg mt-4" />
+                            <NuxtImg v-if="item.image" :src="item.image" :alt="item.label" class="w-full object-contain rounded-lg mt-4" loading="lazy" format="webp" />
                             <p v-if="item.imageCaption" class="text-center text-lg text-black dark:text-gray-400 mt-2">{{ item.imageCaption }}</p>
                             <div v-if="item.contentAfterImage" class="text-gray-800 text-lg dark:text-gray-200 faq-content mt-4" v-html="item.contentAfterImage"></div>
                         </div>
@@ -1154,17 +1154,17 @@ const langkahMengisiItems = [
         description: 'Gunakan pena hitam untuk menulis nama pembaca dan nama penerima'
     },
     {
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F01-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz_gif%2FTulis%20nama%20pembaca.gif?alt=media&token=57557f1f-c452-48e1-99fa-c12b8fcdf7de',
         title: 'Tulis Nama Pembaca',
         description: 'Tulis nama pembaca dengan pena hitam di sebelah kiri kertas Xiao Fang Zi'
     },
     {
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F02-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz_gif%2FTulis%20nama%20penerima.gif?alt=media&token=6c47a809-927b-40a6-a1dd-621747d4a97a',
         title: 'Tulis Nama Penerima',
         description: 'Tulis nama penerima dengan pena hitam di sebelah kanan kertas Xiao Fang Zi'
     },
     {
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F03-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz_gif%2FMasukkan%20ke%20amplop%20merah.gif?alt=media&token=41d61784-a77b-480e-afe5-d9bb71b3fd5a',
         title: 'Masukkan Ke Amplop Merah',
         description: 'Masukkan kertas Xiao Fang Zi yang sudah diberi nama ke amplop merah'
     }
@@ -1230,18 +1230,18 @@ const langkahTitikItems = [
         description: 'Gunakan spidol merah untuk memberi titik pada kertas Xiao Fang Zi'
     },
     {
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fbonus-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz_gif%2FBeri%20titik.gif?alt=media&token=d0b7fd22-65a7-400d-ab96-0f6a608a4fa5',
         title: 'Beri Titik',
         description: 'Memberi titik dengan spidol merah diawali dari sisi bawah'
     },
     {
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F04-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz_gif%2FMemberi%20tanggal.gif?alt=media&token=26218987-6acf-4d9b-bce3-cc6379730459',
         title: 'Memberi Tanggal',
         description: 'Setelah selesai menitikkan SEMUA tulis tanggal sesuai kalendar masehi',
         note: 'Catatan: Boleh tulis tanggal di hari selesai atau di hari bakar'
     },
     {
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F05-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz_gif%2FMasukkan%20XFZ%20TITIK%20ke%20amplop%20merah%20langkah%205%20dari%205.gif?alt=media&token=c9df178d-7fbd-478e-9f1b-2b77ca2ca528',
         title: 'Masukkan Ke Amplop Merah',
         description: 'Masukkan kertas Xiao Fang Zi yang sudah diberi titik ke amplop merah'
     }
@@ -1269,27 +1269,27 @@ const langkahSalahItems = [
         description: 'Memohon kepada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa, saya XXX salah menulis Xiao Fang Zi ini, maka Xiao Fang Zi ini dianggap hangus'
     },
     {
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F06-rev-1.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz_gif%2F06-rev2.gif?alt=media&token=e33da293-669b-4374-8ccb-912d90e4f8ae',
         title: 'Pindahkan Titik',
         description: 'Memindahkan titik dari kertas XFZ yang salah ke kertas XFZ yang baru'
     },
     {
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F07-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz_gif%2FCoret%20nama.gif?alt=media&token=aca2d844-b8c8-4884-84ef-3337d8706fae',
         title: 'Coret Nama',
         description: 'Coret kedua nama pembaca dan nama penerima dari kertas XFZ yang salah menggunakan pena hitam'
     },
     {
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F08-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz_gif%2FLipat%20jadi%20kecil.gif?alt=media&token=20015cdb-9fb7-4b05-9cc5-68501715d1bc',
         title: 'Lipat Jadi Kecil',
         description: 'Lipat kertas XFZ yang telah dicoret menjadi kecil, sehingga muat dimasukkan ke dalam amplop putih'
     },
     {
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F09-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz_gif%2FBungkus%20kertas%20XFZ.gif?alt=media&token=5a04aaf5-474e-4d5c-a3e2-85d08a5187e2',
         title: 'Bungkus Kertas XFZ',
         description: 'Bungkus kertas XFZ yang salah menggunakan amplop putih sebelum dibuang ke tong sampah'
     },
     {
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2F10-rev.gif',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz_gif%2FBuang%20ke%20tong%20sampah.gif?alt=media&token=018d60c0-8bf9-483a-a024-3e6f891c1ec0',
         title: 'Buang ke Tong Sampah',
         description: 'Buang kertas XFZ yang sudah dibungkus amplop putih ke tong sampah'
     }

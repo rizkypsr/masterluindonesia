@@ -32,6 +32,9 @@ export default defineNuxtConfig({
       // Cache static assets with versioning
       '/_nuxt/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
       '/assets/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
+      // Prerender static pages with images
+      '/edukasi/**': { prerender: true },
+      '/tentang/**': { prerender: true },
     },
   },
   modules: ['@nuxt/ui', '@nuxt/icon', '@nuxt/image', '@pinia/nuxt', '@vueuse/nuxt', 'nuxt-ripple'],
