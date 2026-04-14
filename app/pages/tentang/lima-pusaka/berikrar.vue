@@ -213,7 +213,7 @@ const tanpaAltarItems = [
   {
     step: 1,
     title: 'Ucapkan',
-    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fberikrar%2FBerikrar01.png?alt=media&token=4d6142cb-517f-473e-ad04-3c88035a886c',
     content: [
       'Gan En Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa',
       'Gan En Na Mo Nan Jing Pu Sa',
@@ -224,7 +224,7 @@ const tanpaAltarItems = [
   {
     step: 2,
     title: 'Berikrar',
-    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fberikrar%2FBerikrar01.png?alt=media&token=4d6142cb-517f-473e-ad04-3c88035a886c',
     content: [
       'Saya XXX (Nama sendiri) di sini ingin berikrar kepada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa...'
     ]
@@ -232,7 +232,7 @@ const tanpaAltarItems = [
   {
     step: 3,
     title: 'Catatan',
-    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fberikrar%2FBerikrar01.png?alt=media&token=4d6142cb-517f-473e-ad04-3c88035a886c',
     content: [
       'Boleh berikrar tidak membunuh. Bervegetarian Sembahyang pagi dan malam. Menyebarkan ajaran Buddha Dharma pada orang lain. Memperbanyak CD/DVD dan lainnya.',
       'Ikrar disesuaikan dengan tekad keinginan sendiri, kemampuan, dan keadaan masing-masing.',
@@ -242,7 +242,7 @@ const tanpaAltarItems = [
   {
     step: 4,
     title: 'Setelah Berikrar Bisa Memohon',
-    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fberikrar%2FBerikrar01.png?alt=media&token=4d6142cb-517f-473e-ad04-3c88035a886c',
     content: [
       'Seperti memperoleh tubuh yang sehat, kelancaran dalam karir, keluarga yang harmonis dan lainnya.',
       'Paling cepat bisa memohon 2-3 hal, tidak bisa hanya memohon kesehatan untuk satu keluarga, perlu mengajukan permohonan yang mendetail tentang seseorang atau suatu hal.',
@@ -252,7 +252,7 @@ const tanpaAltarItems = [
   {
     step: 5,
     title: 'Ucapkan',
-    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fberikrar%2FBerikrar01.png?alt=media&token=4d6142cb-517f-473e-ad04-3c88035a886c',
     content: [
       'Gan En Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa',
       'Gan En Na Mo Nan Jing Pu Sa',
@@ -263,7 +263,7 @@ const tanpaAltarItems = [
   {
     step: 6,
     title: 'Menyembah 7 Kali',
-    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fberikrar%2FBerikrar01.png?alt=media&token=4d6142cb-517f-473e-ad04-3c88035a886c',
     content: [
 
     ]
@@ -271,7 +271,7 @@ const tanpaAltarItems = [
   {
     step: 7,
     title: 'Setelah bangkit berdiri, bersikap anjali, lalu membungkuk hormat kepada Guan Shi Yin Pu Sa dan para Pu Sa',
-    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_keduabelas.png?alt=media&token=14c8121f-901a-4151-a7d7-72b7dabbe905',
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fberikrar%2FBerikrar%20ke%207.png?alt=media&token=334bf0d7-f4ab-4f5a-89b2-c015dcfe5017',
     content: []
   }
 ]
@@ -279,15 +279,15 @@ const tanpaAltarItems = [
 const denganAltarItems = [
   {
     type: 'Tanpa Altar',
-    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage25.png?alt=media&token=25418c86-484d-48ee-8557-458f932e22d1'
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fberikrar%2FBerikrar%20TA1-7.png?alt=media&token=c3279318-4cfc-4a75-ad04-d18c912884f0'
   },
   {
     type: 'Altar Kecil',
-    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage26.png?alt=media&token=53ddd2cf-f711-4108-931c-a6ff7a0760e8'
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fberikrar%2FBerikrar%20AK1-7.png?alt=media&token=72c758ea-3488-48af-aa87-b92e19ddbeb4'
   },
   {
     type: 'Altar Besar',
-    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6'
+    image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fberikrar%2FBerikrar01.png?alt=media&token=4d6142cb-517f-473e-ad04-3c88035a886c'
   }
 ]
 

@@ -12,7 +12,7 @@
       </div>
       <div class="relative overflow-hidden">
         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fimage_1.png?alt=media&token=1b87c221-01cd-4b24-a4a2-0f2f22288c10" alt="Baca PR" 
-          class="w-full" format="webp" loading="lazy" width="768" height="400" />
+          class="w-full" loading="lazy" width="768" height="400" />
       </div>
     </div>
 
@@ -45,7 +45,7 @@
               <!-- XFZ Paper - Left -->
               <div class="absolute left-0 top-0 w-36">
                 <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fxfz_full.png?alt=media&token=a3ecb219-8552-4f51-acc0-9c4688c48a93" alt="Xiao Fang Zi"
-                  class="w-full object-contain" format="webp" loading="lazy" width="144" height="200" />
+                  class="w-full object-contain" loading="lazy" width="144" height="200" />
                 <button @click="showPerlengkapanInfo('xfz')"
                   class="absolute bottom-4 right-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                   <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -55,7 +55,7 @@
               <!-- Counter - Right Top -->
               <div class="absolute right-8 top-0 w-16">
                 <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fcounter.png?alt=media&token=b5437729-203e-4107-a12a-b06cd45a9c1f" alt="Counter"
-                  class="w-full object-contain" format="webp" loading="lazy" width="64" height="80" />
+                  class="w-full object-contain" loading="lazy" width="64" height="80" />
                 <button @click="showPerlengkapanInfo('counter')"
                   class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                   <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -65,7 +65,7 @@
               <!-- Kain Merah - Right -->
               <div class="absolute right-4 top-24 w-24">
                 <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fkain.png?alt=media&token=77715de1-05ab-4e7a-ab7e-90e8df7461bf" alt="Kain Merah"
-                  class="w-full object-contain" format="webp" loading="lazy" width="96" height="120" />
+                  class="w-full object-contain" loading="lazy" width="96" height="120" />
                 <button @click="showPerlengkapanInfo('kain')"
                   class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                   <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -75,7 +75,7 @@
               <!-- Pena Merah - Left Middle -->
               <div class="absolute left-10 top-[48%] w-28">
                 <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fpen_full.png?alt=media&token=2bf2ef24-256a-4921-a2a1-223b7237394e" alt="Pena Merah"
-                  class="w-full object-contain" format="webp" loading="lazy" width="112" height="140" />
+                  class="w-full object-contain" loading="lazy" width="112" height="140" />
                 <button @click="showPerlengkapanInfo('pena-merah')"
                   class="absolute top-4 right-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                   <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -85,7 +85,7 @@
               <!-- Pena Hitam - Right Middle -->
               <div class="absolute right-8 top-[50%] w-24">
                 <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fblack_pen.png?alt=media&token=596786cf-9bd4-4ad2-af2f-52e5093a82a9" alt="Pena Hitam"
-                  class="w-full object-contain" format="webp" loading="lazy" width="96" height="120" />
+                  class="w-full object-contain" loading="lazy" width="96" height="120" />
                 <button @click="showPerlengkapanInfo('pena-hitam')"
                   class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                   <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -95,7 +95,7 @@
               <!-- Amplop - Left Bottom -->
               <div class="absolute left-4 top-[76%] w-24">
                 <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Famplop.png?alt=media&token=c1698c89-0335-483b-ae36-28825a315908" alt="Amplop"
-                  class="w-full object-contain" format="webp" loading="lazy" width="96" height="120" />
+                  class="w-full object-contain" loading="lazy" width="96" height="120" />
                 <button @click="showPerlengkapanInfo('amplop')"
                   class="absolute -bottom-2 right-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                   <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -105,7 +105,7 @@
               <!-- Buku - Right Bottom -->
               <div class="absolute right-4 top-[80%] w-24">
                 <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fbook.png?alt=media&token=c0b11515-be28-4df3-8f11-0edd6bc21222" alt="Buku Paritta"
-                  class="w-full object-contain" format="webp" loading="lazy" width="96" height="120" />
+                  class="w-full object-contain" loading="lazy" width="96" height="120" />
                 <button @click="showPerlengkapanInfo('buku')"
                   class="absolute top-0 right-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                   <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -115,17 +115,17 @@
             <!-- 1 image -->
             <div v-else-if="item.images.length === 1">
               <NuxtImg :src="item.images[0]" :alt="item.title" :class="['w-full rounded-lg object-contain', item.height]" 
-                format="webp" loading="lazy" width="600" height="400" />
+                loading="lazy" width="600" height="400" />
             </div>
             <!-- 2 images: side by side, aligned to bottom -->
             <div v-else-if="item.images.length === 2" class="grid grid-cols-2 gap-4 items-end">
               <NuxtImg v-for="(img, idx) in item.images" :key="idx" :src="img" :alt="item.title"
-                class="w-full rounded-lg object-contain max-h-72" format="webp" loading="lazy" width="300" height="288" />
+                class="w-full rounded-lg object-contain max-h-72" loading="lazy" width="300" height="288" />
             </div>
             <!-- More than 2 images: grid -->
             <div v-else class="grid grid-cols-2 gap-2 items-end">
               <NuxtImg v-for="(img, idx) in item.images" :key="idx" :src="img" :alt="item.title"
-                :class="['w-full rounded-lg object-contain', item.height]" format="webp" loading="lazy" width="300" height="200" />
+                :class="['w-full rounded-lg object-contain', item.height]" loading="lazy" width="300" height="200" />
             </div>
           </div>
         </div>
@@ -161,7 +161,7 @@
             </button>
           </div>
           <NuxtImg :src="selectedPerlengkapan?.image" :alt="selectedPerlengkapan?.title"
-            class="w-32 h-32 object-contain mx-auto mb-4" format="webp" loading="lazy" width="128" height="128" />
+            class="w-32 h-32 object-contain mx-auto mb-4" loading="lazy" width="128" height="128" />
           <p class="text-gray-700 dark:text-gray-300 text-center">{{ selectedPerlengkapan?.description }}</p>
         </div>
       </template>
@@ -180,7 +180,7 @@
       </div>
       <div class="relative overflow-hidden">
         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6" alt="Tata Cara Sembahyang"
-          class="w-full" format="webp" loading="lazy" width="768" height="400" />
+          class="w-full" loading="lazy" width="768" height="400" />
       </div>
     </div>
 
@@ -196,7 +196,7 @@
       </div>
       <div class="relative overflow-hidden">
         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_1.png?alt=media&token=4c54233e-4de3-4982-ba38-cd3f80e78b97" alt="Altar Besar"
-          class="w-full" format="webp" loading="lazy" width="768" height="400" />
+          class="w-full" loading="lazy" width="768" height="400" />
       </div>
     </div>
 
@@ -212,7 +212,7 @@
       </div>
       <div class="relative overflow-hidden">
         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarkecil%2Faltar_kecil.png?alt=media&token=339fefa9-d2be-4124-9d98-98cca6501f41" alt="Altar Kecil"
-          class="w-full" format="webp" loading="lazy" width="768" height="400" />
+          class="w-full" loading="lazy" width="768" height="400" />
       </div>
     </div>
 
@@ -229,7 +229,7 @@
       </div>
       <div class="relative overflow-hidden">
         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fbimbingan%2Fbimbingan.png?alt=media&token=379734c5-fa12-405e-be7b-7eef64a333a7"
-          alt="Permohonan Bimbingan Spiritual" class="w-full" format="webp" loading="lazy" width="768" height="400" />
+          alt="Permohonan Bimbingan Spiritual" class="w-full" loading="lazy" width="768" height="400" />
       </div>
     </div>
 
@@ -246,7 +246,7 @@
       </div>
       <div class="relative overflow-hidden">
         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fbimbingan%2Fganti_nama.png?alt=media&token=c0817a04-41c5-4588-8d6b-872108ad5f6b"
-          alt="Permohonan Penggantian Nama" class="w-full" format="webp" loading="lazy" width="768" height="400" />
+          alt="Permohonan Penggantian Nama" class="w-full" loading="lazy" width="768" height="400" />
       </div>
     </div>
   </div>

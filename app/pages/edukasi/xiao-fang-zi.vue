@@ -45,7 +45,7 @@
             <!-- Hero Image -->
             <div class="mb-8">
                 <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fxfz-2.png?alt=media&token=882e2ea1-1778-4d65-8a18-b71fb8deea82" alt="Xiao Fang Zi"
-                    class="w-full object-contain rounded-lg" loading="eager" format="webp" />
+                    class="w-full object-contain rounded-lg" loading="eager" />
             </div>
 
             <!-- Section 1: Apa itu Xiao Fang Zi -->
@@ -68,7 +68,7 @@
                     <!-- Xiao Fang Zi Paper - Left -->
                     <div class="absolute left-4 top-8 w-40">
                         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fxfz_full.png?alt=media&token=a3ecb219-8552-4f51-acc0-9c4688c48a93"
-                            alt="Xiao Fang Zi" class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
+                            alt="Xiao Fang Zi" class="w-full object-contain drop-shadow-lg" loading="lazy" />
                         <button @click="showPerlengkapanDetail('xfz')"
                             class="absolute -bottom-2 right-4 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -78,7 +78,7 @@
                     <!-- Counter - Right Top -->
                     <div class="absolute right-8 top-4 w-20">
                         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fcounter.png?alt=media&token=b5437729-203e-4107-a12a-b06cd45a9c1f" alt="Counter"
-                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" />
                         <button @click="showPerlengkapanDetail('counter')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -88,7 +88,7 @@
                     <!-- Kain Merah - Right Middle -->
                     <div class="absolute right-6 top-36 w-24">
                         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fkain.png?alt=media&token=77715de1-05ab-4e7a-ab7e-90e8df7461bf" alt="Kain Merah"
-                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" />
                         <button @click="showPerlengkapanDetail('kain')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -98,7 +98,7 @@
                     <!-- Pena Merah - Left Middle -->
                     <div class="absolute left-4 top-72 w-28">
                         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fpen_full.png?alt=media&token=2bf2ef24-256a-4921-a2a1-223b7237394e" alt="Pena Merah"
-                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" />
                         <button @click="showPerlengkapanDetail('pena-merah')"
                             class="absolute top-10 left-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -108,7 +108,7 @@
                     <!-- Pena Hitam - Right Middle -->
                     <div class="absolute right-8 top-64 w-24">
                         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fblack_pen.png?alt=media&token=596786cf-9bd4-4ad2-af2f-52e5093a82a9" alt="Pena Hitam"
-                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" />
                         <button @click="showPerlengkapanDetail('pena-hitam')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -118,7 +118,7 @@
                     <!-- Amplop - Left Bottom -->
                     <div class="absolute left-8 top-96 w-28">
                         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Famplop.png?alt=media&token=c1698c89-0335-483b-ae36-28825a315908" alt="Amplop"
-                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" />
                         <button @click="showPerlengkapanDetail('amplop')"
                             class="absolute -bottom-2 left-4 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -128,7 +128,7 @@
                     <!-- Buku - Right Bottom -->
                     <div class="absolute right-4 bottom-8 w-28">
                         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fbook.png?alt=media&token=c0b11515-be28-4df3-8f11-0edd6bc21222" alt="Buku Paritta"
-                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" />
                         <button @click="showPerlengkapanDetail('buku')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -149,7 +149,7 @@
                             </button>
                         </div>
                         <NuxtImg :src="selectedPerlengkapan?.image" :alt="selectedPerlengkapan?.title"
-                            class="w-32 h-32 object-contain mx-auto mb-4" loading="lazy" format="webp" />
+                            class="w-32 h-32 object-contain mx-auto mb-4" loading="lazy" />
                         <p class="text-gray-700 dark:text-gray-300 text-center">{{ selectedPerlengkapan?.description }}
                         </p>
                     </div>
@@ -173,7 +173,7 @@
                 <h2 class="text-3xl font-bold dark:text-white mb-4">Bagian Bacaan di Xiao Fang Zi</h2>
 
                 <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fbagian_baca_xfz.png?alt=media&token=35da47a8-2795-428c-9f93-47ec8faa9db4"
-                    alt="Bagian Bacaan" class="w-full object-contain rounded-lg mb-4" loading="lazy" format="webp" />
+                    alt="Bagian Bacaan" class="w-full object-contain rounded-lg mb-4" loading="lazy" />
                 <div class="px-2 space-y-2">
                     <div class="flex items-start gap-2">
                         <span class="font-bold text-gray-900 dark:text-white">Da Bei Zhou:</span>
@@ -236,7 +236,7 @@
 
                 <div class="relative">
                     <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fxfz_full.png?alt=media&token=a3ecb219-8552-4f51-acc0-9c4688c48a93"
-                        alt="Komponen Xiao Fang Zi" class="w-full object-contain" loading="lazy" format="webp" />
+                        alt="Komponen Xiao Fang Zi" class="w-full object-contain" loading="lazy" />
 
                     <!-- Button: Jing Zeng (敬贈) - Right top -->
                     <button @click="showKomponenDetail('jing-zeng')"
@@ -371,7 +371,7 @@
                     item: 'basis-full'
                 }" indicators class="w-full">
                     <template #default="{ item }">
-                        <NuxtImg :src="item.src" :alt="item.alt" class="w-full object-contain rounded-lg" loading="lazy" format="webp" />
+                        <NuxtImg :src="item.src" :alt="item.alt" class="w-full object-contain rounded-lg" loading="lazy" />
                     </template>
                 </UCarousel>
 
@@ -418,7 +418,7 @@
                     <div class="p-4">
                         <NuxtImg :src="langkahMengisiItems[currentLangkahIndex]!.image"
                             :alt="langkahMengisiItems[currentLangkahIndex]!.title"
-                            class="w-full h-64 object-contain mb-4" format="webp" />
+                            class="w-full h-64 object-contain mb-4" />
                     </div>
                     <div class="px-4 pb-6">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -460,7 +460,7 @@
                     <div class="p-4">
                         <NuxtImg :src="langkahMembacaItems[currentMembacaIndex]!.image"
                             :alt="langkahMembacaItems[currentMembacaIndex]!.title"
-                            class="w-full h-64 object-contain mb-4" format="webp" />
+                            class="w-full h-64 object-contain mb-4" />
                     </div>
                     <div class="px-4 pb-6">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -501,7 +501,7 @@
                     <div class="p-4">
                         <NuxtImg :src="langkahTitikItems[currentTitikIndex]!.image"
                             :alt="langkahTitikItems[currentTitikIndex]!.title"
-                            class="w-full h-64 object-contain mb-4" format="webp" />
+                            class="w-full h-64 object-contain mb-4" />
                     </div>
                     <div class="px-4 pb-6">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -546,7 +546,7 @@
                     <div class="p-4">
                         <NuxtImg :src="langkahSalahItems[currentSalahIndex]!.image"
                             :alt="langkahSalahItems[currentSalahIndex]!.title"
-                            class="w-full h-64 object-contain mb-4" format="webp" />
+                            class="w-full h-64 object-contain mb-4" />
                     </div>
                     <div class="px-4 pb-6">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -567,7 +567,7 @@
                     <!-- Piring - Left Top -->
                     <div class="absolute left-8 top-8 w-28">
                         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_piring.png?alt=media&token=3c78b3f5-afb8-4b35-95c2-3f7e7ae7c0cd" alt="Piring"
-                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" />
                         <button @click="showBakarDetail('piring')"
                             class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -577,7 +577,7 @@
                     <!-- Penjepit - Right Top -->
                     <div class="absolute right-12 top-12 w-24">
                         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_pinset.png?alt=media&token=fbf15b5e-4cf5-4756-9bda-64375a398971" alt="Penjepit"
-                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" />
                         <button @click="showBakarDetail('pinset')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -587,7 +587,7 @@
                     <!-- Tisu - Right -->
                     <div class="absolute right-8 top-36 w-28">
                         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_tissue.png?alt=media&token=e5d569e0-24db-45d0-bebe-a99486f8dd2f" alt="Tisu"
-                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" />
                         <button @click="showBakarDetail('tisu')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -597,7 +597,7 @@
                     <!-- Kain Merah - Left -->
                     <div class="absolute left-4 top-52 w-28">
                         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_kain_merah_tools.png?alt=media&token=9280343a-2744-4116-bb37-5adcb378d9a0"
-                            alt="Kain Merah" class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
+                            alt="Kain Merah" class="w-full object-contain drop-shadow-lg" loading="lazy" />
                         <button @click="showBakarDetail('kain-bakar')"
                             class="absolute -bottom-2 right-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -607,7 +607,7 @@
                     <!-- Amplop Putih - Right Middle -->
                     <div class="absolute right-8 top-72 w-24">
                         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_amplop_putih.png?alt=media&token=bc772baf-7821-4d24-bdaa-c57bdb02deef"
-                            alt="Amplop Putih" class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
+                            alt="Amplop Putih" class="w-full object-contain drop-shadow-lg" loading="lazy" />
                         <button @click="showBakarDetail('amplop-putih')"
                             class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -617,7 +617,7 @@
                     <!-- Korek Api - Center -->
                     <div class="absolute right-8 top-96 w-32">
                         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_korek.png?alt=media&token=aa964d7f-86e3-454d-862e-84810c506b90" alt="Korek Api"
-                            class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
+                            class="w-full object-contain drop-shadow-lg" loading="lazy" />
                         <button @click="showBakarDetail('korek')"
                             class="absolute -bottom-2 right-0 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -627,7 +627,7 @@
                     <!-- Meja Kecil - Bottom -->
                     <div class="absolute left-4 bottom-32 w-36">
                         <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_meja_kayu.png?alt=media&token=919243c2-0ba4-4c3c-8ca9-c9ab174802b7"
-                            alt="Meja Kecil" class="w-full object-contain drop-shadow-lg" loading="lazy" format="webp" />
+                            alt="Meja Kecil" class="w-full object-contain drop-shadow-lg" loading="lazy" />
                         <button @click="showBakarDetail('meja')"
                             class="absolute -bottom-3 right-4 w-8 h-8 bg-black rounded-full flex items-center justify-center shadow-lg">
                             <Icon name="heroicons:plus" class="w-5 h-5 text-white" />
@@ -647,7 +647,7 @@
                             </button>
                         </div>
                         <NuxtImg :src="selectedBakar?.image" :alt="selectedBakar?.title"
-                            class="w-32 h-32 object-contain mx-auto mb-4" loading="lazy" format="webp" />
+                            class="w-32 h-32 object-contain mx-auto mb-4" loading="lazy" />
                         <p class="text-gray-700 dark:text-gray-300 text-center">{{ selectedBakar?.description }}</p>
                     </div>
                 </template>
@@ -721,7 +721,7 @@
                 <UAccordion :items="contohXfzItems" :ui="{ label: 'text-xl' }">
                     <template #body="{ item }">
                         <div class="py-4">
-                            <NuxtImg :src="item.image" :alt="item.label" class="w-full object-contain rounded-lg" loading="lazy" format="webp" />
+                            <NuxtImg :src="item.image" :alt="item.label" class="w-full object-contain rounded-lg" loading="lazy" />
                         </div>
                     </template>
                 </UAccordion>
@@ -757,7 +757,7 @@
                     <div class="p-4">
                         <NuxtImg :src="langkahTanpaAltarItems[currentTanpaAltarIndex]!.image"
                             :alt="langkahTanpaAltarItems[currentTanpaAltarIndex]!.title"
-                            class="w-full h-64 object-contain mb-4" format="webp" />
+                            class="w-full h-64 object-contain mb-4" />
                     </div>
                     <div class="px-4 pb-6">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -800,7 +800,7 @@
                     <div class="p-4">
                         <NuxtImg :src="langkahAltarKecilItems[currentAltarKecilIndex]!.image"
                             :alt="langkahAltarKecilItems[currentAltarKecilIndex]!.title"
-                            class="w-full h-64 object-contain mb-4" format="webp" />
+                            class="w-full h-64 object-contain mb-4" />
                     </div>
                     <div class="px-4 pb-6">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -843,7 +843,7 @@
                     <div class="p-4">
                         <NuxtImg :src="langkahAltarBesarItems[currentAltarBesarIndex]!.image"
                             :alt="langkahAltarBesarItems[currentAltarBesarIndex]!.title"
-                            class="w-full h-64 object-contain mb-4" format="webp" />
+                            class="w-full h-64 object-contain mb-4" />
                     </div>
                     <div class="px-4 pb-6">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -913,7 +913,7 @@
                     <div class="p-4">
                         <NuxtImg :src="langkahSetelahBakarItems[currentSetelahBakarIndex]!.image"
                             :alt="langkahSetelahBakarItems[currentSetelahBakarIndex]!.description"
-                            class="w-full h-64 object-contain mb-4" format="webp" />
+                            class="w-full h-64 object-contain mb-4" />
                     </div>
                     <div class="px-4 pb-6">
                         <p class="text-gray-900 dark:text-white mb-2">
@@ -947,7 +947,7 @@
                     <template #body="{ item }">
                         <div class="py-4 px-4 bg-[#e8d5b0] dark:bg-yellow-900/30 rounded-lg">
                             <div class="text-gray-800 dark:text-gray-200 faq- text-lg" v-html="item.content"></div>
-                            <NuxtImg v-if="item.image" :src="item.image" :alt="item.label" class="w-full object-contain rounded-lg mt-4" loading="lazy" format="webp" />
+                            <NuxtImg v-if="item.image" :src="item.image" :alt="item.label" class="w-full object-contain rounded-lg mt-4" loading="lazy" />
                             <p v-if="item.imageCaption" class="text-center text-lg text-black dark:text-gray-400 mt-2">{{ item.imageCaption }}</p>
                             <div v-if="item.contentAfterImage" class="text-gray-800 text-lg dark:text-gray-200 faq-content mt-4" v-html="item.contentAfterImage"></div>
                         </div>

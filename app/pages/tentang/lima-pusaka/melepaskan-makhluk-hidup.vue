@@ -13,9 +13,9 @@
         </div>
 
         <!-- Hero Image -->
-        <div class="relative bg-gradient-to-b from-yellow-100 to-yellow-50 dark:from-gray-800 dark:to-gray-900">
-            <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage5.png?alt=media&token=a6fa4b53-0752-4321-b8fa-2886386ba1c4"
-                alt="Melepaskan Makhluk Hidup" class="w-full" />
+        <div class="relative bg-linear-to-b from-yellow-100 to-yellow-50 dark:from-gray-800 dark:to-gray-900">
+            <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage5.png?alt=media&token=a6fa4b53-0752-4321-b8fa-2886386ba1c4"
+                alt="Melepaskan Makhluk Hidup" class="w-full" loading="eager" />
         </div>
 
         <!-- Content -->
@@ -126,9 +126,9 @@
             <p class="text-gray-700 dark:text-gray-300 italic mb-4">Sebelum Pergi Ke Tempat Pelepasan</p>
 
             <UCard class="overflow-hidden dark:bg-gray-800 dark:border-gray-700">
-                <div class="bg-gradient-to-b from-yellow-100 to-yellow-50 dark:from-gray-700 dark:to-gray-800 mb-2">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6"
-                        alt="Ucapkan" class="w-full" />
+                <div class="bg-linear-to-b from-yellow-100 to-yellow-50 dark:from-gray-700 dark:to-gray-800 mb-2">
+                    <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FStep1.png?alt=media&token=4bd81c58-ede6-47ae-baf1-11e9cb5024b3"
+                        alt="Ucapkan" class="w-full" loading="lazy" />
                 </div>
 
                 <div>
@@ -413,21 +413,21 @@ function scrollNextSepanjangJalan() {
 const sepanjangJalanItems = [
     {
         title: 'Membaca Paritta',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage29.png?alt=media&token=e0e0e0e0-e0e0-e0e0-e0e0-e0e0e0e0e0e0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FSepanjang%20Jalan%20Pelepasan.png?alt=media&token=10ed164c-fb6b-4448-9007-352d2e433f41',
         content: [
             'Anda boleh mulai membaca paritta, paling baik membaca Da Bei Zhou.'
         ]
     },
     {
         title: 'Cara permohonan untuk diri sendiri',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage29.png?alt=media&token=e0e0e0e0-e0e0-e0e0-e0e0-e0e0e0e0e0e0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FSepanjang%20Jalan%20Pelepasan.png?alt=media&token=10ed164c-fb6b-4448-9007-352d2e433f41',
         content: [
             '"Mohon Guan Shi Yin Pu Sa yang maha welas asih memberikati saya XXX (nama panjang anda, saya berjanji akan melakukan lebih banyak kebajikan".'
         ]
     },
     {
         title: 'Untuk orang lain',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage29.png?alt=media&token=e0e0e0e0-e0e0-e0e0-e0e0-e0e0e0e0e0e0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FSepanjang%20Jalan%20Pelepasan.png?alt=media&token=10ed164c-fb6b-4448-9007-352d2e433f41',
         content: [
             '"Mohon Guan Shi Yin Pu Sa yang maha welas asih memberkati YYY (nama dia) terhindar dari malapetaka dan panjang umur."',
             'Lalu mulai membaca Da Bei Zhou, semakin banyak semakin bagus.'
@@ -435,7 +435,7 @@ const sepanjangJalanItems = [
     },
     {
         title: 'Lalu mulai membaca Da Bei Zhou',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage29.png?alt=media&token=e0e0e0e0-e0e0-e0e0-e0e0-e0e0e0e0e0e0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FSepanjang%20Jalan%20Pelepasan.png?alt=media&token=10ed164c-fb6b-4448-9007-352d2e433f41',
         content: [
             'Lalu mulai membaca Da Bei Zhou, semakin banyak semakin bagus.'
         ]
@@ -461,21 +461,21 @@ function scrollNextSesampai() {
 const sesampaiItems = [
     {
         title: 'Berterima Kasih',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage33.png?alt=media&token=c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FBerterimakasih.png?alt=media&token=e33d8710-7523-4174-af77-de6bd70d1386',
         content: [
             'Dengan tangan bersikap anjali, memandang langit dan mengucapkan "Gan En Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa" sebanyak 3 kali.'
         ]
     },
     {
         title: 'Catatan',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage33.png?alt=media&token=c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FBerterimakasih.png?alt=media&token=e33d8710-7523-4174-af77-de6bd70d1386',
         content: [
             'Ikrar disesuaikan dengan tekad keinginan sendiri, kemampuan, dan keadaan masing-masing.',
         ]
     },
     {
         title: 'Catatan',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage33.png?alt=media&token=c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FBerterimakasih.png?alt=media&token=e33d8710-7523-4174-af77-de6bd70d1386',
         content: [
             'Setiap orang memiliki tingkat kesadaran yang berbeda, maka berikrarlah sesuai dengan kemampuannya, jangan meminta semua orang harus berikrar tentang satu hal tertentu yang sama'
         ]
@@ -500,14 +500,14 @@ function scrollNextMulaiMelepaskan() {
 
 const mulaiMelepaskanItems = [
     {
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage36.png?alt=media&token=d731b737-0f77-4252-afa7-f35c6ff2f466',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FMulai%20melepaskan%20ikan.png?alt=media&token=493363a8-8848-417c-980c-0f924c6fcf5d',
         content: [
             'Sebelum melepaskan makhluk hidup sebaiknya memohon pada Pu Sa'
         ]
     },
     {
         title: 'Membaca Paritta',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage37.png?alt=media&token=d0d0d0d0-d0d0-d0d0-d0d0-d0d0d0d0d0d0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FSesampainya%20di%20tempat%20pelepasan.png?alt=media&token=5a850a11-f5ea-4506-a347-5e2a66560a81',
         content: [
             'Baca 1 kali Da Bei Zhou, 1 kali Xin Jing, 7 kali Qi Fo Mie Zui Zhen Yan',
             'Bagi umat yang belum bisa membacanya, boleh terus mengucapkan nama Pu Sa: Na Mo Da Ci Da Bei Guan Shi Yin Pu Sa'
@@ -515,7 +515,7 @@ const mulaiMelepaskanItems = [
     },
     {
         title: 'Mengucapkan Permohonan',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage37.png?alt=media&token=d0d0d0d0-d0d0-d0d0-d0d0-d0d0d0d0d0d0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FSesampainya%20di%20tempat%20pelepasan.png?alt=media&token=5a850a11-f5ea-4506-a347-5e2a66560a81',
         content: [
             'Untuk diri sendiri:',
             'Guan Shi Yin Pu Sa yang maha welas asih, saya XXX hari ini melepas N ekor ikan, mohon Guan Shi Yin Pu Sa berwelas asih memberkati saya XXX terhindar dari malapetaka dan panjang umur atau mengurai hubungan karma buruk, menghapus karma buruk (atau memohon hal – hal lainnya), saya pasti akan melakukan lebih banyak kebajikan.'
@@ -523,7 +523,7 @@ const mulaiMelepaskanItems = [
     },
     {
         title: 'Mengucapkan Permohonan',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage37.png?alt=media&token=d0d0d0d0-d0d0-d0d0-d0d0-d0d0d0d0d0d0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FSesampainya%20di%20tempat%20pelepasan.png?alt=media&token=5a850a11-f5ea-4506-a347-5e2a66560a81',
         content: [
             'Melepaskan makhluk hidup mewakili orang lain:',
             'Guan Shi Yin Pu Sa yang maha welas asih, YY (nama orang yang diwakilkan) melepaskan N ekor ikan, mohon Guan Shi Yin Pu Sa memberkati YY terhindar dari mala petaka dan panjang umur (atau memberkati YY dengan permohonan lainnya).',
@@ -533,7 +533,7 @@ const mulaiMelepaskanItems = [
     },
     {
         title: 'Mengucapkan Permohonan',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage37.png?alt=media&token=d0d0d0d0-d0d0-d0d0-d0d0-d0d0d0d0d0d0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FSesampainya%20di%20tempat%20pelepasan.png?alt=media&token=5a850a11-f5ea-4506-a347-5e2a66560a81',
         content: [
             'Melepaskan makhluk hidup untuk Master',
             'Guan Shi Yin Pu Sa yang maha welas asih, hari ini saya XXX melepaskan N ekor ikan untuk Master Lu, mohon Pu Sa memberkati Master dengan kesehatan, agar bisa menyelamatkan lebih banyak makhluk lainnya. Bersama juga menumbuhkan perasaan welas asih, semoga semua berbahagia dalam Dharma.'
@@ -541,7 +541,7 @@ const mulaiMelepaskanItems = [
     },
     {
         title: 'Mengucapkan Permohonan',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage37.png?alt=media&token=d0d0d0d0-d0d0-d0d0-d0d0-d0d0d0d0d0d0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FSesampainya%20di%20tempat%20pelepasan.png?alt=media&token=5a850a11-f5ea-4506-a347-5e2a66560a81',
         content: [
             'Melepaskan makhluk hidup untuk orang yang sudah meninggal',
             'Guan Shi Yin Pu Sa yang maha welas asih, saya XXX (nama sendiri) hari ini melepaskan N ekor ikan (atau udang atau binatang lainnya), mohon Guan Shi Yin Pu Sa berwelas asih memberkati ZZZ (nama orang yang sudah meninggal) dan menghapuskan karma buruknya.',
@@ -550,14 +550,14 @@ const mulaiMelepaskanItems = [
     },
     {
         title: 'Permohonan',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage33.png?alt=media&token=c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FBerterimakasih.png?alt=media&token=e33d8710-7523-4174-af77-de6bd70d1386',
         content: [
             'Jika saat melepaskan ikan/binatang lain yang dilepaskan tertangkap dan ada masalah polusi lingkungan, mohon Guan Shi Yin Pu Sa yang maha welas asih dan maha penolong serta Dewa Pelindung Dharma memaafkan saya.',
         ]
     },
     {
         title: 'Mengucapkan Permohonan',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage33.png?alt=media&token=c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FBerterimakasih.png?alt=media&token=e33d8710-7523-4174-af77-de6bd70d1386',
         content: [
             'Saat melepaskan makhluk hidup boleh',
             'terus membaca Da Bei Zhou, Xin Jing, Wang Sheng Zhou jumlahnya tidak dibatasi, semakin banyak semakin bagus.'
@@ -565,7 +565,7 @@ const mulaiMelepaskanItems = [
     },
     {
         title: 'Mengucapkan Permohonan',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage33.png?alt=media&token=c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FBerterimakasih.png?alt=media&token=e33d8710-7523-4174-af77-de6bd70d1386',
         content: [
             'Sebelum melepaskan ikan ke dalam air ucapkan sekali lagi: ',
             '\“XXX melepaskan N ekor ikan (atau udang atau hewan lainnya), mohon Guan Shi Yin Pu Sa yang maha welas asih memberkati saya XXX (atau keluarga dari XXX) terhindarkan dari mala petaka dan panjang umur....\”'
@@ -573,7 +573,7 @@ const mulaiMelepaskanItems = [
     },
     {
         title: 'Mengucapkan Permohonan',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage33.png?alt=media&token=c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FBerterimakasih.png?alt=media&token=e33d8710-7523-4174-af77-de6bd70d1386',
         content: [
             'Lalu secara perlahan melepaskan ikan ke dalam air, melepaskan ikan ke air secara pelan-pelan dan hati-hati, supaya tidak menyakiti ikannya. ',
             'Jangan membaca paritta sambil memandangi air, sebaiknya memandangi langit.'
@@ -581,7 +581,7 @@ const mulaiMelepaskanItems = [
     },
     {
         title: 'Mengucapkan Permohonan',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftentang%2Fimage33.png?alt=media&token=c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fmelepaskan_mh%2FBerterimakasih.png?alt=media&token=e33d8710-7523-4174-af77-de6bd70d1386',
         content: [
             'Jika saat Fang Sheng ada ikan, udang, kepiting dan binatang lainnya ada yang mati, harus membaca Wang Sheng Zhou untuk mendoakan arwah mereka ke alam yang lebih baik,',
             'Biasanya 3x Wang Sheng Zhou untuk setiap ekor udang, 7x Wang Sheng Zhou untuk setiap ekor kepiting, 7x Wang Sheng Zhou untuk setiap ekor ikan.'

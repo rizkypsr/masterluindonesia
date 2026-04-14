@@ -44,7 +44,7 @@
             <!-- Hero Image -->
             <div class="mb-6">
                 <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep678910-11.png?alt=media&token=878db4a1-729f-4584-af6d-0a424dc8f480"
-                    alt="Tata Cara Sembahyang" class="w-full h-96 object-cover rounded-lg" loading="eager" format="webp" />
+                    alt="Tata Cara Sembahyang" class="w-full h-96 object-cover rounded-lg" loading="eager" />
             </div>
 
             <!-- Section 1: Langkah Pertama -->
@@ -53,7 +53,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep%201Cuci%20Tangan.png?alt=media&token=e8fc99ff-1cd9-40b8-bbfc-7530ccd1395f"
-                        alt="Cuci Tangan" class="w-full h-96 object-fill rounded-lg mb-4" loading="lazy" format="webp" />
+                        alt="Cuci Tangan" class="w-full h-96 object-fill rounded-lg mb-4" loading="lazy" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Cuci Tangan</h3>
                     </div>
@@ -66,7 +66,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep%202%20Nyalakan%20Dupa.png?alt=media&token=331b3ab2-4bf7-458a-91a9-cc41a574b486"
-                        alt="Nyalakan Dupa" class="w-full h-96 object-fill rounded-lg mb-4" loading="lazy" format="webp" />
+                        alt="Nyalakan Dupa" class="w-full h-96 object-fill rounded-lg mb-4" loading="lazy" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Nyalakan dupa dengan api lampu
                             minyak
@@ -81,7 +81,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep%203dan4.png?alt=media&token=71f196bd-dfb6-4029-a09c-58ab0f3e01c7"
-                        alt="Pegang Dupa" class="w-full h-96 object-cover rounded-lg mb-4" loading="lazy" format="webp" />
+                        alt="Pegang Dupa" class="w-full h-96 object-cover rounded-lg mb-4" loading="lazy" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Pegang dupa dengan kedua
                             tangan dan
@@ -98,7 +98,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep%203dan4.png?alt=media&token=71f196bd-dfb6-4029-a09c-58ab0f3e01c7"
-                        alt="Ucapkan" class="w-full h-96 object-cover rounded-lg mb-4" loading="lazy" format="webp" />
+                        alt="Ucapkan" class="w-full h-96 object-cover rounded-lg mb-4" loading="lazy" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Ucapkan:</h3>
                         <p class="text-gray-700 dark:text-gray-300">Saya XXX memberi hormat kepada ... Pu Sa</p>
@@ -112,7 +112,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep%205.png?alt=media&token=1440cce5-0493-4ff8-a83e-3d4f4424b667"
-                        alt="Tancap Dupa" class="w-full h-96 object-cover rounded-lg mb-4" loading="lazy" format="webp" />
+                        alt="Tancap Dupa" class="w-full h-96 object-cover rounded-lg mb-4" loading="lazy" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Tancap dupa dengan kedua tangan
                             ke
@@ -151,7 +151,7 @@
                 <UCarousel ref="langkahKeenamRef" v-slot="{ item }" :items="langkahKeenamItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKeenam">
                     <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                        <NuxtImg :src="item.image" :alt="item.title" class="w-full h-full object-fill rounded-lg mb-4" loading="eager" format="webp" />
+                        <NuxtImg :src="item.image" :alt="item.title" class="w-full h-full object-fill rounded-lg mb-4" loading="eager" />
                         <div class="px-2">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
                             <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">{{ item.description }}</p>
@@ -179,7 +179,7 @@
                 <UCarousel ref="langkahKetujuhRef" v-slot="{ item }" :items="langkahKetujuhItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKetujuh">
                     <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                        <NuxtImg :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" loading="lazy" format="webp" />
+                        <NuxtImg :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" loading="lazy" />
                         <div class="px-2">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
                             <p v-if="item.note" class="text-gray-500 dark:text-gray-400 text-lg">{{ item.note }}</p>
@@ -194,7 +194,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep678910-11.png?alt=media&token=878db4a1-729f-4584-af6d-0a424dc8f480"
-                        alt="Langkah Kedelapan" class="w-full h-96 object-cover rounded-lg mb-4" loading="lazy" format="webp" />
+                        alt="Langkah Kedelapan" class="w-full h-96 object-cover rounded-lg mb-4" loading="lazy" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Baca 1x Da Bei Zhou dan 1x Xin Jing
                         </h3>
@@ -220,7 +220,7 @@
                 <UCarousel ref="langkahKesembilanRef" v-slot="{ item }" :items="langkahKesembilanItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKesembilan">
                     <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                        <NuxtImg :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" loading="lazy" format="webp" />
+                        <NuxtImg :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" loading="lazy" />
                         <div class="px-2">
                             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
                             <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">{{ item.description }}</p>
@@ -248,7 +248,7 @@
                 <UCarousel ref="langkahKesepuluhRef" v-slot="{ item }" :items="langkahKesepuluhItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKesepuluh">
                     <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                        <NuxtImg :src="item.image" :alt="item.title" class="w-full h-full rounded-lg mb-4" loading="lazy" format="webp" />
+                        <NuxtImg :src="item.image" :alt="item.title" class="w-full h-full rounded-lg mb-4" loading="lazy" />
                         <div class="px-2">
                             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
                             <p v-if="item.description" class="text-gray-700 dark:text-gray-300 text-lg mb-2">{{
@@ -266,7 +266,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep11-12.png?alt=media&token=9111f36c-d5d2-4f77-b159-6c80b93d5cbb"
-                        alt="Langkah Kesebelas" class="w-full h-96 object-fill rounded-lg mb-4" loading="lazy" format="webp" />
+                        alt="Langkah Kesebelas" class="w-full h-96 object-fill rounded-lg mb-4" loading="lazy" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Baca 7x Qi Fo Mie Zui Zhen Yan</h3>
                     </div>
@@ -279,7 +279,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep11-12.png?alt=media&token=9111f36c-d5d2-4f77-b159-6c80b93d5cbb"
-                        alt="Langkah Kedua Belas" class="w-full h-96 object-fill rounded-lg mb-4" loading="lazy" format="webp" />
+                        alt="Langkah Kedua Belas" class="w-full h-96 object-fill rounded-lg mb-4" loading="lazy" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Berdiri</h3>
                     </div>
@@ -292,7 +292,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep11-12.png?alt=media&token=9111f36c-d5d2-4f77-b159-6c80b93d5cbb"
-                        alt="Langkah Ketiga Belas" class="w-full h-96 object-fill rounded-lg mb-4" loading="lazy" format="webp" />
+                        alt="Langkah Ketiga Belas" class="w-full h-96 object-fill rounded-lg mb-4" loading="lazy" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Bersikap Anjali</h3>
                     </div>
@@ -305,7 +305,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep14.png?alt=media&token=b0866298-4459-4a6b-b7ee-e035d9aba75c"
-                        alt="Langkah Keempat Belas" class="w-full h-96 object-fill rounded-lg mb-4" loading="lazy" format="webp" />
+                        alt="Langkah Keempat Belas" class="w-full h-96 object-fill rounded-lg mb-4" loading="lazy" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Memberikan hormat dengan
                             membungkukkan badan
@@ -320,7 +320,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep15.png?alt=media&token=0d4f72f6-5243-4d83-86da-207852fe2bda"
-                        alt="Langkah Kelima Belas" class="w-full h-96 object-fill rounded-lg mb-4" loading="lazy" format="webp" />
+                        alt="Langkah Kelima Belas" class="w-full h-96 object-fill rounded-lg mb-4" loading="lazy" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Mundur selangkah</h3>
                     </div>
@@ -333,7 +333,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <NuxtImg src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep16.png?alt=media&token=fd5ea6c9-cafd-4ad2-b460-31f1b4ca55be"
-                        alt="Langkah Enam Belas" class="w-full h-96 object-fill rounded-lg mb-4" loading="lazy" format="webp" />
+                        alt="Langkah Enam Belas" class="w-full h-96 object-fill rounded-lg mb-4" loading="lazy" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Boleh pergi atau kembali melanjutkan
                             pembacaan paritta Anda.</h3>
