@@ -42,7 +42,7 @@
 
             <!-- Hero Image -->
             <div class="mb-6">
-                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6"
+                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep678910-11.png?alt=media&token=878db4a1-729f-4584-af6d-0a424dc8f480"
                     alt="Tata Cara Sembahyang" class="w-full h-96 object-cover rounded-lg" />
             </div>
 
@@ -51,8 +51,8 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Pertama</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_pertama.png?alt=media&token=aef7e12b-2b3a-409f-ac92-fe1193f32e5e"
-                        alt="Cuci Tangan" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep%201Cuci%20Tangan.png?alt=media&token=e8fc99ff-1cd9-40b8-bbfc-7530ccd1395f"
+                        alt="Cuci Tangan" class="w-full h-96 object-fill rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Cuci Tangan</h3>
                     </div>
@@ -64,8 +64,8 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kedua</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_kedua.png?alt=media&token=04dbe340-5a72-41a8-903e-0e0724ad8038"
-                        alt="Nyalakan Dupa" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep%202%20Nyalakan%20Dupa.png?alt=media&token=331b3ab2-4bf7-458a-91a9-cc41a574b486"
+                        alt="Nyalakan Dupa" class="w-full h-96 object-fill rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Nyalakan dupa dengan api lampu
                             minyak
@@ -79,7 +79,7 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Ketiga</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_ketiga_keempat.png?alt=media&token=600fecde-f726-4117-aabf-cc022527689e"
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep%203dan4.png?alt=media&token=71f196bd-dfb6-4029-a09c-58ab0f3e01c7"
                         alt="Pegang Dupa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Pegang dupa dengan kedua
@@ -96,7 +96,7 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Keempat</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_ketiga_keempat.png?alt=media&token=600fecde-f726-4117-aabf-cc022527689e"
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep%203dan4.png?alt=media&token=71f196bd-dfb6-4029-a09c-58ab0f3e01c7"
                         alt="Ucapkan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Ucapkan:</h3>
@@ -110,7 +110,7 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kelima</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_kelima.png?alt=media&token=89e67793-2420-47d2-8bb8-3ddfc1f8946b"
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep%205.png?alt=media&token=1440cce5-0493-4ff8-a83e-3d4f4424b667"
                         alt="Tancap Dupa" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Tancap dupa dengan kedua tangan
@@ -150,7 +150,7 @@
                 <UCarousel ref="langkahKeenamRef" v-slot="{ item }" :items="langkahKeenamItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKeenam">
                     <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                        <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
+                        <img :src="item.image" :alt="item.title" class="w-full h-full object-fill rounded-lg mb-4" />
                         <div class="px-2">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
                             <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">{{ item.description }}</p>
@@ -192,7 +192,7 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kedelapan</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6"
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep678910-11.png?alt=media&token=878db4a1-729f-4584-af6d-0a424dc8f480"
                         alt="Langkah Kedelapan" class="w-full h-96 object-cover rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Baca 1x Da Bei Zhou dan 1x Xin Jing
@@ -247,7 +247,7 @@
                 <UCarousel ref="langkahKesepuluhRef" v-slot="{ item }" :items="langkahKesepuluhItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKesepuluh">
                     <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                        <img :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" />
+                        <img :src="item.image" :alt="item.title" class="w-full h-full rounded-lg mb-4" />
                         <div class="px-2">
                             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
                             <p v-if="item.description" class="text-gray-700 dark:text-gray-300 text-lg mb-2">{{
@@ -264,8 +264,8 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kesebelas</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6"
-                        alt="Langkah Kesebelas" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep11-12.png?alt=media&token=9111f36c-d5d2-4f77-b159-6c80b93d5cbb"
+                        alt="Langkah Kesebelas" class="w-full h-96 object-fill rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Baca 7x Qi Fo Mie Zui Zhen Yan</h3>
                     </div>
@@ -277,8 +277,8 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kedua Belas</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_keduabelas.png?alt=media&token=14c8121f-901a-4151-a7d7-72b7dabbe905"
-                        alt="Langkah Kedua Belas" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep11-12.png?alt=media&token=9111f36c-d5d2-4f77-b159-6c80b93d5cbb"
+                        alt="Langkah Kedua Belas" class="w-full h-96 object-fill rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Berdiri</h3>
                     </div>
@@ -290,8 +290,8 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Ketiga Belas</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_keduabelas.png?alt=media&token=14c8121f-901a-4151-a7d7-72b7dabbe905"
-                        alt="Langkah Ketiga Belas" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep11-12.png?alt=media&token=9111f36c-d5d2-4f77-b159-6c80b93d5cbb"
+                        alt="Langkah Ketiga Belas" class="w-full h-96 object-fill rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Bersikap Anjali</h3>
                     </div>
@@ -303,8 +303,8 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Keempat Belas</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_keempatbelas.png?alt=media&token=c2abe6ad-cfa7-4144-b7e6-c9de55a49ffd"
-                        alt="Langkah Keempat Belas" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep14.png?alt=media&token=b0866298-4459-4a6b-b7ee-e035d9aba75c"
+                        alt="Langkah Keempat Belas" class="w-full h-96 object-fill rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Memberikan hormat dengan
                             membungkukkan badan
@@ -318,8 +318,8 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kelima Belas</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_keduabelas.png?alt=media&token=14c8121f-901a-4151-a7d7-72b7dabbe905"
-                        alt="Langkah Kelima Belas" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep15.png?alt=media&token=0d4f72f6-5243-4d83-86da-207852fe2bda"
+                        alt="Langkah Kelima Belas" class="w-full h-96 object-fill rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Mundur selangkah</h3>
                     </div>
@@ -331,8 +331,8 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Enam Belas</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_keenambelas.png?alt=media&token=9bf71f70-b77d-4cda-90b4-887ac8f3ea97"
-                        alt="Langkah Enam Belas" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep16.png?alt=media&token=fd5ea6c9-cafd-4ad2-b460-31f1b4ca55be"
+                        alt="Langkah Enam Belas" class="w-full h-96 object-fill rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">Boleh pergi atau kembali melanjutkan
                             pembacaan paritta Anda.</h3>
@@ -393,28 +393,28 @@ function scrollNextLangkahKeenam() {
 const langkahKeenamItems = [
     {
         id: 1,
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fbimbingan%2Fimage_1.png?alt=media&token=1ec51692-9daa-4ba7-af82-2b82f65e1e51',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep678910-11.png?alt=media&token=878db4a1-729f-4584-af6d-0a424dc8f480',
         title: 'Mengucapkan Nama Buddha Bodhisattva',
         description: '',
         note: ''
     },
     {
         id: 2,
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_keenam_2.png?alt=media&token=cd7b4b3d-54be-4adc-851f-507f3cd1b100',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FSized-ShiJiaMouNiFo-A2.jpg?alt=media&token=15e5a7b8-0aee-4deb-9fc3-4bb26897d2a0',
         title: 'Gan En Na Mo Shi Jia Mou Ni Fo',
         description: 'Ucapkan 1x dilkuti dengan bersembah sujud 1x',
         note: ''
     },
     {
         id: 3,
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_keenam_3.png?alt=media&token=ca818827-ca51-4ac5-89c7-b6a140c1c9b3',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FGuan%20Shi%20YIn%20Pu%20Sa.jpg?alt=media&token=89c4b2c4-ceaf-4835-9b86-f620f222b7dc',
         title: 'Gan En Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa',
         description: 'Ucapkan 1x diikuti dengan bersembah sujud 1x',
         note: ''
     },
     {
         id: 4,
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_keenam_4.png?alt=media&token=c858c06d-e919-494f-800a-48c4a991d99d',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FNanJingPS.jpg?alt=media&token=74d2914d-e802-46cc-80c3-97fc6d8a3228',
         title: 'Gan En Na Mo Nan Jing Pu Sa',
         description: 'Ucapkan 1x diikuti dengan bersembah sujud 1x',
         note: ''
@@ -428,7 +428,7 @@ const langkahKeenamItems = [
     },
     {
         id: 6,
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_keenam_6.png?alt=media&token=c8d7d7da-ed58-429b-a309-23910bd79925',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FGuanDiPS.jpg?alt=media&token=1f889925-1441-4f7d-b002-b7acf3668587',
         title: 'Gan En Na Mo Guan Di Pu Sa',
         description: 'Ucapkan 1x diikuti dengan bersembah sujud 1x',
         note: ''
@@ -468,7 +468,7 @@ function scrollNextLangkahKetujuh() {
 const langkahKetujuhItems = [
     {
         id: 1,
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep678910-11.png?alt=media&token=878db4a1-729f-4584-af6d-0a424dc8f480',
         title: 'Merapatkan kedua telapak tangan (Anjali)',
         note: ''
     },
@@ -505,14 +505,14 @@ function scrollNextLangkahKesembilan() {
 const langkahKesembilanItems = [
     {
         id: 1,
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep678910-11.png?alt=media&token=878db4a1-729f-4584-af6d-0a424dc8f480',
         title: 'Berdoa',
         description: 'Mohon Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa memberkati dan melindungi saya XXX, memberikan saya kesehatan, keselamatan dan keberuntungan',
         note: ''
     },
     {
         id: 2,
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep678910-11.png?alt=media&token=878db4a1-729f-4584-af6d-0a424dc8f480',
         title: 'Berikrar',
         description: 'Saya XXX berikrar kepada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa untuk...',
         note: 'Contohnya: bervegetarian penuh dan lainnya'
@@ -538,28 +538,28 @@ function scrollNextLangkahKesepuluh() {
 const langkahKesepuluhItems = [
     {
         id: 1,
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FStep678910-11.png?alt=media&token=878db4a1-729f-4584-af6d-0a424dc8f480',
         title: 'Mengucapkan Nama Buddha Bodhisattva',
         description: '',
         note: ''
     },
     {
         id: 2,
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_keenam_2.png?alt=media&token=cd7b4b3d-54be-4adc-851f-507f3cd1b100',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FSized-ShiJiaMouNiFo-A2.jpg?alt=media&token=15e5a7b8-0aee-4deb-9fc3-4bb26897d2a0',
         title: 'Gan En Na Mo Shi Jia Mou Ni Fo',
         description: 'Ucapkan 3x diikuti dengan bersembah sujud',
         note: ''
     },
     {
         id: 3,
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_keenam_3.png?alt=media&token=ca818827-ca51-4ac5-89c7-b6a140c1c9b3',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FGuan%20Shi%20YIn%20Pu%20Sa.jpg?alt=media&token=89c4b2c4-ceaf-4835-9b86-f620f222b7dc',
         title: 'Gan En Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa',
         description: 'Ucapkan 3x diikuti dengan bersembah sujud',
         note: ''
     },
     {
         id: 4,
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_keenam_4.png?alt=media&token=c858c06d-e919-494f-800a-48c4a991d99d',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FNanJingPS.jpg?alt=media&token=74d2914d-e802-46cc-80c3-97fc6d8a3228',
         title: 'Gan En Na Mo Nan Jing Pu. Sa',
         description: 'Ucapkan 1x diikuti dengan bersembah sujud',
         note: ''
@@ -573,7 +573,7 @@ const langkahKesepuluhItems = [
     },
     {
         id: 6,
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Flangkah_keenam_6.png?alt=media&token=c8d7d7da-ed58-429b-a309-23910bd79925',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FGuanDiPS.jpg?alt=media&token=1f889925-1441-4f7d-b002-b7acf3668587',
         title: 'Gan En Na Mo Guan Di Pu Sa',
         description: 'Ucapkan 1x diikuti dengan bersembah sujud',
         note: ''

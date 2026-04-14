@@ -39,8 +39,8 @@
         <div ref="contentRef" class="flex-1 overflow-y-auto px-4 py-6">
             <!-- Hero Image -->
             <div class="mb-6">
-                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_1.png?alt=media&token=4c54233e-4de3-4982-ba38-cd3f80e78b97" alt="Altar Besar"
-                    class="w-full h-96 object-cover rounded-lg" />
+                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_1.png?alt=media&token=4c54233e-4de3-4982-ba38-cd3f80e78b97"
+                    alt="Altar Besar" class="w-full h-96 object-fill rounded-lg" />
             </div>
 
             <!-- Section 1: Makna Altar Buddha -->
@@ -123,8 +123,8 @@
 
                 <!-- Buddha Sakyamuni -->
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl mb-4">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_2.png?alt=media&token=627578b8-d7ad-4082-871c-2583c6d23525"
-                        alt="Buddha Sakyamuni" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FSized-ShiJiaMouNiFo-A2.jpg?alt=media&token=15e5a7b8-0aee-4deb-9fc3-4bb26897d2a0"
+                        alt="Buddha Sakyamuni" class="w-full h-96 object-fill rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Buddha Sakyamuni</h3>
                         <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">Kita sendiri tinggal di dunia yang
@@ -134,18 +134,16 @@
                             tidak bisa menyediakan sedikit ruang untuk memasang altar bagi para Buddha dan Bodhisattva
                             (Pu Sa)?
                         </p>
-                        <p class="text-gray-700 dark:text-gray-300 text-lg">Beliau bersaksi atas semua kita yang
-                            bersedia,
-                            dengan tekad
-                            yang luhur
-                            untuk mau dan siap untuk menyebarluaskan Buddha Sakyamuni.</p>
+                        <p class="text-gray-700 dark:text-gray-300 text-lg">Master Berwelas asih memberikan petunjuk,
+                            bahwa
+                            altar Xin Ling Fa Men mulai saat ini perlu menyembahyangi Buddha Sakyamuni.</p>
                     </div>
                 </UCard>
 
                 <!-- Guan Shi Yin Pu Sa -->
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl mb-4">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_3.png?alt=media&token=bd7dcccd-d647-4498-be0b-575bb53b9633"
-                        alt="Guan Shi Yin Pu Sa" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FGuan%20Shi%20YIn%20Pu%20Sa.jpg?alt=media&token=89c4b2c4-ceaf-4835-9b86-f620f222b7dc"
+                        alt="Guan Shi Yin Pu Sa" class="w-full h-96 object-fill rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Guan Shi Yin Pu Sa</h3>
                         <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">Guan Shi Yin Pu Sa Merupakan Maha
@@ -159,8 +157,8 @@
 
                 <!-- Nan Jing Pu Sa -->
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl mb-4">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_4.png?alt=media&token=548847c6-1f0c-4e0d-869f-5d9e21069013"
-                        alt="Nan Jing Pu Sa" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FNanJingPS.jpg?alt=media&token=74d2914d-e802-46cc-80c3-97fc6d8a3228"
+                        alt="Nan Jing Pu Sa" class="w-full h-96 object-fill rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Nan Jing Pu Sa</h3>
                         <p class="text-gray-700 dark:text-gray-300 text-lg">Nan Jing Pu Sa adalah Merupakan salah satu
@@ -175,7 +173,7 @@
                 <!-- Tai Sui Pu Sa -->
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl mb-4">
                     <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_5.png?alt=media&token=4f2366dc-33fd-4ff3-aa65-a7956bf5ef1d"
-                        alt="Tai Sui Pu Sa" class="w-full h-96 object-cover rounded-lg mb-4" />
+                        alt="Tai Sui Pu Sa" class="w-full h-96 object-fill rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Tai Sui Pu Sa</h3>
                         <p class="text-gray-700 dark:text-gray-300 text-lg">Tai Sui Pu Sa adalah Bodhisattva yang
@@ -189,8 +187,8 @@
 
                 <!-- Guan Di Pu Sa, Zhou Cang Pu Sa, Guan Ping Pu Sa -->
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_6.png?alt=media&token=439e4528-89fc-4ec1-8648-d0991e6a0474"
-                        alt="Guan Di Pu Sa" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FGuanDiPS.jpg?alt=media&token=1f889925-1441-4f7d-b002-b7acf3668587"
+                        alt="Guan Di Pu Sa" class="w-full h-96 object-fill rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Guan Di Pu Sa, Zhou Cang Pu Sa,
                             Guan
@@ -213,7 +211,7 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Penempatan Altar</h2>
 
                 <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_7.png?alt=media&token=b95054f2-f54c-4304-92b6-b2fbfb810466"
-                    alt="Penempatan Altar" class="w-full h-96 object-cover rounded-lg mb-4" />
+                    alt="Penempatan Altar" class="w-full h-96 object-fill rounded-lg mb-4" />
 
                 <div class="space-y-3 text-gray-700 dark:text-gray-300 text-lg">
                     <p><span class="font-bold">1.</span> Tidak boleh ditempatkan di dalam kamar tidur suami – istri</p>
@@ -255,26 +253,26 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Penataan Meja Altar</h2>
 
                 <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_8.png?alt=media&token=f8e7973c-acec-4da7-bbb6-81254459c2d4"
-                    alt="Penataan Meja Altar" class="w-full h-96 object-cover rounded-lg mb-6" />
+                    alt="Penataan Meja Altar" class="w-full rounded-lg mb-6" />
 
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Gambar Pemandangan Altar</h3>
                 <p class="text-gray-600 dark:text-gray-400 mb-4">Pilihan 1</p>
                 <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_9.png?alt=media&token=3e6affb2-cd11-4965-90d7-c4ae3e21aed2"
-                    alt="Gambar Pemandangan Altar Pilihan 1" class="w-full h-96 object-cover rounded-lg mb-6" />
+                    alt="Gambar Pemandangan Altar Pilihan 1" class="w-full rounded-lg mb-6" />
 
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Gambar Pemandangan Altar</h3>
                 <p class="text-gray-600 dark:text-gray-400 mb-4">Pilihan 2</p>
                 <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_10.png?alt=media&token=05af5960-74b4-49ba-8ac9-6ca2bb6388bc"
-                    alt="Gambar Pemandangan Altar Pilihan 2" class="w-full h-96 object-cover rounded-lg mb-6" />
+                    alt="Gambar Pemandangan Altar Pilihan 2" class="w-full rounded-lg mb-6" />
 
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Peralatan Altar</h3>
                 <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_11.png?alt=media&token=e6d973cd-8cbc-4464-bae3-0ea8661129e6"
-                    alt="Peralatan Altar" class="w-full h-96 object-cover rounded-lg mb-6" />
+                    alt="Peralatan Altar" class="w-full rounded-lg mb-6" />
 
                 <!-- Tempat Dupa 1 -->
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tempat Dupa</h3>
-                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_12.png?alt=media&token=5cd16642-02f7-4a9f-8951-37c1aed4da62" alt="Tempat Dupa"
-                    class="w-full rounded-lg mb-4" />
+                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_12.png?alt=media&token=5cd16642-02f7-4a9f-8951-37c1aed4da62"
+                    alt="Tempat Dupa" class="w-full rounded-lg mb-4" />
                 <div class="space-y-3 text-gray-700 dark:text-gray-300 text-lg mb-6">
                     <p>Harus ada tempat dupa di atas Altar. Jika tidak ada tempat dupa, Pu Sa tidak akan datang dan
                         tidak bisa
@@ -294,8 +292,8 @@
 
                 <!-- Tempat Dupa 2 -->
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tempat Dupa</h3>
-                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_13.png?alt=media&token=c142f461-b6df-4ee5-92b4-90534ae42088" alt="Tempat Dupa"
-                    class="w-full rounded-lg mb-4" />
+                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_13.png?alt=media&token=c142f461-b6df-4ee5-92b4-90534ae42088"
+                    alt="Tempat Dupa" class="w-full rounded-lg mb-4" />
                 <div class="space-y-3 text-gray-700 dark:text-gray-300 text-lg mb-6">
                     <p>Harus menyembahyangi Altar dengan dupa, jika tidak Pu Sa tidak akan datang.</p>
                     <p>Jika tidak menyembahyangi Altar untuk waktu yang cukup lama, tidak hanya tidak hormat tapi juga
@@ -390,7 +388,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl">
                     <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_19.png?alt=media&token=906f42cf-5d87-45e6-aff1-8248b0ffe74c"
-                        alt="Tata Cara Mengundang Buddha Bodhisattva" class="w-full h-96 object-cover rounded-lg" />
+                        alt="Tata Cara Mengundang Buddha Bodhisattva" class="w-full rounded-lg" />
                 </UCard>
             </div>
 
@@ -402,7 +400,7 @@
                     <template #content="{ item }">
                         <p
                             class="text-black dark:text-gray-200 bg-[#edd9af] dark:bg-gray-700 px-4 py-3 rounded-2xl shadow-md text-lg">
-                            {{ item.label }}
+                            {{ item.content }}
                         </p>
                     </template>
                 </UAccordion>

@@ -164,22 +164,12 @@
                     </div>
 
                     <!-- Card -->
-                    <div
-                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 h-80 flex flex-col">
-                        <div
-                            class="bg-gradient-to-b from-blue-100 to-blue-50 dark:from-gray-700 dark:to-gray-800 h-72 flex-shrink-0">
-                            <img :src="item.image" :alt="item.title" class="w-full h-full object-contain" />
-                        </div>
-                        <div class="p-4 flex-1 min-h-0 overflow-y-auto">
-                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">
-                                {{ item.title }}
-                            </h3>
-                            <p v-for="(text, idx) in item.content" :key="idx"
-                                class="text-gray-700 dark:text-gray-300 text-sm mb-2">
-                                {{ text }}
-                            </p>
-                        </div>
-                    </div>
+                    <InfoCard
+                        :image="item.image"
+                        :title="item.title"
+                        :content="item.content"
+                        gradient-color="blue"
+                    />
                 </div>
             </UCarousel>
         </div>
@@ -207,18 +197,12 @@
                     </div>
 
                     <!-- Card -->
-                    <div
-                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 h-80 flex flex-col">
-                        <div
-                            class="bg-gradient-to-b from-orange-100 to-orange-50 dark:from-gray-700 dark:to-gray-800 h-72 flex-shrink-0">
-                            <img :src="item.image" :alt="item.title" class="w-full h-full object-contain" />
-                        </div>
-                        <div class="p-4 flex-1 min-h-0 overflow-y-auto">
-                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
-                            <p v-for="(text, idx) in item.content" :key="idx"
-                                class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{ text }}</p>
-                        </div>
-                    </div>
+                    <InfoCard
+                        :image="item.image"
+                        :title="item.title"
+                        :content="item.content"
+                        gradient-color="orange"
+                    />
                 </div>
             </UCarousel>
         </div>
@@ -246,19 +230,12 @@
                     </div>
 
                     <!-- Card -->
-                    <div
-                        class="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 h-80 flex flex-col">
-                        <div
-                            class="bg-gradient-to-b from-yellow-100 to-yellow-50 dark:from-gray-700 dark:to-gray-800 h-72 shrink-0">
-                            <img :src="item.image" :alt="item.title" class="w-full h-full object-contain" />
-                        </div>
-                        <div class="p-4 flex-1 min-h-0 overflow-y-auto">
-                            <h3 v-if="item.title" class="font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}
-                            </h3>
-                            <p v-for="(text, idx) in item.content" :key="idx"
-                                class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{ text }}</p>
-                        </div>
-                    </div>
+                    <InfoCard
+                        :image="item.image"
+                        :title="item.title"
+                        :content="item.content"
+                        gradient-color="yellow"
+                    />
                 </div>
             </UCarousel>
         </div>
@@ -286,18 +263,12 @@
                     </div>
 
                     <!-- Card -->
-                    <div
-                        class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 h-80 flex flex-col">
-                        <div
-                            class="bg-gradient-to-b from-orange-100 to-orange-50 dark:from-gray-700 dark:to-gray-800 h-72 flex-shrink-0">
-                            <img :src="item.image" :alt="item.title" class="w-full h-full object-contain" />
-                        </div>
-                        <div class="p-4 flex-1 min-h-0 overflow-y-auto">
-                            <h3 class="font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
-                            <p v-for="(text, idx) in item.content" :key="idx"
-                                class="text-gray-700 dark:text-gray-300 text-sm mb-2">{{ text }}</p>
-                        </div>
-                    </div>
+                    <InfoCard
+                        :image="item.image"
+                        :title="item.title"
+                        :content="item.content"
+                        gradient-color="orange"
+                    />
                 </div>
             </UCarousel>
         </div>

@@ -74,7 +74,7 @@
           mendapatkan hukuman.
         </p>
         <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">
-          Wewujudkan janji adalah hal yang dilakukan setelah Bodhisattva atau Pu Sa mengabulkan permohonan Anda. Anda
+          Mewujudkan janji adalah hal yang dilakukan setelah Bodhisattva atau Pu Sa mengabulkan permohonan Anda. Anda
           harus kembali ke kuil atau tempat di mana Anda memohon, lalu memasang dupa, bersembah sujud, berdana,
           dan melakukan kebajikan.
         </p>
@@ -215,7 +215,7 @@ const tanpaAltarItems = [
     title: 'Ucapkan',
     image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fsembayang%2Fimage_1.png?alt=media&token=8af4495a-5b22-4d74-a523-8c8999a185e6',
     content: [
-      'Gan En Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Gusang Da Ling Gan Guan Shi Yin Pu Sa',
+      'Gan En Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa',
       'Gan En Na Mo Nan Jing Pu Sa',
       'Gan En Na Mo Tai Sui Pu Sa',
       'Gan En Na Mo Guan Di Pu Sa, Zhou Cang Pu Sa, Guan Ping Pu Sa'

@@ -201,7 +201,7 @@
                     <div
                         class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
                         <p class="font-semibold text-[#353026] dark:text-gray-200 mb-1">
-                            Jie Jie Zhou Kesalahpahaman antara pasangan Ketidakharmonisan suami istri Ketidakakuran
+                            Kesalahpahaman antara pasangan Ketidakharmonisan suami istri Ketidakakuran
                             orang tua dan anak Pertikaian dengan rekan kerja Hubungan buruk bos dengan karyawan Utang
                             karma di kehidupan lalu. </p>
                     </div>
@@ -228,11 +228,18 @@
                     <h3 class="font-bold text-gray-900 dark:text-white mb-2">Xiao Zai Ji Xiang Shen Zhou</h3>
                     <div
                         class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
-                        <p class="font-semibold text-[#353026] dark:text-gray-200 mb-2">
-                            Xiao Zai Ji Xiang Shen Zhou Terbebas dari sengketa hukum Kerugian harta benda Perkelahian,
-                            denda, sakit mendadak Terhindar dari bencana yang akan datang Bermimpi buruk, dan lain-lain.
+                        <p class="font-semibold text-[#353026] dark:text-gray-200">
+                            Terbebas dari sengketa hukum
                         </p>
-
+                        <p class="font-semibold text-[#353026] dark:text-gray-200">
+                            Kerugian harta benda
+                        </p>
+                        <p class="font-semibold text-[#353026] dark:text-gray-200">
+                            Perkelahian, denda, sakit mendadak
+                        </p>
+                        <p class="font-semibold text-[#353026] dark:text-gray-200">
+                            Terhindar dari bencana yang akan datang Bermimpi buruk, dan lain-lain.
+                        </p>
                     </div>
                 </div>
 
@@ -243,14 +250,18 @@
                         class="text-[#353026] dark:text-gray-300 font-semibold list-decimal list-outside space-y-2 px-4">
                         <li>Setiap kali membaca paritta harus membaca judul paritanya</li>
                         <li>Waktu Membaca paritta dari jam 5 pagi sampai jam 12 malam</li>
-                        <li>Saat membaca paritta lalu terhenti karena ada gangguan, sebelumnya ulang paritta dari
+                        <li>Saat membaca paritta lalu terhenti karena ada gangguan, sebaiknya ulang paritta dari
                             awal</li>
                         <li>Xin Jing dan Wang Sheng Zhou boleh dibaca di pagi atau siang tapi hingga jam 10 malam
                             walaupun cuaca mendung</li>
                         <li>Setelah jam 10 malam, hindari membaca Xin Jing, Li Fo Da Chan Hui Wen, dan Wang Sheng
                             Zhou</li>
-                        <li>Sebaiknya jangan membaca ketiga paritta tersebut saat cuaca buruk, mendung dan langit sangat gelap, hujan badai, atau banyak petir</li>
-                        <li>Jika kondisi fisik lemah atau meraasa tidak nyaman saat membaca Xin Jing dan Wang Sheng Zhou, maka usahakan untuk membacanya di pagi atau siang hari</li>
+                        <li>Sebaiknya jangan membaca ketiga paritta tersebut saat cuaca buruk, mendung dan langit sangat
+                            gelap,
+                            hujan badai, atau banyak petir</li>
+                        <li>Jika kondisi fisik lemah atau meraasa tidak nyaman saat membaca Xin Jing dan Wang Sheng
+                            Zhou, maka
+                            usahakan untuk membacanya di pagi atau siang hari</li>
                         <li>Sebaiknya jangan membaca paritta apapun dari jam 2 sampai jam 5 pagi</li>
                     </ol>
                 </div>
@@ -340,9 +351,9 @@
                 </UCarousel>
             </div>
 
-            <!-- Section 8: Langkah Keempat - Membaca Paritta Pendek (Carousel) -->
+            <!-- Section 8: Langkah Kelima - Membaca Paritta Pendek (Carousel) -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Langkah Keempat</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Langkah Kelima</h2>
                 <p class="text-gray-600 dark:text-gray-400 mb-4">Membaca Paritta Pendek</p>
 
                 <!-- Navigation arrows -->
@@ -368,9 +379,9 @@
                 </UCarousel>
             </div>
 
-            <!-- Section 9: Langkah Kelima -->
+            <!-- Section 9: Langkah Keenam -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kelima</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Keenam</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_kelima_1.png?alt=media&token=d5913d86-4e23-41cb-b64f-045282c5a92b"
@@ -383,9 +394,9 @@
                 </UCard>
             </div>
 
-            <!-- Section 10: Langkah Keenam -->
+            <!-- Section 10: Langkah Ketujuh -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Keenam</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Ketujuh</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_keenam_1.png?alt=media&token=dad7e92c-a5df-4462-a887-21e6790a8276"
@@ -397,9 +408,9 @@
                 </UCard>
             </div>
 
-            <!-- Section 11: Langkah Ketujuh -->
+            <!-- Section 11: Langkah Kedelapan -->
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Ketujuh</h2>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Langkah Kedelapan</h2>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_ketiga_1.png?alt=media&token=3de2e2e5-a80b-4aa8-92b8-23974685f90f"
@@ -434,7 +445,7 @@
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
                     <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Fpedoman_pr.png?alt=media&token=253a718d-0443-40ca-86a2-a55970bdffb0"
-                        alt="Pedoman PR" class="w-full h-96 object-cover rounded-lg" />
+                        alt="Pedoman PR" class="w-full object-cover rounded-lg" />
                 </UCard>
             </div>
         </div>
@@ -605,7 +616,7 @@ const langkahKeempat2Items = [
     },
     {
         id: 5,
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Flangkah_keempat_2_5.png?alt=media&token=90848663-bbdb-49d2-bd1d-06a0e3a61178',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fpr%2Fchundi.jpeg?alt=media&token=1fe96ea4-7571-42b6-89cc-fdd50ecc53c1',
         title: 'Zhun Ti Shen Zhou',
         description: 'Dengan hormat memohon pada Na Mo Da Ci Da Bei Jiu Ku Jiu Nan Guang Da Ling Gan Guan Shi Yin Pu Sa Mo He Sa memberkati saya XXX (nama sendiri), agar apa yang diharapkan tercapai (boleh dalam pekerjaan / keluarga yang bahagia dan harmonis, berprestasi dalam pendidikan).',
         count: 'Sebanyak 21, 27 atau 49x'
