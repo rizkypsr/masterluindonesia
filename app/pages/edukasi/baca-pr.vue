@@ -187,7 +187,7 @@
                     <div
                         class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
                         <p class="font-semibold text-[#353026] dark:text-gray-200 mb-1">
-                            Wang Sheng Zhou Memohon berkat dari Guan Shi Yin Pu Sa, agar bisa mendapatkan kebahagiaan
+                            Memohon berkat dari Guan Shi Yin Pu Sa, agar bisa mendapatkan kebahagiaan
                             dan kedamaian duniawi Bisa mendapatkan kebahagiaan dan kedamaian di surga, Mendoakan arwah
                             binatang kecil, unggas, hewan laut, serangga, dan lain-lain yang pernah dibunuh agar bisa
                             terlahir ke alam yang lebih baik
@@ -201,8 +201,8 @@
                     <div
                         class="bg-gradient-to-r from-[#e6d0a9] to-[#efdfc2] dark:from-gray-700 dark:to-gray-800 rounded-lg p-4">
                         <p class="font-semibold text-[#353026] dark:text-gray-200 mb-1">
-                            Kesalahpahaman antara pasangan Ketidakharmonisan suami istri Ketidakakuran
-                            orang tua dan anak Pertikaian dengan rekan kerja Hubungan buruk bos dengan karyawan Utang
+                            Kesalahpahaman antara pasangan Ketidakharmonisan suami istri <br> Ketidakakuran
+                            orang tua dan anak <br> Pertikaian dengan rekan kerja Hubungan buruk bos dengan karyawan <br> Utang
                             karma di kehidupan lalu. </p>
                     </div>
                 </div>

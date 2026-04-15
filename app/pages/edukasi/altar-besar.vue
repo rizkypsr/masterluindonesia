@@ -124,7 +124,7 @@
                 <!-- Buddha Sakyamuni -->
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl mb-4">
                     <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FSized-ShiJiaMouNiFo-A2.jpg?alt=media&token=15e5a7b8-0aee-4deb-9fc3-4bb26897d2a0"
-                        alt="Buddha Sakyamuni" class="w-full h-96 object-fill rounded-lg mb-4" />
+                        alt="Buddha Sakyamuni" class="w-full rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Buddha Sakyamuni</h3>
                         <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">Kita sendiri tinggal di dunia yang
@@ -143,44 +143,39 @@
                 <!-- Guan Shi Yin Pu Sa -->
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl mb-4">
                     <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FGuan%20Shi%20YIn%20Pu%20Sa.jpg?alt=media&token=89c4b2c4-ceaf-4835-9b86-f620f222b7dc"
-                        alt="Guan Shi Yin Pu Sa" class="w-full h-96 object-fill rounded-lg mb-4" />
+                        alt="Guan Shi Yin Pu Sa" class="w-full rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Guan Shi Yin Pu Sa</h3>
-                        <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">Guan Shi Yin Pu Sa Merupakan Maha
-                            Mahakarya,
-                            Maha-Jubilasi
-                            Segala
-                            Kemulyaan Esa Aneka Nusena di Dalam Nusantara.</p>
-                        <p class="text-gray-700 dark:text-gray-300 text-lg">Dikenal dengan Nama Guan Shi Yin Pu Sa.</p>
+                        <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">Guan Shi Yin Pu Sa Menolong Semua
+                            Makhluk,
+                            Mewujudkan Segala Permohonan Bila Anda Berada di Dalam Kesulitan, Memohonlah Kepada Guan Shi
+                            Yin Pu
+                            Sa</p>
                     </div>
                 </UCard>
 
                 <!-- Nan Jing Pu Sa -->
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl mb-4">
                     <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FNanJingPS.jpg?alt=media&token=74d2914d-e802-46cc-80c3-97fc6d8a3228"
-                        alt="Nan Jing Pu Sa" class="w-full h-96 object-fill rounded-lg mb-4" />
+                        alt="Nan Jing Pu Sa" class="w-full rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Nan Jing Pu Sa</h3>
-                        <p class="text-gray-700 dark:text-gray-300 text-lg">Nan Jing Pu Sa adalah Merupakan salah satu
-                            Dewa
-                            budaya Daoisme
-                            Tiongkok
-                            Buddhisme yang Keberadaannya Tinggi di Alam Langit, yang Bisa Memberikan Ketenangan Bersama
-                            Keselamatan Hidup.</p>
+                        <p class="text-gray-700 dark:text-gray-300 text-lg">Nan Jing Pu Sa Memiliki Kekuatan yang Luar
+                            Biasa
+                            Adalah Seorang Bodhisattva yang Berkedudukan Tinggi di Alam Langit, yang Bisa Membantumu
+                            Menyelesaikan Banyak Permasalahan Hidup.</p>
                     </div>
                 </UCard>
 
                 <!-- Tai Sui Pu Sa -->
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl mb-4">
                     <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_5.png?alt=media&token=4f2366dc-33fd-4ff3-aa65-a7956bf5ef1d"
-                        alt="Tai Sui Pu Sa" class="w-full h-96 object-fill rounded-lg mb-4" />
+                        alt="Tai Sui Pu Sa" class="w-full rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Tai Sui Pu Sa</h3>
-                        <p class="text-gray-700 dark:text-gray-300 text-lg">Tai Sui Pu Sa adalah Bodhisattva yang
-                            Bertugas Untuk
-                            Menjaga
-                            Umur
-                            Manusia. Bagi Mereka yang Sedang Dalam Tahun Tai Sui-nya, Bisa Memohon Doa Kepada Beliau.
+                        <p class="text-gray-700 dark:text-gray-300 text-lg">Tai Sui Pu Sa Adalah Bodhisattva yang
+                            Bertugas
+                            Selama Setahun Untuk Mengatur Dunia Manusia, Juga Merupakan Dewa di Alam Langit
                         </p>
                     </div>
                 </UCard>
@@ -188,18 +183,17 @@
                 <!-- Guan Di Pu Sa, Zhou Cang Pu Sa, Guan Ping Pu Sa -->
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl">
                     <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Ftata_cara_sembahyang%2FGuanDiPS.jpg?alt=media&token=1f889925-1441-4f7d-b002-b7acf3668587"
-                        alt="Guan Di Pu Sa" class="w-full h-96 object-fill rounded-lg mb-4" />
+                        alt="Guan Di Pu Sa" class="w-full rounded-lg mb-4" />
                     <div class="px-2">
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Guan Di Pu Sa, Zhou Cang Pu Sa,
                             Guan
                             Ping Pu Sa
                         </h3>
                         <p class="text-gray-700 dark:text-gray-300 text-lg">Guan Di Pu Sa Adalah Pelindung Dharma
-                            Bodhisattva.
-                            Tiap Hari
-                            Dharma
-                            Pelindung Mengawasi Kita Apakah Kita Melakukan Hal yang Baik atau Buruk, Semua Dicatat oleh
-                            Beliau.
+                            Berkedudukan
+                            Tinggi Yang Bisa Menangkal Energi Negatif Mengusir Setan dan Iblis, Apabila Rumah Berenergi
+                            Positif,
+                            Maka Hal-hal yang Baik Akan Datang.
                         </p>
                     </div>
                 </UCard>
@@ -210,8 +204,9 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Hal-hal Penting dalam</h2>
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Penempatan Altar</h2>
 
-                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Faltarbesar%2Fimage_7.png?alt=media&token=b95054f2-f54c-4304-92b6-b2fbfb810466"
-                    alt="Penempatan Altar" class="w-full h-96 object-fill rounded-lg mb-4" />
+                <NuxtImg
+                    src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2F01686323437660e7671ed6727847406af6a6b766.webp?alt=media&token=53a317c3-5c29-4646-8cd3-5778dd1af9df"
+                    alt="Penempatan Altar" class="w-full rounded-lg mb-4" />
 
                 <div class="space-y-3 text-gray-700 dark:text-gray-300 text-lg">
                     <p><span class="font-bold">1.</span> Tidak boleh ditempatkan di dalam kamar tidur suami – istri</p>

@@ -1442,7 +1442,7 @@ const langkahAltarKecilItems = [
     },
     {
         image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ak3.png?alt=media&token=8e292a49-2803-4065-93ba-aa13a403db28',
-        title: 'Baca XFZ',
+        title: 'Baca',
         description: 'Baca Da Bei Zhou 1x dan Xin Jing 1x'
     },
     {

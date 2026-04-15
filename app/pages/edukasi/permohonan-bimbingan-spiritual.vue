@@ -16,7 +16,7 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Permohonan Bimbingan Spiritual</h2>
 
                 <!-- Hero Image -->
-                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fbimbingan%2Fbimbingan.png?alt=media&token=379734c5-fa12-405e-be7b-7eef64a333a7"
+                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fbimbingansp.jpeg?alt=media&token=80a558f8-43b3-440e-ac37-2bb0c898424e"
                     alt="Permohonan Bimbingan Spiritual" class="w-full h-96 object-cover rounded-lg mb-6" />
             </div>
 
@@ -79,7 +79,7 @@
                 <p class="text-gray-600 dark:text-gray-400 mb-4">*Download gambar di tab Beranda Unduh</p>
 
                 <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl">
-                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fbimbingan%2Funduh.png?alt=media&token=eddbb946-7981-499e-9233-be5e1c81fb3a"
+                    <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2FWhatsApp%20Image%202026-04-15%20at%2014.44.43.jpeg?alt=media&token=d39bd21f-771d-4bb6-8008-c6c35c2dc68a"
                         alt="Contoh Gambar Permohonan Bimbingan Spiritual" class="w-full h-96 object-cover rounded-lg" />
                 </UCard>
             </div>

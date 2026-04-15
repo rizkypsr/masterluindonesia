@@ -17,7 +17,7 @@
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">(Gai Ming Sheng Wen)</h2>
 
                 <!-- Hero Image -->
-                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fbimbingan%2Fganti_nama.png?alt=media&token=c0817a04-41c5-4588-8d6b-872108ad5f6b"
+                <img src="https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2FWhatsApp%20Image%202026-04-15%20at%2014.41.34.jpeg?alt=media&token=fbba3e42-b482-460a-8ff3-dc5deed2a82d"
                     alt="Permohonan Penggantian Nama" class="w-full h-96 object-cover rounded-lg mb-6" />
 
                 <div class="space-y-4 text-black dark:text-gray-300">
@@ -149,13 +149,13 @@ const unduhItems = [
     {
         id: 1,
         title: 'Gai Ming Sheng Wen',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fbimbingan%2Funduh.png?alt=media&token=eddbb946-7981-499e-9233-be5e1c81fb3a',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2FWhatsApp%20Image%202026-04-15%20at%2014.44.44.jpeg?alt=media&token=a7bb7fbc-50a6-464a-b90e-86eb74d389c5',
         description: ''
     },
     {
         id: 2,
         title: 'Zheng Ming Sheng Wen',
-        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fbimbingan%2Funduh.png?alt=media&token=eddbb946-7981-499e-9233-be5e1c81fb3a',
+        image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2FWhatsApp%20Image%202026-04-15%20at%2014.44.44.jpeg?alt=media&token=a7bb7fbc-50a6-464a-b90e-86eb74d389c5',
         description: 'Jika Anda tidak yakin dengan nama asli Anda, misalnya anak adopsi. Maka Anda bisa menggunakan formulir penggantian nama "正名升文 Zheng Ming Sheng Wen"'
     }
 ]

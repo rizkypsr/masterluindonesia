@@ -150,14 +150,16 @@
 
                 <UCarousel ref="langkahKeenamRef" v-slot="{ item }" :items="langkahKeenamItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKeenam">
-                    <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                        <NuxtImg :src="item.image" :alt="item.title" class="w-full h-full object-fill rounded-lg mb-4" loading="eager" />
-                        <div class="px-2">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
-                            <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">{{ item.description }}</p>
-                            <p class="text-gray-500 dark:text-gray-400 text-lg">{{ item.note }}</p>
+                    <div class="pr-4">
+                        <div class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800 bg-white rounded-lg p-6 h-[750px] overflow-hidden">
+                            <NuxtImg :src="item.image" :alt="item.title" class="w-full h-auto object-contain rounded-lg mb-4" loading="eager" />
+                            <div class="px-2">
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
+                                <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">{{ item.description }}</p>
+                                <p class="text-gray-500 dark:text-gray-400 text-lg">{{ item.note }}</p>
+                            </div>
                         </div>
-                    </UCard>
+                    </div>
                 </UCarousel>
             </div>
 
@@ -178,13 +180,15 @@
 
                 <UCarousel ref="langkahKetujuhRef" v-slot="{ item }" :items="langkahKetujuhItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKetujuh">
-                    <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                        <NuxtImg :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" loading="lazy" />
-                        <div class="px-2">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
-                            <p v-if="item.note" class="text-gray-500 dark:text-gray-400 text-lg">{{ item.note }}</p>
+                    <div class="pr-4">
+                        <div class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800 bg-white rounded-lg p-6 h-[550px] overflow-hidden">
+                            <NuxtImg :src="item.image" :alt="item.title" class="w-full h-auto object-contain rounded-lg mb-4" loading="lazy" />
+                            <div class="px-2">
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
+                                <p v-if="item.note" class="text-gray-500 dark:text-gray-400 text-lg">{{ item.note }}</p>
+                            </div>
                         </div>
-                    </UCard>
+                    </div>
                 </UCarousel>
             </div>
 
@@ -219,14 +223,16 @@
 
                 <UCarousel ref="langkahKesembilanRef" v-slot="{ item }" :items="langkahKesembilanItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKesembilan">
-                    <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                        <NuxtImg :src="item.image" :alt="item.title" class="w-full h-96 object-cover rounded-lg mb-4" loading="lazy" />
-                        <div class="px-2">
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
-                            <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">{{ item.description }}</p>
-                            <p v-if="item.note" class="text-gray-500 dark:text-gray-400 text-lg">{{ item.note }}</p>
+                    <div class="pr-4">
+                        <div class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800 bg-white rounded-lg p-6 h-[600px] overflow-hidden">
+                            <NuxtImg :src="item.image" :alt="item.title" class="w-full h-auto object-contain rounded-lg mb-4" loading="lazy" />
+                            <div class="px-2">
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
+                                <p class="text-gray-700 dark:text-gray-300 text-lg mb-2">{{ item.description }}</p>
+                                <p v-if="item.note" class="text-gray-500 dark:text-gray-400 text-lg">{{ item.note }}</p>
+                            </div>
                         </div>
-                    </UCard>
+                    </div>
                 </UCarousel>
             </div>
 
@@ -247,16 +253,18 @@
 
                 <UCarousel ref="langkahKesepuluhRef" v-slot="{ item }" :items="langkahKesepuluhItems"
                     :ui="{ item: 'basis-full' }" @select="onSelectLangkahKesepuluh">
-                    <UCard class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800">
-                        <NuxtImg :src="item.image" :alt="item.title" class="w-full h-full rounded-lg mb-4" loading="lazy" />
-                        <div class="px-2">
-                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
-                            <p v-if="item.description" class="text-gray-700 dark:text-gray-300 text-lg mb-2">{{
-                                item.description
-                            }}</p>
-                            <p v-if="item.note" class="text-gray-500 dark:text-gray-400 text-lg">{{ item.note }}</p>
+                    <div class="pr-4">
+                        <div class="border-2 border-[#eedcb4] dark:border-gray-700 shadow-xl dark:bg-gray-800 bg-white rounded-lg p-6 h-[750px] overflow-hidden">
+                            <NuxtImg :src="item.image" :alt="item.title" class="w-full h-auto object-contain rounded-lg mb-4" loading="lazy" />
+                            <div class="px-2">
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{{ item.title }}</h3>
+                                <p v-if="item.description" class="text-gray-700 dark:text-gray-300 text-lg mb-2">{{
+                                    item.description
+                                }}</p>
+                                <p v-if="item.note" class="text-gray-500 dark:text-gray-400 text-lg">{{ item.note }}</p>
+                            </div>
                         </div>
-                    </UCard>
+                    </div>
                 </UCarousel>
             </div>
 
