@@ -1394,7 +1394,7 @@ const langkahTanpaAltarItems = [
     },
     {
         image: 'https://firebasestorage.googleapis.com/v0/b/master-lu-indonesia.appspot.com/o/images%2Fxfz%2Fic_ta3.png?alt=media&token=39e2ade0-edc7-4b07-bd17-cb10f3a39f67',
-        title: 'Baca XFZ',
+        title: 'Baca',
         description: 'Baca Da Bei Zhou 1x dan Xin Jing 1x'
     },
     {
