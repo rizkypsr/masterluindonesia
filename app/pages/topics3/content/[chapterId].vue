@@ -62,7 +62,9 @@
             <p class="text-gray-500 dark:text-gray-400">Tidak ada hasil ditemukan</p>
           </div>
 
-          <div v-for="item in filteredContents" :key="item.id" class="rounded-xl overflow-hidden"
+          <div v-for="item in filteredContents" :key="item.id" 
+            :data-item-id="item.id"
+            class="rounded-xl overflow-hidden"
             :class="expandedItems.has(item.id) ? 'bg-[#c09637] dark:bg-yellow-600' : 'bg-white dark:bg-gray-800'"
             :style="{ fontSize: fontSize + 'px' }">
             <!-- Card Header -->
@@ -96,6 +98,11 @@
                   :class="speakingItemId === item.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
                   <Icon :name="speakingItemId === item.id ? 'mdi:stop' : 'mdi:account-voice'" class="w-4 h-4" />
                   <span>{{ speakingItemId === item.id ? 'Stop' : 'Voice' }}</span>
+                </button>
+                <button @click.stop="addItemBookmark(item)"
+                  class="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:font-bold">
+                  <Icon name="mdi:bookmark-outline" class="w-4 h-4" />
+                  <span>Bookmark</span>
                 </button>
               </div>
             </div>
@@ -106,7 +113,9 @@
       <!-- Content List without Categories -->
       <div v-else-if="!hasCategories && filteredContents.length > 0" class="px-4">
         <div class="space-y-4 pb-20">
-          <div v-for="item in filteredContents" :key="item.id" class="rounded-xl overflow-hidden"
+          <div v-for="item in filteredContents" :key="item.id" 
+            :data-item-id="item.id"
+            class="rounded-xl overflow-hidden"
             :class="expandedItems.has(item.id) ? 'bg-[#c09637] dark:bg-yellow-600' : 'bg-white dark:bg-gray-800'"
             :style="{ fontSize: fontSize + 'px' }">
             <!-- Card Header -->
@@ -140,6 +149,11 @@
                   :class="speakingItemId === item.id ? 'text-primary dark:text-yellow-400' : 'text-gray-700 dark:text-gray-300'">
                   <Icon :name="speakingItemId === item.id ? 'mdi:stop' : 'mdi:account-voice'" class="w-4 h-4" />
                   <span>{{ speakingItemId === item.id ? 'Stop' : 'Voice' }}</span>
+                </button>
+                <button @click.stop="addItemBookmark(item)"
+                  class="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:font-bold">
+                  <Icon name="mdi:bookmark-outline" class="w-4 h-4" />
+                  <span>Bookmark</span>
                 </button>
               </div>
             </div>
@@ -416,6 +430,44 @@ const addBookmark = () => {
   )
 }
 
+// Add bookmark for specific item
+const addItemBookmark = (item: Content) => {
+  const preview = getContentPreview(item.content)
+  createTopic3Bookmark(
+    preview,
+    Number(chapterId.value),
+    item.id
+  )
+}
+
+// Handle itemId from query parameter (for bookmark navigation)
+const handleItemIdFromQuery = () => {
+  const itemId = route.query.itemId
+  if (itemId) {
+    const id = Number(itemId)
+    // Expand the item
+    expandedItems.value.add(id)
+    // Scroll to the item after a short delay to ensure DOM is ready
+    nextTick(() => {
+      setTimeout(() => {
+        const element = document.querySelector(`[data-item-id="${id}"]`)
+        if (element && contentRef.value) {
+          // Get the element's position relative to the scrollable container
+          const elementTop = element.getBoundingClientRect().top
+          const containerTop = contentRef.value.getBoundingClientRect().top
+          const scrollOffset = elementTop - containerTop + contentRef.value.scrollTop
+          
+          // Scroll with offset to show the card header at the top with some padding
+          contentRef.value.scrollTo({
+            top: scrollOffset - 20, // 20px padding from top
+            behavior: 'smooth'
+          })
+        }
+      }, 300)
+    })
+  }
+}
+
 onMounted(async () => {
   // Fetch bookmarks
   await fetchBookmarksByType(6)
@@ -448,6 +500,9 @@ onMounted(async () => {
     
     videoCategoryId.value = response.data.video_category_id
     hasVideo.value = response.data.video_category_id !== null
+    
+    // Handle itemId from query parameter (for bookmark navigation)
+    handleItemIdFromQuery()
   } catch (error) {
     console.error('Error fetching topics3 content:', error)
     toast.add({

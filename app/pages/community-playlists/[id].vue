@@ -196,10 +196,7 @@ function navigateToItem(item: PlaylistItem) {
             })
           } else {
             // Go to book overview
-            navigateTo({ 
-              path: `/books/${bookId}`, 
-              query: { title: getItemTitle(item) } 
-            })
+            navigateTo(`/books/${bookId}`)
           }
         }
         break

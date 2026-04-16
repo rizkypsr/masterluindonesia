@@ -245,7 +245,7 @@ function navigateToItem(item: BookmarkItem) {
               query: linkData.page ? { page: linkData.page } : undefined
             })
           } else {
-            router.push({ path: `/books/${bookId}`, query: { title: item.title } })
+            router.push(`/books/${bookId}`)
           }
         }
         break

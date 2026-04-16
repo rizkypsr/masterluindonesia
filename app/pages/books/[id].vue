@@ -292,8 +292,17 @@ const { openPlaylistModal } = usePlaylist()
 const { saveBookHistory } = useHistory()
 
 const bookId = computed(() => route.params.id as string)
-const bookTitle = computed(() => (route.query.title as string) || 'Buku')
-const bookCover = computed(() => (route.query.cover as string) || '/fallback.svg')
+
+// Get book data from the first chapter's book object
+const bookData = computed(() => {
+  if (chapters.value.length > 0 && chapters.value[0].book) {
+    return chapters.value[0].book
+  }
+  return null
+})
+
+const bookTitle = computed(() => bookData.value?.title || 'Buku')
+const bookCover = computed(() => bookData.value?.url || '/fallback.svg')
 
 const isBookBookmarked = computed(() => {
   return isBookmarked(3, bookTitle.value)
@@ -385,6 +394,17 @@ interface SubChapter {
   sub?: SubChapter[]
 }
 
+interface BookData {
+  id: number
+  book_category_id: number
+  title: string
+  url: string
+  url_pdf: string | null
+  synopsis: string | null
+  seq: number
+  date: string | null
+}
+
 interface Chapter {
   id: number
   book_id: number
@@ -393,6 +413,7 @@ interface Chapter {
   seq: number
   have_child: number
   sub_chapters: SubChapter[]
+  book?: BookData
 }
 
 const { data: chaptersData } = await useFetch<{ success: boolean; data: Chapter[] }>(
@@ -710,11 +731,10 @@ const shareBook = async () => {
 }
 
 const addToBookmark = () => {
+  // For book overview, only save bookId (no chapter or page)
   createBookBookmark(
     bookTitle.value,
-    Number(bookId.value),
-    chapters.value[0]?.sub_chapters?.[0]?.id || 0,
-    1
+    Number(bookId.value)
   )
 }
 

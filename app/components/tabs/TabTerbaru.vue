@@ -26,7 +26,7 @@
         </div>
         <div class="flex gap-3 pb-3 overflow-x-auto custom-scrollbar">
           <NuxtLink v-for="book in books" :key="book.id"
-            :to="{ path: `/books/${book.id}`, query: { title: book.title, cover: book.url } }" class="shrink-0 w-28">
+            :to="`/books/${book.id}`" class="shrink-0 w-28">
             <template v-if="book.url">
               <NuxtImg :src="getImageUrl(book.url)" :alt="book.title" class="w-28 h-40 object-cover rounded-xl"
                 loading="lazy" width="112" height="160" />

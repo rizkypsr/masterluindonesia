@@ -282,14 +282,14 @@ function shareContent() {
 function addBookmark() {
     // Get the actual page number from content, not the index
     const actualPage = currentContent.value?.page || 1
-    if (bookId.value) {
-        createBookBookmark(
-            bookData.value?.title || '',
-            bookId.value,
-            Number(chapterId),
-            actualPage
-        )
-    }
+    const title = bookData.value?.title || chapterTitle.value || 'Untitled'
+    
+    createBookBookmark(
+        title,
+        bookId.value!,
+        Number(chapterId),
+        actualPage
+    )
 }
 
 function goToPage() {

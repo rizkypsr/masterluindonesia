@@ -207,7 +207,7 @@ function navigateToItem(item: HistoryItem) {
               query: linkData.page ? { page: linkData.page } : undefined
             })
           } else {
-            navigateTo({ path: `/books/${bookId}`, query: { title: item.title } })
+            navigateTo(`/books/${bookId}`)
           }
         }
         break

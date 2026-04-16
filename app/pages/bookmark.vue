@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { useAuth } from '~/lib/auth'
 
+// Enable keepalive for this page to detect when user returns
+definePageMeta({
+  keepalive: true
+})
+
 interface BookmarkLink {
   book_id?: number
   bookId?: number
@@ -35,15 +40,30 @@ const { isAuthenticated, getAuthHeader } = useAuth()
 const config = useRuntimeConfig()
 const toast = useToast()
 
-const bookmarks = ref<BookmarkItem[]>([])
-const userBookmarks = ref<BookmarkItem[]>([]) // Store user's original bookmarks
-const loading = ref(true)
 const expandedFolders = ref<Set<number>>(new Set())
 
 // Search state
 const isSearchMode = ref(false)
 const searchQuery = ref('')
-const isSearching = ref(false)
+const searchParam = ref<string | undefined>(undefined)
+
+// Fetch bookmarks using useFetch with reactive search parameter
+const { data: bookmarksData, pending: loading, refresh: refreshBookmarks } = await useFetch<BookmarkResponse>(
+  () => {
+    let url = `${config.public.apiBaseUrl}/bookmark`
+    if (searchParam.value) {
+      url += `?search=${encodeURIComponent(searchParam.value)}`
+    }
+    return url
+  },
+  {
+    headers: getAuthHeader() as Record<string, string>,
+    watch: [searchParam],
+    immediate: false
+  }
+)
+
+const bookmarks = computed(() => bookmarksData.value?.data || [])
 
 // Share state
 const isShareModalOpen = ref(false)
@@ -74,38 +94,22 @@ onMounted(async () => {
     navigateTo('/lainnya')
     return
   }
-  await Promise.all([
-    fetchBookmarks(),
-    fetchActiveShareLink()
-  ])
+  // Initial fetch
+  await refreshBookmarks()
+  await fetchActiveShareLink()
 })
 
-async function fetchBookmarks(search?: string) {
-  loading.value = true
-  try {
-    let url = `${config.public.apiBaseUrl}/bookmark`
-    if (search) {
-      url += `?search=${encodeURIComponent(search)}`
-    }
-    const response = await $fetch<BookmarkResponse>(url, {
-      headers: getAuthHeader() as Record<string, string>
-    })
-    if (response.success) {
-      bookmarks.value = response.data
-      // Store user's original bookmarks if not in search mode
-      if (!search) {
-        userBookmarks.value = response.data
-      }
-    }
-  } catch (error) {
-    toast.add({
-      title: 'Gagal memuat bookmark',
-      color: 'error'
-    })
-  } finally {
-    loading.value = false
+// Refetch bookmarks when user returns to this page (keepalive)
+onActivated(async () => {
+  if (isAuthenticated.value && bookmarks.value.length > 0) {
+    // Only refetch if we already have data (not first load)
+    await refreshBookmarks()
   }
-}
+})
+
+onBeforeUnmount(() => {
+  // Cleanup if needed
+})
 
 function openSearch() {
   isSearchMode.value = true
@@ -115,17 +119,15 @@ function openSearch() {
 function closeSearch() {
   isSearchMode.value = false
   searchQuery.value = ''
-  fetchBookmarks()
+  searchParam.value = undefined
 }
 
 async function performSearch() {
   if (!searchQuery.value.trim()) {
-    await fetchBookmarks()
+    searchParam.value = undefined
     return
   }
-  isSearching.value = true
-  await fetchBookmarks(searchQuery.value.trim())
-  isSearching.value = false
+  searchParam.value = searchQuery.value.trim()
 }
 
 function toggleFolder(id: number) {
@@ -184,17 +186,25 @@ function navigateToItem(item: BookmarkItem) {
       case 3: // Book
         const bookId = linkData.book_id || linkData.bookId
         const chapterId = linkData.contentId || linkData.chapterId
-        if (bookId) {
-          if (chapterId) {
-            // Go to specific chapter with page - using new simplified URL
-            navigateTo({
-              path: `/book/${chapterId}`,
-              query: linkData.page ? { page: linkData.page } : undefined
-            })
-          } else {
-            // Go to book overview
-            navigateTo({ path: `/books/${bookId}`, query: { title: item.title } })
+        
+        // If we have a valid chapterId, navigate to the specific chapter
+        if (chapterId) {
+          // Navigate to specific chapter (content bookmark)
+          const query: Record<string, any> = {}
+          if (linkData.page) {
+            query.page = linkData.page
           }
+          // Add chapter title if available
+          if (item.title) {
+            query.chapter = item.title
+          }
+          navigateTo({
+            path: `/book/${chapterId}`,
+            query: Object.keys(query).length > 0 ? query : undefined
+          })
+        } else if (bookId) {
+          // Navigate to book overview (book bookmark - no query params needed)
+          navigateTo(`/books/${bookId}`)
         }
         break
       case 4: // Topic1
@@ -221,9 +231,15 @@ function navigateToItem(item: BookmarkItem) {
         break
       case 6: // Topic3
         const topic3ContentId = linkData.contentId
+        const topic3ItemId = (linkData as any).itemId
         if (topic3ContentId) {
+          const query: Record<string, any> = {}
+          if (topic3ItemId) {
+            query.itemId = topic3ItemId
+          }
           navigateTo({
-            path: `/topics3/content/${topic3ContentId}`
+            path: `/topics3/content/${topic3ContentId}`,
+            query: Object.keys(query).length > 0 ? query : undefined
           })
         }
         break

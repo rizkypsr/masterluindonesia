@@ -51,7 +51,7 @@
           <div class="grid grid-cols-3 gap-3">
             <NuxtLink v-for="book in category.book" :key="book.id"
               v-ripple
-              :to="{ path: `/books/${book.id}`, query: { title: book.title, cover: book.url } }" 
+              :to="`/books/${book.id}`" 
               class="block group"
               @click="saveScroll">
               <template v-if="book.url">

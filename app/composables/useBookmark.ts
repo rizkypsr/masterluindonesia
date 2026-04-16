@@ -231,17 +231,21 @@ export const useBookmark = () => {
     })
   }
 
-  const createBookBookmark = (title: string, bookId: number, chapterId: number, page: number = 1) => {
+  const createBookBookmark = (title: string, bookId: number, chapterId?: number, page?: number) => {
+    const bookLink: BookLink = { bookId } as BookLink
+    
+    // Only add chapterId and page if they are provided and valid
+    if (chapterId !== undefined && chapterId !== null && chapterId !== 0) {
+      bookLink.chapterId = chapterId
+      bookLink.page = page || 1
+    }
+    
     openBookmarkModal({
       type: 3,
       title,
       videoLink: null,
       audioLink: null,
-      bookLink: {
-        bookId,
-        chapterId,
-        page
-      },
+      bookLink,
       topic1Link: null,
       topic2Link: null,
       topic3Link: null,
@@ -283,7 +287,14 @@ export const useBookmark = () => {
     })
   }
 
-  const createTopic3Bookmark = (title: string, contentId: number) => {
+  const createTopic3Bookmark = (title: string, contentId: number, itemId?: number) => {
+    const topic3Link: Topic3Link = { contentId }
+    
+    // Add itemId if provided
+    if (itemId !== undefined && itemId !== null) {
+      (topic3Link as any).itemId = itemId
+    }
+    
     openBookmarkModal({
       type: 6,
       title,
@@ -292,9 +303,7 @@ export const useBookmark = () => {
       bookLink: null,
       topic1Link: null,
       topic2Link: null,
-      topic3Link: {
-        contentId
-      },
+      topic3Link,
       recipeLink: null
     })
   }
