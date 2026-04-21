@@ -95,7 +95,7 @@ function handleSelect(e: TreeItemSelectEvent<TreeItem>) {
   const item = e.detail.value
   // Only navigate if item has no children (is a leaf node)
   if (item?.id && !item.children?.length) {
-    router.push(`/topics3/content/${item.id}`)
+    router.push(`/topics3/${item.id}`)
   }
 }
 

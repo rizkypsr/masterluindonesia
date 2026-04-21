@@ -307,12 +307,14 @@ const toggleExpand = (id: number) => {
 
 const stripHtml = (html: string): string => {
   return html
+    .replace(/<p\s*><\/p>/gi, '') // Remove empty paragraphs
+    .replace(/<p\s*>\s*<\/p>/gi, '') // Remove paragraphs with only whitespace
     .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/p>/gi, '\n')
+    .replace(/<\/p>/gi, '\n\n') // Double newline for paragraph spacing
     .replace(/<\/div>/gi, '\n')
     .replace(/<[^>]*>/g, '')
     .replace(/&nbsp;/g, ' ')
-    .replace(/\n{3,}/g, '\n\n')
+    .replace(/\n{4,}/g, '\n\n') // Replace 4+ newlines with just 2 (keep paragraph spacing)
     .trim()
 }
 
