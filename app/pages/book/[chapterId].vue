@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useBookmark } from '~/composables/useBookmark'
 import { useHistory } from '~/composables/useHistory'
+import { stripHtml, processHtmlForDisplay } from '~/utils/html'
 
 const route = useRoute()
 const config = useRuntimeConfig()
@@ -193,11 +194,11 @@ const pageOptions = computed(() => {
 // Highlighted content for display
 const highlightedContent = computed(() => {
     if (!currentContent.value) return ''
-    const text = stripHtml(currentContent.value.content)
-    if (!highlightTerm.value) return text
+    const processedHtml = processHtmlForDisplay(currentContent.value.content)
+    if (!highlightTerm.value) return processedHtml
 
     const regex = new RegExp(`(${escapeRegex(highlightTerm.value)})`, 'gi')
-    return text.replace(regex, '<mark class="bg-yellow-300">$1</mark>')
+    return processedHtml.replace(regex, '<mark class="bg-yellow-300">$1</mark>')
 })
 
 // Highlighted title for display
@@ -218,18 +219,6 @@ const formatTime = (time: number) => {
 
 function escapeRegex(string: string): string {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-}
-
-function stripHtml(html: string): string {
-    return html
-        .replace(/<p\s*><\/p>/gi, '') // Remove empty paragraphs
-        .replace(/<p\s*>\s*<\/p>/gi, '') // Remove paragraphs with only whitespace
-        .replace(/<br\s*\/?>/gi, '\n')
-        .replace(/<\/p>/gi, '\n\n') // Double newline for paragraph spacing
-        .replace(/<[^>]*>/g, '')
-        .replace(/&nbsp;/g, ' ')
-        .replace(/\n{4,}/g, '\n\n') // Replace 4+ newlines with just 2 (keep paragraph spacing)
-        .trim()
 }
 
 function nextPage() {
@@ -491,7 +480,7 @@ const openVideoPage = () => {
         <div v-if="!isSearchMode" class="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700 shrink-0">
             <div class="flex items-center gap-3">
                 <BackButton />
-                <h1 class="text-lg font-semibold text-black dark:text-white truncate max-w-[200px]">
+                <h1 class="text-lg font-semibold text-black dark:text-white truncate max-w-50">
                     {{ chapterTitle || bookData?.title }}
                 </h1>
             </div>

@@ -67,8 +67,8 @@
                     <Icon v-if="isAudioLoading" name="mdi:loading" class="w-4 h-4 animate-spin" />
                     {{ sub.order }}. {{ sub.title }}
                   </p>
-                  <p class="text-black dark:text-gray-400 mb-2 text-md" v-html="sub.description"></p>
-                  <div class="text-black dark:text-white mb-4 text-md" v-html="highlightText(sub.script)"></div>
+                  <p class="text-black dark:text-gray-400 mb-2 text-md" v-html="processHtmlForDisplay(sub.description)"></p>
+                  <div class="text-black dark:text-white mb-4 text-md whitespace-pre-line" v-html="highlightText(processHtmlForDisplay(sub.script))"></div>
 
                   <!-- Action Buttons -->
                   <div class="flex items-center gap-6 pt-3 border-t border-gray-200 dark:border-gray-600">
@@ -116,8 +116,8 @@
                   <!-- Accordion Content -->
                   <div v-if="expandedSubtitles.has(sub.id)"
                     class="px-3 pb-3 border-t border-gray-200 dark:border-gray-600">
-                    <p class="text-black dark:text-gray-400 mb-2 text-md mt-2" v-html="sub.description"></p>
-                    <div class="text-black dark:text-white mb-4 text-md" v-html="highlightText(sub.script)"></div>
+                    <p class="text-black dark:text-gray-400 mb-2 text-md mt-2" v-html="processHtmlForDisplay(sub.description)"></p>
+                    <div class="text-black dark:text-white mb-4 text-md whitespace-pre-line" v-html="highlightText(processHtmlForDisplay(sub.script))"></div>
 
                     <!-- Action Buttons -->
                     <div class="flex items-center gap-6 pt-3 border-t border-gray-200 dark:border-gray-600">
@@ -234,9 +234,11 @@
 import { useBookmark } from '~/composables/useBookmark'
 import { useHistory } from '~/composables/useHistory'
 import { useSmartBack } from '~/composables/useSmartBack'
+import { processHtmlForDisplay } from '~/utils/html'
 import { ref, computed, onMounted } from "vue"
 
 const { goBack } = useSmartBack()
+const toast = useToast()
 
 interface Subtitle {
   id: number

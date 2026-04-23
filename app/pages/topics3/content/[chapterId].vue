@@ -86,7 +86,7 @@
 
             <!-- Expandable Content -->
             <div v-if="expandedItems.has(item.id)" class="mx-4 mb-4 p-4 bg-white dark:bg-gray-800 rounded-lg">
-              <div class="text-black dark:text-white leading-relaxed" v-html="item.content"></div>
+              <div class="text-black dark:text-white leading-relaxed whitespace-pre-line" v-html="processHtmlForDisplay(item.content)"></div>
               <div class="flex items-center gap-4 pt-3 mt-3 border-t border-gray-200 dark:border-gray-600">
                 <button @click.stop="copyContent(item)"
                   class="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:font-bold">
@@ -137,7 +137,7 @@
 
             <!-- Expandable Content -->
             <div v-if="expandedItems.has(item.id)" class="mx-4 mb-4 p-4 bg-white dark:bg-gray-800 rounded-lg">
-              <div class="text-black dark:text-white leading-relaxed" v-html="item.content"></div>
+              <div class="text-black dark:text-white leading-relaxed whitespace-pre-line" v-html="processHtmlForDisplay(item.content)"></div>
               <div class="flex items-center gap-4 pt-3 mt-3 border-t border-gray-200 dark:border-gray-600">
                 <button @click.stop="copyContent(item)"
                   class="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:font-bold">
@@ -182,6 +182,7 @@
 <script setup lang="ts">
 import { useSmartBack } from '~/composables/useSmartBack'
 import { useBookmark } from '~/composables/useBookmark'
+import { stripHtml, processHtmlForDisplay } from '~/utils/html'
 
 const { goBack } = useSmartBack()
 
@@ -303,19 +304,6 @@ const toggleExpand = (id: number) => {
     expandedItems.value.add(id)
   }
   expandedItems.value = new Set(expandedItems.value)
-}
-
-const stripHtml = (html: string): string => {
-  return html
-    .replace(/<p\s*><\/p>/gi, '') // Remove empty paragraphs
-    .replace(/<p\s*>\s*<\/p>/gi, '') // Remove paragraphs with only whitespace
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/p>/gi, '\n\n') // Double newline for paragraph spacing
-    .replace(/<\/div>/gi, '\n')
-    .replace(/<[^>]*>/g, '')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/\n{4,}/g, '\n\n') // Replace 4+ newlines with just 2 (keep paragraph spacing)
-    .trim()
 }
 
 const getContentPreview = (html: string): string => {

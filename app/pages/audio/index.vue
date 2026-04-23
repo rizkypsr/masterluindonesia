@@ -75,7 +75,7 @@
         </div>
 
         <div v-else-if="infoDescription" class="text-black dark:text-white">
-          <div class="text-base leading-relaxed" v-html="infoDescription"></div>
+          <div class="text-base leading-relaxed whitespace-pre-line" v-html="processHtmlForDisplay(infoDescription)"></div>
         </div>
 
         <div v-else class="text-center py-8">
@@ -87,6 +87,7 @@
 </template>
 
 <script setup lang="ts">
+import { processHtmlForDisplay } from '~/utils/html'
 const config = useRuntimeConfig()
 const route = useRoute()
 const router = useRouter()
