@@ -42,12 +42,12 @@ export function stripHtml(html: string): string {
  */
 export function processHtmlForDisplay(html: string): string {
   let result = html
-    // Remove empty paragraphs first
-    .replace(/<p\s*><\/p>/gi, '')
-    .replace(/<p\s*>\s*<\/p>/gi, '')
+    // Remove empty paragraphs first, but keep track of them for spacing
+    .replace(/<p[^>]*>\s*<\/p>/gi, '\n') // Convert empty paragraphs to newlines for spacing
     
-    // Handle line breaks
-    .replace(/<br\s*\/?>/gi, '\n')
+    // Handle consecutive line breaks - convert double <br> to paragraph spacing
+    .replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n\n') // Double br becomes double newline
+    .replace(/<br\s*\/?>/gi, '\n') // Single br becomes single newline
     
     // Convert paragraphs to newlines but preserve styling
     .replace(/<\/p>/gi, '\n')
