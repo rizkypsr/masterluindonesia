@@ -22,7 +22,6 @@ export const useSearchState = () => {
   const speakingItemId = ref<string | null>(null)
   const isSpeaking = ref(false)
 
-  const config = useRuntimeConfig()
   const searchCache = useSearchCache()
 
   // Get current filters for cache key
@@ -65,68 +64,13 @@ export const useSearchState = () => {
 
     isLoading.value = true
     try {
-      // Build query parameters
-      const params = new URLSearchParams()
-      
-      // Add keyword and pagination
-      if (keyword) params.append('keyword', keyword)
-      params.append('page', currentPage.value.toString())
-      params.append('paginate', '20')
-      
-      // Add array parameters
-      filterPayload.value.selectedCategory.forEach(cat => params.append('selectedCategory[]', cat))
-      filterPayload.value.year.forEach(year => params.append('year[]', year.toString()))
-      filterPayload.value.selectedKeyword.forEach(kw => params.append('selectedKeyword[]', kw))
-      filterPayload.value.listShowKeyword.forEach(kw => params.append('listShowKeyword[]', kw))
-      filterPayload.value.listHideKeyword.forEach(kw => params.append('listHideKeyword[]', kw))
-      
-      // Add deep search filter IDs
-      if (filterPayload.value.chapter_ids) {
-        filterPayload.value.chapter_ids.forEach(id => params.append('chapter_ids[]', id.toString()))
-      }
-      if (filterPayload.value.audio_ids) {
-        filterPayload.value.audio_ids.forEach(id => params.append('audio_ids[]', id.toString()))
-      }
-      if (filterPayload.value.video_ids) {
-        filterPayload.value.video_ids.forEach(id => params.append('video_ids[]', id.toString()))
-      }
-      if (filterPayload.value.topic1_category_ids) {
-        filterPayload.value.topic1_category_ids.forEach(id => params.append('topic1_category_ids[]', id.toString()))
-      }
-      if (filterPayload.value.topic2_chapter_ids) {
-        filterPayload.value.topic2_chapter_ids.forEach(id => params.append('topic2_chapter_ids[]', id.toString()))
-      }
-      if (filterPayload.value.topic3_chapter_ids) {
-        filterPayload.value.topic3_chapter_ids.forEach(id => params.append('topic3_chapter_ids[]', id.toString()))
-      }
-      
-      // Add category ID filters
-      if (filterPayload.value.categoryAudioId) {
-        filterPayload.value.categoryAudioId.forEach(id => params.append('categoryAudioId[]', id.toString()))
-      }
-      if (filterPayload.value.categoryVideoId) {
-        filterPayload.value.categoryVideoId.forEach(id => params.append('categoryVideoId[]', id.toString()))
-      }
-      if (filterPayload.value.categoryBookId) {
-        filterPayload.value.categoryBookId.forEach(id => params.append('categoryBookId[]', id.toString()))
-      }
-      if (filterPayload.value.categoryTopic1Id) {
-        filterPayload.value.categoryTopic1Id.forEach(id => params.append('categoryTopic1Id[]', id.toString()))
-      }
-      if (filterPayload.value.categoryTopic2Id) {
-        filterPayload.value.categoryTopic2Id.forEach(id => params.append('categoryTopic2Id[]', id.toString()))
-      }
-      if (filterPayload.value.categoryTopic3Id) {
-        filterPayload.value.categoryTopic3Id.forEach(id => params.append('categoryTopic3Id[]', id.toString()))
-      }
-
-      const response = await $fetch<{
-        success: boolean
-        message: string
-        data: SearchItem[]
-      }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
-        method: 'GET'
+      const body = buildSearchBody(filterPayload.value, {
+        keyword,
+        page: currentPage.value,
+        paginate: 20
       })
+
+      const response = await postSearch(body)
 
       const data = response.data || []
 

@@ -494,20 +494,14 @@ const handleAudioSearch = async (audioId: number) => {
   audioSearchLoading.value[audioId] = true
 
   try {
-    // Build query parameters
-    const params = new URLSearchParams()
-    params.append('keyword', query.trim())
-    params.append('page', '1')
-    params.append('paginate', '20')
-    params.append('selectedCategory[]', 'Audio')
-    params.append('audio_ids[]', audioId.toString())
-
-    const response = await $fetch<{
-      success: boolean
-      message: string
-      data: SearchItem[]
-    }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
-      method: 'GET'
+    const response = await postSearch({
+      keyword: query.trim(),
+      page: 1,
+      paginate: 20,
+      selectedCategory: ['Audio'],
+      selected_nodes: {
+        audio: { audio_ids: [audioId] }
+      }
     })
 
     audioSearchResults.value[audioId] = response.data || []
@@ -668,20 +662,14 @@ const handleGroupSearch = async () => {
 
     const audioIds = group.audio.map(audio => audio.id)
 
-    // Build query parameters
-    const params = new URLSearchParams()
-    params.append('keyword', groupSearchedKeyword.value)
-    params.append('page', '1')
-    params.append('paginate', '20')
-    params.append('selectedCategory[]', 'Audio')
-    audioIds.forEach(id => params.append('audio_ids[]', id.toString()))
-
-    const response = await $fetch<{
-      success: boolean
-      message: string
-      data: SearchItem[]
-    }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
-      method: 'GET'
+    const response = await postSearch({
+      keyword: groupSearchedKeyword.value,
+      page: 1,
+      paginate: 20,
+      selectedCategory: ['Audio'],
+      selected_nodes: {
+        audio: { audio_ids: audioIds }
+      }
     })
 
     groupSearchResults.value = response.data || []

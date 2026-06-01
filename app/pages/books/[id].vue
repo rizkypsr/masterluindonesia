@@ -482,23 +482,17 @@ const handleChapterSearch = async (chapterId: number) => {
     if (!chapter) return
     
     const chapterIds = getChapterIds(chapter)
-    
-    // Build query parameters
-    const params = new URLSearchParams()
-    params.append('keyword', query.trim())
-    params.append('page', '1')
-    params.append('paginate', '20')
-    params.append('selectedCategory[]', 'Buku')
-    chapterIds.forEach(id => params.append('chapter_ids[]', id.toString()))
-    
-    const response = await $fetch<{
-      success: boolean
-      message: string
-      data: SearchItem[]
-    }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
-      method: 'GET'
+
+    const response = await postSearch({
+      keyword: query.trim(),
+      page: 1,
+      paginate: 20,
+      selectedCategory: ['Buku'],
+      selected_nodes: {
+        books: { chapter_ids: chapterIds }
+      }
     })
-    
+
     chapterSearchResults.value[chapterId] = response.data || []
   } catch (error) {
     console.error('Chapter search failed:', error)
@@ -608,23 +602,17 @@ const handleSearch = async () => {
   
   try {
     const chapterIds = getAllChapterIds(chapters.value)
-    
-    // Build query parameters
-    const params = new URLSearchParams()
-    params.append('keyword', searchedKeyword.value)
-    params.append('page', '1')
-    params.append('paginate', '20')
-    params.append('selectedCategory[]', 'Buku')
-    chapterIds.forEach(id => params.append('chapter_ids[]', id.toString()))
-    
-    const response = await $fetch<{
-      success: boolean
-      message: string
-      data: SearchItem[]
-    }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
-      method: 'GET'
+
+    const response = await postSearch({
+      keyword: searchedKeyword.value,
+      page: 1,
+      paginate: 20,
+      selectedCategory: ['Buku'],
+      selected_nodes: {
+        books: { chapter_ids: chapterIds }
+      }
     })
-    
+
     searchResults.value = response.data || []
   } catch (error) {
     console.error('Search failed:', error)

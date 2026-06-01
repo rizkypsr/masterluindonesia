@@ -356,23 +356,17 @@ const handleGlobalSearch = async () => {
   
   try {
     const videoIds = getAllVideoIds()
-    
-    // Build query parameters
-    const params = new URLSearchParams()
-    params.append('keyword', searchedKeyword.value)
-    params.append('page', '1')
-    params.append('paginate', '20')
-    params.append('selectedCategory[]', 'Video')
-    videoIds.forEach(id => params.append('video_ids[]', id.toString()))
-    
-    const response = await $fetch<{
-      success: boolean
-      message: string
-      data: SearchItem[]
-    }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
-      method: 'GET'
+
+    const response = await postSearch({
+      keyword: searchedKeyword.value,
+      page: 1,
+      paginate: 20,
+      selectedCategory: ['Video'],
+      selected_nodes: {
+        video: { video_ids: videoIds }
+      }
     })
-    
+
     searchResults.value = response.data || []
   } catch (error) {
     console.error('Search failed:', error)
@@ -512,23 +506,17 @@ const handleSubCategorySearch = async (subCatId: number) => {
   
   try {
     const videoIds = getSubCategoryVideoIds(subCatId)
-    
-    // Build query parameters
-    const params = new URLSearchParams()
-    params.append('keyword', query.trim())
-    params.append('page', '1')
-    params.append('paginate', '20')
-    params.append('selectedCategory[]', 'Video')
-    videoIds.forEach(id => params.append('video_ids[]', id.toString()))
-    
-    const response = await $fetch<{
-      success: boolean
-      message: string
-      data: SearchItem[]
-    }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
-      method: 'GET'
+
+    const response = await postSearch({
+      keyword: query.trim(),
+      page: 1,
+      paginate: 20,
+      selectedCategory: ['Video'],
+      selected_nodes: {
+        video: { video_ids: videoIds }
+      }
     })
-    
+
     subCategorySearchResults.value[subCatId] = response.data || []
   } catch (error) {
     console.error('Sub-category search failed:', error)

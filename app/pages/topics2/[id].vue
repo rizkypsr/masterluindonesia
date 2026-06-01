@@ -318,23 +318,17 @@ const handleCategorySearch = async (categoryId: number) => {
   
   try {
     const chapterIds = getCategoryChapterIds(categoryId, data.value?.data || [])
-    
-    // Build query parameters
-    const params = new URLSearchParams()
-    params.append('keyword', query.trim())
-    params.append('page', '1')
-    params.append('paginate', '20')
-    params.append('selectedCategory[]', 'topik2')
-    chapterIds.forEach(id => params.append('topic2_chapter_ids[]', id.toString()))
-    
-    const response = await $fetch<{
-      success: boolean
-      message: string
-      data: SearchItem[]
-    }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
-      method: 'GET'
+
+    const response = await postSearch({
+      keyword: query.trim(),
+      page: 1,
+      paginate: 20,
+      selectedCategory: ['topik2'],
+      selected_nodes: {
+        topic2: { chapter_ids: chapterIds }
+      }
     })
-    
+
     categorySearchResults.value[categoryId] = response.data || []
   } catch (error) {
     console.error('Category search failed:', error)
@@ -444,23 +438,17 @@ const handleGlobalSearch = async () => {
   
   try {
     const chapterIds = getAllChapterIds(data.value?.data || [])
-    
-    // Build query parameters
-    const params = new URLSearchParams()
-    params.append('keyword', searchedKeyword.value)
-    params.append('page', '1')
-    params.append('paginate', '20')
-    params.append('selectedCategory[]', 'topik2')
-    chapterIds.forEach(id => params.append('topic2_chapter_ids[]', id.toString()))
-    
-    const response = await $fetch<{
-      success: boolean
-      message: string
-      data: SearchItem[]
-    }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
-      method: 'GET'
+
+    const response = await postSearch({
+      keyword: searchedKeyword.value,
+      page: 1,
+      paginate: 20,
+      selectedCategory: ['topik2'],
+      selected_nodes: {
+        topic2: { chapter_ids: chapterIds }
+      }
     })
-    
+
     searchResults.value = response.data || []
   } catch (error) {
     console.error('Search failed:', error)

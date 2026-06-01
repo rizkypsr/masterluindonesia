@@ -391,23 +391,17 @@ const handleGlobalSearch = async () => {
   
   try {
     const categoryIds = getAllCategoryIds(categories.value)
-    
-    // Build query parameters
-    const params = new URLSearchParams()
-    params.append('keyword', searchedKeyword.value)
-    params.append('page', '1')
-    params.append('paginate', '20')
-    params.append('selectedCategory[]', 'topik1')
-    categoryIds.forEach(id => params.append('topic1_category_ids[]', id.toString()))
-    
-    const response = await $fetch<{
-      success: boolean
-      message: string
-      data: SearchItem[]
-    }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
-      method: 'GET'
+
+    const response = await postSearch({
+      keyword: searchedKeyword.value,
+      page: 1,
+      paginate: 20,
+      selectedCategory: ['topik1'],
+      selected_nodes: {
+        topic1: { category_ids: categoryIds }
+      }
     })
-    
+
     searchResults.value = response.data || []
   } catch (error) {
     console.error('Search failed:', error)
@@ -549,23 +543,17 @@ const handleCategorySearch = async (categoryId: number) => {
     if (!category) return
     
     const categoryIds = getCategoryIds(category)
-    
-    // Build query parameters
-    const params = new URLSearchParams()
-    params.append('keyword', query.trim())
-    params.append('page', '1')
-    params.append('paginate', '20')
-    params.append('selectedCategory[]', 'topik1')
-    categoryIds.forEach(id => params.append('topic1_category_ids[]', id.toString()))
-    
-    const response = await $fetch<{
-      success: boolean
-      message: string
-      data: SearchItem[]
-    }>(`${config.public.apiBaseUrl}/search?${params.toString()}`, {
-      method: 'GET'
+
+    const response = await postSearch({
+      keyword: query.trim(),
+      page: 1,
+      paginate: 20,
+      selectedCategory: ['topik1'],
+      selected_nodes: {
+        topic1: { category_ids: categoryIds }
+      }
     })
-    
+
     categorySearchResults.value[categoryId] = response.data || []
   } catch (error) {
     console.error('Category search failed:', error)
