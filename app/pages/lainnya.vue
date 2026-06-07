@@ -4,12 +4,10 @@ import { useAuth } from '~/lib/auth';
 const colorMode = useColorMode()
 const config = useRuntimeConfig()
 const { $googleSignIn } = useNuxtApp()
-const { loginWithGoogle, isAuthenticated, logout, getAuthHeader } = useAuth()
+const { loginWithGoogle, isAuthenticated, logout, user, fetchSession } = useAuth()
 
 const isLoading = ref(false)
 const error = ref<string | null>(null)
-const userName = ref<string | null>(null)
-const userEmail = ref<string | null>(null)
 
 const isDark = computed({
   get() {
@@ -28,6 +26,16 @@ let tokenClient: any = null
 
 // Initialize Google Sign-In on mount
 onMounted(async () => {
+  // 1. Fetch user info if authenticated and not yet fetched
+  if (isAuthenticated.value && !user.value) {
+    try {
+      await fetchSession()
+    } catch (e) {
+      console.error('[Lainnya] Failed to fetch session:', e)
+    }
+  }
+
+  // 2. Load Google Sign-In SDK
   try {
     await $googleSignIn.load()
 
@@ -38,33 +46,10 @@ onMounted(async () => {
         callback: handleTokenResponse,
       })
     }
-
-    // Fetch user info if authenticated
-    if (isAuthenticated.value) {
-      await fetchUserInfo()
-    }
   } catch (e) {
-    console.error('Failed to load Google Sign-In', e)
+    console.error('[Lainnya] Failed to load Google Sign-In SDK:', e)
   }
 })
-
-// Fetch user info from backend
-async function fetchUserInfo() {
-  try {
-    const response = await $fetch<{ success: boolean; data: { nama: string; email: string } }>(
-      `${config.public.apiBaseUrl}/myprofile`,
-      {
-        headers: getAuthHeader() as Record<string, string>
-      }
-    )
-    if (response.success && response.data) {
-      userName.value = response.data.nama
-      userEmail.value = response.data.email
-    }
-  } catch (e) {
-    console.error('Failed to fetch user info:', e)
-  }
-}
 
 async function handleTokenResponse(response: { access_token?: string; error?: string }) {
   if (response.error) {
@@ -77,8 +62,6 @@ async function handleTokenResponse(response: { access_token?: string; error?: st
     error.value = null
     try {
       await loginWithGoogle(response.access_token)
-      // Fetch user info after successful login
-      await fetchUserInfo()
     } catch (e: any) {
       error.value = e.message || 'Login failed'
     } finally {
@@ -96,8 +79,6 @@ function openGoogleLogin() {
 
 function handleLogout() {
   logout()
-  userName.value = null
-  userEmail.value = null
 }
 </script>
 
@@ -111,12 +92,12 @@ function handleLogout() {
     <!-- Content -->
     <div class="px-6 py-6">
       <!-- User Name (shown when logged in) -->
-      <div v-if="isAuthenticated && userName" class="py-3 mb-4 border-b border-gray-300 dark:border-gray-600">
+      <div v-if="isAuthenticated && user" class="py-3 mb-4 border-b border-gray-300 dark:border-gray-600">
         <div class="flex items-center gap-3">
           <Icon name="mdi:account-circle" class="w-10 h-10 text-primary dark:text-yellow-400" />
           <div class="flex-1">
-            <p class="font-semibold text-lg text-black dark:text-white">{{ userName }}</p>
-            <p class="text-sm text-gray-500 dark:text-gray-400">{{ userEmail }}</p>
+            <p class="font-semibold text-lg text-black dark:text-white">{{ user.name }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{{ user.email }}</p>
           </div>
         </div>
       </div>

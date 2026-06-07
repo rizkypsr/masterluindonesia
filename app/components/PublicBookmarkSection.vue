@@ -180,7 +180,7 @@ async function fetchPublicBookmarks() {
   loadingPublicBookmarks.value = true
   try {
     const response = await $fetch<PublicBookmarkResponse>(
-      `${config.public.apiBaseUrl}/public-bookmarks`
+      `${config.public.apiV2BaseUrl}/public-bookmarks`
     )
     if (response.success) {
       publicBookmarks.value = response.data

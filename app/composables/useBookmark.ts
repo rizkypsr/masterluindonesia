@@ -84,7 +84,7 @@ export const useBookmark = () => {
     try {
       const headers = getAuthHeader()
       const response = await $fetch<{ success: boolean; data: BookmarkFolder[] }>(
-        `${config.public.apiBaseUrl}/bookmark/detail?type=0`,
+        `${config.public.apiV2BaseUrl}/bookmark/detail?type=0`,
         { headers: headers as Record<string, string> }
       )
       if (response.success) {
@@ -104,7 +104,7 @@ export const useBookmark = () => {
     try {
       const headers = getAuthHeader()
       const response = await $fetch<{ success: boolean; data: BookmarkItem[] }>(
-        `${config.public.apiBaseUrl}/bookmark/detail?type=${type}`,
+        `${config.public.apiV2BaseUrl}/bookmark/detail?type=${type}`,
         { headers: headers as Record<string, string> }
       )
       if (response.success) {
@@ -159,13 +159,22 @@ export const useBookmark = () => {
 
     isLoading.value = true
     try {
-      const payload: BookmarkPayload = {
-        ...currentPayload.value,
+      const payload: any = {
         title: bookmarkTitle.value,
-        folderId: selectedFolderId.value
+        type: currentPayload.value.type,
       }
+      if (selectedFolderId.value) {
+        payload.folderId = selectedFolderId.value
+      }
+      
+      // Only include active links to prevent dirtying the data JSON column in backend
+      Object.entries(currentPayload.value).forEach(([key, value]) => {
+        if (key.endsWith('Link') && value !== null) {
+          payload[key] = value
+        }
+      })
 
-      const response = await $fetch<BookmarkResponse>(`${config.public.apiBaseUrl}/bookmark`, {
+      const response = await $fetch<BookmarkResponse>(`${config.public.apiV2BaseUrl}/bookmark`, {
         method: 'POST',
         headers: getAuthHeader() as Record<string, string>,
         body: payload
@@ -193,6 +202,98 @@ export const useBookmark = () => {
     } finally {
       isLoading.value = false
     }
+  }
+
+  // --- Bookmark Sharing ---
+  const shareToken = ref<string | null>(null)
+  const isShareTokenActive = ref(false)
+  const shareTokenExpiresAt = ref<string | null>(null)
+
+  const generateShareLink = async (expiresInDays: number = 7) => {
+    try {
+      const response = await $fetch<any>(`${config.public.apiV2BaseUrl}/bookmark/share`, {
+        method: 'POST',
+        headers: getAuthHeader() as Record<string, string>,
+        body: { expiresInDays }
+      })
+      if (response.success && response.data) {
+        shareToken.value = response.data.share_token
+        isShareTokenActive.value = response.data.is_active
+        shareTokenExpiresAt.value = response.data.expires_at
+        return response.data
+      }
+    } catch (error) {
+      console.error('Failed to generate share link:', error)
+    }
+    return null
+  }
+
+  const getActiveShareLink = async () => {
+    try {
+      const response = await $fetch<any>(`${config.public.apiV2BaseUrl}/bookmark/share`, {
+        method: 'GET',
+        headers: getAuthHeader() as Record<string, string>
+      })
+      if (response.success && response.data) {
+        shareToken.value = response.data.share_token
+        isShareTokenActive.value = response.data.is_active
+        shareTokenExpiresAt.value = response.data.expires_at
+        return response.data
+      }
+    } catch (error) {
+      // Expected if no token is active
+      shareToken.value = null
+      isShareTokenActive.value = false
+      shareTokenExpiresAt.value = null
+    }
+    return null
+  }
+
+  const deactivateShareLink = async () => {
+    try {
+      const response = await $fetch<any>(`${config.public.apiV2BaseUrl}/bookmark/share`, {
+        method: 'DELETE',
+        headers: getAuthHeader() as Record<string, string>
+      })
+      if (response.success) {
+        shareToken.value = null
+        isShareTokenActive.value = false
+        shareTokenExpiresAt.value = null
+        return true
+      }
+    } catch (error) {
+      console.error('Failed to deactivate share link:', error)
+    }
+    return false
+  }
+
+  const getSharedBookmarks = async (token: string) => {
+    try {
+      const response = await $fetch<{ success: boolean; data: any[] }>(`${config.public.apiV2BaseUrl}/bookmark/shared/${token}`, {
+        method: 'GET'
+      })
+      if (response.success) {
+        return response.data
+      }
+    } catch (error) {
+      console.error('Failed to fetch shared bookmarks:', error)
+    }
+    return null
+  }
+
+  const getPublicBookmarks = async (limit?: number) => {
+    try {
+      const query = limit ? `?limit=${limit}` : ''
+      const response = await $fetch<{ success: boolean; data: any[] }>(`${config.public.apiV2BaseUrl}/public-bookmarks${query}`, {
+        method: 'GET'
+      })
+      if (response.success) {
+        return response.data
+      }
+    } catch (error) {
+      console.error('Failed to fetch public bookmarks:', error)
+    }
+    return null
   }
 
   // Helper functions to create payloads for different types
@@ -321,6 +422,11 @@ export const useBookmark = () => {
     fetchBookmarksByType,
     isBookmarked,
     getBookmarkByTitle,
+    generateShareLink,
+    getActiveShareLink,
+    deactivateShareLink,
+    getSharedBookmarks,
+    getPublicBookmarks,
     createVideoBookmark,
     createAudioBookmark,
     createBookBookmark,

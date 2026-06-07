@@ -1,188 +1,160 @@
-# Master Lu Indonesia - Nuxt 4.x Application
+# Master Lu Indonesia - Website Keagamaan
 
-A high-performance Nuxt 4.x application with SSR, optimized for shared hosting deployment.
+## 🚀 Project Overview
+
+Master Lu Indonesia adalah platform pembelajaran digital yang menyediakan koleksi lengkap audio dharma, buku, paritta, dan materi edukasi Buddha. Website ini dirancang untuk memudahkan umat Buddha dalam mengakses berbagai konten spiritual dan edukatif dalam satu platform yang terintegrasi.
 
 ## ✨ Features
 
-- ✅ Server-Side Rendering (SSR) enabled
-- ✅ Hybrid rendering with route rules (ISR + Prerendering)
-- ✅ Smart link prefetching
-- ✅ Image optimization with @nuxt/image
-- ✅ Code splitting & chunk optimization
-- ✅ Compressed assets (gzip/brotli)
-- ✅ Performance monitoring utilities
-- ✅ SSR-safe browser API wrappers
-
-## 📊 Performance
-
-- **First Contentful Paint**: < 1s
-- **Time to Interactive**: < 2s
-- **Lighthouse Score**: 90+
-- **Bundle Size**: ~300KB (optimized)
-
-## 🚀 Quick Start
-
-### Setup
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-### Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-npm run dev
-```
-
-### Production Build
-
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Preview production build locally:
-
-```bash
-npm run preview
-```
-
-### Performance Tools
-
-```bash
-npm run analyze      # Analyze bundle size
-npm run check-ssr    # Check SSR compatibility
-npm run find-lazy    # Find lazy load candidates
-npm run perf         # Build + analyze
-```
-
-## 📚 Documentation
-
-- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Quick reference card
-- **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** - Complete overview
-- **[PERFORMANCE_GUIDE.md](PERFORMANCE_GUIDE.md)** - Performance best practices
-- **[DEPLOYMENT_SHARED_HOSTING.md](DEPLOYMENT_SHARED_HOSTING.md)** - Deployment guide
-- **[SSR_MIGRATION_GUIDE.md](SSR_MIGRATION_GUIDE.md)** - SSR implementation details
-
-## 🔧 Configuration
-
-### Environment Variables
-
-Create a `.env` file:
-
-```bash
-GOOGLE_CLIENT_ID=your_google_client_id
-NUXT_PUBLIC_API_BASE_URL=https://api.masterluindonesia.com/api
-```
-
-See `.env.example` for all available variables.
-
-### Route Rules
-
-The app uses hybrid rendering:
-
-- **Static pages** (/, /edukasi/**, /tentang/**): Prerendered at build time
-- **Dynamic content** (/audio/**, /books/**): ISR with 1-hour cache
-- **User pages** (/bookmark, /search): Client-side only
-
-## 🚢 Deployment
-
-### Shared Hosting with Node.js
-
-1. Build the application:
-   ```bash
-   npm run build
-   ```
-
-2. Upload `.output/` folder to server
-
-3. Start with PM2:
-   ```bash
-   pm2 start .output/server/index.mjs --name masterlu
-   pm2 save
-   pm2 startup
-   ```
-
-See [DEPLOYMENT_SHARED_HOSTING.md](DEPLOYMENT_SHARED_HOSTING.md) for detailed instructions.
-
-## 🎯 Performance Optimizations
-
-### Implemented
-- ✅ SSR with hybrid rendering
-- ✅ Smart prefetching on interaction
-- ✅ Image optimization (WebP)
-- ✅ Code splitting
-- ✅ Asset compression
-- ✅ Lazy loading support
-- ✅ Lazy hydration support
-
-### Next Steps
-- Add `Lazy` prefix to modal components
-- Use `hydrate-on-visible` for below-fold content
-- Replace `<img>` with `<NuxtImg>`
-- Use `shallowRef` for large data arrays
-
-See [PERFORMANCE_GUIDE.md](PERFORMANCE_GUIDE.md) for details.
+- **Audio Dharma**: Koleksi audio ceramah dan pengajaran dharma dari berbagai guru spiritual
+- **Perpustakaan Digital**: Akses ke berbagai buku dan teks keagamaan Buddha
+- **Paritta**: Kumpulan paritta (doa-doa perlindungan) dalam format audio dan teks
+- **Materi Edukasi**: Konten pembelajaran tentang ajaran Buddha yang terstruktur
+- **Pencarian Cerdas**: Fitur pencarian yang memudahkan menemukan konten spesifik
+- **Bookmark Manager**: Simpan dan kelola konten favorit
+- **AI Voice Guide**: Panduan suara berbasis AI untuk pengalaman yang lebih interaktif
+- **Community Playlists**: Playlist yang dibuat dan dibagikan oleh komunitas
+- **Responsive Design**: Tampilan yang optimal di berbagai perangkat
+- **Dark Mode Support**: Dukungan tema gelap untuk kenyamanan mata
+- **Progressive Web App**: Dapat diakses seperti aplikasi mobile
 
 ## 🛠️ Tech Stack
 
-- **Framework**: Nuxt 4.x
-- **UI**: @nuxt/ui (Nuxt UI v4)
-- **Styling**: Tailwind CSS v4
-- **State**: Pinia
-- **Images**: @nuxt/image
-- **Icons**: @nuxt/icon
+### Frontend
+- **Nuxt 4** - Full-stack Vue.js framework
+- **Vue 3** - Progressive JavaScript framework
+- **TypeScript** - Type-safe JavaScript
+- **Tailwind CSS 4** - Utility-first CSS framework
+- **Nuxt UI** - Modern UI components for Nuxt
 
-## 📈 Monitoring
+### State Management & Utils
+- **Pinia** - Vue state management
+- **VueUse** - Collection of Vue composition utilities
+- **Better Auth** - Authentication solution
+
+### Integrations & APIs
+- **ElevenLabs** - AI voice synthesis
+- **Firebase Storage** - Cloud storage for media files
+- **Google OAuth** - Authentication provider
+
+### Development Tools
+- **Nuxt Icon** - Icon management
+- **Nuxt Image** - Image optimization
+- **Nuxt Ripple** - Material design ripple effects
+
+## 📁 Project Structure
+
+```
+app/
+├── assets/          # Static assets (CSS, images)
+├── components/      # Vue components
+├── composables/     # Vue composables
+├── layouts/         # Layout components
+├── lib/            # Utility libraries
+├── pages/          # Application pages
+│   ├── audio/      # Audio content pages
+│   ├── books/      # Book collection pages
+│   ├── paritta/    # Paritta pages
+│   ├── edukasi/    # Educational content
+│   ├── video/      # Video content
+│   └── ...
+├── plugins/        # Nuxt plugins
+├── types/          # TypeScript type definitions
+└── utils/          # Utility functions
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+ 
+- npm atau yarn
+
+### Installation
+
+1. Clone repository
+```bash
+git clone [repository-url]
+cd masterlu
+```
+
+2. Install dependencies
+```bash
+npm install
+```
+
+3. Setup environment variables
+```bash
+cp .env.example .env
+```
+
+4. Configure environment variables di `.env`:
+```env
+NUXT_PUBLIC_GOOGLE_CLIENT_ID=your_google_client_id
+NUXT_PUBLIC_API_BASE_URL=your_api_base_url
+```
 
 ### Development
+
 ```bash
-# Open Chrome DevTools > Lighthouse
-# Run performance audit
-```
+# Start development server
+npm run dev
 
-### Production
-- Use [PageSpeed Insights](https://pagespeed.web.dev/)
-- Monitor with PM2: `pm2 monit`
-- Check logs: `pm2 logs masterlu`
-
-## 🆘 Troubleshooting
-
-### Build Errors
-```bash
-rm -rf .nuxt .output node_modules
-npm install
+# Build for production
 npm run build
-```
 
-### SSR Errors
-```bash
-npm run check-ssr
-# Add guards where needed
-```
+# Generate static site
+npm run generate
 
-### Performance Issues
-```bash
+# Preview production build
+npm run preview
+
+# Analyze bundle
 npm run analyze
-npm run find-lazy
 ```
 
-## 📞 Resources
+## 🌐 Deployment
 
-- [Nuxt Documentation](https://nuxt.com/docs)
-- [Nuxt Performance Guide](https://nuxt.com/docs/guide/best-practices/performance)
-- [Nuxt Image Module](https://image.nuxt.com/)
-- [Core Web Vitals](https://web.dev/vitals/)
+Project ini dikonfigurasi untuk deployment dengan:
+- **Preset**: Node.js server
+- **Static Generation**: Halaman edukasi dan tentang di-prerender
+- **Caching Strategy**: Optimized untuk performa maksimal
+- **PWA Ready**: Siap untuk instalasi sebagai aplikasi
+
+## 📱 Features Detail
+
+### Tabs Utama
+- **Terbaru**: Konten terbaru yang ditambahkan
+- **Paritta**: Koleksi paritta lengkap
+- **Unduh**: Konten yang dapat diunduh
+- **Edukasi**: Materi pembelajaran terstruktur
+- **Tentang**: Informasi tentang platform
+- **Contact**: Informasi kontak dan dukungan
+
+### Fitur Lanjutan
+- **Scroll Position Memory**: Mengingat posisi scroll saat navigasi
+- **Keep Alive Components**: Optimasi performa dengan component caching
+- **Lazy Loading**: Pemuatan konten yang efisien
+- **Offline Support**: Dukungan akses offline untuk konten tertentu
+
+## 🤝 Contributing
+
+Kontribusi sangat diterima! Silakan:
+1. Fork repository
+2. Buat feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit perubahan (`git commit -m 'Add some AmazingFeature'`)
+4. Push ke branch (`git push origin feature/AmazingFeature`)
+5. Buat Pull Request
 
 ## 📄 License
 
-[Your License Here]
+Project ini dilisensikan di bawah [MIT License](LICENSE).
+
+## 📞 Support
+
+Untuk dukungan dan pertanyaan:
+- Website: [masterluindonesia.com](https://masterluindonesia.com)
+- Email: [contact information]
 
 ---
 
-**Status**: ✅ Production-ready with Nuxt 4.x performance best practices implemented!
+*Dibuat dengan ❤️ untuk komunitas Buddha Indonesia*

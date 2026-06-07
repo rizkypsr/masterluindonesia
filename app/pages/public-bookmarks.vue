@@ -165,7 +165,7 @@ async function fetchPublicBookmarks() {
   loading.value = true
   try {
     const response = await $fetch<PublicBookmarkResponse>(
-      `${config.public.apiBaseUrl}/public-bookmarks?all=true`
+      `${config.public.apiV2BaseUrl}/public-bookmarks?all=true`
     )
     if (response.success) {
       publicBookmarks.value = response.data

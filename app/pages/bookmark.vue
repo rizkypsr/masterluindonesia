@@ -26,7 +26,7 @@ interface BookmarkItem {
   id: number
   title: string
   type: number // 0 = folder, 1 = video, 2 = audio, 3 = book, 4 = recipe/topic1, 5 = topic2, 6 = topic3
-  link: string | null
+  data: any
   child?: BookmarkItem[]
 }
 
@@ -50,7 +50,7 @@ const searchParam = ref<string | undefined>(undefined)
 // Fetch bookmarks using useFetch with reactive search parameter
 const { data: bookmarksData, pending: loading, refresh: refreshBookmarks } = await useFetch<BookmarkResponse>(
   () => {
-    let url = `${config.public.apiBaseUrl}/bookmark`
+    let url = `${config.public.apiV2BaseUrl}/bookmark`
     if (searchParam.value) {
       url += `?search=${encodeURIComponent(searchParam.value)}`
     }
@@ -68,13 +68,11 @@ const bookmarks = computed(() => bookmarksData.value?.data || [])
 // Share state
 const isShareModalOpen = ref(false)
 const activeShareLink = ref<{
-  shareToken: string
-  sharePath: string
-  apiUrl: string
-  createdAt: string
-  expiresAt: string | null
-  isActive: boolean
-  accessCount: number
+  share_token: string
+  created_at: string
+  expires_at: string | null
+  is_active: boolean
+  access_count: number
 } | null>(null)
 const isCreatingShare = ref(false)
 const isDeletingShare = ref(false)
@@ -82,7 +80,7 @@ const isDeletingShare = ref(false)
 // Computed share URL for display
 const shareUrl = computed(() => {
   if (!activeShareLink.value) return ''
-  return `${window.location.origin}${activeShareLink.value.sharePath}`
+  return `${window.location.origin}/shared/${activeShareLink.value.share_token}`
 })
 
 onMounted(async () => {
@@ -152,10 +150,16 @@ function getIcon(type: number): string {
 }
 
 function navigateToItem(item: BookmarkItem) {
-  if (item.type === 0 || !item.link) return
+  if (item.type === 0 || !item.data) return
 
   try {
-    const linkData: BookmarkLink = JSON.parse(item.link)
+    let rawData = item.data;
+    if (typeof rawData === 'string') {
+      rawData = JSON.parse(rawData);
+    }
+    
+    // Support both old flat format and new nested link properties
+    const linkData: BookmarkLink = rawData.videoLink || rawData.audioLink || rawData.bookLink || rawData.topic1Link || rawData.topic2Link || rawData.topic3Link || rawData;
 
     switch (item.type) {
       case 1: // Video
@@ -252,7 +256,7 @@ function navigateToItem(item: BookmarkItem) {
 // Fetch active share link
 async function fetchActiveShareLink() {
   try {
-    const response = await $fetch<{ success: boolean; data: any }>(`${config.public.apiBaseUrl}/bookmark/share`, {
+    const response = await $fetch<{ success: boolean; data: any }>(`${config.public.apiV2BaseUrl}/bookmark/share`, {
       headers: getAuthHeader() as Record<string, string>
     })
     if (response.success && response.data) {
@@ -274,7 +278,7 @@ async function createShareLink(expiresInDays?: number) {
   try {
     const body = expiresInDays ? { expiresInDays } : {}
     const response = await $fetch<{ success: boolean; message: string; data: any }>(
-      `${config.public.apiBaseUrl}/bookmark/share`,
+      `${config.public.apiV2BaseUrl}/bookmark/share`,
       {
         method: 'POST',
         headers: getAuthHeader() as Record<string, string>,
@@ -320,7 +324,7 @@ async function deactivateShareLink() {
   isDeletingShare.value = true
   try {
     const response = await $fetch<{ success: boolean; message: string }>(
-      `${config.public.apiBaseUrl}/bookmark/share`,
+      `${config.public.apiV2BaseUrl}/bookmark/share`,
       {
         method: 'DELETE',
         headers: getAuthHeader() as Record<string, string>
@@ -444,7 +448,7 @@ async function deactivateShareLink() {
               <div class="flex items-center justify-between mb-2">
                 <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Link Aktif</span>
                 <span class="text-xs text-gray-500 dark:text-gray-400">
-                  {{ activeShareLink.accessCount }} kali diakses
+                  {{ activeShareLink.access_count }} kali diakses
                 </span>
               </div>
               <div class="flex items-center gap-2 mb-2">
@@ -455,9 +459,9 @@ async function deactivateShareLink() {
                 </UButton>
               </div>
               <div class="text-xs text-gray-500 dark:text-gray-400">
-                <div>Dibuat: {{ new Date(activeShareLink.createdAt).toLocaleDateString('id-ID') }}</div>
-                <div v-if="activeShareLink.expiresAt">
-                  Kadaluarsa: {{ new Date(activeShareLink.expiresAt).toLocaleDateString('id-ID') }}
+                <div>Dibuat: {{ new Date(activeShareLink.created_at).toLocaleDateString('id-ID') }}</div>
+                <div v-if="activeShareLink.expires_at">
+                  Kadaluarsa: {{ new Date(activeShareLink.expires_at).toLocaleDateString('id-ID') }}
                 </div>
                 <div v-else>Tidak ada batas waktu</div>
               </div>
