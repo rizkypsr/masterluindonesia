@@ -35,6 +35,8 @@ export default defineNuxtConfig({
       // Prerender static pages with images
       '/edukasi/**': { prerender: true },
       '/tentang/**': { prerender: true },
+      // Chatbot is a client-only experience (live streaming + auth-gated)
+      '/chatbot': { ssr: false },
     },
   },
   modules: ['@nuxt/ui', '@nuxt/icon', '@nuxt/image', '@pinia/nuxt', '@vueuse/nuxt', 'nuxt-ripple'],

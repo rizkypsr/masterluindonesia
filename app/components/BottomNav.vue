@@ -1,9 +1,9 @@
 <template>
   <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md">
-    <!-- Floating Search Button -->
-    <NuxtLink to="/search" class="absolute left-1/2 -translate-x-1/2 -top-7 group z-10">
+    <!-- Floating Chatbot Button -->
+    <NuxtLink to="/chatbot" class="absolute left-1/2 -translate-x-1/2 -top-7 group z-10">
       <div class="w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-transform hover:scale-105 bg-primary dark:bg-yellow-500">
-        <Icon name="mdi:magnify" class="w-7 h-7 text-black" />
+        <Icon name="mdi:robot-happy" class="w-7 h-7 text-black" />
       </div>
     </NuxtLink>
 

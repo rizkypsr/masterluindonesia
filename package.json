@@ -11,6 +11,7 @@
     "analyze": "nuxt analyze"
   },
   "dependencies": {
+    "@ai-sdk/vue": "^3.0.204",
     "@elevenlabs/elevenlabs-js": "^2.32.0",
     "@nuxt/icon": "2.2.0",
     "@nuxt/image": "2.0.0",
@@ -19,7 +20,9 @@
     "@pinia/nuxt": "^0.11.3",
     "@tailwindcss/vite": "^4.1.18",
     "@vueuse/nuxt": "^14.2.1",
+    "ai": "^6.0.204",
     "better-auth": "^1.4.12",
+    "marked": "^18.0.5",
     "nuxt": "^4.2.2",
     "nuxt-ripple": "^0.0.8",
     "pinia": "^3.0.4",
