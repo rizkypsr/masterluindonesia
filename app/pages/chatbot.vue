@@ -3,7 +3,7 @@
     <!-- Header -->
     <header class="shrink-0 flex items-center gap-3 px-3 py-3 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
       <button
-        class="p-2 -ml-1 rounded-full text-secondary dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        class="p-2 flex justify-center align-middle rounded-full text-secondary dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
         aria-label="Kembali"
         @click="goBack"
       >
@@ -27,7 +27,7 @@
         <Icon name="mdi:square-edit-outline" class="w-5 h-5" />
       </button>
       <button
-        class="p-2 -mr-1 rounded-full text-secondary dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        class="p-2 flex justify-center align-middle rounded-full text-secondary dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
         aria-label="Riwayat percakapan"
         @click="openDrawer"
       >
@@ -42,15 +42,15 @@
         <div class="w-16 h-16 rounded-full flex items-center justify-center bg-primary/10 dark:bg-yellow-500/10 mb-4">
           <Icon name="mdi:robot-happy" class="w-9 h-9 text-primary dark:text-yellow-400" />
         </div>
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">Halo! 👋</h2>
-        <p class="text-sm text-secondary dark:text-gray-400 mb-6 max-w-xs">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Halo! 👋</h2>
+        <p class="text-[15px] leading-relaxed text-gray-600 dark:text-gray-300 mb-6 max-w-xs">
           Saya bisa menjawab pertanyaan seputar buku, audio, dan video MasterLu Indonesia.
         </p>
         <div class="w-full max-w-xs space-y-2">
           <button
             v-for="s in suggestions"
             :key="s"
-            class="w-full text-left text-sm px-4 py-2.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:border-primary dark:hover:border-yellow-500 transition-colors"
+            class="w-full text-left text-sm px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100 hover:border-primary dark:hover:border-yellow-500 transition-colors"
             @click="askSuggestion(s)"
           >
             {{ s }}
@@ -62,7 +62,7 @@
       <template v-for="message in messages" :key="message.id">
         <!-- User message -->
         <div v-if="message.role === 'user'" class="flex justify-end">
-          <div class="max-w-[80%] px-4 py-2.5 rounded-2xl rounded-br-md bg-primary dark:bg-yellow-500 text-black text-sm whitespace-pre-wrap break-words">
+          <div class="max-w-[80%] px-4 py-2.5 rounded-2xl rounded-br-md bg-primary dark:bg-yellow-500 text-black text-[15px] leading-relaxed whitespace-pre-wrap break-words">
             {{ textOf(message) }}
           </div>
         </div>
@@ -73,7 +73,7 @@
             <Icon name="mdi:robot-happy" class="w-4 h-4 text-black" />
           </div>
           <div class="max-w-[85%] space-y-2">
-            <div class="px-4 py-2.5 rounded-2xl rounded-bl-md bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-gray-800 dark:text-gray-100 text-sm break-words">
+            <div class="px-4 py-2.5 rounded-2xl rounded-bl-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-[15px] leading-relaxed break-words">
               <!-- eslint-disable-next-line vue/no-v-html -->
               <div v-if="textOf(message)" class="md-content" v-html="renderMarkdown(textOf(message))" />
               <span v-else class="inline-flex gap-1.5 py-1">
@@ -85,25 +85,25 @@
 
             <!-- Sources -->
             <div v-if="sourcesOf(message).length" class="space-y-1.5">
-              <p class="text-xs font-medium text-secondary dark:text-gray-400 px-1">Artikel Terkait</p>
+              <p class="text-xs font-semibold uppercase tracking-wide text-secondary dark:text-gray-400 px-1">Artikel Terkait</p>
               <component
                 :is="linkFor(src) ? resolveLinkComponent : 'div'"
                 v-for="(src, i) in sourcesOf(message)"
                 :key="`${src.content_type}-${src.content_id}-${src.segment_id ?? i}`"
                 :to="linkFor(src)"
-                class="block px-3 py-2 rounded-xl bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700"
+                class="block px-3 py-2.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
                 :class="linkFor(src) ? 'hover:border-primary dark:hover:border-yellow-500 transition-colors' : ''"
               >
                 <div class="flex items-start gap-2">
                   <Icon :name="iconFor(src.content_type)" class="w-4 h-4 text-primary dark:text-yellow-400 mt-0.5 shrink-0" />
                   <div class="min-w-0">
-                    <p class="text-xs font-medium text-gray-900 dark:text-white truncate">
+                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
                       {{ src.title || src.category_title || 'Sumber' }}
                     </p>
                     <p v-if="src.chapter_title || src.category_title" class="text-xs text-secondary dark:text-gray-400 truncate">
                       {{ src.chapter_title || src.category_title }}
                     </p>
-                    <p v-if="src.snippet" class="text-xs text-gray-500 dark:text-gray-500 line-clamp-2 mt-0.5">
+                    <p v-if="src.snippet" class="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 mt-0.5">
                       {{ src.snippet }}
                     </p>
                   </div>
@@ -173,7 +173,7 @@
           rows="1"
           :disabled="!isAuthenticated"
           placeholder="Tulis pertanyaan..."
-          class="flex-1 resize-none max-h-32 px-4 py-2.5 rounded-2xl bg-gray-100 dark:bg-gray-700 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-yellow-500 disabled:opacity-60"
+          class="flex-1 resize-none max-h-32 px-4 py-2.5 rounded-2xl bg-gray-100 dark:bg-gray-700 text-base text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-yellow-500 disabled:opacity-60"
           @input="autoGrow"
           @keydown="onKeydown"
         />
@@ -213,7 +213,7 @@
         <div class="shrink-0 flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-700">
           <h2 class="text-base font-semibold text-gray-900 dark:text-white">Riwayat</h2>
           <button
-            class="p-2 -mr-2 rounded-full text-secondary dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+            class="p-2 flex justify-center align-middle rounded-full text-secondary dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
             aria-label="Tutup"
             @click="drawerOpen = false"
           >
