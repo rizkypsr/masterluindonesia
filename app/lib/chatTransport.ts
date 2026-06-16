@@ -24,6 +24,10 @@ export interface ChatSource {
   snippet?: string
   /** Cosine similarity in [0,1]. */
   score?: number
+  /** Video timestamp in seconds (video sources only). */
+  timestamp?: number
+  /** Human-readable video timestamp, e.g. "4:47" (video sources only). */
+  timestamp_formatted?: string
 }
 
 /**

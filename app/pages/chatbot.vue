@@ -20,7 +20,7 @@
       </div>
       <button
         v-if="messages.length"
-        class="p-2 rounded-full text-secondary dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+        class="p-2 flex justify-center align-middle rounded-full text-secondary dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
         aria-label="Obrolan baru"
         @click="newChat"
       >
@@ -62,7 +62,10 @@
       <template v-for="message in messages" :key="message.id">
         <!-- User message -->
         <div v-if="message.role === 'user'" class="flex justify-end">
-          <div class="max-w-[80%] px-4 py-2.5 rounded-2xl rounded-br-md bg-primary dark:bg-yellow-500 text-black text-[15px] leading-relaxed whitespace-pre-wrap break-words">
+          <div
+            class="max-w-[80%] px-4 py-2.5 rounded-2xl rounded-br-md bg-primary dark:bg-yellow-500 text-black leading-relaxed whitespace-pre-wrap break-words"
+            :style="{ fontSize: fontSize + 'px' }"
+          >
             {{ textOf(message) }}
           </div>
         </div>
@@ -73,7 +76,10 @@
             <Icon name="mdi:robot-happy" class="w-4 h-4 text-black" />
           </div>
           <div class="max-w-[85%] space-y-2">
-            <div class="px-4 py-2.5 rounded-2xl rounded-bl-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-[15px] leading-relaxed break-words">
+            <div
+              class="px-4 py-2.5 rounded-2xl rounded-bl-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 leading-relaxed break-words"
+              :style="{ fontSize: fontSize + 'px' }"
+            >
               <!-- eslint-disable-next-line vue/no-v-html -->
               <div v-if="textOf(message)" class="md-content" v-html="renderMarkdown(textOf(message))" />
               <span v-else class="inline-flex gap-1.5 py-1">
@@ -100,9 +106,18 @@
                     <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
                       {{ src.title || src.category_title || 'Sumber' }}
                     </p>
-                    <p v-if="src.chapter_title || src.category_title" class="text-xs text-secondary dark:text-gray-400 truncate">
-                      {{ src.chapter_title || src.category_title }}
-                    </p>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                      <p v-if="src.chapter_title || src.category_title" class="text-xs text-secondary dark:text-gray-400 truncate">
+                        {{ src.chapter_title || src.category_title }}
+                      </p>
+                      <span
+                        v-if="src.timestamp_formatted"
+                        class="inline-flex items-center gap-0.5 shrink-0 px-1.5 py-0.5 rounded-full bg-primary/15 dark:bg-yellow-500/15 text-[11px] font-medium text-[#9a7400] dark:text-yellow-400"
+                      >
+                        <Icon name="mdi:clock-outline" class="w-3 h-3" />
+                        {{ src.timestamp_formatted }}
+                      </span>
+                    </div>
                     <p v-if="src.snippet" class="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 mt-0.5">
                       {{ src.snippet }}
                     </p>
@@ -143,7 +158,7 @@
         </div>
       </div>
       <!-- Scroll to bottom -->
-      <div class="sticky bottom-2 z-10 flex justify-end pointer-events-none">
+      <div class="sticky bottom-2 z-10 flex justify-start pointer-events-none">
         <Transition name="fade">
           <button
             v-if="showScrollBtn"
@@ -165,7 +180,15 @@
     </div>
 
     <!-- Input bar -->
-    <div class="shrink-0 px-3 py-3 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+    <div class="shrink-0 relative px-3 py-3 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+      <!-- Floating zoom / scroll tools (above the input bar) -->
+      <LazyFabZoom
+        v-model:isOpen="isToolsExpanded"
+        class="absolute right-0 bottom-full z-20"
+        @zoomIn="zoomIn"
+        @zoomOut="zoomOut"
+        @scrollTop="scrollToTop"
+      />
       <div class="flex items-end gap-2">
         <textarea
           ref="inputEl"
@@ -301,6 +324,22 @@ const inputEl = ref<HTMLTextAreaElement | null>(null)
 const drawerOpen = ref(false)
 const conversations = ref<ConversationListItem[]>([])
 const loadingList = ref(false)
+
+// Zoom / scroll tools (FabZoom)
+const isToolsExpanded = ref(false)
+const fontSize = ref(15)
+
+function zoomIn() {
+  fontSize.value = Math.min(fontSize.value + 2, 28)
+}
+
+function zoomOut() {
+  fontSize.value = Math.max(fontSize.value - 2, 12)
+}
+
+function scrollToTop() {
+  scrollEl.value?.scrollTo({ top: 0, behavior: 'smooth' })
+}
 
 const suggestions = [
   'Apa itu fengshui menurut MasterLu?',
@@ -615,10 +654,10 @@ useHead({ title: 'Chatbot' })
   margin: 0.75rem 0 0.35rem;
   line-height: 1.3;
 }
-.md-content :deep(h1) { font-size: 1.05rem; }
-.md-content :deep(h2) { font-size: 1rem; }
+.md-content :deep(h1) { font-size: 1.25em; }
+.md-content :deep(h2) { font-size: 1.15em; }
 .md-content :deep(h3),
-.md-content :deep(h4) { font-size: 0.95rem; }
+.md-content :deep(h4) { font-size: 1.05em; }
 .md-content :deep(ul),
 .md-content :deep(ol) {
   margin: 0.25rem 0 0.5rem;
