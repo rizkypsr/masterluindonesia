@@ -1,10 +1,20 @@
 import { useAuth } from '~/lib/auth'
 import type { ChatSource } from '~/lib/chatTransport'
 
+/** A question category used to scope a new conversation's retrieval. */
+export interface ChatCategory {
+  id: number
+  name: string
+  /** Content types this category spans, e.g. ["audio", "topics"]. */
+  types: string[]
+}
+
 /** A conversation as returned in the list endpoint. */
 export interface ConversationListItem {
   id: number
   title: string
+  /** Chosen question category, or `null` for legacy conversations. */
+  category: ChatCategory | null
   message_count?: number
   created_at: string
   updated_at: string
@@ -24,6 +34,7 @@ export interface ConversationDetail {
   conversation: {
     id: number
     title: string
+    category: ChatCategory | null
     created_at: string
     updated_at: string
   }
@@ -47,6 +58,14 @@ export const useChatApi = () => {
 
   const base = `${config.public.apiV2BaseUrl}/chat`
   const headers = () => getAuthHeader() as Record<string, string>
+
+  async function listCategories() {
+    const res = await $fetch<ApiEnvelope<{ categories: ChatCategory[] }>>(
+      `${base}/categories`,
+      { headers: headers() },
+    )
+    return res.data.categories
+  }
 
   async function listConversations(page = 1, pageSize = 20) {
     const res = await $fetch<
@@ -84,5 +103,5 @@ export const useChatApi = () => {
     return res.data
   }
 
-  return { listConversations, getConversation, deleteConversation, sendFeedback }
+  return { listCategories, listConversations, getConversation, deleteConversation, sendFeedback }
 }

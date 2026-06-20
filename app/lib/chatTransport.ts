@@ -57,6 +57,20 @@ export type MasterLuUIMessage = UIMessage<
   }
 >
 
+/** Daily question quota, returned with the `429` quota error. */
+export interface ChatQuota {
+  limit: number
+  used: number
+  reset_at: string
+}
+
+/** Live quota counter read from the `X-Quota-*` response headers. */
+export interface QuotaHeaders {
+  limit: number
+  remaining: number
+  reset: string
+}
+
 interface TransportOptions {
   /** Base URL of the v2 API, e.g. `https://api.masterluindonesia.com/api`. */
   apiBaseUrl: string
@@ -64,10 +78,20 @@ interface TransportOptions {
   getAuthHeader: () => Record<string, string>
   /** Current conversation id, or `undefined` to start a new conversation. */
   getConversationId: () => number | undefined
+  /** Category id for a NEW conversation (ignored once a conversation exists). */
+  getCategoryId: () => number | undefined
   /** Called with the `meta` payload so the caller can persist conversation_id. */
   onMeta: (meta: ChatMeta) => void
-  /** Called for non-2xx responses (e.g. 409 cap, 429 rate limit) before the error chunk. */
-  onHttpError?: (status: number, message: string, retryAfterSeconds?: number) => void
+  /** Called for non-2xx responses (e.g. 409 cap, 429 burst/quota) before the error chunk. */
+  onHttpError?: (
+    status: number,
+    message: string,
+    extra?: { retryAfterSeconds?: number; quota?: ChatQuota },
+  ) => void
+  /** Called with the live quota counter from `X-Quota-*` headers (when present). */
+  onQuota?: (headers: QuotaHeaders) => void
+  /** Defensive: the API asked for a category before answering (should be pre-gated client-side). */
+  onNeedsCategory?: (categories: unknown[]) => void
 }
 
 const TEXT_ID = 'answer'
@@ -197,12 +221,22 @@ function emitJsonAnswer(
 export function createMasterLuChatTransport(
   options: TransportOptions,
 ): ChatTransport<MasterLuUIMessage> {
-  const { apiBaseUrl, getAuthHeader, getConversationId, onMeta, onHttpError } = options
+  const {
+    apiBaseUrl,
+    getAuthHeader,
+    getConversationId,
+    getCategoryId,
+    onMeta,
+    onHttpError,
+    onQuota,
+    onNeedsCategory,
+  } = options
 
   return {
     async sendMessages({ messages, abortSignal }) {
       const text = messageText(messages[messages.length - 1])
       const conversationId = getConversationId()
+      const categoryId = getCategoryId()
 
       const response = await fetch(`${apiBaseUrl}/chat`, {
         method: 'POST',
@@ -213,10 +247,25 @@ export function createMasterLuChatTransport(
         body: JSON.stringify({
           message: text,
           stream: true,
-          ...(conversationId ? { conversation_id: conversationId } : {}),
+          ...(conversationId
+            ? { conversation_id: conversationId }
+            : categoryId
+              ? { category_id: categoryId }
+              : {}),
         }),
         signal: abortSignal,
       })
+
+      // Live daily-quota counter (absent when configured unlimited).
+      const qLimit = response.headers.get('X-Quota-Limit')
+      const qRemaining = response.headers.get('X-Quota-Remaining')
+      if (qLimit != null && qRemaining != null) {
+        onQuota?.({
+          limit: Number(qLimit),
+          remaining: Number(qRemaining),
+          reset: response.headers.get('X-Quota-Reset') ?? '',
+        })
+      }
 
       const contentType = response.headers.get('content-type') ?? ''
       const isStream = contentType.includes('text/event-stream')
@@ -224,22 +273,23 @@ export function createMasterLuChatTransport(
       return new ReadableStream<UIMessageChunk>({
         async start(controller) {
           try {
-            controller.enqueue({ type: 'start' })
-
             if (!response.ok) {
               // Error statuses (401/409/413/429/503/...) return JSON { message }.
               let message = `Request failed (${response.status})`
               let retryAfter: number | undefined
+              let quota: ChatQuota | undefined
               try {
                 const err = await response.json()
                 if (err?.message) message = err.message
                 if (typeof err?.retry_after_seconds === 'number') {
                   retryAfter = err.retry_after_seconds
                 }
+                if (err?.quota) quota = err.quota as ChatQuota
               } catch {
                 /* keep default message */
               }
-              onHttpError?.(response.status, message, retryAfter)
+              onHttpError?.(response.status, message, { retryAfterSeconds: retryAfter, quota })
+              controller.enqueue({ type: 'start' })
               controller.enqueue({ type: 'error', errorText: message })
               controller.enqueue({ type: 'finish' })
               controller.close()
@@ -247,11 +297,20 @@ export function createMasterLuChatTransport(
             }
 
             if (isStream && response.body) {
+              controller.enqueue({ type: 'start' })
               await pumpSseStream(response.body, controller, onMeta)
             } else {
-              // Non-streamed JSON: out-of-scope / flagged fallback or success.
+              // Non-streamed JSON: needs_category gate, or out-of-scope / flagged fallback.
               const json = await response.json()
               const data = json?.data ?? {}
+              if (data.needs_category) {
+                // Should be pre-gated client-side; emit nothing so no empty bubble appears.
+                onNeedsCategory?.(data.categories ?? [])
+                controller.enqueue({ type: 'finish' })
+                controller.close()
+                return
+              }
+              controller.enqueue({ type: 'start' })
               emitJsonAnswer(
                 controller,
                 data.reply ?? '',

@@ -15,7 +15,22 @@
         </div>
         <div class="min-w-0">
           <h1 class="text-base font-semibold text-gray-900 dark:text-white truncate">MasterLu AI</h1>
-          <p class="text-xs text-secondary dark:text-gray-400">Tanya seputar MasterLu Indonesia</p>
+          <div class="flex items-center gap-1.5">
+            <span
+              v-if="selectedCategory"
+              class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/15 dark:bg-yellow-500/15 text-[11px] font-medium text-[#9a7400] dark:text-yellow-400 truncate max-w-[10rem]"
+            >
+              <Icon name="mdi:tag" class="w-3 h-3 shrink-0" />
+              {{ selectedCategory.name }}
+            </span>
+            <p v-else class="text-xs text-secondary dark:text-gray-400">Tanya seputar MasterLu Indonesia</p>
+            <span
+              v-if="quotaRemaining !== null"
+              class="text-[11px] text-secondary dark:text-gray-400 shrink-0"
+            >
+              · {{ quotaRemaining }} tersisa hari ini
+            </span>
+          </div>
         </div>
       </div>
       <button
@@ -275,7 +290,15 @@
               <Icon name="mdi:message-text-outline" class="w-4 h-4 text-secondary dark:text-gray-400 shrink-0" />
               <div class="min-w-0 flex-1">
                 <p class="text-sm text-gray-900 dark:text-white truncate">{{ c.title || 'Tanpa judul' }}</p>
-                <p class="text-xs text-secondary dark:text-gray-400">{{ formatDate(c.updated_at) }}</p>
+                <div class="flex items-center gap-1.5">
+                  <span
+                    v-if="c.category"
+                    class="inline-flex items-center px-1.5 py-0.5 rounded-full bg-primary/15 dark:bg-yellow-500/15 text-[10px] font-medium text-[#9a7400] dark:text-yellow-400 truncate max-w-24"
+                  >
+                    {{ c.category.name }}
+                  </span>
+                  <p class="text-xs text-secondary dark:text-gray-400">{{ formatDate(c.updated_at) }}</p>
+                </div>
               </div>
               <button
                 class="p-1.5 rounded-full text-secondary dark:text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors"
@@ -289,6 +312,55 @@
         </div>
       </aside>
     </Transition>
+
+    <!-- Category picker (first-message gate) -->
+    <Transition name="fade">
+      <div
+        v-if="showCategoryPicker"
+        class="absolute inset-0 z-40 bg-black/40 flex items-end"
+        @click.self="cancelCategoryPicker"
+      >
+        <Transition name="sheet" appear>
+          <div class="w-full bg-white dark:bg-gray-800 rounded-t-2xl p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="text-base font-semibold text-gray-900 dark:text-white">Pilih kategori pertanyaan</h3>
+              <button
+                class="p-1 -mr-1 rounded-full text-secondary dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                aria-label="Batal"
+                @click="cancelCategoryPicker"
+              >
+                <Icon name="mdi:close" class="w-5 h-5" />
+              </button>
+            </div>
+            <p class="text-xs text-secondary dark:text-gray-400 mb-3">
+              Kategori menentukan sumber jawaban dan tidak bisa diubah setelah percakapan dimulai.
+            </p>
+
+            <p
+              v-if="pendingMessage"
+              class="text-sm text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700/60 rounded-xl px-3 py-2 mb-3 line-clamp-2"
+            >
+              "{{ pendingMessage }}"
+            </p>
+
+            <div v-if="loadingCategories" class="py-6 text-center">
+              <Icon name="mdi:loading" class="w-6 h-6 text-secondary dark:text-gray-400 animate-spin" />
+            </div>
+            <div v-else class="grid grid-cols-2 gap-2">
+              <button
+                v-for="cat in categories"
+                :key="cat.id"
+                class="flex items-center gap-2 px-3 py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-left text-sm font-medium text-gray-800 dark:text-gray-100 hover:border-primary dark:hover:border-yellow-500 hover:bg-primary/5 dark:hover:bg-yellow-500/10 transition-colors"
+                @click="pickCategory(cat)"
+              >
+                <Icon :name="categoryIcon(cat.types)" class="w-5 h-5 text-primary dark:text-yellow-400 shrink-0" />
+                <span class="truncate">{{ cat.name }}</span>
+              </button>
+            </div>
+          </div>
+        </Transition>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -297,10 +369,11 @@ import { Chat } from '@ai-sdk/vue'
 import { marked } from 'marked'
 import { NuxtLink } from '#components'
 import { useAuth } from '~/lib/auth'
-import { useChatApi, type ConversationListItem } from '~/composables/useChatApi'
+import { useChatApi, type ChatCategory, type ConversationListItem } from '~/composables/useChatApi'
 import {
   createMasterLuChatTransport,
   type ChatContentType,
+  type ChatQuota,
   type ChatSource,
   type MasterLuUIMessage,
 } from '~/lib/chatTransport'
@@ -324,6 +397,17 @@ const inputEl = ref<HTMLTextAreaElement | null>(null)
 const drawerOpen = ref(false)
 const conversations = ref<ConversationListItem[]>([])
 const loadingList = ref(false)
+
+// Categories (first-message gate)
+const categories = ref<ChatCategory[]>([])
+const selectedCategory = ref<ChatCategory | null>(null)
+const pendingMessage = ref('')
+const showCategoryPicker = ref(false)
+const loadingCategories = ref(false)
+
+// Daily quota counter (X-Quota-* headers)
+const quotaRemaining = ref<number | null>(null)
+const quotaLimit = ref<number | null>(null)
 
 // Zoom / scroll tools (FabZoom)
 const isToolsExpanded = ref(false)
@@ -352,6 +436,7 @@ const chat = new Chat<MasterLuUIMessage>({
     apiBaseUrl: config.public.apiV2BaseUrl,
     getAuthHeader: () => getAuthHeader() as Record<string, string>,
     getConversationId: () => conversationId.value,
+    getCategoryId: () => selectedCategory.value?.id,
     onMeta: (meta) => {
       const isNew = !conversationId.value
       if (meta?.conversation_id) conversationId.value = meta.conversation_id
@@ -359,10 +444,23 @@ const chat = new Chat<MasterLuUIMessage>({
       if (isNew) refreshConversations()
     },
     onHttpError: handleHttpError,
+    onQuota: (q) => {
+      quotaLimit.value = q.limit
+      quotaRemaining.value = q.remaining
+    },
+    onNeedsCategory: (cats) => {
+      // Defensive: server still wants a category — re-open the picker.
+      if (Array.isArray(cats) && cats.length) categories.value = cats as ChatCategory[]
+      showCategoryPicker.value = true
+    },
   }),
 })
 
-function handleHttpError(status: number, message: string, retryAfter?: number) {
+function handleHttpError(
+  status: number,
+  message: string,
+  extra?: { retryAfterSeconds?: number; quota?: ChatQuota },
+) {
   if (status === 409) {
     toast.add({
       title: 'Batas percakapan tercapai',
@@ -370,14 +468,33 @@ function handleHttpError(status: number, message: string, retryAfter?: number) {
       color: 'error',
     })
     openDrawer()
+  } else if (status === 429 && extra?.quota) {
+    // Daily question quota reached → upsell hook.
+    quotaLimit.value = extra.quota.limit
+    quotaRemaining.value = 0
+    toast.add({
+      title: 'Batas harian tercapai',
+      description: message || `Anda telah mencapai batas ${extra.quota.limit} pertanyaan hari ini.`,
+      color: 'warning',
+    })
   } else if (status === 429) {
     toast.add({
       title: 'Terlalu banyak permintaan',
-      description: retryAfter
-        ? `Coba lagi dalam ${retryAfter} detik.`
+      description: extra?.retryAfterSeconds
+        ? `Coba lagi dalam ${extra.retryAfterSeconds} detik.`
         : 'Mohon tunggu sebentar lalu coba lagi.',
       color: 'warning',
     })
+  } else if (status === 400) {
+    toast.add({
+      title: 'Kategori tidak valid',
+      description: 'Silakan pilih kategori lagi.',
+      color: 'error',
+    })
+    // Re-fetch categories and ask again.
+    selectedCategory.value = null
+    ensureCategories(true)
+    showCategoryPicker.value = true
   } else if (status === 401) {
     toast.add({
       title: 'Sesi berakhir',
@@ -445,6 +562,16 @@ function iconFor(type: ChatContentType): string {
   return ICON_BY_TYPE[type] ?? 'mdi:book-open-variant'
 }
 
+// Icon for a question category, keyed by its (looser) `types` strings.
+function categoryIcon(types: string[]): string {
+  const t = (types ?? []).join(' ').toLowerCase()
+  if (t.includes('audio')) return 'mdi:music-note'
+  if (t.includes('video')) return 'mdi:play-box'
+  if (t.includes('book') || t.includes('buku')) return 'mdi:book-open-variant'
+  if (t.includes('topic')) return 'mdi:lightbulb-on-outline'
+  return 'mdi:tag'
+}
+
 function renderMarkdown(text: string): string {
   return marked.parse(text, { async: false }) as string
 }
@@ -495,6 +622,7 @@ async function selectConversation(id: number) {
     const data = await chatApi.getConversation(id)
     chat.messages = toUiMessages(data.messages)
     conversationId.value = id
+    selectedCategory.value = data.conversation.category
     scrollToBottom()
   } catch {
     toast.add({ title: 'Gagal memuat percakapan', color: 'error' })
@@ -555,17 +683,68 @@ function autoGrow() {
   el.style.height = `${Math.min(el.scrollHeight, 128)}px`
 }
 
+async function ensureCategories(force = false) {
+  if (!isAuthenticated.value) return
+  if (categories.value.length && !force) return
+  loadingCategories.value = true
+  try {
+    categories.value = await chatApi.listCategories()
+  } catch {
+    /* keep whatever we have */
+  } finally {
+    loadingCategories.value = false
+  }
+}
+
+/**
+ * Send a message, gating new conversations behind category selection.
+ * A new conversation (no conversation_id) requires a category first, so we hold
+ * the message and show the picker; once a category is chosen the message is sent.
+ */
+function submitMessage(text: string) {
+  const trimmed = text.trim()
+  if (!trimmed || isBusy.value || !isAuthenticated.value) return
+
+  if (!conversationId.value && !selectedCategory.value) {
+    pendingMessage.value = trimmed
+    input.value = ''
+    nextTick(autoGrow)
+    ensureCategories()
+    showCategoryPicker.value = true
+    return
+  }
+
+  chat.sendMessage({ text: trimmed })
+}
+
+function pickCategory(cat: ChatCategory) {
+  selectedCategory.value = cat
+  showCategoryPicker.value = false
+  const text = pendingMessage.value
+  pendingMessage.value = ''
+  if (text) chat.sendMessage({ text })
+}
+
+function cancelCategoryPicker() {
+  showCategoryPicker.value = false
+  // Return the held message to the input so it isn't lost.
+  if (pendingMessage.value && !input.value) {
+    input.value = pendingMessage.value
+    nextTick(autoGrow)
+  }
+  pendingMessage.value = ''
+}
+
 function send() {
   const text = input.value.trim()
   if (!text || isBusy.value || !isAuthenticated.value) return
   input.value = ''
   nextTick(autoGrow)
-  chat.sendMessage({ text })
+  submitMessage(text)
 }
 
 function askSuggestion(text: string) {
-  if (!isAuthenticated.value || isBusy.value) return
-  chat.sendMessage({ text })
+  submitMessage(text)
 }
 
 function onKeydown(e: KeyboardEvent) {
@@ -584,6 +763,9 @@ function newChat() {
   chat.stop()
   chat.messages = []
   conversationId.value = undefined
+  selectedCategory.value = null
+  pendingMessage.value = ''
+  showCategoryPicker.value = false
 }
 
 function goBack() {
@@ -597,7 +779,10 @@ watch(
 )
 
 onMounted(() => {
-  if (isAuthenticated.value) refreshConversations()
+  if (isAuthenticated.value) {
+    refreshConversations()
+    ensureCategories()
+  }
 })
 
 useHead({ title: 'Chatbot' })
@@ -637,6 +822,14 @@ useHead({ title: 'Chatbot' })
 .slide-enter-from,
 .slide-leave-to {
   transform: translateX(-100%);
+}
+.sheet-enter-active,
+.sheet-leave-active {
+  transition: transform 0.25s ease;
+}
+.sheet-enter-from,
+.sheet-leave-to {
+  transform: translateY(100%);
 }
 
 /* Markdown rendering for assistant replies */
