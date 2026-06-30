@@ -1,13 +1,57 @@
 import { useAuth } from '~/lib/auth'
 import type { ChatSource } from '~/lib/chatTransport'
 
-/** A question category used to scope a new conversation's retrieval. */
+/**
+ * A question category node. The catalog is a parent→child tree:
+ * a node with non-empty `children` is a group header (NOT selectable); the user
+ * picks a leaf (`children: []`). A top-level node with no children is itself a
+ * selectable leaf. Only leaves carry `types`; send the leaf id as category_id.
+ */
 export interface ChatCategory {
   id: number
   name: string
-  /** Content types this category spans, e.g. ["audio", "topics"]. */
+  /** Content types this category spans, e.g. ["audio", "topics"]. Empty on group headers. */
   types: string[]
+  parent_id: number | null
+  children: ChatCategory[]
 }
+
+/** Donor/subscription plan attached to the caller. */
+export interface QuotaPlan {
+  /** code: free | donatur_a | donatur_b | donatur_c */
+  name: string
+  label: string
+  /** ISO date, or null for Free (never expires). */
+  expires_at?: string | null
+}
+
+/** Effective plan + today's usage (`GET /chat/quota`). */
+export interface QuotaState {
+  plan: QuotaPlan
+  unlimited: boolean
+  limit: number
+  used: number
+  remaining: number | null
+  reset_at: string
+}
+
+/** A purchasable donor plan in the catalog. */
+export interface PlanCatalogItem {
+  name: string
+  label: string
+  /** Price in IDR (0 for Free). */
+  price: number
+  /** Questions/day, or null for unlimited. */
+  limit: number | null
+}
+
+/** Fallback catalog (docs values) used if the API has no plans endpoint yet. */
+const FALLBACK_PLANS: PlanCatalogItem[] = [
+  { name: 'free', label: 'Free', price: 0, limit: 1 },
+  { name: 'donatur_c', label: 'Donatur C', price: 5000, limit: 5 },
+  { name: 'donatur_b', label: 'Donatur B', price: 10000, limit: 10 },
+  { name: 'donatur_a', label: 'Donatur A', price: 20000, limit: null },
+]
 
 /** A conversation as returned in the list endpoint. */
 export interface ConversationListItem {
@@ -59,6 +103,35 @@ export const useChatApi = () => {
   const base = `${config.public.apiV2BaseUrl}/chat`
   const headers = () => getAuthHeader() as Record<string, string>
 
+  async function listPlans(): Promise<PlanCatalogItem[]> {
+    try {
+      const res = await $fetch<ApiEnvelope<{ plans: PlanCatalogItem[] }>>(`${base}/plans`, {
+        headers: headers(),
+      })
+      const plans = res?.data?.plans
+      return Array.isArray(plans) && plans.length ? plans : FALLBACK_PLANS
+    } catch {
+      return FALLBACK_PLANS
+    }
+  }
+
+  async function getQuota() {
+    const res = await $fetch<ApiEnvelope<QuotaState>>(`${base}/quota`, { headers: headers() })
+    return res.data
+  }
+
+  /** First active admin WhatsApp number (from the app's contact source). */
+  async function getAdminWhatsApp(): Promise<string | null> {
+    try {
+      const res = await $fetch<{ success: boolean; data: { no_wa: string; status: number }[] }>(
+        `${config.public.apiBaseUrl}/contact/wa`,
+      )
+      return res.data?.find((c) => c.status === 1)?.no_wa ?? null
+    } catch {
+      return null
+    }
+  }
+
   async function listCategories() {
     const res = await $fetch<ApiEnvelope<{ categories: ChatCategory[] }>>(
       `${base}/categories`,
@@ -103,5 +176,14 @@ export const useChatApi = () => {
     return res.data
   }
 
-  return { listCategories, listConversations, getConversation, deleteConversation, sendFeedback }
+  return {
+    getQuota,
+    listPlans,
+    getAdminWhatsApp,
+    listCategories,
+    listConversations,
+    getConversation,
+    deleteConversation,
+    sendFeedback,
+  }
 }

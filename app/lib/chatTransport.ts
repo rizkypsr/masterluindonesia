@@ -59,6 +59,7 @@ export type MasterLuUIMessage = UIMessage<
 
 /** Daily question quota, returned with the `429` quota error. */
 export interface ChatQuota {
+  plan?: { name: string; label: string }
   limit: number
   used: number
   reset_at: string
@@ -66,8 +67,11 @@ export interface ChatQuota {
 
 /** Live quota counter read from the `X-Quota-*` response headers. */
 export interface QuotaHeaders {
-  limit: number
-  remaining: number
+  /** Plan code (always present), e.g. "donatur_b". */
+  plan: string
+  /** Null for unlimited plans (headers omitted). */
+  limit: number | null
+  remaining: number | null
   reset: string
 }
 
@@ -256,13 +260,16 @@ export function createMasterLuChatTransport(
         signal: abortSignal,
       })
 
-      // Live daily-quota counter (absent when configured unlimited).
-      const qLimit = response.headers.get('X-Quota-Limit')
-      const qRemaining = response.headers.get('X-Quota-Remaining')
-      if (qLimit != null && qRemaining != null) {
+      // Live quota counter. X-Quota-Plan always present; Limit/Remaining/Reset
+      // omitted for unlimited plans (Donatur A).
+      const qPlan = response.headers.get('X-Quota-Plan')
+      if (qPlan != null) {
+        const qLimit = response.headers.get('X-Quota-Limit')
+        const qRemaining = response.headers.get('X-Quota-Remaining')
         onQuota?.({
-          limit: Number(qLimit),
-          remaining: Number(qRemaining),
+          plan: qPlan,
+          limit: qLimit != null ? Number(qLimit) : null,
+          remaining: qRemaining != null ? Number(qRemaining) : null,
           reset: response.headers.get('X-Quota-Reset') ?? '',
         })
       }

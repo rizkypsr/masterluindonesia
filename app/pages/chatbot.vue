@@ -24,11 +24,11 @@
               {{ selectedCategory.name }}
             </span>
             <p v-else class="text-xs text-secondary dark:text-gray-400">Tanya seputar MasterLu Indonesia</p>
-            <span
-              v-if="quotaRemaining !== null"
-              class="text-[11px] text-secondary dark:text-gray-400 shrink-0"
-            >
-              · {{ quotaRemaining }} tersisa hari ini
+            <span v-if="quota" class="flex items-center gap-1 text-[11px] text-secondary dark:text-gray-400 shrink-0">
+              · {{ quota.plan.label }}
+              <template v-if="!unlimited && quota.remaining !== null">
+                · <span :class="quotaReached ? 'text-red-500 font-medium' : ''">{{ quota.remaining }}/{{ quota.limit }} hari ini</span>
+              </template>
             </span>
           </div>
         </div>
@@ -50,6 +50,23 @@
       </button>
     </header>
 
+    <!-- Quota reached → upgrade CTA (top, so the FAB never covers it) -->
+    <div
+      v-if="isAuthenticated && quotaReached"
+      class="shrink-0 px-3 py-2.5 bg-yellow-50 dark:bg-yellow-900/20 border-b border-yellow-100 dark:border-yellow-900/40 flex items-center gap-2"
+    >
+      <p class="flex-1 text-xs text-yellow-800 dark:text-yellow-300">
+        Kuota {{ quota?.plan.label }} hari ini habis ({{ quota?.limit }} pertanyaan). Upgrade untuk menambah kuota.
+      </p>
+      <button
+        class="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-600 text-white text-xs font-medium hover:bg-green-700 transition-colors"
+        @click="openPlans"
+      >
+        <Icon name="mdi:whatsapp" class="w-4 h-4" />
+        Upgrade
+      </button>
+    </div>
+
     <!-- Messages -->
     <div ref="scrollEl" class="flex-1 overflow-y-auto px-3 py-4 space-y-4 scrollbar-hide" @scroll="onScroll">
       <!-- Empty state -->
@@ -59,18 +76,18 @@
         </div>
         <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Halo! 👋</h2>
         <p class="text-[15px] leading-relaxed text-gray-600 dark:text-gray-300 mb-6 max-w-xs">
-          Saya bisa menjawab pertanyaan seputar buku, audio, dan video MasterLu Indonesia.
+          {{ selectedCategory
+            ? `Kategori "${selectedCategory.name}" dipilih. Ketik pertanyaan Anda di bawah.`
+            : 'Pilih kategori untuk memulai percakapan.' }}
         </p>
-        <div class="w-full max-w-xs space-y-2">
-          <button
-            v-for="s in suggestions"
-            :key="s"
-            class="w-full text-left text-sm px-4 py-3 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100 hover:border-primary dark:hover:border-yellow-500 transition-colors"
-            @click="askSuggestion(s)"
-          >
-            {{ s }}
-          </button>
-        </div>
+
+        <ChatCategoryGrid
+          class="w-full max-w-xs text-left"
+          :categories="categories"
+          :selected-id="selectedCategory?.id ?? null"
+          :loading="loadingCategories"
+          @select="(cat) => (selectedCategory = cat)"
+        />
       </div>
 
       <!-- Message list -->
@@ -209,8 +226,8 @@
           ref="inputEl"
           v-model="input"
           rows="1"
-          :disabled="!isAuthenticated"
-          placeholder="Tulis pertanyaan..."
+          :disabled="!isAuthenticated || quotaReached"
+          :placeholder="quotaReached ? 'Kuota harian habis' : 'Tulis pertanyaan...'"
           class="flex-1 resize-none max-h-32 px-4 py-2.5 rounded-2xl bg-gray-100 dark:bg-gray-700 text-base text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-yellow-500 disabled:opacity-60"
           @input="autoGrow"
           @keydown="onKeydown"
@@ -343,19 +360,74 @@
               "{{ pendingMessage }}"
             </p>
 
-            <div v-if="loadingCategories" class="py-6 text-center">
+            <div class="max-h-[55vh] overflow-y-auto scrollbar-hide">
+              <ChatCategoryGrid
+                :categories="categories"
+                :loading="loadingCategories"
+                @select="pickCategory"
+              />
+            </div>
+          </div>
+        </Transition>
+      </div>
+    </Transition>
+
+    <!-- Plans / upgrade picker -->
+    <Transition name="fade">
+      <div
+        v-if="showPlans"
+        class="absolute inset-0 z-50 bg-black/40 flex items-end"
+        @click.self="showPlans = false"
+      >
+        <Transition name="sheet" appear>
+          <div class="w-full bg-white dark:bg-gray-800 rounded-t-2xl p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+            <div class="flex items-start justify-between gap-2 mb-1">
+              <h3 class="text-base font-semibold text-gray-900 dark:text-white">Pilih paket donatur</h3>
+              <button
+                class="p-1 -mr-1 rounded-full text-secondary dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                aria-label="Tutup"
+                @click="showPlans = false"
+              >
+                <Icon name="mdi:close" class="w-5 h-5" />
+              </button>
+            </div>
+            <p class="text-xs text-secondary dark:text-gray-400 mb-3">
+              Pembayaran dilakukan manual via WhatsApp admin. Pilih paket untuk melanjutkan.
+            </p>
+
+            <div v-if="loadingPlans" class="py-6 text-center">
               <Icon name="mdi:loading" class="w-6 h-6 text-secondary dark:text-gray-400 animate-spin" />
             </div>
-            <div v-else class="grid grid-cols-2 gap-2">
-              <button
-                v-for="cat in categories"
-                :key="cat.id"
-                class="flex items-center gap-2 px-3 py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-left text-sm font-medium text-gray-800 dark:text-gray-100 hover:border-primary dark:hover:border-yellow-500 hover:bg-primary/5 dark:hover:bg-yellow-500/10 transition-colors"
-                @click="pickCategory(cat)"
+            <div v-else class="space-y-2">
+              <div
+                v-for="p in plans"
+                :key="p.name"
+                class="flex items-center gap-3 px-3 py-3 rounded-xl border"
+                :class="quota?.plan.name === p.name
+                  ? 'border-primary dark:border-yellow-500 bg-primary/5 dark:bg-yellow-500/10'
+                  : 'border-gray-200 dark:border-gray-700'"
               >
-                <Icon :name="categoryIcon(cat.types)" class="w-5 h-5 text-primary dark:text-yellow-400 shrink-0" />
-                <span class="truncate">{{ cat.name }}</span>
-              </button>
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-2">
+                    <p class="text-sm font-semibold text-gray-900 dark:text-white truncate">{{ p.label }}</p>
+                    <span
+                      v-if="quota?.plan.name === p.name"
+                      class="shrink-0 px-1.5 py-0.5 rounded-full bg-primary/15 dark:bg-yellow-500/15 text-[10px] font-medium text-[#9a7400] dark:text-yellow-400"
+                    >Paket aktif</span>
+                  </div>
+                  <p class="text-xs text-secondary dark:text-gray-400">
+                    {{ formatPrice(p.price) }} · {{ planLimitLabel(p) }}
+                  </p>
+                </div>
+                <button
+                  :disabled="quota?.plan.name === p.name || p.name === 'free'"
+                  class="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-600 text-white text-xs font-medium hover:bg-green-700 transition-colors disabled:opacity-40 disabled:hover:bg-green-600"
+                  @click="choosePlan(p)"
+                >
+                  <Icon name="mdi:whatsapp" class="w-4 h-4" />
+                  Pilih
+                </button>
+              </div>
             </div>
           </div>
         </Transition>
@@ -369,7 +441,13 @@ import { Chat } from '@ai-sdk/vue'
 import { marked } from 'marked'
 import { NuxtLink } from '#components'
 import { useAuth } from '~/lib/auth'
-import { useChatApi, type ChatCategory, type ConversationListItem } from '~/composables/useChatApi'
+import {
+  useChatApi,
+  type ChatCategory,
+  type ConversationListItem,
+  type PlanCatalogItem,
+  type QuotaState,
+} from '~/composables/useChatApi'
 import {
   createMasterLuChatTransport,
   type ChatContentType,
@@ -405,9 +483,17 @@ const pendingMessage = ref('')
 const showCategoryPicker = ref(false)
 const loadingCategories = ref(false)
 
-// Daily quota counter (X-Quota-* headers)
-const quotaRemaining = ref<number | null>(null)
-const quotaLimit = ref<number | null>(null)
+// Subscription / donor plan + daily quota
+const quota = ref<QuotaState | null>(null)
+const adminWa = ref<string | null>(null)
+const plans = ref<PlanCatalogItem[]>([])
+const showPlans = ref(false)
+const loadingPlans = ref(false)
+
+const unlimited = computed(() => quota.value?.unlimited ?? false)
+const quotaReached = computed(
+  () => !unlimited.value && quota.value != null && (quota.value.remaining ?? 1) <= 0,
+)
 
 // Zoom / scroll tools (FabZoom)
 const isToolsExpanded = ref(false)
@@ -425,12 +511,6 @@ function scrollToTop() {
   scrollEl.value?.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-const suggestions = [
-  'Apa itu fengshui menurut MasterLu?',
-  'Jelaskan tentang sebab akibat (karma).',
-  'Bagaimana cara melatih welas asih?',
-]
-
 const chat = new Chat<MasterLuUIMessage>({
   transport: createMasterLuChatTransport({
     apiBaseUrl: config.public.apiV2BaseUrl,
@@ -445,8 +525,17 @@ const chat = new Chat<MasterLuUIMessage>({
     },
     onHttpError: handleHttpError,
     onQuota: (q) => {
-      quotaLimit.value = q.limit
-      quotaRemaining.value = q.remaining
+      // Header plan code differs from cached → full refetch (need label/expiry).
+      if (!quota.value || quota.value.plan.name !== q.plan) {
+        fetchQuota()
+        return
+      }
+      quota.value = {
+        ...quota.value,
+        unlimited: q.limit == null,
+        limit: q.limit ?? quota.value.limit,
+        remaining: q.remaining,
+      }
     },
     onNeedsCategory: (cats) => {
       // Defensive: server still wants a category — re-open the picker.
@@ -469,13 +558,18 @@ function handleHttpError(
     })
     openDrawer()
   } else if (status === 429 && extra?.quota) {
-    // Daily question quota reached → upsell hook.
-    quotaLimit.value = extra.quota.limit
-    quotaRemaining.value = 0
+    // Daily question quota reached → upgrade-via-WhatsApp CTA.
+    const q = extra.quota
+    if (quota.value) {
+      quota.value = { ...quota.value, remaining: 0, used: q.used, limit: q.limit }
+    } else {
+      fetchQuota()
+    }
     toast.add({
       title: 'Batas harian tercapai',
-      description: message || `Anda telah mencapai batas ${extra.quota.limit} pertanyaan hari ini.`,
+      description: message,
       color: 'warning',
+      actions: [{ label: 'Lihat Paket', onClick: openPlans }],
     })
   } else if (status === 429) {
     toast.add({
@@ -512,7 +606,9 @@ const error = computed(() => chat.error)
 const isBusy = computed(() => status.value === 'submitted' || status.value === 'streaming')
 // Show a standalone typing bubble while awaiting the first response chunk.
 const isWaiting = computed(() => status.value === 'submitted')
-const canSend = computed(() => isAuthenticated.value && !!input.value.trim() && !isBusy.value)
+const canSend = computed(
+  () => isAuthenticated.value && !!input.value.trim() && !isBusy.value && !quotaReached.value,
+)
 
 function textOf(message: MasterLuUIMessage): string {
   return message.parts
@@ -560,16 +656,6 @@ function linkFor(src: ChatSource): string | undefined {
 
 function iconFor(type: ChatContentType): string {
   return ICON_BY_TYPE[type] ?? 'mdi:book-open-variant'
-}
-
-// Icon for a question category, keyed by its (looser) `types` strings.
-function categoryIcon(types: string[]): string {
-  const t = (types ?? []).join(' ').toLowerCase()
-  if (t.includes('audio')) return 'mdi:music-note'
-  if (t.includes('video')) return 'mdi:play-box'
-  if (t.includes('book') || t.includes('buku')) return 'mdi:book-open-variant'
-  if (t.includes('topic')) return 'mdi:lightbulb-on-outline'
-  return 'mdi:tag'
 }
 
 function renderMarkdown(text: string): string {
@@ -683,6 +769,48 @@ function autoGrow() {
   el.style.height = `${Math.min(el.scrollHeight, 128)}px`
 }
 
+async function fetchQuota() {
+  if (!isAuthenticated.value) return
+  try {
+    quota.value = await chatApi.getQuota()
+  } catch {
+    /* non-fatal: badge just stays hidden */
+  }
+}
+
+async function openPlans() {
+  showPlans.value = true
+  if (!plans.value.length) {
+    loadingPlans.value = true
+    try {
+      plans.value = await chatApi.listPlans()
+    } finally {
+      loadingPlans.value = false
+    }
+  }
+}
+
+function formatPrice(idr: number): string {
+  return idr <= 0 ? 'Gratis' : `Rp${idr.toLocaleString('id-ID')}`
+}
+
+function planLimitLabel(p: PlanCatalogItem): string {
+  return p.limit == null ? 'Tanpa batas' : `${p.limit} pertanyaan/hari`
+}
+
+async function choosePlan(p: PlanCatalogItem) {
+  if (!adminWa.value) adminWa.value = await chatApi.getAdminWhatsApp()
+  if (!adminWa.value) {
+    toast.add({ title: 'Nomor WhatsApp admin tidak tersedia', color: 'error' })
+    return
+  }
+  const text = encodeURIComponent(
+    `Halo admin, saya ingin upgrade ke paket ${p.label} (${formatPrice(p.price)}) untuk chatbot MasterLu.`,
+  )
+  window.open(`https://wa.me/${adminWa.value}?text=${text}`, '_blank')
+  showPlans.value = false
+}
+
 async function ensureCategories(force = false) {
   if (!isAuthenticated.value) return
   if (categories.value.length && !force) return
@@ -704,6 +832,16 @@ async function ensureCategories(force = false) {
 function submitMessage(text: string) {
   const trimmed = text.trim()
   if (!trimmed || isBusy.value || !isAuthenticated.value) return
+
+  if (quotaReached.value) {
+    toast.add({
+      title: 'Batas harian tercapai',
+      description: 'Kuota pertanyaan hari ini habis. Upgrade untuk menambah kuota.',
+      color: 'warning',
+      actions: [{ label: 'Lihat Paket', onClick: openPlans }],
+    })
+    return
+  }
 
   if (!conversationId.value && !selectedCategory.value) {
     pendingMessage.value = trimmed
@@ -743,10 +881,6 @@ function send() {
   submitMessage(text)
 }
 
-function askSuggestion(text: string) {
-  submitMessage(text)
-}
-
 function onKeydown(e: KeyboardEvent) {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault()
@@ -782,6 +916,7 @@ onMounted(() => {
   if (isAuthenticated.value) {
     refreshConversations()
     ensureCategories()
+    fetchQuota()
   }
 })
 
