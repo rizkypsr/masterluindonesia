@@ -1,18 +1,24 @@
 import { useAuth } from '~/lib/auth'
 import type { ChatSource } from '~/lib/chatTransport'
 
+/** Minimal category reference (as attached to a conversation). */
+export interface CategoryRef {
+  id: number
+  name: string
+}
+
 /**
  * A question category node. The catalog is a parent→child tree:
  * a node with non-empty `children` is a group header (NOT selectable); the user
  * picks a leaf (`children: []`). A top-level node with no children is itself a
- * selectable leaf. Only leaves carry `types`; send the leaf id as category_id.
+ * selectable leaf. Send the chosen leaf id as category_id.
  */
 export interface ChatCategory {
   id: number
   name: string
-  /** Content types this category spans, e.g. ["audio", "topics"]. Empty on group headers. */
-  types: string[]
   parent_id: number | null
+  /** Number of content items in the category. Leaves only appear when > 0. */
+  scope_count: number
   children: ChatCategory[]
 }
 
@@ -58,7 +64,7 @@ export interface ConversationListItem {
   id: number
   title: string
   /** Chosen question category, or `null` for legacy conversations. */
-  category: ChatCategory | null
+  category: CategoryRef | null
   message_count?: number
   created_at: string
   updated_at: string
@@ -78,7 +84,7 @@ export interface ConversationDetail {
   conversation: {
     id: number
     title: string
-    category: ChatCategory | null
+    category: CategoryRef | null
     created_at: string
     updated_at: string
   }

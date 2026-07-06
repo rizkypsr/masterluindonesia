@@ -443,6 +443,7 @@ import { NuxtLink } from '#components'
 import { useAuth } from '~/lib/auth'
 import {
   useChatApi,
+  type CategoryRef,
   type ChatCategory,
   type ConversationListItem,
   type PlanCatalogItem,
@@ -478,7 +479,7 @@ const loadingList = ref(false)
 
 // Categories (first-message gate)
 const categories = ref<ChatCategory[]>([])
-const selectedCategory = ref<ChatCategory | null>(null)
+const selectedCategory = ref<CategoryRef | null>(null)
 const pendingMessage = ref('')
 const showCategoryPicker = ref(false)
 const loadingCategories = ref(false)
