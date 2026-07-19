@@ -20,6 +20,7 @@ interface SessionUser {
   username: string;
   social_media: number;
   row_status: number;
+  is_admin?: boolean;
 }
 
 interface Session {
@@ -48,6 +49,7 @@ export const useAuth = () => {
 
   const user = useState<SessionUser | null>('auth_user', () => null);
   const isAuthenticated = computed(() => !!token.value);
+  const isAdmin = computed(() => !!user.value?.is_admin);
 
   // Call your backend with Google user info
   const loginWithGoogle = async (accessToken: string) => {
@@ -139,6 +141,7 @@ export const useAuth = () => {
     token: readonly(token),
     user: readonly(user),
     isAuthenticated,
+    isAdmin,
     loginWithGoogle,
     fetchSession,
     logout,

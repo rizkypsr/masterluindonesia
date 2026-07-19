@@ -4,7 +4,7 @@ import { useAuth } from '~/lib/auth';
 const colorMode = useColorMode()
 const config = useRuntimeConfig()
 const { $googleSignIn } = useNuxtApp()
-const { loginWithGoogle, isAuthenticated, logout, user, fetchSession } = useAuth()
+const { loginWithGoogle, isAuthenticated, isAdmin, logout, user, fetchSession } = useAuth()
 
 const isLoading = ref(false)
 const error = ref<string | null>(null)
@@ -130,6 +130,12 @@ function handleLogout() {
         <!-- Panduan Suara AI -->
         <NuxtLink to="/ai-voice-guide" class="flex items-center justify-between py-1">
           <span class="font-medium text-black dark:text-white">Panduan Suara AI</span>
+          <Icon name="mdi:chevron-right" class="w-9 h-9 text-black dark:text-white" />
+        </NuxtLink>
+
+        <!-- Chat FAQ (admin only) -->
+        <NuxtLink v-if="isAdmin" to="/chat-faq-manager" class="flex items-center justify-between py-1">
+          <span class="font-medium text-black dark:text-white">Chat FAQ</span>
           <Icon name="mdi:chevron-right" class="w-9 h-9 text-black dark:text-white" />
         </NuxtLink>
 
