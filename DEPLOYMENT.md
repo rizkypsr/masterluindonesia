@@ -1,61 +1,77 @@
-# Deployment Guide - Niagahoster
+# Deployment Guide - Niagahoster (Static SPA)
 
-## Cache Issues Fixed
+The site is deployed as a **static SPA** — no Node process runs in production.
 
-This project had caching issues causing 15min-1hour delays for users to see updates. The following fixes have been implemented:
+Shared hosting counts every thread of a Node process against the CloudLinux
+"Max Processes" (NPROC) limit of 120, and the Passenger-managed Nuxt server was
+sitting at ~99 on average. Building with `nuxt generate` removes that process
+entirely: Apache serves plain files, and all data is fetched client-side from
+`api.masterluindonesia.com`.
 
-### 1. Cache Control Headers (.htaccess)
-- HTML files: No caching (users always get latest version)
-- JS/CSS files: 1 year cache with immutable flag (safe because Nuxt adds hash to filenames)
-- Images: 1 week cache
-- Manifest/JSON: No caching
+## Build
 
-### 2. Nitro Route Rules (nuxt.config.ts)
-- HTML pages: No cache
-- Static assets in `/_nuxt/`: Long-term cache (safe with versioned filenames)
-
-### 3. Build Versioning
-- Nuxt automatically adds content hashes to JS/CSS filenames
-- When you rebuild, new filenames are generated
-- Old cached files won't be used
-
-## Deployment Steps
-
-1. **Build the project:**
-   ```bash
-   npm run build
-   ```
-
-2. **Upload to Niagahoster:**
-   - Upload the entire `.output` folder
-   - Make sure `.htaccess` from `public/` is in the root of your web directory
-
-3. **Verify deployment:**
-   - Clear your browser cache (Ctrl+Shift+Delete)
-   - Visit your site
-   - Check browser DevTools > Network tab to see Cache-Control headers
-
-## Testing Cache Headers
-
-After deployment, test with curl:
 ```bash
-# Test HTML (should be no-cache)
-curl -I https://your-domain.com/
-
-# Test JS files (should be max-age=31536000)
-curl -I https://your-domain.com/_nuxt/[some-file].js
+npm run build   # runs `nuxt generate`
 ```
 
-## Important Notes
+Output: `.output/public` (includes `.htaccess` from `public/`).
 
-- **First deployment after this fix**: Users with old cached versions might still need to hard refresh (Ctrl+F5) once
-- **Future deployments**: Updates will be instant because HTML is never cached
-- **CDN/Proxy**: If Niagahoster uses a CDN, you may need to purge it after deployment
+`NUXT_PUBLIC_*` env vars are **baked in at build time**. Changing an API URL
+means rebuilding and re-uploading — there is no runtime config on the server.
+
+## Deploy
+
+1. Upload the **contents** of `.output/public` (not the folder itself) to
+   `public_html`, including the dotfile `.htaccess`.
+2. In cPanel → **Setup Node.js App**: **Stop** and then **Destroy** the old Node
+   application. While it remains registered, Passenger can respawn it and NPROC
+   stays high.
+3. Delete leftovers of the old deployment on the server (`.output/server`, the
+   app's `node_modules`) to free disk and inodes.
+
+## Caching
+
+Handled entirely by `public/.htaccess`:
+
+- Hashed assets (`.js`, `.css`, `.woff2`, images): `max-age=31536000, immutable`
+- HTML / JSON / webmanifest: `no-cache, no-store` — deploys are visible instantly
+- gzip via `mod_deflate`; pre-compressed `.gz`/`.br` files are also emitted by the build
+
+SPA routing: `.htaccess` rewrites any path that is not an existing file or
+directory to `/index.html`, so deep links and refreshes work.
+
+Verify:
+
+```bash
+curl -I https://your-domain.com/                  # no-store
+curl -I https://your-domain.com/_nuxt/[file].js   # max-age=31536000
+```
+
+## Verifying the process count dropped
+
+Over SSH:
+
+```bash
+ps -u $USER | grep node      # must be empty
+ps -eLf -u $USER | wc -l     # total threads — should be a small number
+```
+
+Then check the "Proses Maksimal" graph in the panel after ~1 hour.
+
+## Notes
+
+- No SSR: pages ship an empty shell and render client-side, so dynamic content
+  is not in the initial HTML (SEO trade-off accepted). If SEO becomes a concern,
+  the upgrade path is selective prerendering at build time — still no Node in prod.
+- Icons are inlined into the client bundle (`icon.clientBundle.scan` in
+  `nuxt.config.ts`), so nothing is fetched from the Iconify API at runtime.
+- Local smoke test of the real artifact: `npx serve .output/public -s`
 
 ## Troubleshooting
 
 If users still see old content:
-1. Check if `.htaccess` is properly uploaded and in the correct location
-2. Verify Apache `mod_headers` is enabled on your hosting
-3. Check if there's a CDN/proxy cache that needs purging
-4. Ask users to hard refresh (Ctrl+F5 or Cmd+Shift+R)
+
+1. Check that `.htaccess` was uploaded (it is hidden — enable "show dotfiles" in File Manager)
+2. Verify Apache `mod_headers` and `mod_rewrite` are enabled
+3. Purge any CDN/proxy cache
+4. Ask users to hard refresh (Ctrl+F5 / Cmd+Shift+R)

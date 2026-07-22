@@ -1,6 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
+  // Static SPA: no Node process in production (shared hosting NPROC limit).
+  // All data is fetched client-side from the external API.
+  ssr: false,
   app: {
     head: {
       title: 'Master Lu Indonesia',
@@ -25,21 +28,23 @@ export default defineNuxtConfig({
     buildAssetsDir: '/_nuxt/',
   },
   nitro: {
-    preset: 'node-server',
-    routeRules: {
-      // Disable caching for HTML pages
-      '/**': { headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' } },
-      // Cache static assets with versioning
-      '/_nuxt/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
-      '/assets/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } },
-      // Prerender static pages with images
-      '/edukasi/**': { prerender: true },
-      '/tentang/**': { prerender: true },
-      // Chatbot is a client-only experience (live streaming + auth-gated)
-      '/chatbot': { ssr: false },
-    },
+    preset: 'static',
+    compressPublicAssets: { gzip: true, brotli: true },
+    // Cache-Control is served by Apache — see public/.htaccess
   },
   modules: ['@nuxt/ui', '@nuxt/icon', '@nuxt/image', '@pinia/nuxt', '@vueuse/nuxt', 'nuxt-ripple'],
+  icon: {
+    // No server bundle to fall back on in a static build — inline the scanned
+    // icons into the client bundle so nothing is fetched from the Iconify API.
+    mode: 'css',
+    serverBundle: false,
+    clientBundle: {
+      scan: true,
+      includeCustomCollections: true,
+      // Referenced via Nuxt UI's `i-*` class syntax, which the scanner misses
+      icons: ['simple-icons:google', 'lucide:loader-circle'],
+    },
+  },
   ripple: {
     mode: 'click',
     color: 'rgba(255, 165, 0, 0.3)', // Orange color with transparency
