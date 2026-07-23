@@ -14,23 +14,14 @@
           <Icon name="mdi:robot-happy" class="w-5 h-5 text-black" />
         </div>
         <div class="min-w-0">
-          <h1 class="text-base font-semibold text-gray-900 dark:text-white truncate">MasterLu AI</h1>
-          <div class="flex items-center gap-1.5">
-            <span
-              v-if="selectedCategory"
-              class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/15 dark:bg-yellow-500/15 text-[11px] font-medium text-[#9a7400] dark:text-yellow-400 truncate max-w-[10rem]"
-            >
-              <Icon name="mdi:tag" class="w-3 h-3 shrink-0" />
-              {{ selectedCategory.name }}
-            </span>
-            <p v-else class="text-xs text-secondary dark:text-gray-400">Tanya seputar MasterLu Indonesia</p>
-            <span v-if="quota" class="flex items-center gap-1 text-[11px] text-secondary dark:text-gray-400 shrink-0">
-              · {{ quota.plan.label }}
-              <template v-if="!unlimited && quota.remaining !== null">
-                · <span :class="quotaReached ? 'text-red-500 font-medium' : ''">{{ quota.remaining }}/{{ quota.limit }} hari ini</span>
-              </template>
-            </span>
-          </div>
+          <h1 class="text-lg font-semibold text-gray-900 dark:text-white truncate">MasterLu AI</h1>
+          <span
+            v-if="selectedCategory"
+            class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/15 dark:bg-yellow-500/15 text-[12px] font-medium text-[#9a7400] dark:text-yellow-400 truncate max-w-full mt-0.5"
+          >
+            <Icon name="mdi:tag" class="w-3 h-3 shrink-0" />
+            {{ selectedCategory.name }}
+          </span>
         </div>
       </div>
       <button
@@ -50,16 +41,29 @@
       </button>
     </header>
 
+    <!-- Plan / quota bar -->
+    <div
+      v-if="quota"
+      class="shrink-0 flex items-center gap-1 px-3 py-1.5 text-sm text-secondary dark:text-gray-400 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700"
+    >
+      <Icon name="mdi:crown-outline" class="w-3.5 h-3.5 shrink-0" />
+      <span>{{ quota.plan.label }}</span>
+      <template v-if="!unlimited && quota.remaining !== null">
+        <span>·</span>
+        <span :class="quotaReached ? 'text-red-500 font-medium' : ''">{{ quota.remaining }}/{{ quota.limit }} pertanyaan hari ini</span>
+      </template>
+    </div>
+
     <!-- Quota reached → upgrade CTA (top, so the FAB never covers it) -->
     <div
       v-if="isAuthenticated && quotaReached"
       class="shrink-0 px-3 py-2.5 bg-yellow-50 dark:bg-yellow-900/20 border-b border-yellow-100 dark:border-yellow-900/40 flex items-center gap-2"
     >
-      <p class="flex-1 text-xs text-yellow-800 dark:text-yellow-300">
+      <p class="flex-1 text-sm text-yellow-800 dark:text-yellow-300">
         Kuota {{ quota?.plan.label }} hari ini habis ({{ quota?.limit }} pertanyaan). Upgrade untuk menambah kuota.
       </p>
       <button
-        class="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-600 text-white text-xs font-medium hover:bg-green-700 transition-colors"
+        class="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition-colors"
         @click="openPlans"
       >
         <Icon name="mdi:whatsapp" class="w-4 h-4" />
@@ -74,8 +78,8 @@
         <div class="w-16 h-16 rounded-full flex items-center justify-center bg-primary/10 dark:bg-yellow-500/10 mb-4">
           <Icon name="mdi:robot-happy" class="w-9 h-9 text-primary dark:text-yellow-400" />
         </div>
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-1">Halo! 👋</h2>
-        <p class="text-[15px] leading-relaxed text-gray-600 dark:text-gray-300 mb-6 max-w-xs">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Halo! 👋</h2>
+        <p class="text-[16px] leading-relaxed text-gray-600 dark:text-gray-300 mb-6 max-w-xs">
           {{ selectedCategory
             ? `Kategori "${selectedCategory.name}" dipilih. Ketik pertanyaan Anda di bawah.`
             : 'Pilih kategori untuk memulai percakapan.' }}
@@ -93,13 +97,21 @@
       <!-- Message list -->
       <template v-for="message in messages" :key="message.id">
         <!-- User message -->
-        <div v-if="message.role === 'user'" class="flex justify-end">
+        <div v-if="message.role === 'user'" class="flex flex-col items-end">
           <div
             class="max-w-[80%] px-4 py-2.5 rounded-2xl rounded-br-md bg-primary dark:bg-yellow-500 text-black leading-relaxed whitespace-pre-wrap break-words"
             :style="{ fontSize: fontSize + 'px' }"
           >
             {{ textOf(message) }}
           </div>
+          <button
+            class="mt-1 mr-1 flex items-center gap-1 text-sm text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-yellow-400 transition-colors"
+            aria-label="Salin pesan"
+            @click="copyMessage(message.id, textOf(message))"
+          >
+            <Icon :name="copiedId === message.id ? 'mdi:check' : 'mdi:content-copy'" class="w-3.5 h-3.5" />
+            {{ copiedId === message.id ? 'Disalin' : 'Salin' }}
+          </button>
         </div>
 
         <!-- Assistant message -->
@@ -107,7 +119,7 @@
           <div class="w-7 h-7 rounded-full flex items-center justify-center bg-primary dark:bg-yellow-500 shrink-0 mt-0.5">
             <Icon name="mdi:robot-happy" class="w-4 h-4 text-black" />
           </div>
-          <div class="max-w-[85%] space-y-2">
+          <div class="max-w-[85%] space-y-1.5">
             <div
               class="px-4 py-2.5 rounded-2xl rounded-bl-md bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100 leading-relaxed break-words"
               :style="{ fontSize: fontSize + 'px' }"
@@ -121,9 +133,19 @@
               </span>
             </div>
 
+            <button
+              v-if="textOf(message)"
+              class="ml-1 flex items-center gap-1 text-sm text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-yellow-400 transition-colors"
+              aria-label="Salin pesan"
+              @click="copyMessage(message.id, textOf(message))"
+            >
+              <Icon :name="copiedId === message.id ? 'mdi:check' : 'mdi:content-copy'" class="w-3.5 h-3.5" />
+              {{ copiedId === message.id ? 'Disalin' : 'Salin' }}
+            </button>
+
             <!-- Sources -->
             <div v-if="sourcesOf(message).length" class="space-y-1.5">
-              <p class="text-xs font-semibold uppercase tracking-wide text-secondary dark:text-gray-400 px-1">Artikel Terkait</p>
+              <p class="text-sm font-semibold uppercase tracking-wide text-secondary dark:text-gray-400 px-1">Artikel Terkait</p>
               <component
                 :is="linkFor(src) ? resolveLinkComponent : 'div'"
                 v-for="(src, i) in sourcesOf(message)"
@@ -135,22 +157,22 @@
                 <div class="flex items-start gap-2">
                   <Icon :name="iconFor(src.content_type)" class="w-4 h-4 text-primary dark:text-yellow-400 mt-0.5 shrink-0" />
                   <div class="min-w-0">
-                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                    <p class="text-base font-medium text-gray-900 dark:text-white truncate">
                       {{ src.title || src.category_title || 'Sumber' }}
                     </p>
                     <div class="flex items-center gap-1.5 mt-0.5">
-                      <p v-if="src.chapter_title || src.category_title" class="text-xs text-secondary dark:text-gray-400 truncate">
+                      <p v-if="src.chapter_title || src.category_title" class="text-sm text-secondary dark:text-gray-400 truncate">
                         {{ src.chapter_title || src.category_title }}
                       </p>
                       <span
                         v-if="src.timestamp_formatted"
-                        class="inline-flex items-center gap-0.5 shrink-0 px-1.5 py-0.5 rounded-full bg-primary/15 dark:bg-yellow-500/15 text-[11px] font-medium text-[#9a7400] dark:text-yellow-400"
+                        class="inline-flex items-center gap-0.5 shrink-0 px-1.5 py-0.5 rounded-full bg-primary/15 dark:bg-yellow-500/15 text-[12px] font-medium text-[#9a7400] dark:text-yellow-400"
                       >
                         <Icon name="mdi:clock-outline" class="w-3 h-3" />
                         {{ src.timestamp_formatted }}
                       </span>
                     </div>
-                    <p v-if="src.snippet" class="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 mt-0.5">
+                    <p v-if="src.snippet" class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mt-0.5">
                       {{ src.snippet }}
                     </p>
                   </div>
@@ -181,10 +203,10 @@
           <Icon name="mdi:alert" class="w-4 h-4 text-red-500" />
         </div>
         <div class="max-w-[85%]">
-          <div class="px-4 py-2.5 rounded-2xl rounded-bl-md bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/40 text-red-700 dark:text-red-300 text-sm">
+          <div class="px-4 py-2.5 rounded-2xl rounded-bl-md bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/40 text-red-700 dark:text-red-300 text-base">
             {{ error.message || 'Terjadi kesalahan. Coba lagi.' }}
           </div>
-          <button class="mt-1 text-xs text-primary dark:text-yellow-400 font-medium px-1" @click="retry">
+          <button class="mt-1 text-sm text-primary dark:text-yellow-400 font-medium px-1" @click="retry">
             Coba lagi
           </button>
         </div>
@@ -206,7 +228,7 @@
 
     <!-- Not authenticated notice -->
     <div v-if="!isAuthenticated" class="shrink-0 px-3 py-2 bg-yellow-50 dark:bg-yellow-900/20 border-t border-yellow-100 dark:border-yellow-900/40">
-      <p class="text-xs text-yellow-800 dark:text-yellow-300 text-center">
+      <p class="text-sm text-yellow-800 dark:text-yellow-300 text-center">
         Silakan masuk terlebih dahulu untuk menggunakan chatbot.
       </p>
     </div>
@@ -228,7 +250,7 @@
           rows="1"
           :disabled="!isAuthenticated || quotaReached"
           :placeholder="quotaReached ? 'Kuota harian habis' : 'Tulis pertanyaan...'"
-          class="flex-1 resize-none max-h-32 px-4 py-2.5 rounded-2xl bg-gray-100 dark:bg-gray-700 text-base text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-yellow-500 disabled:opacity-60"
+          class="flex-1 resize-none max-h-32 px-4 py-2.5 rounded-2xl bg-gray-100 dark:bg-gray-700 text-lg text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-yellow-500 disabled:opacity-60"
           @input="autoGrow"
           @keydown="onKeydown"
         />
@@ -266,7 +288,7 @@
         class="absolute inset-y-0 left-0 z-40 w-[82%] max-w-xs bg-white dark:bg-gray-800 shadow-xl flex flex-col"
       >
         <div class="shrink-0 flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-700">
-          <h2 class="text-base font-semibold text-gray-900 dark:text-white">Riwayat</h2>
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Riwayat</h2>
           <button
             class="p-2 flex justify-center align-middle rounded-full text-secondary dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
             aria-label="Tutup"
@@ -278,13 +300,13 @@
 
         <div class="shrink-0 px-3 py-3">
           <button
-            class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary dark:bg-yellow-500 text-black text-sm font-medium transition-opacity hover:opacity-90"
+            class="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary dark:bg-yellow-500 text-black text-base font-medium transition-opacity hover:opacity-90"
             @click="startNewChat"
           >
             <Icon name="mdi:plus" class="w-5 h-5" />
             Obrolan Baru
           </button>
-          <p class="text-xs text-secondary dark:text-gray-400 text-center mt-2">
+          <p class="text-sm text-secondary dark:text-gray-400 text-center mt-2">
             {{ conversations.length }}/3 percakapan
           </p>
         </div>
@@ -293,7 +315,7 @@
           <div v-if="loadingList" class="py-8 text-center">
             <Icon name="mdi:loading" class="w-6 h-6 text-secondary dark:text-gray-400 animate-spin" />
           </div>
-          <p v-else-if="!conversations.length" class="py-8 text-center text-sm text-secondary dark:text-gray-400">
+          <p v-else-if="!conversations.length" class="py-8 text-center text-base text-secondary dark:text-gray-400">
             Belum ada percakapan.
           </p>
           <ul v-else class="space-y-1">
@@ -306,15 +328,15 @@
             >
               <Icon name="mdi:message-text-outline" class="w-4 h-4 text-secondary dark:text-gray-400 shrink-0" />
               <div class="min-w-0 flex-1">
-                <p class="text-sm text-gray-900 dark:text-white truncate">{{ c.title || 'Tanpa judul' }}</p>
+                <p class="text-base text-gray-900 dark:text-white truncate">{{ c.title || 'Tanpa judul' }}</p>
                 <div class="flex items-center gap-1.5">
                   <span
                     v-if="c.category"
-                    class="inline-flex items-center px-1.5 py-0.5 rounded-full bg-primary/15 dark:bg-yellow-500/15 text-[10px] font-medium text-[#9a7400] dark:text-yellow-400 truncate max-w-24"
+                    class="inline-flex items-center px-1.5 py-0.5 rounded-full bg-primary/15 dark:bg-yellow-500/15 text-[11px] font-medium text-[#9a7400] dark:text-yellow-400 truncate max-w-24"
                   >
                     {{ c.category.name }}
                   </span>
-                  <p class="text-xs text-secondary dark:text-gray-400">{{ formatDate(c.updated_at) }}</p>
+                  <p class="text-sm text-secondary dark:text-gray-400">{{ formatDate(c.updated_at) }}</p>
                 </div>
               </div>
               <button
@@ -340,7 +362,7 @@
         <Transition name="sheet" appear>
           <div class="w-full bg-white dark:bg-gray-800 rounded-t-2xl p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
             <div class="flex items-start justify-between gap-2 mb-1">
-              <h3 class="text-base font-semibold text-gray-900 dark:text-white">Pilih kategori pertanyaan</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Pilih kategori pertanyaan</h3>
               <button
                 class="p-1 -mr-1 rounded-full text-secondary dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                 aria-label="Batal"
@@ -349,13 +371,13 @@
                 <Icon name="mdi:close" class="w-5 h-5" />
               </button>
             </div>
-            <p class="text-xs text-secondary dark:text-gray-400 mb-3">
+            <p class="text-sm text-secondary dark:text-gray-400 mb-3">
               Kategori menentukan sumber jawaban dan tidak bisa diubah setelah percakapan dimulai.
             </p>
 
             <p
               v-if="pendingMessage"
-              class="text-sm text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700/60 rounded-xl px-3 py-2 mb-3 line-clamp-2"
+              class="text-base text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700/60 rounded-xl px-3 py-2 mb-3 line-clamp-2"
             >
               "{{ pendingMessage }}"
             </p>
@@ -382,7 +404,7 @@
         <Transition name="sheet" appear>
           <div class="w-full bg-white dark:bg-gray-800 rounded-t-2xl p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
             <div class="flex items-start justify-between gap-2 mb-1">
-              <h3 class="text-base font-semibold text-gray-900 dark:text-white">Pilih paket donatur</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Pilih paket donatur</h3>
               <button
                 class="p-1 -mr-1 rounded-full text-secondary dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                 aria-label="Tutup"
@@ -391,7 +413,7 @@
                 <Icon name="mdi:close" class="w-5 h-5" />
               </button>
             </div>
-            <p class="text-xs text-secondary dark:text-gray-400 mb-3">
+            <p class="text-sm text-secondary dark:text-gray-400 mb-3">
               Pembayaran dilakukan manual via WhatsApp admin. Pilih paket untuk melanjutkan.
             </p>
 
@@ -409,19 +431,19 @@
               >
                 <div class="min-w-0 flex-1">
                   <div class="flex items-center gap-2">
-                    <p class="text-sm font-semibold text-gray-900 dark:text-white truncate">{{ p.label }}</p>
+                    <p class="text-base font-semibold text-gray-900 dark:text-white truncate">{{ p.label }}</p>
                     <span
                       v-if="quota?.plan.name === p.name"
-                      class="shrink-0 px-1.5 py-0.5 rounded-full bg-primary/15 dark:bg-yellow-500/15 text-[10px] font-medium text-[#9a7400] dark:text-yellow-400"
+                      class="shrink-0 px-1.5 py-0.5 rounded-full bg-primary/15 dark:bg-yellow-500/15 text-[11px] font-medium text-[#9a7400] dark:text-yellow-400"
                     >Paket aktif</span>
                   </div>
-                  <p class="text-xs text-secondary dark:text-gray-400">
+                  <p class="text-sm text-secondary dark:text-gray-400">
                     {{ formatPrice(p.price) }} · {{ planLimitLabel(p) }}
                   </p>
                 </div>
                 <button
                   :disabled="quota?.plan.name === p.name || p.name === 'free'"
-                  class="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-600 text-white text-xs font-medium hover:bg-green-700 transition-colors disabled:opacity-40 disabled:hover:bg-green-600"
+                  class="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition-colors disabled:opacity-40 disabled:hover:bg-green-600"
                   @click="choosePlan(p)"
                 >
                   <Icon name="mdi:whatsapp" class="w-4 h-4" />
@@ -471,6 +493,7 @@ const conversationId = ref<number | undefined>(undefined)
 const input = ref('')
 const scrollEl = ref<HTMLElement | null>(null)
 const inputEl = ref<HTMLTextAreaElement | null>(null)
+const copiedId = ref<string | null>(null)
 
 // Conversation history (drawer)
 const drawerOpen = ref(false)
@@ -498,7 +521,7 @@ const quotaReached = computed(
 
 // Zoom / scroll tools (FabZoom)
 const isToolsExpanded = ref(false)
-const fontSize = ref(15)
+const fontSize = ref(17)
 
 function zoomIn() {
   fontSize.value = Math.min(fontSize.value + 2, 28)
@@ -661,6 +684,37 @@ function iconFor(type: ChatContentType): string {
 
 function renderMarkdown(text: string): string {
   return marked.parse(text, { async: false }) as string
+}
+
+// Convert Markdown to WhatsApp's own lightweight formatting so pasted text
+// looks right there (WA doesn't render Markdown): bold markers collapse to
+// single asterisks, headings become a bold line, links become "text (url)",
+// inline code/strikethrough markers are stripped, list markers normalize to "- ".
+function toWhatsAppText(text: string): string {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '*$1*')
+    .replace(/__(.+?)__/g, '*$1*')
+    .replace(/^#{1,6}\s+(.*)$/gm, '*$1*')
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '$1 ($2)')
+    .replace(/~~(.+?)~~/g, '~$1~')
+    .replace(/`{1,3}([^`]+)`{1,3}/g, '$1')
+    .replace(/^\s*[*+]\s+/gm, '- ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
+async function copyMessage(id: string, text: string) {
+  const formatted = toWhatsAppText(text)
+  try {
+    await navigator.clipboard.writeText(formatted)
+  } catch {
+    toast.add({ title: 'Gagal menyalin pesan', color: 'error' })
+    return
+  }
+  copiedId.value = id
+  setTimeout(() => {
+    if (copiedId.value === id) copiedId.value = null
+  }, 1500)
 }
 
 function formatDate(iso: string): string {

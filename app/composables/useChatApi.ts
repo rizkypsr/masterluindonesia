@@ -19,6 +19,8 @@ export interface ChatCategory {
   parent_id: number | null
   /** Number of content items in the category. Leaves only appear when > 0. */
   scope_count: number
+  /** Optional explanation of what this category covers, shown via an info toggle. */
+  description?: string | null
   children: ChatCategory[]
 }
 
