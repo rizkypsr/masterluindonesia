@@ -19,10 +19,10 @@
           @click="toggle(node.id)"
         >
           <span class="min-w-0 flex-1">
-            <span class="block text-sm font-medium truncate">{{ node.name }}</span>
+            <span class="block text-base font-medium truncate">{{ node.name }}</span>
             <span
               v-if="selectedChildOf(node)"
-              class="block text-xs text-primary dark:text-yellow-400 truncate mt-0.5"
+              class="block text-sm text-primary dark:text-yellow-400 truncate mt-0.5"
             >
               {{ selectedChildOf(node)!.name }}
             </span>
@@ -39,7 +39,7 @@
             v-for="child in node.children"
             :key="child.id"
             type="button"
-            class="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-left text-sm transition-colors"
+            class="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-left text-base transition-colors"
             :class="btnClass(child.id)"
             @click="emit('select', child)"
           >
@@ -53,7 +53,7 @@
       <button
         v-else
         type="button"
-        class="w-full flex items-center gap-2 px-3 py-3 rounded-xl border text-left text-sm font-medium transition-colors"
+        class="w-full flex items-center gap-2 px-3 py-3 rounded-xl border text-left text-base font-medium transition-colors"
         :class="btnClass(node.id)"
         @click="emit('select', node)"
       >
