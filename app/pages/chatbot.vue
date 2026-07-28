@@ -74,7 +74,7 @@
     <!-- Messages -->
     <div ref="scrollEl" class="flex-1 overflow-y-auto px-3 py-4 space-y-4 scrollbar-hide" @scroll="onScroll">
       <!-- Empty state -->
-      <div v-if="!messages.length" class="h-full flex flex-col items-center justify-center text-center px-6">
+      <div v-if="!messages.length" class="min-h-full flex flex-col items-center justify-center text-center px-6 py-4">
         <div class="w-16 h-16 rounded-full flex items-center justify-center bg-primary/10 dark:bg-yellow-500/10 mb-4">
           <Icon name="mdi:robot-happy" class="w-9 h-9 text-primary dark:text-yellow-400" />
         </div>

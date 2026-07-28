@@ -18,10 +18,10 @@
         >
           <button type="button" class="min-w-0 flex-1 flex items-center gap-2 text-left" @click="toggle(node.id)">
             <span class="min-w-0 flex-1">
-              <span class="block text-base font-medium truncate">{{ node.name }}</span>
+              <span class="block text-base font-medium break-words">{{ node.name }}</span>
               <span
                 v-if="selectedChildOf(node)"
-                class="block text-sm text-primary dark:text-yellow-400 truncate mt-0.5"
+                class="block text-sm text-primary dark:text-yellow-400 break-words mt-0.5"
               >
                 {{ selectedChildOf(node)!.name }}
               </span>
@@ -55,12 +55,12 @@
             <div class="flex items-center gap-1">
               <button
                 type="button"
-                class="flex-1 min-w-0 flex items-center gap-2 px-3 py-2.5 rounded-lg text-left text-base transition-colors"
+                class="flex-1 min-w-0 flex items-start gap-2 px-3 py-2.5 rounded-lg text-left text-base transition-colors"
                 :class="btnClass(child.id)"
                 @click="emit('select', child)"
               >
-                <Icon name="mdi:tag-outline" class="w-4 h-4 text-primary dark:text-yellow-400 shrink-0" />
-                <span class="truncate">{{ child.name }}</span>
+                <Icon name="mdi:tag-outline" class="w-4 h-4 mt-0.5 text-primary dark:text-yellow-400 shrink-0" />
+                <span class="break-words">{{ child.name }}</span>
               </button>
               <button
                 v-if="child.description"
@@ -87,12 +87,12 @@
         <div class="flex items-center gap-1">
           <button
             type="button"
-            class="flex-1 min-w-0 flex items-center gap-2 px-3 py-3 text-left text-base font-medium transition-colors"
+            class="flex-1 min-w-0 flex items-start gap-2 px-3 py-3 text-left text-base font-medium transition-colors"
             :class="btnClass(node.id, true)"
             @click="emit('select', node)"
           >
-            <Icon name="mdi:tag-outline" class="w-5 h-5 text-primary dark:text-yellow-400 shrink-0" />
-            <span class="truncate">{{ node.name }}</span>
+            <Icon name="mdi:tag-outline" class="w-5 h-5 mt-0.5 text-primary dark:text-yellow-400 shrink-0" />
+            <span class="break-words">{{ node.name }}</span>
           </button>
           <button
             v-if="node.description"

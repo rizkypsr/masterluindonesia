@@ -4,8 +4,9 @@
       <div class="flex-1 overflow-hidden" :class="{ 'pb-safe-bottom-nav': showBottomNav }">
         <slot />
       </div>
-      <!-- Lazy hydration: only hydrate when visible -->
-      <LazyBottomNav v-if="showBottomNav" class="shrink-0" hydrate-on-visible />
+      <!-- Rendered eagerly: this is an SPA build, and a deferred/visibility-gated
+           BottomNav can fail to ever hydrate on a direct page load. -->
+      <BottomNav v-if="showBottomNav" class="shrink-0" />
     </div>
   </div>
 </template>
