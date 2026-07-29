@@ -80,7 +80,9 @@
 <script setup lang="ts">
 const route = useRoute()
 
+// A direct URL load arrives with a trailing slash (Apache serves the generated
+// `<route>/index.html`), so normalize before comparing.
 const isActive = (path: string) => {
-  return route.path === path
+  return (route.path.replace(/\/+$/, '') || '/') === path
 }
 </script>

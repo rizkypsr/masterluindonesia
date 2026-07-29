@@ -16,8 +16,11 @@ const route = useRoute()
 
 const mainPages = ['/', '/audio', '/search', '/video', '/lainnya']
 
+// Apache serves the generated `<route>/index.html` and redirects `/lainnya` to
+// `/lainnya/`, so a direct URL load arrives with a trailing slash. Strip it
+// before matching, otherwise the nav disappears on direct loads.
 const showBottomNav = computed(() => {
-  return mainPages.includes(route.path)
+  return mainPages.includes(route.path.replace(/\/+$/, '') || '/')
 })
 </script>
 
