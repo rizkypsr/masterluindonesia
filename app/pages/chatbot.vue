@@ -41,33 +41,47 @@
       </button>
     </header>
 
-    <!-- Plan / quota bar -->
-    <div
-      v-if="quota"
-      class="shrink-0 flex items-center gap-1 px-3 py-1.5 text-sm text-secondary dark:text-gray-400 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700"
+    <!-- Balance / free-allowance bar -->
+    <button
+      v-if="balance"
+      class="shrink-0 w-full flex items-center gap-1 px-3 py-1.5 text-sm text-secondary dark:text-gray-400 bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700"
+      @click="goToSaldo"
     >
-      <Icon name="mdi:crown-outline" class="w-3.5 h-3.5 shrink-0" />
-      <span>{{ quota.plan.label }}</span>
-      <template v-if="!unlimited && quota.remaining !== null">
+      <Icon name="mdi:wallet-outline" class="w-3.5 h-3.5 shrink-0" />
+      <span :class="balance.low_balance ? 'text-red-500 font-medium' : ''">
+        {{ formatRp(balance.balance_rp) }}
+      </span>
+      <template v-if="freeLeft > 0">
         <span>·</span>
-        <span :class="quotaReached ? 'text-red-500 font-medium' : ''">{{ quota.remaining }}/{{ quota.limit }} pertanyaan hari ini</span>
+        <span>{{ freeLeft }} pertanyaan gratis</span>
       </template>
+      <Icon name="mdi:chevron-right" class="w-4 h-4 shrink-0 ml-auto" />
+    </button>
+
+    <!-- Cheap mode notice (thin balance → answers drop chapter summaries) -->
+    <div
+      v-if="isAuthenticated && cheapMode && !outOfCredit"
+      class="shrink-0 px-3 py-2 bg-yellow-50 dark:bg-yellow-900/20 border-b border-yellow-100 dark:border-yellow-900/40"
+    >
+      <p class="text-sm text-yellow-800 dark:text-yellow-300">
+        Saldo menipis — jawaban sementara tanpa ringkasan bab. Isi saldo untuk jawaban lengkap.
+      </p>
     </div>
 
-    <!-- Quota reached → upgrade CTA (top, so the FAB never covers it) -->
+    <!-- Out of credit → topup CTA (top, so the FAB never covers it) -->
     <div
-      v-if="isAuthenticated && quotaReached"
+      v-if="isAuthenticated && outOfCredit"
       class="shrink-0 px-3 py-2.5 bg-yellow-50 dark:bg-yellow-900/20 border-b border-yellow-100 dark:border-yellow-900/40 flex items-center gap-2"
     >
       <p class="flex-1 text-sm text-yellow-800 dark:text-yellow-300">
-        Kuota {{ quota?.plan.label }} hari ini habis ({{ quota?.limit }} pertanyaan). Upgrade untuk menambah kuota.
+        Saldo habis dan jatah gratis hari ini sudah terpakai.
       </p>
       <button
         class="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition-colors"
-        @click="openPlans"
+        @click="goToSaldo"
       >
-        <Icon name="mdi:whatsapp" class="w-4 h-4" />
-        Upgrade
+        <Icon name="mdi:wallet-plus-outline" class="w-4 h-4" />
+        Isi Saldo
       </button>
     </div>
 
@@ -248,8 +262,8 @@
           ref="inputEl"
           v-model="input"
           rows="1"
-          :disabled="!isAuthenticated || quotaReached"
-          :placeholder="quotaReached ? 'Kuota harian habis' : 'Tulis pertanyaan...'"
+          :disabled="!isAuthenticated || outOfCredit"
+          :placeholder="outOfCredit ? 'Saldo habis' : 'Tulis pertanyaan...'"
           class="flex-1 resize-none max-h-32 px-4 py-2.5 rounded-2xl bg-gray-100 dark:bg-gray-700 text-lg text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-yellow-500 disabled:opacity-60"
           @input="autoGrow"
           @keydown="onKeydown"
@@ -394,67 +408,6 @@
       </div>
     </Transition>
 
-    <!-- Plans / upgrade picker -->
-    <Transition name="fade">
-      <div
-        v-if="showPlans"
-        class="absolute inset-0 z-50 bg-black/40 flex items-end"
-        @click.self="showPlans = false"
-      >
-        <Transition name="sheet" appear>
-          <div class="w-full bg-white dark:bg-gray-800 rounded-t-2xl p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
-            <div class="flex items-start justify-between gap-2 mb-1">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Pilih paket donatur</h3>
-              <button
-                class="p-1 -mr-1 rounded-full text-secondary dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                aria-label="Tutup"
-                @click="showPlans = false"
-              >
-                <Icon name="mdi:close" class="w-5 h-5" />
-              </button>
-            </div>
-            <p class="text-sm text-secondary dark:text-gray-400 mb-3">
-              Pembayaran dilakukan manual via WhatsApp admin. Pilih paket untuk melanjutkan.
-            </p>
-
-            <div v-if="loadingPlans" class="py-6 text-center">
-              <Icon name="mdi:loading" class="w-6 h-6 text-secondary dark:text-gray-400 animate-spin" />
-            </div>
-            <div v-else class="space-y-2">
-              <div
-                v-for="p in plans"
-                :key="p.name"
-                class="flex items-center gap-3 px-3 py-3 rounded-xl border"
-                :class="quota?.plan.name === p.name
-                  ? 'border-primary dark:border-yellow-500 bg-primary/5 dark:bg-yellow-500/10'
-                  : 'border-gray-200 dark:border-gray-700'"
-              >
-                <div class="min-w-0 flex-1">
-                  <div class="flex items-center gap-2">
-                    <p class="text-base font-semibold text-gray-900 dark:text-white truncate">{{ p.label }}</p>
-                    <span
-                      v-if="quota?.plan.name === p.name"
-                      class="shrink-0 px-1.5 py-0.5 rounded-full bg-primary/15 dark:bg-yellow-500/15 text-[11px] font-medium text-[#9a7400] dark:text-yellow-400"
-                    >Paket aktif</span>
-                  </div>
-                  <p class="text-sm text-secondary dark:text-gray-400">
-                    {{ formatPrice(p.price) }} · {{ planLimitLabel(p) }}
-                  </p>
-                </div>
-                <button
-                  :disabled="quota?.plan.name === p.name || p.name === 'free'"
-                  class="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition-colors disabled:opacity-40 disabled:hover:bg-green-600"
-                  @click="choosePlan(p)"
-                >
-                  <Icon name="mdi:whatsapp" class="w-4 h-4" />
-                  Pilih
-                </button>
-              </div>
-            </div>
-          </div>
-        </Transition>
-      </div>
-    </Transition>
   </div>
 </template>
 
@@ -468,13 +421,12 @@ import {
   type CategoryRef,
   type ChatCategory,
   type ConversationListItem,
-  type PlanCatalogItem,
-  type QuotaState,
 } from '~/composables/useChatApi'
+import { useDepositApi, formatRp, type DepositBalance } from '~/composables/useDepositApi'
 import {
   createMasterLuChatTransport,
+  type BillingError,
   type ChatContentType,
-  type ChatQuota,
   type ChatSource,
   type MasterLuUIMessage,
 } from '~/lib/chatTransport'
@@ -484,6 +436,7 @@ const router = useRouter()
 const toast = useToast()
 const { getAuthHeader, isAuthenticated } = useAuth()
 const chatApi = useChatApi()
+const depositApi = useDepositApi()
 
 const resolveLinkComponent = NuxtLink
 
@@ -507,16 +460,16 @@ const pendingMessage = ref('')
 const showCategoryPicker = ref(false)
 const loadingCategories = ref(false)
 
-// Subscription / donor plan + daily quota
-const quota = ref<QuotaState | null>(null)
-const adminWa = ref<string | null>(null)
-const plans = ref<PlanCatalogItem[]>([])
-const showPlans = ref(false)
-const loadingPlans = ref(false)
+// Deposit balance + daily free allowance
+const balance = ref<DepositBalance | null>(null)
+/** Cheap mode (no chapter summaries) kicked in on the last answer. */
+const cheapMode = ref(false)
 
-const unlimited = computed(() => quota.value?.unlimited ?? false)
-const quotaReached = computed(
-  () => !unlimited.value && quota.value != null && (quota.value.remaining ?? 1) <= 0,
+const freeLeft = computed(() => balance.value?.free.remaining ?? 0)
+const balanceMrp = computed(() => balance.value?.balance_mrp ?? 0)
+/** No free question left AND no money — the next question would be refused. */
+const outOfCredit = computed(
+  () => balance.value != null && freeLeft.value <= 0 && balanceMrp.value <= 0,
 )
 
 // Zoom / scroll tools (FabZoom)
@@ -546,20 +499,32 @@ const chat = new Chat<MasterLuUIMessage>({
       if (meta?.conversation_id) conversationId.value = meta.conversation_id
       // A brand-new conversation just got an id → refresh the sidebar list.
       if (isNew) refreshConversations()
+
+      // `billing.balance_mrp` is the balance AFTER the deduction — apply it
+      // directly instead of refetching /balance.
+      const billing = meta?.billing
+      if (billing && balance.value) {
+        cheapMode.value = billing.mode === 'cheap'
+        const free = balance.value.free
+        const usedFree = billing.source === 'free'
+        balance.value = {
+          ...balance.value,
+          balance_mrp: billing.balance_mrp,
+          balance_rp: Math.floor(billing.balance_mrp / 1000),
+          free: usedFree
+            ? { ...free, used: free.used + 1, remaining: Math.max(free.remaining - 1, 0) }
+            : free,
+        }
+      } else if (billing) {
+        fetchBalance()
+      }
     },
     onHttpError: handleHttpError,
-    onQuota: (q) => {
-      // Header plan code differs from cached → full refetch (need label/expiry).
-      if (!quota.value || quota.value.plan.name !== q.plan) {
-        fetchQuota()
-        return
-      }
-      quota.value = {
-        ...quota.value,
-        unlimited: q.limit == null,
-        limit: q.limit ?? quota.value.limit,
-        remaining: q.remaining,
-      }
+    onBilling: (b) => {
+      if (b.mode) cheapMode.value = b.mode === 'cheap'
+      // Headers carry the balance BEFORE the deduction, so only trust them to
+      // seed the free counter when we have nothing cached yet.
+      if (!balance.value) fetchBalance()
     },
     onNeedsCategory: (cats) => {
       // Defensive: server still wants a category — re-open the picker.
@@ -572,7 +537,7 @@ const chat = new Chat<MasterLuUIMessage>({
 function handleHttpError(
   status: number,
   message: string,
-  extra?: { retryAfterSeconds?: number; quota?: ChatQuota },
+  extra?: BillingError & { retryAfterSeconds?: number },
 ) {
   if (status === 409) {
     toast.add({
@@ -581,19 +546,29 @@ function handleHttpError(
       color: 'error',
     })
     openDrawer()
-  } else if (status === 429 && extra?.quota) {
-    // Daily question quota reached → upgrade-via-WhatsApp CTA.
-    const q = extra.quota
-    if (quota.value) {
-      quota.value = { ...quota.value, remaining: 0, used: q.used, limit: q.limit }
-    } else {
-      fetchQuota()
-    }
+  } else if (status === 402 || extra?.code === 'insufficient_balance') {
+    // Balance empty and today's free question already used.
+    applyDepletedBalance(extra)
     toast.add({
-      title: 'Batas harian tercapai',
+      title: 'Saldo habis',
       description: message,
       color: 'warning',
-      actions: [{ label: 'Lihat Paket', onClick: openPlans }],
+      actions: [{ label: 'Isi Saldo', onClick: goToSaldo }],
+    })
+  } else if (extra?.code === 'free_limit_reached') {
+    // App-wide free pool exhausted — only hits users with a zero balance.
+    applyDepletedBalance(extra)
+    toast.add({
+      title: 'Kuota gratis hari ini habis',
+      description: message,
+      color: 'warning',
+      actions: [{ label: 'Isi Saldo', onClick: goToSaldo }],
+    })
+  } else if (extra?.code === 'request_in_progress') {
+    toast.add({
+      title: 'Masih memproses',
+      description: message,
+      color: 'warning',
     })
   } else if (status === 429) {
     toast.add({
@@ -631,7 +606,7 @@ const isBusy = computed(() => status.value === 'submitted' || status.value === '
 // Show a standalone typing bubble while awaiting the first response chunk.
 const isWaiting = computed(() => status.value === 'submitted')
 const canSend = computed(
-  () => isAuthenticated.value && !!input.value.trim() && !isBusy.value && !quotaReached.value,
+  () => isAuthenticated.value && !!input.value.trim() && !isBusy.value && !outOfCredit.value,
 )
 
 function textOf(message: MasterLuUIMessage): string {
@@ -824,46 +799,37 @@ function autoGrow() {
   el.style.height = `${Math.min(el.scrollHeight, 128)}px`
 }
 
-async function fetchQuota() {
+async function fetchBalance() {
   if (!isAuthenticated.value) return
   try {
-    quota.value = await chatApi.getQuota()
+    balance.value = await depositApi.getBalance()
   } catch {
-    /* non-fatal: badge just stays hidden */
+    /* non-fatal: the badge just stays hidden */
   }
 }
 
-async function openPlans() {
-  showPlans.value = true
-  if (!plans.value.length) {
-    loadingPlans.value = true
-    try {
-      plans.value = await chatApi.listPlans()
-    } finally {
-      loadingPlans.value = false
-    }
-  }
-}
-
-function formatPrice(idr: number): string {
-  return idr <= 0 ? 'Gratis' : `Rp${idr.toLocaleString('id-ID')}`
-}
-
-function planLimitLabel(p: PlanCatalogItem): string {
-  return p.limit == null ? 'Tanpa batas' : `${p.limit} pertanyaan/hari`
-}
-
-async function choosePlan(p: PlanCatalogItem) {
-  if (!adminWa.value) adminWa.value = await chatApi.getAdminWhatsApp()
-  if (!adminWa.value) {
-    toast.add({ title: 'Nomor WhatsApp admin tidak tersedia', color: 'error' })
+/** Reflect a server-side "nothing left to spend" verdict in the cached balance. */
+function applyDepletedBalance(extra?: BillingError) {
+  if (!balance.value) {
+    fetchBalance()
     return
   }
-  const text = encodeURIComponent(
-    `Halo admin, saya ingin upgrade ke paket ${p.label} (${formatPrice(p.price)}) untuk chatbot MasterLu.`,
-  )
-  window.open(`https://wa.me/${adminWa.value}?text=${text}`, '_blank')
-  showPlans.value = false
+  const mrp = extra?.balanceMrp ?? 0
+  balance.value = {
+    ...balance.value,
+    balance_mrp: mrp,
+    balance_rp: extra?.balanceRp ?? Math.floor(mrp / 1000),
+    free: {
+      ...balance.value.free,
+      remaining: 0,
+      used: balance.value.free.limit,
+      reset_at: extra?.resetAt ?? balance.value.free.reset_at,
+    },
+  }
+}
+
+function goToSaldo() {
+  router.push('/saldo')
 }
 
 async function ensureCategories(force = false) {
@@ -888,12 +854,12 @@ function submitMessage(text: string) {
   const trimmed = text.trim()
   if (!trimmed || isBusy.value || !isAuthenticated.value) return
 
-  if (quotaReached.value) {
+  if (outOfCredit.value) {
     toast.add({
-      title: 'Batas harian tercapai',
-      description: 'Kuota pertanyaan hari ini habis. Upgrade untuk menambah kuota.',
+      title: 'Saldo habis',
+      description: 'Jatah gratis hari ini sudah terpakai. Isi Saldo Deposit untuk melanjutkan.',
       color: 'warning',
-      actions: [{ label: 'Lihat Paket', onClick: openPlans }],
+      actions: [{ label: 'Isi Saldo', onClick: goToSaldo }],
     })
     return
   }
@@ -971,7 +937,7 @@ onMounted(() => {
   if (isAuthenticated.value) {
     refreshConversations()
     ensureCategories()
-    fetchQuota()
+    fetchBalance()
   }
 })
 

@@ -30,6 +30,18 @@ export interface ChatSource {
   timestamp_formatted?: string
 }
 
+/** How a single answer was paid for. */
+export interface ChatBilling {
+  /** `free` = daily allowance, `balance` = charged, `none` = nothing charged. */
+  source: 'free' | 'balance' | 'none'
+  /** `cheap` drops chapter summaries — happens when the balance runs thin. */
+  mode: 'full' | 'cheap'
+  cost_mrp: number
+  cost_rp: number
+  /** Balance AFTER the deduction — use it to refresh the UI without refetching. */
+  balance_mrp: number
+}
+
 /**
  * The `meta` payload emitted once at the end of a streamed answer (or returned
  * inline for the non-streamed JSON fallback).
@@ -40,6 +52,7 @@ export interface ChatMeta {
   books: ChatSource[]
   grounded: boolean
   flagged?: boolean
+  billing?: ChatBilling
 }
 
 /**
@@ -57,22 +70,29 @@ export type MasterLuUIMessage = UIMessage<
   }
 >
 
-/** Daily question quota, returned with the `429` quota error. */
-export interface ChatQuota {
-  plan?: { name: string; label: string }
-  limit: number
-  used: number
-  reset_at: string
-}
-
-/** Live quota counter read from the `X-Quota-*` response headers. */
-export interface QuotaHeaders {
-  /** Plan code (always present), e.g. "donatur_b". */
-  plan: string
-  /** Null for unlimited plans (headers omitted). */
+/** Live billing/quota counters read from the `X-Billing-*` / `X-Quota-*` headers. */
+export interface BillingHeaders {
+  /** Where this question was paid from. */
+  source: 'free' | 'balance' | 'none' | null
+  /** `cheap` = reduced answer because the balance is thin. */
+  mode: 'full' | 'cheap' | null
+  /** Balance BEFORE the deduction. */
+  balanceMrp: number | null
+  /** Daily free allowance. */
   limit: number | null
   remaining: number | null
   reset: string
+}
+
+/** Extra payload carried by billing-related error responses. */
+export interface BillingError {
+  /** Stable branch key: `insufficient_balance`, `free_limit_reached`, … */
+  code?: string
+  balanceMrp?: number
+  balanceRp?: number
+  /** When the daily free allowance comes back. */
+  resetAt?: string
+  waContact?: string
 }
 
 interface TransportOptions {
@@ -86,14 +106,14 @@ interface TransportOptions {
   getCategoryId: () => number | undefined
   /** Called with the `meta` payload so the caller can persist conversation_id. */
   onMeta: (meta: ChatMeta) => void
-  /** Called for non-2xx responses (e.g. 409 cap, 429 burst/quota) before the error chunk. */
+  /** Called for non-2xx responses (409 cap, 402 out of balance, 429s) before the error chunk. */
   onHttpError?: (
     status: number,
     message: string,
-    extra?: { retryAfterSeconds?: number; quota?: ChatQuota },
+    extra?: BillingError & { retryAfterSeconds?: number },
   ) => void
-  /** Called with the live quota counter from `X-Quota-*` headers (when present). */
-  onQuota?: (headers: QuotaHeaders) => void
+  /** Called with the live billing/quota counters from the response headers. */
+  onBilling?: (headers: BillingHeaders) => void
   /** Defensive: the API asked for a category before answering (should be pre-gated client-side). */
   onNeedsCategory?: (categories: unknown[]) => void
 }
@@ -232,7 +252,7 @@ export function createMasterLuChatTransport(
     getCategoryId,
     onMeta,
     onHttpError,
-    onQuota,
+    onBilling,
     onNeedsCategory,
   } = options
 
@@ -260,16 +280,20 @@ export function createMasterLuChatTransport(
         signal: abortSignal,
       })
 
-      // Live quota counter. X-Quota-Plan always present; Limit/Remaining/Reset
-      // omitted for unlimited plans (Donatur A).
-      const qPlan = response.headers.get('X-Quota-Plan')
-      if (qPlan != null) {
-        const qLimit = response.headers.get('X-Quota-Limit')
-        const qRemaining = response.headers.get('X-Quota-Remaining')
-        onQuota?.({
-          plan: qPlan,
-          limit: qLimit != null ? Number(qLimit) : null,
-          remaining: qRemaining != null ? Number(qRemaining) : null,
+      // Live billing/quota counters from the response headers.
+      const num = (name: string): number | null => {
+        const raw = response.headers.get(name)
+        return raw != null && raw !== '' ? Number(raw) : null
+      }
+      const source = response.headers.get('X-Billing-Source') as BillingHeaders['source']
+      const limit = num('X-Quota-Limit')
+      if (source != null || limit != null) {
+        onBilling?.({
+          source: source ?? null,
+          mode: (response.headers.get('X-Billing-Mode') as BillingHeaders['mode']) ?? null,
+          balanceMrp: num('X-Billing-Balance-Mrp'),
+          limit,
+          remaining: num('X-Quota-Remaining'),
           reset: response.headers.get('X-Quota-Reset') ?? '',
         })
       }
@@ -281,21 +305,24 @@ export function createMasterLuChatTransport(
         async start(controller) {
           try {
             if (!response.ok) {
-              // Error statuses (401/409/413/429/503/...) return JSON { message }.
+              // Error statuses (401/402/409/413/429/503/...) return JSON { message }.
               let message = `Request failed (${response.status})`
-              let retryAfter: number | undefined
-              let quota: ChatQuota | undefined
+              const extra: BillingError & { retryAfterSeconds?: number } = {}
               try {
                 const err = await response.json()
                 if (err?.message) message = err.message
+                if (typeof err?.code === 'string') extra.code = err.code
                 if (typeof err?.retry_after_seconds === 'number') {
-                  retryAfter = err.retry_after_seconds
+                  extra.retryAfterSeconds = err.retry_after_seconds
                 }
-                if (err?.quota) quota = err.quota as ChatQuota
+                if (typeof err?.balance_mrp === 'number') extra.balanceMrp = err.balance_mrp
+                if (typeof err?.balance_rp === 'number') extra.balanceRp = err.balance_rp
+                if (typeof err?.reset_at === 'string') extra.resetAt = err.reset_at
+                if (typeof err?.wa_contact === 'string') extra.waContact = err.wa_contact
               } catch {
                 /* keep default message */
               }
-              onHttpError?.(response.status, message, { retryAfterSeconds: retryAfter, quota })
+              onHttpError?.(response.status, message, extra)
               controller.enqueue({ type: 'start' })
               controller.enqueue({ type: 'error', errorText: message })
               controller.enqueue({ type: 'finish' })
@@ -327,6 +354,7 @@ export function createMasterLuChatTransport(
                   books: data.books ?? [],
                   grounded: data.grounded ?? false,
                   flagged: data.flagged,
+                  billing: data.billing,
                 },
                 onMeta,
               )
