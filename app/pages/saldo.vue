@@ -7,6 +7,8 @@ import {
   type DepositBalance,
   type LedgerEntry,
   type LedgerType,
+  type TopupCreated,
+  type TopupInfo,
   type TopupRequest,
   type TopupStatus,
   type UsageItem,
@@ -31,10 +33,13 @@ const loadingTab = ref(false)
 // Tabs are fetched lazily, once each.
 const loadedTabs = ref<Set<Tab>>(new Set())
 
-// Topup sheet
+// Topup sheet — form step, then a confirmation step showing the request number.
 const showTopup = ref(false)
 const amountRp = ref<number | null>(null)
 const creatingTopup = ref(false)
+const topupInfo = ref<TopupInfo | null>(null)
+const loadingTopupInfo = ref(false)
+const createdTopup = ref<TopupCreated | null>(null)
 const QUICK_AMOUNTS = [10000, 25000, 50000, 100000]
 
 // Usage detail rows expanded by message_id
@@ -84,17 +89,29 @@ async function loadTab(next: Tab, force = false) {
   }
 }
 
-function openTopup() {
+async function openTopup() {
   amountRp.value = null
+  createdTopup.value = null
   showTopup.value = true
+
+  if (topupInfo.value) return
+  loadingTopupInfo.value = true
+  try {
+    topupInfo.value = await deposit.getTopupInfo()
+  } catch {
+    /* non-fatal: fall back to the bounds from /balance, no payment details */
+  } finally {
+    loadingTopupInfo.value = false
+  }
 }
 
 function closeTopup() {
   showTopup.value = false
 }
 
-const minRp = computed(() => balance.value?.topup.min_rp ?? 10000)
-const maxRp = computed(() => balance.value?.topup.max_rp ?? 10000000)
+// Bounds come from /topup-info when available, otherwise from /balance.
+const minRp = computed(() => topupInfo.value?.min_rp ?? balance.value?.topup.min_rp ?? 10000)
+const maxRp = computed(() => topupInfo.value?.max_rp ?? balance.value?.topup.max_rp ?? 10000000)
 
 const amountError = computed(() => {
   const v = amountRp.value
@@ -114,22 +131,9 @@ async function submitTopup() {
 
   creatingTopup.value = true
   try {
-    const created = await deposit.createTopup(amountRp.value)
-    showTopup.value = false
-    if (created.wa_link) {
-      window.open(created.wa_link, '_blank')
-      toast.add({
-        title: `Permintaan topup #${created.id} dibuat`,
-        description: 'Kirim bukti transfer ke WhatsApp admin.',
-        color: 'success',
-      })
-    } else {
-      toast.add({
-        title: `Permintaan topup #${created.id} dibuat`,
-        description: created.instruction,
-        color: 'success',
-      })
-    }
+    // Show the request number on a confirmation step first — that's what the
+    // admin matches the transfer against, so the user must see it.
+    createdTopup.value = await deposit.createTopup(amountRp.value)
     await loadTab('topups', true)
   } catch (e: any) {
     const data = e?.data
@@ -157,6 +161,14 @@ function openWhatsApp(t: TopupRequest) {
     `Halo admin, saya mau topup Saldo Deposit #${t.id} sebesar ${formatRp(t.amount_rp)}.`,
   )
   window.open(`https://wa.me/${wa}?text=${text}`, '_blank')
+}
+
+/** Finish the confirmation step — open the prefilled WhatsApp chat. */
+function openCreatedWhatsApp() {
+  const link = createdTopup.value?.wa_link
+  if (!link) return
+  window.open(link, '_blank')
+  showTopup.value = false
 }
 
 function toggleDetail(id: number) {
@@ -211,19 +223,33 @@ useHead({ title: 'Saldo Deposit' })
 </script>
 
 <template>
-  <div class="min-h-screen bg-white dark:bg-gray-900">
+  <div class="h-full bg-white dark:bg-gray-900 flex flex-col overflow-hidden">
     <!-- Header -->
-    <div class="px-4 py-4 shadow-sm bg-white dark:bg-gray-800">
+    <div class="shrink-0 px-4 py-4 shadow-sm bg-white dark:bg-gray-800">
       <div class="flex items-center gap-3">
         <BackButton />
         <h1 class="text-lg font-semibold text-black dark:text-white">Saldo Deposit</h1>
       </div>
     </div>
 
-    <div class="px-4 py-4 space-y-4">
+    <div class="flex-1 overflow-y-auto px-4 py-4 space-y-4">
       <!-- Balance card -->
       <div v-if="loadingBalance" class="flex justify-center py-10">
         <Icon name="mdi:loading" class="w-8 h-8 animate-spin text-[#bf9638] dark:text-yellow-400" />
+      </div>
+
+      <!-- Free-tier: the model is free right now, so no balance UI at all. -->
+      <div
+        v-else-if="balance?.free_tier"
+        class="rounded-2xl border border-green-200 dark:border-green-900/40 bg-green-50 dark:bg-green-900/20 p-4 flex items-start gap-3"
+      >
+        <Icon name="mdi:gift-outline" class="w-6 h-6 text-green-700 dark:text-green-400 shrink-0" />
+        <div>
+          <p class="text-base font-semibold text-green-800 dark:text-green-300">Semua pertanyaan gratis</p>
+          <p class="text-sm text-green-700 dark:text-green-400 mt-0.5">
+            Saat ini bertanya tidak dikenai biaya sama sekali.
+          </p>
+        </div>
       </div>
 
       <div
@@ -472,15 +498,75 @@ useHead({ title: 'Saldo Deposit' })
       </div>
     </div>
 
-    <!-- Topup sheet -->
+    <!-- Topup sheet: amount form, then a confirmation step with the request number -->
     <UModal v-model:open="showTopup">
       <template #content>
-        <div class="p-6">
+        <!-- Step 2 — request created -->
+        <div v-if="createdTopup" class="p-6">
+          <h3 class="text-lg font-semibold text-black dark:text-white mb-1">Permintaan dibuat</h3>
+          <p class="text-sm text-secondary dark:text-gray-400 mb-4">
+            Sebutkan nomor permintaan ini saat mengirim bukti transfer.
+          </p>
+
+          <div class="rounded-xl border border-[#bf9638] bg-[#bf9638]/10 px-4 py-3 text-center mb-4">
+            <p class="text-sm text-secondary dark:text-gray-400">Nomor permintaan</p>
+            <p class="text-2xl font-bold text-black dark:text-white">#{{ createdTopup.id }}</p>
+            <p class="text-base font-medium text-gray-800 dark:text-gray-200 mt-1">
+              {{ formatRp(createdTopup.amount_rp) }}
+            </p>
+          </div>
+
+          <div
+            v-if="createdTopup.description_html || createdTopup.description_text"
+            class="rounded-xl border border-gray-200 dark:border-gray-700 p-3 mb-3 text-sm text-gray-800 dark:text-gray-200"
+          >
+            <RichTextView
+              :html="createdTopup.description_html"
+              :fallback-text="createdTopup.description_text"
+            />
+          </div>
+
+          <p class="text-sm text-secondary dark:text-gray-400">{{ createdTopup.instruction }}</p>
+
+          <div class="flex gap-3 justify-end mt-6">
+            <UButton variant="outline" @click="closeTopup">
+              Tutup
+            </UButton>
+            <UButton
+              v-if="createdTopup.wa_link"
+              class="bg-green-600 hover:bg-green-700 text-white"
+              @click="openCreatedWhatsApp"
+            >
+              <Icon name="mdi:whatsapp" class="w-4 h-4" />
+              Buka WhatsApp
+            </UButton>
+          </div>
+        </div>
+
+        <!-- Step 1 — amount -->
+        <div v-else class="p-6">
           <h3 class="text-lg font-semibold text-black dark:text-white mb-1">Isi Saldo</h3>
           <p class="text-sm text-secondary dark:text-gray-400 mb-4">
             Nominal bebas, minimum {{ formatRp(minRp) }}. Saldo masuk setelah admin memverifikasi
             bukti transfer di WhatsApp.
           </p>
+
+          <!-- Payment details, maintained by admins in the CMS -->
+          <div v-if="loadingTopupInfo" class="py-4 text-center">
+            <Icon name="mdi:loading" class="w-6 h-6 animate-spin text-[#bf9638] dark:text-yellow-400" />
+          </div>
+          <div
+            v-else-if="topupInfo && (topupInfo.description_html || topupInfo.description_text)"
+            class="rounded-xl border border-gray-200 dark:border-gray-700 p-3 mb-4 text-sm text-gray-800 dark:text-gray-200"
+          >
+            <RichTextView
+              :html="topupInfo.description_html"
+              :fallback-text="topupInfo.description_text"
+            />
+            <p v-if="topupInfo.wa_number" class="mt-2 pt-2 border-t border-gray-100 dark:border-gray-700 text-secondary dark:text-gray-400">
+              WhatsApp admin: {{ topupInfo.wa_number }}
+            </p>
+          </div>
 
           <div class="grid grid-cols-4 gap-2 mb-3">
             <button
@@ -519,11 +605,10 @@ useHead({ title: 'Saldo Deposit' })
             <UButton
               :loading="creatingTopup"
               :disabled="!canSubmitTopup"
-              class="bg-green-600 hover:bg-green-700 text-white"
+              class="bg-[#bf9638] hover:opacity-90 text-black"
               @click="submitTopup"
             >
-              <Icon name="mdi:whatsapp" class="w-4 h-4" />
-              Lanjut ke WhatsApp
+              Buat Permintaan
             </UButton>
           </div>
         </div>

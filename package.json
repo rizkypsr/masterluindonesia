@@ -5,7 +5,7 @@
   "scripts": {
     "build": "nuxt generate",
     "postbuild": "rm -rf dist && cp -R .output/public dist",
-    "dev": "nuxt dev -p 3001",
+    "dev": "nuxt dev -p 3002",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -20,6 +20,9 @@
     "@nuxtjs/tailwindcss": "6.14.0",
     "@pinia/nuxt": "^0.11.3",
     "@tailwindcss/vite": "^4.1.18",
+    "@tiptap/extension-image": "^3.20.0",
+    "@tiptap/starter-kit": "^3.20.0",
+    "@tiptap/vue-3": "^3.20.0",
     "@vueuse/nuxt": "^14.2.1",
     "ai": "^6.0.204",
     "better-auth": "^1.4.12",

@@ -39,7 +39,30 @@ export interface DepositBalance {
   estimate: BalanceEstimate
   /** True below Rp250 — chat still answers, but in cheap mode. */
   low_balance: boolean
+  /**
+   * The AI model is currently free at the provider. Nothing is charged and an
+   * empty balance blocks nothing — hide the whole balance/topup UI.
+   */
+  free_tier: boolean
   topup: TopupConfig
+}
+
+/**
+ * Payment instructions for the topup screen (`GET /deposit/topup-info`).
+ * Bank details are maintained by admins in the CMS, so they change without an
+ * app release — always read them from here rather than hardcoding.
+ */
+export interface TopupInfo {
+  /** Human-readable, e.g. "+62 812-8197-7739". */
+  wa_number: string | null
+  wa_link: string | null
+  /** Server-sanitized HTML. Render read-only via Tiptap, never with v-html. */
+  description_html: string
+  /** Plain-text equivalent, for when HTML rendering isn't wanted. */
+  description_text: string
+  min_rp: number
+  max_rp: number
+  updated_at: string
 }
 
 export type TopupStatus = 'pending' | 'paid' | 'rejected'
@@ -67,6 +90,9 @@ export interface TopupCreated {
   wa_contact: string | null
   /** Null when the admin WhatsApp number isn't configured; show `instruction`. */
   wa_link: string | null
+  /** Transfer instructions, repeated here so the confirmation screen stands alone. */
+  description_html: string
+  description_text: string
   instruction: string
 }
 
@@ -178,6 +204,14 @@ export const useDepositApi = () => {
     return res.data
   }
 
+  /** Payment instructions + amount bounds for the topup screen. */
+  async function getTopupInfo() {
+    const res = await $fetch<ApiEnvelope<TopupInfo>>(`${base}/topup-info`, {
+      headers: headers(),
+    })
+    return res.data
+  }
+
   /** Create a pending topup. The balance only moves once an admin verifies it. */
   async function createTopup(amountRp: number) {
     const res = await $fetch<ApiEnvelope<TopupCreated>>(`${base}/topup`, {
@@ -220,5 +254,5 @@ export const useDepositApi = () => {
     return res.data
   }
 
-  return { getBalance, createTopup, listTopups, listLedger, listUsage }
+  return { getBalance, getTopupInfo, createTopup, listTopups, listLedger, listUsage }
 }

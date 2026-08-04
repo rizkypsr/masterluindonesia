@@ -51,28 +51,14 @@ export const useAuth = () => {
   const isAuthenticated = computed(() => !!token.value);
   const isAdmin = computed(() => !!user.value?.is_admin);
 
-  // Call your backend with Google user info
-  const loginWithGoogle = async (accessToken: string) => {
-    // First, get user info from Google using the access token
-    const userInfo = await $fetch<{
-      sub: string;
-      email: string;
-      name: string;
-      picture?: string;
-    }>('https://www.googleapis.com/oauth2/v3/userinfo', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    // Then send user info to the auth API
+  // Exchange a Google ID token (JWT) for our own session token. The backend
+  // verifies the token with Google server-side and extracts the profile itself,
+  // so the client must send ONLY the id token — never raw id/email/name, which
+  // could be forged.
+  const loginWithGoogle = async (idToken: string) => {
     const response = await $fetch<LoginResponse>(`${config.public.apiV2BaseUrl}/auth/logingoogle`, {
       method: 'POST',
-      body: {
-        id: userInfo.sub,
-        email: userInfo.email,
-        displayName: userInfo.name,
-      },
+      body: { idToken },
     });
 
     if (response.success && response.data?.token) {

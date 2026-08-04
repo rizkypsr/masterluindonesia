@@ -32,14 +32,23 @@ export interface ChatSource {
 
 /** How a single answer was paid for. */
 export interface ChatBilling {
-  /** `free` = daily allowance, `balance` = charged, `none` = nothing charged. */
-  source: 'free' | 'balance' | 'none'
+  /**
+   * `free` = daily allowance, `balance` = charged, `free_tier` = the model is
+   * currently free at the provider, `none` = nothing charged.
+   */
+  source: 'free' | 'balance' | 'free_tier' | 'none'
   /** `cheap` drops chapter summaries — happens when the balance runs thin. */
   mode: 'full' | 'cheap'
   cost_mrp: number
   cost_rp: number
   /** Balance AFTER the deduction — use it to refresh the UI without refetching. */
   balance_mrp: number
+}
+
+/** A category the API recommends when it couldn't answer (grounded: false). */
+export interface SuggestedCategory {
+  id: number
+  name: string
 }
 
 /**
@@ -53,6 +62,8 @@ export interface ChatMeta {
   grounded: boolean
   flagged?: boolean
   billing?: ChatBilling
+  /** Only present (and non-empty) on a fallback answer; absent when flagged. */
+  suggested_categories?: SuggestedCategory[]
 }
 
 /**
@@ -66,6 +77,9 @@ export type MasterLuUIMessage = UIMessage<
     sources: {
       books: ChatSource[]
       grounded: boolean
+      suggestedCategories: SuggestedCategory[]
+      /** True for a persisted answer written manually by an admin. */
+      isAdminReply?: boolean
     }
   }
 >
@@ -73,7 +87,7 @@ export type MasterLuUIMessage = UIMessage<
 /** Live billing/quota counters read from the `X-Billing-*` / `X-Quota-*` headers. */
 export interface BillingHeaders {
   /** Where this question was paid from. */
-  source: 'free' | 'balance' | 'none' | null
+  source: 'free' | 'balance' | 'free_tier' | 'none' | null
   /** `cheap` = reduced answer because the balance is thin. */
   mode: 'full' | 'cheap' | null
   /** Balance BEFORE the deduction. */
@@ -116,6 +130,8 @@ interface TransportOptions {
   onBilling?: (headers: BillingHeaders) => void
   /** Defensive: the API asked for a category before answering (should be pre-gated client-side). */
   onNeedsCategory?: (categories: unknown[]) => void
+  /** The conversation is under admin takeover — no AI reply; wait for the SSE channel. */
+  onHumanMode?: (conversationId: number) => void
 }
 
 const TEXT_ID = 'answer'
@@ -185,7 +201,11 @@ async function pumpSseStream(
         controller.enqueue({
           type: 'data-sources',
           id: SOURCES_ID,
-          data: { books: meta.books ?? [], grounded: meta.grounded ?? true },
+          data: {
+            books: meta.books ?? [],
+            grounded: meta.grounded ?? true,
+            suggestedCategories: meta.suggested_categories ?? [],
+          },
         })
       } catch {
         // Ignore malformed meta payloads.
@@ -233,7 +253,11 @@ function emitJsonAnswer(
   controller.enqueue({
     type: 'data-sources',
     id: SOURCES_ID,
-    data: { books: meta.books ?? [], grounded: meta.grounded ?? false },
+    data: {
+      books: meta.books ?? [],
+      grounded: meta.grounded ?? false,
+      suggestedCategories: meta.suggested_categories ?? [],
+    },
   })
 }
 
@@ -254,6 +278,7 @@ export function createMasterLuChatTransport(
     onHttpError,
     onBilling,
     onNeedsCategory,
+    onHumanMode,
   } = options
 
   return {
@@ -344,6 +369,14 @@ export function createMasterLuChatTransport(
                 controller.close()
                 return
               }
+              if (data.human_mode) {
+                // Admin takeover — no AI reply. The answer arrives over SSE, so
+                // emit no assistant bubble here.
+                onHumanMode?.(data.conversation_id)
+                controller.enqueue({ type: 'finish' })
+                controller.close()
+                return
+              }
               controller.enqueue({ type: 'start' })
               emitJsonAnswer(
                 controller,
@@ -355,6 +388,7 @@ export function createMasterLuChatTransport(
                   grounded: data.grounded ?? false,
                   flagged: data.flagged,
                   billing: data.billing,
+                  suggested_categories: data.suggested_categories,
                 },
                 onMeta,
               )

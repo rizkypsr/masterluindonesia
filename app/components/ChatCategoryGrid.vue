@@ -1,122 +1,13 @@
-<template>
-  <div v-if="loading" class="py-6 text-center">
-    <Icon name="mdi:loading" class="w-6 h-6 text-secondary dark:text-gray-400 animate-spin" />
-  </div>
-  <div v-else class="space-y-2">
-    <template v-for="node in categories" :key="node.id">
-      <!-- Group (has children): row with label + dropdown toggle -->
-      <div
-        v-if="node.children.length"
-        class="rounded-xl border overflow-hidden"
-        :class="hasSelectedChild(node) ? 'border-primary dark:border-yellow-500' : 'border-gray-200 dark:border-gray-700'"
-      >
-        <div
-          class="w-full flex items-center gap-2 px-3 py-3 text-left transition-colors"
-          :class="hasSelectedChild(node)
-            ? 'bg-primary/10 dark:bg-yellow-500/10 text-gray-900 dark:text-white'
-            : 'text-gray-800 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700/40'"
-        >
-          <button type="button" class="min-w-0 flex-1 flex items-center gap-2 text-left" @click="toggle(node.id)">
-            <span class="min-w-0 flex-1">
-              <span class="block text-base font-medium break-words">{{ node.name }}</span>
-              <span
-                v-if="selectedChildOf(node)"
-                class="block text-sm text-primary dark:text-yellow-400 break-words mt-0.5"
-              >
-                {{ selectedChildOf(node)!.name }}
-              </span>
-            </span>
-            <Icon
-              name="mdi:chevron-down"
-              class="w-5 h-5 shrink-0 text-secondary dark:text-gray-400 transition-transform"
-              :class="isOpen(node.id) ? 'rotate-180' : ''"
-            />
-          </button>
-          <button
-            v-if="node.description"
-            type="button"
-            class="shrink-0 p-1 rounded-full text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-yellow-400"
-            aria-label="Info kategori"
-            @click.stop="toggleInfo(node.id)"
-          >
-            <Icon name="mdi:information-outline" class="w-4 h-4" />
-          </button>
-        </div>
-
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <div
-          v-if="node.description && infoOpen(node.id)"
-          class="desc-html px-3 pb-2.5 -mt-1 text-sm text-secondary dark:text-gray-400"
-          v-html="node.description"
-        />
-
-        <div v-if="isOpen(node.id)" class="border-t border-gray-100 dark:border-gray-700 p-1.5 space-y-1">
-          <template v-for="child in node.children" :key="child.id">
-            <div class="flex items-center gap-1">
-              <button
-                type="button"
-                class="flex-1 min-w-0 flex items-start gap-2 px-3 py-2.5 rounded-lg text-left text-base transition-colors"
-                :class="btnClass(child.id)"
-                @click="emit('select', child)"
-              >
-                <Icon name="mdi:tag-outline" class="w-4 h-4 mt-0.5 text-primary dark:text-yellow-400 shrink-0" />
-                <span class="break-words">{{ child.name }}</span>
-              </button>
-              <button
-                v-if="child.description"
-                type="button"
-                class="shrink-0 p-1.5 rounded-full text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-yellow-400"
-                aria-label="Info kategori"
-                @click.stop="toggleInfo(child.id)"
-              >
-                <Icon name="mdi:information-outline" class="w-4 h-4" />
-              </button>
-            </div>
-            <!-- eslint-disable-next-line vue/no-v-html -->
-            <div
-              v-if="child.description && infoOpen(child.id)"
-              class="desc-html px-3 pb-1.5 text-sm text-secondary dark:text-gray-400"
-              v-html="child.description"
-            />
-          </template>
-        </div>
-      </div>
-
-      <!-- Top-level leaf (no children): selectable on its own -->
-      <div v-else class="rounded-xl border overflow-hidden" :class="props.selectedId === node.id ? 'border-primary dark:border-yellow-500' : 'border-gray-200 dark:border-gray-700'">
-        <div class="flex items-center gap-1">
-          <button
-            type="button"
-            class="flex-1 min-w-0 flex items-start gap-2 px-3 py-3 text-left text-base font-medium transition-colors"
-            :class="btnClass(node.id, true)"
-            @click="emit('select', node)"
-          >
-            <Icon name="mdi:tag-outline" class="w-5 h-5 mt-0.5 text-primary dark:text-yellow-400 shrink-0" />
-            <span class="break-words">{{ node.name }}</span>
-          </button>
-          <button
-            v-if="node.description"
-            type="button"
-            class="shrink-0 mr-2 p-1 rounded-full text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-yellow-400"
-            aria-label="Info kategori"
-            @click.stop="toggleInfo(node.id)"
-          >
-            <Icon name="mdi:information-outline" class="w-4 h-4" />
-          </button>
-        </div>
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <div
-          v-if="node.description && infoOpen(node.id)"
-          class="desc-html px-3 pb-2.5 -mt-1 text-sm text-secondary dark:text-gray-400"
-          v-html="node.description"
-        />
-      </div>
-    </template>
-  </div>
-</template>
-
 <script setup lang="ts">
+import type { TreeItem } from '@nuxt/ui'
+import type { TreeItemSelectEvent } from 'reka-ui'
 import type { ChatCategory } from '~/composables/useChatApi'
+
+interface CategoryTreeItem extends TreeItem {
+  id: number
+  description?: string | null
+  children?: CategoryTreeItem[]
+}
 
 const props = defineProps<{
   categories: ChatCategory[]
@@ -126,21 +17,47 @@ const props = defineProps<{
 
 const emit = defineEmits<{ select: [cat: ChatCategory] }>()
 
-const openIds = ref<Set<number>>(new Set())
+/** Keys of the expanded branches, as returned by `getKey`. */
+const expanded = ref<string[]>([])
+/** Ids whose description is currently revealed. */
 const infoOpenIds = ref<Set<number>>(new Set())
 
-function isOpen(id: number): boolean {
-  return openIds.value.has(id)
+/** Flat id → node lookup, so a tree select can emit the original category. */
+const nodeById = computed(() => {
+  const map = new Map<number, ChatCategory>()
+  const walk = (list: ChatCategory[]) => {
+    for (const n of list) {
+      map.set(n.id, n)
+      if (n.children?.length) walk(n.children)
+    }
+  }
+  walk(props.categories)
+  return map
+})
+
+const treeItems = computed<CategoryTreeItem[]>(() => {
+  const toItem = (node: ChatCategory): CategoryTreeItem => {
+    const hasChildren = !!node.children?.length
+    const item: CategoryTreeItem = {
+      id: node.id,
+      label: node.name,
+      description: node.description ?? null,
+      class:
+        props.selectedId === node.id
+          ? 'bg-primary/10 dark:bg-yellow-500/10 text-gray-900 dark:text-white'
+          : undefined,
+    }
+    if (hasChildren) item.children = node.children.map(toItem)
+    return item
+  }
+  return props.categories.map(toItem)
+})
+
+function getKey(item: CategoryTreeItem): string {
+  return String(item.id)
 }
 
-function toggle(id: number) {
-  const next = new Set(openIds.value)
-  if (next.has(id)) next.delete(id)
-  else next.add(id)
-  openIds.value = next
-}
-
-function infoOpen(id: number): boolean {
+function isInfoOpen(id: number): boolean {
   return infoOpenIds.value.has(id)
 }
 
@@ -151,40 +68,93 @@ function toggleInfo(id: number) {
   infoOpenIds.value = next
 }
 
-function selectedChildOf(node: ChatCategory): ChatCategory | undefined {
-  if (props.selectedId == null) return undefined
-  return node.children.find((c) => c.id === props.selectedId)
+/** Parents are group headers — only leaves are selectable. */
+function onSelect(e: TreeItemSelectEvent<CategoryTreeItem>) {
+  const item = e.detail.value
+  if (!item || item.children?.length) return
+  const node = nodeById.value.get(item.id)
+  if (node) emit('select', node)
 }
 
-function hasSelectedChild(node: ChatCategory): boolean {
-  return !!selectedChildOf(node)
+/** Ids from root down to `targetId` inclusive, or null if not in the tree. */
+function pathTo(list: ChatCategory[], targetId: number): number[] | null {
+  for (const node of list) {
+    if (node.id === targetId) return [node.id]
+    if (node.children?.length) {
+      const below = pathTo(node.children, targetId)
+      if (below) return [node.id, ...below]
+    }
+  }
+  return null
 }
 
-// Auto-expand the group that already contains the selected child (e.g. when
-// resuming a conversation from history).
+// Expand every branch on the path to the current selection, at any depth (e.g.
+// when resuming a conversation from history, or reopening the picker).
 watch(
   () => [props.categories, props.selectedId] as const,
   ([cats, selectedId]) => {
     if (selectedId == null) return
-    const parent = cats.find((n) => n.children.some((c) => c.id === selectedId))
-    if (parent && !openIds.value.has(parent.id)) {
-      openIds.value = new Set(openIds.value).add(parent.id)
-    }
+    // Drop the leaf itself — only its ancestors need expanding.
+    const ancestors = (pathTo(cats, selectedId) ?? []).slice(0, -1).map(String)
+    const missing = ancestors.filter((id) => !expanded.value.includes(id))
+    if (missing.length) expanded.value = [...expanded.value, ...missing]
   },
   { immediate: true },
 )
-
-function btnClass(id: number, bordered = false): string {
-  const border = bordered ? '' : 'border '
-  if (props.selectedId === id) {
-    return `${border}border-primary dark:border-yellow-500 bg-primary/10 dark:bg-yellow-500/10 text-gray-900 dark:text-white`
-  }
-  return `${border}border-transparent text-gray-800 dark:text-gray-100 hover:border-primary dark:hover:border-yellow-500 hover:bg-primary/5 dark:hover:bg-yellow-500/10`
-}
 </script>
 
+<template>
+  <div v-if="loading" class="py-6 text-center">
+    <Icon name="mdi:loading" class="w-6 h-6 text-secondary dark:text-gray-400 animate-spin" />
+  </div>
+
+  <UTree
+    v-else
+    v-model:expanded="expanded"
+    :items="treeItems"
+    :get-key="getKey"
+    size="xl"
+    expanded-icon=""
+    collapsed-icon=""
+    :ui="{
+      link: 'items-start text-left text-xl',
+      linkLabel: 'whitespace-normal break-words leading-snug',
+      linkLeadingIcon: 'hidden',
+    }"
+    @select="onSelect"
+  >
+    <template #item-label="{ item }">
+      <span class="block">{{ item.label }}</span>
+      <!-- `description` is stored as HTML in the DB. -->
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <span
+        v-if="item.description && isInfoOpen(item.id)"
+        class="desc-html block mt-1 text-sm font-normal text-secondary dark:text-gray-400"
+        v-html="item.description"
+      />
+    </template>
+
+    <template #item-trailing="{ item, expanded: isExpanded }">
+      <button
+        v-if="item.description"
+        type="button"
+        class="p-0.5 inline-flex items-center justify-center rounded-full text-secondary dark:text-gray-400 hover:text-primary dark:hover:text-yellow-400"
+        aria-label="Info kategori"
+        @click.stop.prevent="toggleInfo(item.id)"
+      >
+        <Icon name="mdi:information-outline" class="w-4 h-4" />
+      </button>
+      <Icon
+        v-if="item.children?.length"
+        name="mdi:chevron-down"
+        class="w-4 h-4 shrink-0 text-secondary dark:text-gray-400 transition-transform"
+        :class="isExpanded ? 'rotate-180' : ''"
+      />
+    </template>
+  </UTree>
+</template>
+
 <style scoped>
-/* `description` is stored as HTML in the DB — style the common tags it uses. */
 .desc-html :deep(p) {
   margin: 0 0 0.35rem;
 }
