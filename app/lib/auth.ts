@@ -100,6 +100,13 @@ export const useAuth = () => {
     }
   };
 
+  // Ensure the user object is loaded (e.g. after a hard reload, when only the
+  // token cookie is present). Idempotent — a no-op once the user is fetched.
+  const ensureSession = async () => {
+    if (token.value && !user.value) await fetchSession();
+    return user.value;
+  };
+
   const logout = async () => {
     if (token.value) {
       try {
@@ -130,6 +137,7 @@ export const useAuth = () => {
     isAdmin,
     loginWithGoogle,
     fetchSession,
+    ensureSession,
     logout,
     getAuthHeader,
   };

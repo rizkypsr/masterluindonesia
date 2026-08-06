@@ -8,7 +8,7 @@ import type { ConversationMessage } from '~/composables/useChatApi'
 import { subscribeConversationStream, type LiveMessage } from '~/lib/sseClient'
 
 const route = useRoute()
-const { isAuthenticated, isAdmin, getAuthHeader, user } = useAuth()
+const { isAuthenticated, isAdmin, getAuthHeader, user, ensureSession } = useAuth()
 const admin = useChatAdminApi()
 const chatApi = useChatApi()
 const toast = useToast()
@@ -74,6 +74,7 @@ let liveSub: { close: () => void } | null = null
 let lastLiveId = 0
 
 onMounted(async () => {
+  await ensureSession()
   if (!isAuthenticated.value || !isAdmin.value) {
     toast.add({ title: 'Halaman ini khusus admin', color: 'error' })
     navigateTo('/lainnya')
@@ -398,12 +399,12 @@ useHead({ title: 'Live Chat Admin' })
               v-model:expanded="catExpanded"
               :items="catTreeItems"
               :get-key="catKey"
-              size="lg"
+              size="xl"
               expanded-icon=""
               collapsed-icon=""
               :ui="{
-                link: 'items-start text-left',
-                linkLabel: 'whitespace-normal break-words',
+                link: 'items-start text-left text-xl',
+                linkLabel: 'whitespace-normal break-words leading-snug',
                 linkLeadingIcon: 'hidden',
               }"
               @select="onCatSelect"

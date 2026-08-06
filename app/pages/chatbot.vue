@@ -25,6 +25,15 @@
         </div>
       </div>
       <button
+        v-if="isAuthenticated && !humanMode"
+        :disabled="requestingHuman"
+        class="p-2 inline-flex items-center justify-center rounded-full text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors disabled:opacity-50"
+        aria-label="Chat dengan admin"
+        @click="requestHumanChat"
+      >
+        <Icon name="mdi:headset" class="w-5 h-5" />
+      </button>
+      <button
         v-if="messages.length"
         class="p-2 inline-flex items-center justify-center rounded-full text-secondary dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
         aria-label="Obrolan baru"
@@ -47,7 +56,7 @@
       class="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-sm bg-green-50 dark:bg-green-900/20 border-b border-green-100 dark:border-green-900/40"
     >
       <Icon name="mdi:account-tie" class="w-4 h-4 shrink-0 text-green-700 dark:text-green-400" />
-      <span class="text-green-800 dark:text-green-300">Anda terhubung dengan admin.</span>
+      <span class="text-green-800 dark:text-green-300">Terhubung dengan admin — menunggu balasan.</span>
     </div>
 
     <!-- While questions are free, the balance is irrelevant — say so instead. -->
@@ -220,6 +229,17 @@
                 </div>
               </component>
             </div>
+
+            <!-- Chat with admin (fallback answer) -->
+            <button
+              v-if="isFallbackOf(message) && !humanMode"
+              :disabled="requestingHuman"
+              class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition-colors disabled:opacity-50"
+              @click="requestHumanChat"
+            >
+              <Icon name="mdi:headset" class="w-4 h-4 shrink-0" />
+              Chat dengan Admin
+            </button>
 
             <!-- Suggested categories (fallback answer) -->
             <div v-if="suggestionsOf(message).length" class="space-y-1.5">
@@ -740,6 +760,7 @@ const copiedId = ref<string | null>(null)
 // Live human takeover: when an admin claims the conversation, the AI pauses and
 // replies arrive over an SSE channel instead.
 const humanMode = ref(false)
+const requestingHuman = ref(false)
 let liveSub: { close: () => void } | null = null
 // Highest server message id seen — sent as `after_id` so a reconnect backfills
 // anything pushed while the stream was down.
@@ -1020,6 +1041,39 @@ function suggestionsOf(message: MasterLuUIMessage): SuggestedCategory[] {
   if (message.role !== 'assistant') return []
   const part = message.parts.find((p) => p.type === 'data-sources')
   return part && part.type === 'data-sources' ? (part.data.suggestedCategories ?? []) : []
+}
+
+/** Whether this answer is an AI fallback (grounded: false) — offers admin help. */
+function isFallbackOf(message: MasterLuUIMessage): boolean {
+  if (message.role !== 'assistant') return false
+  const part = message.parts.find((p) => p.type === 'data-sources')
+  return part && part.type === 'data-sources' ? part.data.grounded === false : false
+}
+
+/**
+ * Connect to a human admin. Starts a new conversation when there isn't one yet
+ * (no category required). The AI stops answering; replies arrive over SSE.
+ */
+async function requestHumanChat() {
+  if (!isAuthenticated.value || requestingHuman.value || humanMode.value) return
+  requestingHuman.value = true
+  try {
+    const convId = conversationId.value
+    const res = await chatApi.requestHuman(convId)
+    // For a brand-new conversation, adopt its id (opens the SSE stream via watch).
+    if (!conversationId.value) conversationId.value = res.conversation_id
+    // Flip to live mode and pull the history (includes the request message).
+    await onModeChange(true, res.conversation_id)
+  } catch (e: any) {
+    const status = e?.response?.status ?? e?.statusCode
+    toast.add({
+      title: status === 429 ? 'Terlalu banyak permintaan' : 'Gagal menghubungi admin',
+      description: status === 429 ? 'Mohon tunggu sebentar lalu coba lagi.' : e?.data?.message,
+      color: status === 429 ? 'warning' : 'error',
+    })
+  } finally {
+    requestingHuman.value = false
+  }
 }
 
 /**

@@ -195,25 +195,37 @@ async function pumpSseStream(
       ensureTextStarted()
       controller.enqueue({ type: 'text-delta', id: TEXT_ID, delta: data })
     } else if (eventType === 'meta') {
-      try {
-        const meta = JSON.parse(data) as ChatMeta
-        onMeta(meta)
-        controller.enqueue({
-          type: 'data-sources',
-          id: SOURCES_ID,
-          data: {
-            books: meta.books ?? [],
-            grounded: meta.grounded ?? true,
-            suggestedCategories: meta.suggested_categories ?? [],
-          },
-        })
-      } catch {
-        // Ignore malformed meta payloads.
-      }
+      emitMetaFrame(data)
     } else if (eventType === 'error') {
       controller.enqueue({ type: 'error', errorText: data || 'Stream error' })
+    } else {
+      // Some providers emit the final payload under a different (or default)
+      // event name. Treat any JSON frame carrying a conversation_id as meta so
+      // sources/suggested_categories aren't lost.
+      emitMetaFrame(data)
     }
     return false
+  }
+
+  /** Parse a meta-shaped JSON frame and emit its sources part. No-op otherwise. */
+  const emitMetaFrame = (data: string) => {
+    let meta: ChatMeta
+    try {
+      meta = JSON.parse(data) as ChatMeta
+    } catch {
+      return
+    }
+    if (!meta || typeof meta.conversation_id !== 'number') return
+    onMeta(meta)
+    controller.enqueue({
+      type: 'data-sources',
+      id: SOURCES_ID,
+      data: {
+        books: meta.books ?? [],
+        grounded: meta.grounded ?? true,
+        suggestedCategories: meta.suggested_categories ?? [],
+      },
+    })
   }
 
   while (true) {

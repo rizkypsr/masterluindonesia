@@ -7,7 +7,7 @@ import {
 } from '~/composables/useChatAdminApi'
 import type { ConversationMessage } from '~/composables/useChatApi'
 
-const { isAuthenticated, isAdmin } = useAuth()
+const { isAuthenticated, isAdmin, ensureSession } = useAuth()
 const admin = useChatAdminApi()
 const toast = useToast()
 
@@ -29,7 +29,8 @@ const context = ref<ConversationMessage[]>([])
 const loadingContext = ref(false)
 const showContext = ref(false)
 
-onMounted(() => {
+onMounted(async () => {
+  await ensureSession()
   if (!isAuthenticated.value || !isAdmin.value) {
     toast.add({ title: 'Halaman ini khusus admin', color: 'error' })
     navigateTo('/lainnya')

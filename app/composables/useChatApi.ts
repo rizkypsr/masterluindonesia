@@ -113,6 +113,25 @@ export const useChatApi = () => {
     return res.data.categories
   }
 
+  /**
+   * Ask to be connected to a human admin. Omitting `conversationId` starts a new
+   * conversation (no category needed). Idempotent per conversation. The AI stops
+   * answering this conversation immediately; replies then come via the SSE stream.
+   */
+  async function requestHuman(conversationId?: number, message?: string) {
+    const res = await $fetch<
+      ApiEnvelope<{ conversation_id: number; message_id: number; awaiting_admin: boolean }>
+    >(`${base}/request-human`, {
+      method: 'POST',
+      headers: headers(),
+      body: {
+        ...(conversationId ? { conversation_id: conversationId } : {}),
+        ...(message ? { message } : {}),
+      },
+    })
+    return res.data
+  }
+
   async function listConversations(page = 1, pageSize = 20) {
     const res = await $fetch<
       ApiEnvelope<{
@@ -202,6 +221,7 @@ export const useChatApi = () => {
 
   return {
     listCategories,
+    requestHuman,
     listConversations,
     getConversation,
     renameConversation,

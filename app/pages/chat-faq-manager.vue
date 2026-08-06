@@ -2,7 +2,7 @@
 import { useAuth } from '~/lib/auth'
 import { useChatFaqApi, type ChatFaq } from '~/composables/useChatFaqApi'
 
-const { isAuthenticated, isAdmin } = useAuth()
+const { isAuthenticated, isAdmin, ensureSession } = useAuth()
 const { list, create, update, remove } = useChatFaqApi()
 const toast = useToast()
 
@@ -23,6 +23,7 @@ const deletingItem = ref<ChatFaq | null>(null)
 const isDeleting = ref(false)
 
 onMounted(async () => {
+  await ensureSession()
   if (!isAuthenticated.value || !isAdmin.value) {
     toast.add({ title: 'Halaman ini khusus admin', color: 'error' })
     navigateTo('/lainnya')
