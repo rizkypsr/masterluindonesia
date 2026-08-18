@@ -66,7 +66,7 @@ async function fetchFilterOptions() {
     const response = await $fetch<{
       success: boolean
       data: DynamicFilter[]
-    }>(`${config.public.apiBaseUrl}/search/keyword`)
+    }>(`${config.public.apiV2BaseUrl}/search/keyword`)
 
     if (response.success && response.data) {
       dynamicFilters.value = response.data.filter(item =>

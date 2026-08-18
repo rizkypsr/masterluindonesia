@@ -15,9 +15,6 @@ const toast = useToast()
 
 const conversationId = Number(route.params.id)
 
-/** Max category suggestions the API accepts per message. */
-const MAX_SUGGESTIONS = 10
-
 // Whether this admin still holds the takeover. If another admin claims it or it
 // gets released, sending is disabled and a notice shows.
 const heldByMe = ref(true)
@@ -178,10 +175,6 @@ function toggleCat(opt: LeafOption) {
   if (selectedCatIds.value.has(opt.id)) {
     selectedCats.value = selectedCats.value.filter((c) => c.id !== opt.id)
   } else {
-    if (selectedCats.value.length >= MAX_SUGGESTIONS) {
-      toast.add({ title: `Maksimal ${MAX_SUGGESTIONS} kategori`, color: 'warning' })
-      return
-    }
     selectedCats.value = [...selectedCats.value, opt]
   }
 }
@@ -387,8 +380,7 @@ useHead({ title: 'Live Chat Admin' })
             </button>
           </div>
           <p class="text-sm text-secondary dark:text-gray-400 mb-3">
-            Dipilih {{ selectedCats.length }}/{{ MAX_SUGGESTIONS }}. Kategori ini muncul sebagai
-            tombol saran untuk pengguna.
+            Dipilih {{ selectedCats.length }}. Kategori ini muncul sebagai tombol saran untuk pengguna.
           </p>
 
           <div v-if="loadingCats" class="py-8 text-center">

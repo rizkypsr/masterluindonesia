@@ -181,7 +181,7 @@ export function buildSearchBody(
  */
 export async function postSearch(body: SearchRequestBody): Promise<SearchApiResponse> {
   const config = useRuntimeConfig()
-  return await $fetch<SearchApiResponse>(`${config.public.apiBaseUrl}/search`, {
+  return await $fetch<SearchApiResponse>(`${config.public.apiV2BaseUrl}/search`, {
     method: 'POST',
     body
   })

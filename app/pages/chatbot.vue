@@ -25,15 +25,6 @@
         </div>
       </div>
       <button
-        v-if="isAuthenticated && !humanMode"
-        :disabled="requestingHuman"
-        class="p-2 inline-flex items-center justify-center rounded-full text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors disabled:opacity-50"
-        aria-label="Chat dengan admin"
-        @click="requestHumanChat"
-      >
-        <Icon name="mdi:headset" class="w-5 h-5" />
-      </button>
-      <button
         v-if="messages.length"
         class="p-2 inline-flex items-center justify-center rounded-full text-secondary dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
         aria-label="Obrolan baru"
@@ -118,15 +109,21 @@
     <div ref="scrollEl" class="flex-1 overflow-y-auto px-3 py-4 space-y-4 scrollbar-hide" @scroll="onScroll">
       <!-- Empty state -->
       <div v-if="!messages.length" class="min-h-full flex flex-col items-center justify-center text-center px-6 py-4">
-        <div class="w-16 h-16 rounded-full flex items-center justify-center bg-primary/10 dark:bg-yellow-500/10 mb-4">
-          <Icon name="mdi:robot-happy" class="w-9 h-9 text-primary dark:text-yellow-400" />
-        </div>
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Halo! 👋</h2>
         <p class="text-[16px] leading-relaxed text-gray-600 dark:text-gray-300 mb-6 max-w-xs">
           {{ selectedCategory
             ? `Kategori "${selectedCategory.name}" dipilih. Ketik pertanyaan Anda di bawah.`
             : 'Pilih kategori untuk memulai percakapan.' }}
         </p>
+
+        <button
+          v-if="isAuthenticated && !humanMode"
+          :disabled="requestingHuman"
+          class="w-full max-w-xs mb-4 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-full bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition-colors disabled:opacity-50"
+          @click="requestHumanChat"
+        >
+          <Icon name="mdi:headset" class="w-4 h-4 shrink-0" />
+          Chat dengan Admin
+        </button>
 
         <ChatCategoryGrid
           class="w-full max-w-xs text-left"
@@ -176,10 +173,15 @@
             >
               <!-- eslint-disable-next-line vue/no-v-html -->
               <div v-if="textOf(message)" class="md-content" v-html="renderMarkdown(textOf(message))" />
-              <span v-else class="inline-flex gap-1.5 py-1">
+              <!-- Still streaming this message → typing dots -->
+              <span v-else-if="message.id === streamingId" class="inline-flex gap-1.5 py-1">
                 <span class="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500 typing-dot" style="animation-delay: 0ms" />
                 <span class="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500 typing-dot" style="animation-delay: 200ms" />
                 <span class="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500 typing-dot" style="animation-delay: 400ms" />
+              </span>
+              <!-- Finished but the server returned no text -->
+              <span v-else class="text-secondary dark:text-gray-400 italic">
+                Maaf, tidak ada jawaban. Silakan coba lagi.
               </span>
             </div>
 
@@ -230,17 +232,6 @@
               </component>
             </div>
 
-            <!-- Chat with admin (fallback answer) -->
-            <button
-              v-if="isFallbackOf(message) && !humanMode"
-              :disabled="requestingHuman"
-              class="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition-colors disabled:opacity-50"
-              @click="requestHumanChat"
-            >
-              <Icon name="mdi:headset" class="w-4 h-4 shrink-0" />
-              Chat dengan Admin
-            </button>
-
             <!-- Suggested categories (fallback answer) -->
             <div v-if="suggestionsOf(message).length" class="space-y-1.5">
               <p class="text-sm font-semibold uppercase tracking-wide text-secondary dark:text-gray-400 px-1">
@@ -262,6 +253,18 @@
           </div>
         </div>
       </template>
+
+      <!-- Chat with admin — under the latest AI reply -->
+      <div v-if="showAdminCta" class="flex justify-center pt-1">
+        <button
+          :disabled="requestingHuman"
+          class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition-colors disabled:opacity-50"
+          @click="requestHumanChat"
+        >
+          <Icon name="mdi:headset" class="w-4 h-4 shrink-0" />
+          Chat dengan Admin
+        </button>
+      </div>
 
       <!-- Waiting for the bot's first response (before the stream starts) -->
       <div v-if="isWaiting" class="flex gap-2">
@@ -1007,6 +1010,13 @@ const error = computed(() => chat.error)
 const isBusy = computed(() => status.value === 'submitted' || status.value === 'streaming')
 // Show a standalone typing bubble while awaiting the first response chunk.
 const isWaiting = computed(() => status.value === 'submitted')
+// Id of the assistant message currently streaming (typing dots go here). Once
+// the stream finishes, an empty message shows a fallback instead of dots.
+const streamingId = computed(() => {
+  if (!isBusy.value) return null
+  const last = messages.value[messages.value.length - 1]
+  return last && last.role === 'assistant' ? last.id : null
+})
 const canSend = computed(
   () =>
     isAuthenticated.value &&
@@ -1043,12 +1053,16 @@ function suggestionsOf(message: MasterLuUIMessage): SuggestedCategory[] {
   return part && part.type === 'data-sources' ? (part.data.suggestedCategories ?? []) : []
 }
 
-/** Whether this answer is an AI fallback (grounded: false) — offers admin help. */
-function isFallbackOf(message: MasterLuUIMessage): boolean {
-  if (message.role !== 'assistant') return false
-  const part = message.parts.find((p) => p.type === 'data-sources')
-  return part && part.type === 'data-sources' ? part.data.grounded === false : false
-}
+/**
+ * Show the "Chat dengan Admin" CTA under the newest AI reply — once a
+ * conversation exists, the last message is from the assistant, and we're not
+ * already in live mode or mid-stream.
+ */
+const showAdminCta = computed(() => {
+  if (!isAuthenticated.value || humanMode.value || isBusy.value) return false
+  const last = messages.value[messages.value.length - 1]
+  return !!last && last.role === 'assistant'
+})
 
 /**
  * Connect to a human admin. Starts a new conversation when there isn't one yet
