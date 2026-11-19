@@ -30,11 +30,11 @@
           <Icon 
             name="mdi:music-note" 
             class="w-6 h-6 transition-colors"
-            :class="isActive('/audio') ? 'text-[#c09637] dark:text-yellow-400' : 'text-secondary dark:text-gray-400 group-hover:text-primary dark:group-hover:text-yellow-400'"
+            :class="(isActive('/audio') || isActive('/audio2')) ? 'text-[#c09637] dark:text-yellow-400' : 'text-secondary dark:text-gray-400 group-hover:text-primary dark:group-hover:text-yellow-400'"
           />
           <span 
             class="text-md mt-1 font-medium transition-colors"
-            :class="isActive('/audio') ? 'text-[#c09637] dark:text-yellow-400' : 'text-secondary dark:text-gray-400 group-hover:text-primary dark:group-hover:text-yellow-400'"
+            :class="(isActive('/audio') || isActive('/audio2')) ? 'text-[#c09637] dark:text-yellow-400' : 'text-secondary dark:text-gray-400 group-hover:text-primary dark:group-hover:text-yellow-400'"
           >
             Audio
           </span>

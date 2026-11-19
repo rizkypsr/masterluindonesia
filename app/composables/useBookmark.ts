@@ -14,6 +14,8 @@ export interface VideoLink {
 export interface AudioLink {
   audioId: number
   audio_category_id: number
+  /** "audio2": audioId is an Audio 2 episode (audio2.id); absent for Audio 1. */
+  source?: 'audio2'
 }
 
 export interface BookLink {
@@ -332,6 +334,37 @@ export const useBookmark = () => {
     })
   }
 
+  // Audio 2 episode: same bookmark type as Audio 1, told apart by audioLink.source.
+  const createAudio2Bookmark = (title: string, episodeId: number, categoryId: number) => {
+    openBookmarkModal({
+      type: 2,
+      title,
+      videoLink: null,
+      audioLink: {
+        audioId: episodeId,
+        audio_category_id: categoryId,
+        source: 'audio2'
+      },
+      bookLink: null,
+      topic1Link: null,
+      topic2Link: null,
+      topic3Link: null,
+      recipeLink: null
+    })
+  }
+
+  // Whether an Audio 2 episode is bookmarked (by id, not title: Audio 1 has the same titles).
+  const isAudio2Bookmarked = (episodeId: number) => {
+    return (bookmarksByType.value[2] || []).some((b) => {
+      let link: any = b.data
+      if (typeof link === 'string') {
+        try { link = JSON.parse(link) } catch { return false }
+      }
+      const audio = link?.audioLink ?? link
+      return audio?.source === 'audio2' && Number(audio?.audioId) === episodeId
+    })
+  }
+
   const createBookBookmark = (title: string, bookId: number, chapterId?: number, page?: number) => {
     const bookLink: BookLink = { bookId } as BookLink
     
@@ -429,6 +462,8 @@ export const useBookmark = () => {
     getPublicBookmarks,
     createVideoBookmark,
     createAudioBookmark,
+    createAudio2Bookmark,
+    isAudio2Bookmarked,
     createBookBookmark,
     createTopic1Bookmark,
     createTopic2Bookmark,

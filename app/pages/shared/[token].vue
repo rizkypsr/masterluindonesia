@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { audio2DetailRoute } from '~/utils/audio2'
 const route = useRoute()
 const config = useRuntimeConfig()
 const toast = useToast()
@@ -82,6 +83,10 @@ function navigateToItem(item: BookmarkItem) {
         break
       case 2: // Audio
         const audioId = linkData.audioId
+        if (audioId && linkData.source === 'audio2') {
+          navigateTo(audio2DetailRoute(audioId))
+          break
+        }
         if (audioId) {
           navigateTo({
             path: '/audio/detail',

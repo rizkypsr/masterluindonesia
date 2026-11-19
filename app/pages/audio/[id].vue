@@ -605,6 +605,13 @@ const closeAudioSearch = (audioId: number) => {
 const navigateToSearchResult = (item: SearchItem) => {
   const itemType = item.type.toLowerCase()
 
+  // Audio 2 segments, and Topik 1 rows linked to Audio 2 (utils/audio2.ts)
+  const audio2Target = audio2SearchResultRoute(item)
+  if (audio2Target) {
+    router.push(audio2Target)
+    return
+  }
+
   if (itemType === 'audio') {
     const audioId = item.header_id || ''
     const subtitleId = item.id || ''

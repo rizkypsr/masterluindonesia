@@ -1,6 +1,6 @@
+import type { Audio2PickerCategory } from '~/types/audio2'
 import type {
   BookGroup,
-  AudioGroup,
   VideoGroup,
   Topic1Group,
   Topic2Group,
@@ -22,7 +22,8 @@ export const useDeepSearch = () => {
   const bookChaptersHasMore = ref(true)
 
   // Audio state
-  const audioList = ref<AudioGroup[]>([])
+  // Audio 2 picker: categories > years > episodes (ids are audio2 ids)
+  const audioList = ref<Audio2PickerCategory[]>([])
   const selectedVideoIds = ref<number[]>([])
   const isLoadingAudioList = ref(false)
   const audioListPage = ref(1)
@@ -94,9 +95,9 @@ export const useDeepSearch = () => {
       const page = audioListPage.value
       const response = await $fetch<{
         success: boolean
-        data: AudioGroup[]
+        data: Audio2PickerCategory[]
         pagination: { has_more: boolean }
-      }>(`${config.public.apiBaseUrl}/search/audio/list?page=${page}&per_page=10`)
+      }>(`${config.public.apiV2BaseUrl}/search/audio/list?page=${page}&per_page=10`)
 
       if (response.success && response.data) {
         if (loadMore) {

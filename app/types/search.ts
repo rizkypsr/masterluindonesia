@@ -9,7 +9,7 @@ export interface SearchItem {
   description_wa: string
   sub_group_name?: string
   timestamp_formatted?: string
-  audio?: {
+  audio?: null | {
     id: number
     audio_sub_group_id: number
     title: string
@@ -19,6 +19,26 @@ export interface SearchItem {
     translate_id: number
     translate_ch: number
   }
+  // Topik 1 only: which audio the row links to ("audio" = Audio 1, "audio2" = Audio 2)
+  audio_source?: 'audio' | 'audio2'
+  audio2?: {
+    id: number
+    title: string
+    url: string | null
+    duration: string | null
+    aired_on: string | null
+    category: { id: number; title: string }
+  } | null
+  // Audio 2 segment fields (type "audio2", and Topik 1 rows with audio_source "audio2")
+  caller?: number
+  caller_label?: string
+  code?: string | null
+  segment_title?: string | null
+  segment_title_plain?: string | null
+  url?: string | null
+  duration?: string | null
+  aired_on?: string | null
+  category?: { id: number; title: string } | null
   related_chapters?: Array<{
     type: string
     chapter_id: number

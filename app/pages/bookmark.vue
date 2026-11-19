@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { audio2DetailRoute } from '~/utils/audio2'
 import { useAuth } from '~/lib/auth'
 
 // Enable keepalive for this page to detect when user returns
@@ -17,6 +18,7 @@ interface BookmarkLink {
   lang?: string
   audioId?: number
   audio_category_id?: number | null
+  source?: 'audio2' // audioId is an Audio 2 episode id
   subtitleId?: number | null
   subId?: number
   title?: string
@@ -176,6 +178,10 @@ function navigateToItem(item: BookmarkItem) {
       case 2: // Audio
         const audioId = linkData.audioId
         const audioCategoryId = linkData.audio_category_id
+        if (audioId && linkData.source === 'audio2') {
+          navigateTo(audio2DetailRoute(audioId))
+          break
+        }
         if (audioId) {
           navigateTo({
             path: '/audio/detail',

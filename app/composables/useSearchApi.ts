@@ -109,8 +109,9 @@ export function buildSelectedNodes(
 
   if (filterPayload.audio_ids?.length || filterPayload.categoryAudioId?.length) {
     nodes.audio = {}
+    // Audio 2: categoryAudioId holds audio2_category ids, audio_ids audio2 ids.
     if (filterPayload.categoryAudioId?.length) {
-      nodes.audio.group_ids = filterPayload.categoryAudioId
+      nodes.audio.category_ids = filterPayload.categoryAudioId
     }
     if (filterPayload.audio_ids?.length) {
       nodes.audio.audio_ids = filterPayload.audio_ids

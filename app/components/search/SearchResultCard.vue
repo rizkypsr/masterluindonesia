@@ -71,9 +71,27 @@ function handleCopy() {
   })
 }
 
+// Playable URL: Topik 1 → Audio 1 (`audio.url`) or Audio 2 (`audio2.url`);
+// Audio 2 segment rows carry `url` directly.
+const audioUrl = computed(() => {
+  const type = props.item.type.toLowerCase()
+  if (type === 'audio2') return props.item.url || null
+  if (type === 'topic1') return props.item.audio?.url || props.item.audio2?.url || null
+  return null
+})
+
+// Audio 2 rows: "Tanya Jawab · Penelepon 1 · 00:02:05"
+const audio2Meta = computed(() => {
+  const item = props.item
+  const isAudio2 = item.type.toLowerCase() === 'audio2' || item.audio_source === 'audio2'
+  if (!isAudio2) return ''
+  const category = item.category?.title ?? item.audio2?.category?.title
+  return [category, item.caller_label, item.timestamp_formatted].filter(Boolean).join(' · ')
+})
+
 // Audio playback functions
 function playAudio() {
-  if (!props.item.audio?.url) return
+  if (!audioUrl.value) return
 
   if (audioPlayer.value) {
     if (isPlaying.value) {
@@ -85,7 +103,7 @@ function playAudio() {
     }
   } else {
     // Create new audio player
-    audioPlayer.value = new Audio(props.item.audio.url)
+    audioPlayer.value = new Audio(audioUrl.value)
     
     // Set timestamp if available
     if (props.item.timestamp) {
@@ -121,9 +139,7 @@ onUnmounted(() => {
 })
 
 // Check if item has audio
-const hasAudio = computed(() => {
-  return props.item.type.toLowerCase() === 'topic1' && props.item.audio?.url
-})
+const hasAudio = computed(() => !!audioUrl.value)
 </script>
 
 <template>
@@ -148,6 +164,10 @@ const hasAudio = computed(() => {
             <span v-if="item.sub_group_name && item.timestamp_formatted" class="text-xs">•</span>
             <span v-if="item.timestamp_formatted">{{ item.timestamp_formatted }}</span>
           </div>
+          <!-- Audio 2 metadata -->
+          <p v-if="audio2Meta" class="mt-1"
+            :class="isExpanded ? 'text-black/80' : 'text-gray-600 dark:text-gray-400'"
+            :style="{ fontSize: (fontSize - 2) + 'px' }">{{ audio2Meta }}</p>
           <!-- Detail text -->
           <p v-if="item.type.toLowerCase() !== 'video'"
             :class="isExpanded ? 'text-black' : 'text-black dark:text-gray-300'" class="mt-1 line-clamp-6"
@@ -171,7 +191,7 @@ const hasAudio = computed(() => {
     <div v-if="isExpanded" class="m-4 p-4 bg-white dark:bg-gray-800 rounded-lg">
       <!-- For audio, video, and topik items: render HTML to preserve formatting with highlighting -->
       <div
-        v-if="['audio', 'video', 'topik1', 'topik2', 'topik3', 'topic1', 'topic2', 'topic3', 'ensiklopedia', 'kumpulan tanya jawab'].includes(item.type.toLowerCase())"
+        v-if="['audio', 'audio2', 'video', 'topik1', 'topik2', 'topik3', 'topic1', 'topic2', 'topic3', 'ensiklopedia', 'kumpulan tanya jawab'].includes(item.type.toLowerCase())"
         class="text-black dark:text-white mb-4" :style="{ fontSize: fontSize + 'px' }"
         v-html="highlightText(item.full_detail)">
       </div>
