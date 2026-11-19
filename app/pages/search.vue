@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { FilterPayload, DynamicFilter } from '~/types/search'
+import { audio2SearchResultRoute } from '~/utils/audio2'
 
 const router = useRouter()
 const route = useRoute()
@@ -16,6 +17,7 @@ const {
   hasSearched,
   results,
   filterPayload,
+  audioCategoryIds,
   isLoading,
   expandedItems,
   speakingItemId,
@@ -66,7 +68,7 @@ async function fetchFilterOptions() {
     const response = await $fetch<{
       success: boolean
       data: DynamicFilter[]
-    }>(`${config.public.apiBaseUrl}/search/keyword`)
+    }>(`${config.public.apiV2BaseUrl}/search/keyword`)
 
     if (response.success && response.data) {
       dynamicFilters.value = response.data.filter(item =>
@@ -76,6 +78,80 @@ async function fetchFilterOptions() {
   } catch (error) {
     console.error('Failed to fetch filter options:', error)
   }
+}
+
+// "Acara Program Radio" filter (Audio 2 categories the keyword has hits in).
+// Each data[].id is sent back as categoryAudioId.
+interface FilterCategoryGroup {
+  category: string
+  sub: { name: string; data: { id: number; title: string | null }[] }[]
+}
+const audioFilterGroups = ref<FilterCategoryGroup[]>([])
+let audioFilterKey = ''
+
+async function fetchAudioFilterGroups() {
+  // data_category_audio covers every matching row and ignores the current
+  // category restrictions; also keep categories already chosen (e.g. from a
+  // shared link) visible.
+  const ids = [...new Set([
+    ...audioCategoryIds.value,
+    ...(filterPayload.value.categoryAudioId ?? []),
+  ])].sort((a, b) => a - b)
+  const key = ids.join(',')
+  if (key === audioFilterKey) return
+  audioFilterKey = key
+  if (!ids.length) {
+    audioFilterGroups.value = []
+    return
+  }
+  try {
+    const res = await $fetch<{ success: boolean; filter_category_audio?: FilterCategoryGroup[] }>(
+      `${config.public.apiV2BaseUrl}/search/filterCategory`, { query: { dataAudio: key } })
+    if (audioFilterKey === key) audioFilterGroups.value = res.filter_category_audio ?? []
+  } catch (error) {
+    audioFilterKey = ''
+    console.error('Failed to fetch audio filter categories:', error)
+  }
+}
+
+const showAudioFilter = computed(() =>
+  filterPayload.value.selectedCategory.includes('Audio') && audioFilterGroups.value.length > 0)
+
+// /search/keyword also has a keyword group with the same title; while the
+// Audio 2 category filter is shown, hide it so the panel has one heading.
+const visibleDynamicFilters = computed(() => {
+  if (!showAudioFilter.value) return dynamicFilters.value
+  const titles = new Set(audioFilterGroups.value.map(g => g.category))
+  return dynamicFilters.value.filter(f => !titles.has(f.title))
+})
+
+// Drop selections in a keyword group that just got hidden, so nothing
+// invisible keeps filtering the results.
+watch(visibleDynamicFilters, (visible) => {
+  const visibleTitles = new Set(visible.map(f => f.title))
+  const hidden = dynamicFilters.value.filter(f => !visibleTitles.has(f.title)).map(f => `${f.title}::`)
+  if (!hidden.length) return
+  filterPayload.value.selectedKeyword = filterPayload.value.selectedKeyword.filter(k => !hidden.some(h => k.startsWith(h)))
+})
+
+watch(
+  () => [isFilterOpen.value, filterPayload.value.selectedCategory.includes('Audio'), audioCategoryIds.value.join(',')] as const,
+  ([open, audioSelected]) => { if (open && audioSelected) fetchAudioFilterGroups() },
+)
+
+function isAudioSubSelected(sub: FilterCategoryGroup['sub'][number]) {
+  const selected = filterPayload.value.categoryAudioId ?? []
+  return sub.data.length > 0 && sub.data.every(d => selected.includes(d.id))
+}
+
+function toggleAudioSub(sub: FilterCategoryGroup['sub'][number]) {
+  const ids = sub.data.map(d => d.id)
+  const selected = filterPayload.value.categoryAudioId ?? []
+  const next = isAudioSubSelected(sub)
+    ? selected.filter(id => !ids.includes(id))
+    : [...new Set([...selected, ...ids])]
+  if (next.length) filterPayload.value.categoryAudioId = next
+  else delete filterPayload.value.categoryAudioId
 }
 
 // Share search function
@@ -316,6 +392,7 @@ function toggleCategory(value: string) {
     } else if (value === 'Audio') {
       deepSearch.selectedVideoIds.value = []
       delete filterPayload.value.audio_ids
+      delete filterPayload.value.categoryAudioId
     } else if (value === 'Video') {
       deepSearch.selectedVideoIds.value = []
       delete filterPayload.value.video_ids
@@ -551,6 +628,13 @@ function toggleAccordion(key: string) {
 function navigateToDetail(item: any) {
   const itemType = item.type.toLowerCase()
 
+  // Audio 2 segments, and Topik 1 rows linked to Audio 2
+  const audio2Target = audio2SearchResultRoute(item)
+  if (audio2Target) {
+    router.push(audio2Target)
+    return
+  }
+
   if (itemType === 'book' || itemType === 'buku') {
     const headerId = item.header_id ? String(item.header_id) : ''
     const parts = headerId.split('#')
@@ -770,8 +854,24 @@ watch(isDeepSearchOpen, (isOpen) => {
             </div>
           </div>
 
+          <!-- Acara Program Radio (Audio 2 categories) -->
+          <div v-if="showAudioFilter">
+            <div v-for="group in audioFilterGroups" :key="group.category">
+              <h3 class="font-semibold text-black dark:text-white mb-3 text-lg">{{ group.category }}</h3>
+              <div class="flex flex-wrap gap-2">
+                <button v-for="sub in group.sub" :key="sub.name"
+                  class="px-4 py-1.5 rounded-full text-lg border transition-colors" :class="isAudioSubSelected(sub)
+                    ? 'bg-primary border-primary text-black dark:bg-yellow-500'
+                    : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-black dark:text-white'"
+                  @click="toggleAudioSub(sub)">
+                  {{ sub.name }}
+                </button>
+              </div>
+            </div>
+          </div>
+
           <!-- Dynamic Filters -->
-          <div v-for="filter in dynamicFilters" :key="filter.title">
+          <div v-for="filter in visibleDynamicFilters" :key="filter.title">
             <h3 class="font-semibold text-black dark:text-white mb-3 text-lg">{{ filter.title }}</h3>
             <div class="flex flex-wrap gap-2">
               <button v-for="item in filter.keyword" :key="item"

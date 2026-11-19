@@ -117,7 +117,7 @@ const createFolder = async () => {
 
   isCreatingFolder.value = true
   try {
-    const response = await $fetch<{ success: boolean; message: string }>(`${config.public.apiBaseUrl}/bookmark`, {
+    const response = await $fetch<{ success: boolean; message: string }>(`${config.public.apiV2BaseUrl}/bookmark`, {
       method: 'POST',
       headers: useAuth().getAuthHeader() as Record<string, string>,
       body: {

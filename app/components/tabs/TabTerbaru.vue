@@ -261,9 +261,9 @@ const saveScrollPosition = (main: number, dateScroll: number) => {
   }
 }
 
-// Single optimized API call with server-side caching
-const { data: allData, status } = useAsyncData('tabTerbaruData', async () => {
-  return $fetch<{
+// Aggregated client-side fetch, cached per session by the useAsyncData key
+const { data: allData, status } = useAsyncData('tabTerbaruData', () =>
+  fetchTerbaru() as Promise<{
     success: boolean
     data: {
       media: MediaItem[]
@@ -274,8 +274,8 @@ const { data: allData, status } = useAsyncData('tabTerbaruData', async () => {
       topics3: any[]
       menuSettings: MenuMobile[]
     }
-  }>('/api/terbaru')
-}, {
+  }>
+, {
   server: false
 })
 

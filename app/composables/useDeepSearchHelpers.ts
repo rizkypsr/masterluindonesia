@@ -1,9 +1,8 @@
+import type { Audio2PickerCategory } from '~/types/audio2'
 import type {
   BookChapter,
   Book,
   BookGroup,
-  AudioGroup,
-  AudioCategory,
   AudioSubGroup,
   VideoGroup,
   VideoYearGroup,
@@ -194,89 +193,28 @@ export const useDeepSearchHelpers = (deepSearch: ReturnType<typeof useDeepSearch
     return items.every(item => deepSearch.selectedVideoIds.value.includes(item.id))
   }
 
-  function toggleAudioCategorySelection(category: AudioCategory) {
-    const allAudioIds: number[] = []
-    
-    category.sub_groups.forEach(subGroup => {
-      subGroup.audios.forEach(audio => {
-        allAudioIds.push(audio.id)
-      })
-    })
-    
-    const allSelected = allAudioIds.every(id => deepSearch.selectedVideoIds.value.includes(id))
-    
-    if (allSelected) {
-      allAudioIds.forEach(id => {
-        const idx = deepSearch.selectedVideoIds.value.indexOf(id)
-        if (idx > -1) {
-          deepSearch.selectedVideoIds.value.splice(idx, 1)
-        }
-      })
+  // Audio 2 picker: category > year > episodes
+  function toggleAudioIds(ids: number[]) {
+    const selected = deepSearch.selectedVideoIds.value
+    if (ids.length > 0 && ids.every(id => selected.includes(id))) {
+      deepSearch.selectedVideoIds.value = selected.filter(id => !ids.includes(id))
     } else {
-      allAudioIds.forEach(id => {
-        if (!deepSearch.selectedVideoIds.value.includes(id)) {
-          deepSearch.selectedVideoIds.value.push(id)
-        }
-      })
+      deepSearch.selectedVideoIds.value = [...new Set([...selected, ...ids])]
     }
   }
 
-  function isAudioCategorySelected(category: AudioCategory): boolean {
-    const allAudioIds: number[] = []
-    
-    category.sub_groups.forEach(subGroup => {
-      subGroup.audios.forEach(audio => {
-        allAudioIds.push(audio.id)
-      })
-    })
-    
-    if (allAudioIds.length === 0) return false
-    return allAudioIds.every(id => deepSearch.selectedVideoIds.value.includes(id))
+  function areAudioIdsSelected(ids: number[]): boolean {
+    return ids.length > 0 && ids.every(id => deepSearch.selectedVideoIds.value.includes(id))
   }
 
-  function toggleAudioGroupSelection(audioGroup: AudioGroup) {
-    const allAudioIds: number[] = []
-    
-    audioGroup.children.forEach(category => {
-      category.sub_groups.forEach(subGroup => {
-        subGroup.audios.forEach(audio => {
-          allAudioIds.push(audio.id)
-        })
-      })
-    })
-    
-    const allSelected = allAudioIds.every(id => deepSearch.selectedVideoIds.value.includes(id))
-    
-    if (allSelected) {
-      allAudioIds.forEach(id => {
-        const idx = deepSearch.selectedVideoIds.value.indexOf(id)
-        if (idx > -1) {
-          deepSearch.selectedVideoIds.value.splice(idx, 1)
-        }
-      })
-    } else {
-      allAudioIds.forEach(id => {
-        if (!deepSearch.selectedVideoIds.value.includes(id)) {
-          deepSearch.selectedVideoIds.value.push(id)
-        }
-      })
-    }
-  }
+  const audioCategoryIds = (category: Audio2PickerCategory) =>
+    category.years.flatMap(y => y.audios.map(a => a.id))
+  const audioYearIds = (year: Audio2PickerCategory['years'][number]) => year.audios.map(a => a.id)
 
-  function isAudioGroupSelected(audioGroup: AudioGroup): boolean {
-    const allAudioIds: number[] = []
-    
-    audioGroup.children.forEach(category => {
-      category.sub_groups.forEach(subGroup => {
-        subGroup.audios.forEach(audio => {
-          allAudioIds.push(audio.id)
-        })
-      })
-    })
-    
-    if (allAudioIds.length === 0) return false
-    return allAudioIds.every(id => deepSearch.selectedVideoIds.value.includes(id))
-  }
+  const toggleAudioCategorySelection = (category: Audio2PickerCategory) => toggleAudioIds(audioCategoryIds(category))
+  const isAudioCategorySelected = (category: Audio2PickerCategory) => areAudioIdsSelected(audioCategoryIds(category))
+  const toggleAudioYearSelection = (year: Audio2PickerCategory['years'][number]) => toggleAudioIds(audioYearIds(year))
+  const isAudioYearSelected = (year: Audio2PickerCategory['years'][number]) => areAudioIdsSelected(audioYearIds(year))
 
   // Video helpers
   function toggleVideoCategorySelection(category: VideoCategory) {
@@ -778,8 +716,8 @@ export const useDeepSearchHelpers = (deepSearch: ReturnType<typeof useDeepSearch
     isSubGroupSelected,
     toggleAudioCategorySelection,
     isAudioCategorySelected,
-    toggleAudioGroupSelection,
-    isAudioGroupSelected,
+    toggleAudioYearSelection,
+    isAudioYearSelected,
     // Video
     toggleVideoCategorySelection,
     isVideoCategorySelected,

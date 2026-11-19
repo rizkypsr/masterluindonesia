@@ -1,9 +1,8 @@
+import type { Audio2PickerCategory } from '~/types/audio2'
 import type {
   BookGroup,
   Book,
   BookChapter,
-  AudioGroup,
-  AudioCategory,
   VideoGroup,
   VideoYearGroup,
   VideoCategory,
@@ -77,60 +76,22 @@ export const useDeepSearchFilters = (
     }).filter(group => group !== null) as BookGroup[]
   })
 
-  const filteredAudioList = computed(() => {
+  const filteredAudioList = computed<Audio2PickerCategory[]>(() => {
     if (!deepSearchQuery.value.trim()) return deepSearch.audioList.value
 
     const query = deepSearchQuery.value.toLowerCase()
 
-    return deepSearch.audioList.value.map(audioGroup => {
-      const groupMatches = audioGroup.title.toLowerCase().includes(query)
+    return deepSearch.audioList.value.map(category => {
+      if (category.title.toLowerCase().includes(query)) return category
 
-      if (groupMatches) {
-        return audioGroup
-      }
+      const years = category.years.map(y => {
+        if (String(y.year ?? 'tanpa tahun').includes(query)) return y
+        const audios = y.audios.filter(a => a.title.toLowerCase().includes(query))
+        return audios.length > 0 ? { ...y, audios } : null
+      }).filter((y): y is Audio2PickerCategory['years'][number] => y !== null)
 
-      const filteredCategories = audioGroup.children.map(category => {
-        const categoryMatches = category.title.toLowerCase().includes(query)
-
-        if (categoryMatches) {
-          return category
-        }
-
-        const filteredSubGroups = category.sub_groups.filter(subGroup => {
-          const subGroupMatches = subGroup.name.toLowerCase().includes(query)
-          const audioMatches = subGroup.audios.some(audio =>
-            audio.title.toLowerCase().includes(query)
-          )
-          return subGroupMatches || audioMatches
-        }).map(subGroup => {
-          if (subGroup.name.toLowerCase().includes(query)) {
-            return subGroup
-          }
-          return {
-            ...subGroup,
-            audios: subGroup.audios.filter(audio =>
-              audio.title.toLowerCase().includes(query)
-            )
-          }
-        })
-
-        if (filteredSubGroups.length > 0) {
-          return {
-            ...category,
-            sub_groups: filteredSubGroups
-          }
-        }
-        return null
-      }).filter(category => category !== null) as AudioCategory[]
-
-      if (filteredCategories.length > 0) {
-        return {
-          ...audioGroup,
-          children: filteredCategories
-        }
-      }
-      return null
-    }).filter(group => group !== null) as AudioGroup[]
+      return years.length > 0 ? { ...category, years } : null
+    }).filter((c): c is Audio2PickerCategory => c !== null)
   })
 
   const filteredVideoList = computed(() => {

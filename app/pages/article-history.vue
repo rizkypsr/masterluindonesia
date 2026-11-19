@@ -88,7 +88,7 @@ async function fetchHistory(page = 1, search?: string) {
   }
   
   try {
-    let url = `${config.public.apiBaseUrl}/history?page=${page}`
+    let url = `${config.public.apiV2BaseUrl}/history?page=${page}`
     if (search) {
       url += `&search=${encodeURIComponent(search)}`
     }
@@ -117,7 +117,7 @@ async function fetchHistory(page = 1, search?: string) {
 
 async function deleteHistory(range: number) {
   try {
-    await $fetch(`${config.public.apiBaseUrl}/history/${range}`, {
+    await $fetch(`${config.public.apiV2BaseUrl}/history/${range}`, {
       method: 'DELETE',
       headers: getAuthHeader() as Record<string, string>
     })

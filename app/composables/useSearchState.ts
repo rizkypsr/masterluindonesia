@@ -16,6 +16,12 @@ export const useSearchState = () => {
     listHideKeyword: []
   }))
 
+  // audio2_category ids the current keyword has hits in (data_category_audio),
+  // accumulated across requests so the "Acara Program Radio" filter keeps
+  // offering every category even after the user narrows to one.
+  const audioCategoryIds = useState<number[]>('search-audio-category-ids', () => [])
+  const audioCategoryKeyword = useState('search-audio-category-keyword', () => '')
+
   // Local state
   const isLoading = ref(false)
   const expandedItems = ref<Set<string>>(new Set())
@@ -73,6 +79,16 @@ export const useSearchState = () => {
       const response = await postSearch(body)
 
       const data = response.data || []
+
+      if (audioCategoryKeyword.value !== keyword) {
+        audioCategoryKeyword.value = keyword
+        audioCategoryIds.value = []
+      }
+      const ids = (response.data_category_audio ?? '')
+        .split(',').map(v => parseInt(v, 10)).filter(n => Number.isInteger(n) && n > 0)
+      if (ids.length) {
+        audioCategoryIds.value = [...new Set([...audioCategoryIds.value, ...ids])]
+      }
 
       // Cache the results
       searchCache.set(keyword, filters, currentPage.value, data)
@@ -187,6 +203,7 @@ export const useSearchState = () => {
     hasSearched,
     results,
     filterPayload,
+    audioCategoryIds,
     isLoading,
     expandedItems,
     speakingItemId,

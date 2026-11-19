@@ -5,7 +5,7 @@ interface BookmarkItem {
   id: number
   title: string
   type: number // 0 = folder, 1 = video, 2 = audio, 3 = book
-  link: string | null
+  data: any
   child?: BookmarkItem[]
 }
 
@@ -53,7 +53,7 @@ onMounted(async () => {
 async function fetchBookmarks() {
   loading.value = true
   try {
-    const response = await $fetch<BookmarkResponse>(`${config.public.apiBaseUrl}/bookmark`, {
+    const response = await $fetch<BookmarkResponse>(`${config.public.apiV2BaseUrl}/bookmark`, {
       headers: getAuthHeader() as Record<string, string>
     })
     if (response.success) {
@@ -90,7 +90,7 @@ async function saveEdit() {
 
   isSaving.value = true
   try {
-    const response = await $fetch<{ success: boolean; message: string }>(`${config.public.apiBaseUrl}/bookmark`, {
+    const response = await $fetch<{ success: boolean; message: string }>(`${config.public.apiV2BaseUrl}/bookmark`, {
       method: 'PUT',
       headers: getAuthHeader() as Record<string, string>,
       body: {
@@ -132,7 +132,7 @@ async function confirmDelete() {
 
   isDeleting.value = true
   try {
-    const response = await $fetch<{ success: boolean; message: string }>(`${config.public.apiBaseUrl}/bookmark/${deletingItem.value.id}`, {
+    const response = await $fetch<{ success: boolean; message: string }>(`${config.public.apiV2BaseUrl}/bookmark/${deletingItem.value.id}`, {
       method: 'DELETE',
       headers: getAuthHeader() as Record<string, string>
     })
@@ -170,18 +170,12 @@ async function createFolder() {
 
   isCreatingFolder.value = true
   try {
-    const response = await $fetch<{ success: boolean; message: string }>(`${config.public.apiBaseUrl}/bookmark`, {
+    const response = await $fetch<{ success: boolean; message: string }>(`${config.public.apiV2BaseUrl}/bookmark`, {
       method: 'POST',
       headers: getAuthHeader() as Record<string, string>,
       body: {
-        id: null,
         type: 0,
-        folderId: null,
-        title: newFolderName.value.trim(),
-        videoLink: null,
-        audioLink: null,
-        bookLink: null,
-        recipeLink: null
+        title: newFolderName.value.trim()
       }
     })
 

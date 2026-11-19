@@ -3,14 +3,16 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
+    "build": "nuxt generate",
+    "postbuild": "rm -rf dist && cp -R .output/public dist",
+    "dev": "nuxt dev -p 3002",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "analyze": "nuxt analyze"
   },
   "dependencies": {
+    "@ai-sdk/vue": "^3.0.204",
     "@elevenlabs/elevenlabs-js": "^2.32.0",
     "@nuxt/icon": "2.2.0",
     "@nuxt/image": "2.0.0",
@@ -18,13 +20,25 @@
     "@nuxtjs/tailwindcss": "6.14.0",
     "@pinia/nuxt": "^0.11.3",
     "@tailwindcss/vite": "^4.1.18",
+    "@tiptap/extension-image": "^3.20.0",
+    "@tiptap/starter-kit": "^3.20.0",
+    "@tiptap/vue-3": "^3.20.0",
     "@vueuse/nuxt": "^14.2.1",
+    "ai": "^6.0.204",
     "better-auth": "^1.4.12",
+    "marked": "^18.0.5",
     "nuxt": "^4.2.2",
     "nuxt-ripple": "^0.0.8",
     "pinia": "^3.0.4",
     "tailwindcss": "^4.1.18",
     "vue": "^3.5.26",
     "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "@iconify-json/heroicons": "^1.2.3",
+    "@iconify-json/lucide": "^1.2.118",
+    "@iconify-json/mdi": "^1.2.3",
+    "@iconify-json/simple-icons": "^1.2.91",
+    "@iconify-json/svg-spinners": "^1.2.4"
   }
 }

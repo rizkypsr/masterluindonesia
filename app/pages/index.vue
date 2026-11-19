@@ -123,7 +123,7 @@ onMounted(async () => {
     // 0 = forever (don't delete), other values = delete based on range
     if (retentionValue > 0) {
       // Fire and forget - don't block app loading
-      $fetch(`${config.public.apiBaseUrl}/history/${retentionValue}`, {
+      $fetch(`${config.public.apiV2BaseUrl}/history/${retentionValue}`, {
         method: 'DELETE',
         headers: getAuthHeader() as Record<string, string>
       }).catch(err => console.error('Failed to delete history:', err))

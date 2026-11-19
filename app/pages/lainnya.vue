@@ -4,12 +4,10 @@ import { useAuth } from '~/lib/auth';
 const colorMode = useColorMode()
 const config = useRuntimeConfig()
 const { $googleSignIn } = useNuxtApp()
-const { loginWithGoogle, isAuthenticated, logout, getAuthHeader } = useAuth()
+const { loginWithGoogle, isAuthenticated, isAdmin, logout, user, fetchSession } = useAuth()
 
 const isLoading = ref(false)
 const error = ref<string | null>(null)
-const userName = ref<string | null>(null)
-const userEmail = ref<string | null>(null)
 
 const isDark = computed({
   get() {
@@ -24,80 +22,92 @@ function toggleTheme() {
   isDark.value = !isDark.value
 }
 
-let tokenClient: any = null
+let gisReady = false
+const googleBtnEl = ref<HTMLElement | null>(null)
 
 // Initialize Google Sign-In on mount
 onMounted(async () => {
+  // 1. Fetch user info if authenticated and not yet fetched
+  if (isAuthenticated.value && !user.value) {
+    try {
+      await fetchSession()
+    } catch (e) {
+      console.error('[Lainnya] Failed to fetch session:', e)
+    }
+  }
+
+  // 2. Load Google Sign-In SDK and set up the ID-token (credential) flow.
+  //    The backend verifies the ID token with Google, so we need the token
+  //    itself — not an OAuth2 access token — from `response.credential`.
   try {
     await $googleSignIn.load()
 
     if (window.google) {
-      tokenClient = window.google.accounts.oauth2.initTokenClient({
+      window.google.accounts.id.initialize({
         client_id: config.public.googleClientId,
-        scope: 'email profile openid',
-        callback: handleTokenResponse,
+        callback: handleCredentialResponse,
+        auto_select: false,
       })
-    }
-
-    // Fetch user info if authenticated
-    if (isAuthenticated.value) {
-      await fetchUserInfo()
+      gisReady = true
+      renderGoogleButton()
     }
   } catch (e) {
-    console.error('Failed to load Google Sign-In', e)
+    console.error('[Lainnya] Failed to load Google Sign-In SDK:', e)
   }
 })
 
-// Fetch user info from backend
-async function fetchUserInfo() {
-  try {
-    const response = await $fetch<{ success: boolean; data: { nama: string; email: string } }>(
-      `${config.public.apiBaseUrl}/myprofile`,
-      {
-        headers: getAuthHeader() as Record<string, string>
-      }
-    )
-    if (response.success && response.data) {
-      userName.value = response.data.nama
-      userEmail.value = response.data.email
-    }
-  } catch (e) {
-    console.error('Failed to fetch user info:', e)
-  }
+/**
+ * Render Google's official button, but invisibly (opacity ~0) stacked on top of
+ * our own dark button. The GIS button lives in a cross-origin iframe whose white
+ * background can't be styled away, so instead we hide it and let it only catch
+ * the click — the user still clicks the real iframe, so no cross-origin trick is
+ * involved and the account-chooser popup works normally.
+ */
+function renderGoogleButton() {
+  if (!gisReady || !window.google || isAuthenticated.value) return
+  nextTick(() => {
+    const el = googleBtnEl.value
+    if (!el) return
+    el.innerHTML = ''
+    window.google!.accounts.id.renderButton(el, {
+      type: 'standard',
+      theme: 'outline',
+      size: 'large',
+      text: 'signin_with',
+      shape: 'pill',
+      logo_alignment: 'center',
+      // Cover our visual button so a click anywhere on it hits the iframe.
+      width: Math.min(el.clientWidth || 320, 400),
+    })
+  })
 }
 
-async function handleTokenResponse(response: { access_token?: string; error?: string }) {
-  if (response.error) {
-    error.value = response.error
+// Re-render whenever the login section reappears after a logout.
+watch(isAuthenticated, (authed) => {
+  if (!authed) renderGoogleButton()
+})
+
+async function handleCredentialResponse(response: { credential?: string; error?: string }) {
+  if (response.error || !response.credential) {
+    error.value = 'Login Google gagal, coba lagi'
     return
   }
 
-  if (response.access_token) {
-    isLoading.value = true
-    error.value = null
-    try {
-      await loginWithGoogle(response.access_token)
-      // Fetch user info after successful login
-      await fetchUserInfo()
-    } catch (e: any) {
-      error.value = e.message || 'Login failed'
-    } finally {
-      isLoading.value = false
-    }
-  }
-}
-
-function openGoogleLogin() {
-  if (tokenClient) {
-    error.value = null
-    tokenClient.requestAccessToken()
+  isLoading.value = true
+  error.value = null
+  try {
+    await loginWithGoogle(response.credential)
+  } catch (e: any) {
+    // 400 (missing token) / 401 (invalid/expired/wrong audience) → generic message.
+    error.value = 'Login Google gagal, coba lagi'
+    console.error('[Lainnya] Google login failed:', e)
+  } finally {
+    isLoading.value = false
   }
 }
 
 function handleLogout() {
   logout()
-  userName.value = null
-  userEmail.value = null
 }
 </script>
 
@@ -111,12 +121,12 @@ function handleLogout() {
     <!-- Content -->
     <div class="px-6 py-6">
       <!-- User Name (shown when logged in) -->
-      <div v-if="isAuthenticated && userName" class="py-3 mb-4 border-b border-gray-300 dark:border-gray-600">
+      <div v-if="isAuthenticated && user" class="py-3 mb-4 border-b border-gray-300 dark:border-gray-600">
         <div class="flex items-center gap-3">
           <Icon name="mdi:account-circle" class="w-10 h-10 text-primary dark:text-yellow-400" />
           <div class="flex-1">
-            <p class="font-semibold text-lg text-black dark:text-white">{{ userName }}</p>
-            <p class="text-sm text-gray-500 dark:text-gray-400">{{ userEmail }}</p>
+            <p class="font-semibold text-lg text-black dark:text-white">{{ user.name }}</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">{{ user.email }}</p>
           </div>
         </div>
       </div>
@@ -152,14 +162,40 @@ function handleLogout() {
           <Icon name="mdi:chevron-right" class="w-9 h-9 text-black dark:text-white" />
         </NuxtLink>
 
-        <!-- Masuk / Daftar Aplikasi -->
-        <button v-if="!isAuthenticated" @click="openGoogleLogin" class="flex items-center justify-between py-1 w-full"
-          :disabled="isLoading">
-          <span class="font-medium text-black dark:text-white cursor-pointer hover:underline">
-            {{ isLoading ? 'Memproses...' : 'Masuk / Daftar Aplikasi' }}
-          </span>
-          <Icon name="mdi:login" class="w-6 h-6 text-black dark:text-white" />
-        </button>
+        <!-- Saldo Deposit -->
+        <NuxtLink v-if="isAuthenticated" to="/saldo" class="flex items-center justify-between py-1">
+          <span class="font-medium text-black dark:text-white">Saldo Deposit</span>
+          <Icon name="mdi:chevron-right" class="w-9 h-9 text-black dark:text-white" />
+        </NuxtLink>
+
+        <!-- Chat FAQ (admin only) -->
+        <NuxtLink v-if="isAdmin" to="/chat-faq-manager" class="flex items-center justify-between py-1">
+          <span class="font-medium text-black dark:text-white">Chat FAQ</span>
+          <Icon name="mdi:chevron-right" class="w-9 h-9 text-black dark:text-white" />
+        </NuxtLink>
+
+        <!-- Antrian Jawaban (admin only) -->
+        <NuxtLink v-if="isAdmin" to="/chat-admin-queue" class="flex items-center justify-between py-1">
+          <span class="font-medium text-black dark:text-white">Antrian Jawaban</span>
+          <Icon name="mdi:chevron-right" class="w-9 h-9 text-black dark:text-white" />
+        </NuxtLink>
+
+        <!-- Masuk / Daftar Aplikasi — our dark button, with the real (invisible)
+             Google button stacked on top to catch the click. -->
+        <div v-if="!isAuthenticated" class="py-2">
+          <div class="relative w-full h-11">
+            <div
+              class="absolute inset-0 flex items-center justify-center gap-2 rounded-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 pointer-events-none"
+            >
+              <Icon name="material-icon-theme:google" class="w-5 h-5 text-[#4285F4]" />
+              <span class="font-medium text-black dark:text-white">Masuk dengan Google</span>
+            </div>
+            <div ref="googleBtnEl" class="absolute inset-0 flex items-center justify-center overflow-hidden opacity-[0.001]" />
+          </div>
+          <p v-if="isLoading" class="text-sm text-gray-500 dark:text-gray-400 text-center mt-2">
+            Memproses...
+          </p>
+        </div>
 
         <!-- Keluar (shown when logged in) -->
         <button v-else @click="handleLogout" class="flex items-center justify-between py-1 w-full">

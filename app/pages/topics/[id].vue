@@ -430,6 +430,13 @@ const toggleSearchExpand = (item: SearchItem) => {
 
 const navigateToSearchResult = (item: SearchItem) => {
   const itemType = item.type.toLowerCase()
+
+  // Audio 2 segments, and Topik 1 rows linked to Audio 2 (utils/audio2.ts)
+  const audio2Target = audio2SearchResultRoute(item)
+  if (audio2Target) {
+    router.push(audio2Target)
+    return
+  }
   
   // Check which category this item belongs to based on data_category fields
   // If it has data_category_topic1, it means it's audio/video content categorized under topic1

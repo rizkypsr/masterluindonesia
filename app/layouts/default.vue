@@ -4,8 +4,9 @@
       <div class="flex-1 overflow-hidden" :class="{ 'pb-safe-bottom-nav': showBottomNav }">
         <slot />
       </div>
-      <!-- Lazy hydration: only hydrate when visible -->
-      <LazyBottomNav v-if="showBottomNav" class="shrink-0" hydrate-on-visible />
+      <!-- Rendered eagerly: this is an SPA build, and a deferred/visibility-gated
+           BottomNav can fail to ever hydrate on a direct page load. -->
+      <BottomNav v-if="showBottomNav" class="shrink-0" />
     </div>
   </div>
 </template>
@@ -15,8 +16,13 @@ const route = useRoute()
 
 const mainPages = ['/', '/audio', '/search', '/video', '/lainnya']
 
+// Apache serves the generated `<route>/index.html` and redirects `/lainnya` to
+// `/lainnya/`, so a direct URL load arrives with a trailing slash. Strip it
+// before matching, otherwise the nav disappears on direct loads.
+// A page can hide the nav while it shows its own bottom bar (the Audio player).
+const hideBottomNav = useState('hide-bottom-nav', () => false)
 const showBottomNav = computed(() => {
-  return mainPages.includes(route.path)
+  return !hideBottomNav.value && mainPages.includes(route.path.replace(/\/+$/, '') || '/')
 })
 </script>
 

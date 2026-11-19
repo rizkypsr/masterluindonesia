@@ -81,6 +81,7 @@
 </template>
 
 <script setup lang="ts">
+import { audio2DetailRoute } from '~/utils/audio2'
 import { useAuth } from '~/lib/auth'
 
 definePageMeta({
@@ -172,6 +173,10 @@ function navigateToItem(item: PlaylistItem) {
         
       case 2: // Audio
         const audioId = itemData.audioId
+        if (audioId && itemData.source === 'audio2') {
+          navigateTo(audio2DetailRoute(audioId))
+          break
+        }
         if (audioId) {
           navigateTo({
             path: '/audio/detail',

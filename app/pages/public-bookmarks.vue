@@ -106,6 +106,7 @@
 </template>
 
 <script setup lang="ts">
+import { audio2DetailRoute } from '~/utils/audio2'
 import { ref } from 'vue'
 
 interface BookmarkLink {
@@ -119,6 +120,7 @@ interface BookmarkLink {
   lang?: string
   audioId?: number
   audio_category_id?: number | null
+  source?: 'audio2' // audioId is an Audio 2 episode id
   subtitleId?: number | null
   subId?: number
   title?: string
@@ -165,7 +167,7 @@ async function fetchPublicBookmarks() {
   loading.value = true
   try {
     const response = await $fetch<PublicBookmarkResponse>(
-      `${config.public.apiBaseUrl}/public-bookmarks?all=true`
+      `${config.public.apiV2BaseUrl}/public-bookmarks?all=true`
     )
     if (response.success) {
       publicBookmarks.value = response.data
@@ -224,6 +226,10 @@ function navigateToItem(item: BookmarkItem) {
         break
       case 2: // Audio
         const audioId = linkData.audioId
+        if (audioId && linkData.source === 'audio2') {
+          router.push(audio2DetailRoute(audioId))
+          break
+        }
         if (audioId) {
           router.push({
             path: '/audio/detail',
